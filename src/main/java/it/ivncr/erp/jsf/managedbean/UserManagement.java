@@ -32,11 +32,10 @@ public class UserManagement implements Serializable {
 	private LazyDataModel<Utente> model;
 	private Utente selected;
 	
-	private String matricola;
 	private String username;
 	private String nome;
 	private String cognome;
-	private String tipoAccount;
+	private String note;
 	private String password;
 	private String confirmPassword;
 	
@@ -71,14 +70,14 @@ public class UserManagement implements Serializable {
 			@Override
 			public Object getRowKey(Utente utente) {
 				
-				return utente == null ? null : utente.getMatricola();
+				return utente == null ? null : utente.getId();
 			}
 
 			@Override
 			public Utente getRowData(String rowKey) {
 				
 				UtenteService us = ServiceFactory.createUtenteService();
-				Utente utente = us.retrieveByMatricola(Integer.decode(rowKey));
+				Utente utente = us.retrieve(Integer.decode(rowKey));
 				return utente;
 			}
 		};
@@ -86,11 +85,10 @@ public class UserManagement implements Serializable {
 	
 	private void clean() {
 		
-		matricola = null;
 		username = null;
 		nome = null;
 		cognome = null;
-		tipoAccount = null;
+		note = null;
 		password = null;
 		confirmPassword = null;
 	}
@@ -116,12 +114,11 @@ public class UserManagement implements Serializable {
 		try {
 			UtenteService us = ServiceFactory.createUtenteService();
 			us.create(
-					Integer.decode(matricola), 
 					username, 
 					password, 
 					nome, 
 					cognome, 
-					tipoAccount);
+					note);
 			logger.debug("User successfully created.");
 			
 			// Clean up form state.
@@ -151,11 +148,11 @@ public class UserManagement implements Serializable {
 		try {
 			UtenteService us = ServiceFactory.createUtenteService();
 			us.update(
-					selected.getMatricola(),
+					selected.getId(),
 					selected.getUsername(),
 					selected.getNome(),
 					selected.getCognome(),
-					selected.getTipoAccount());
+					selected.getNote());
 			logger.debug("User successfully updated.");
 
 			// Signal to modal dialog that everything went fine.
@@ -195,7 +192,7 @@ public class UserManagement implements Serializable {
 		try {
 			
 			UtenteService us = ServiceFactory.createUtenteService();
-			us.deleteByMatricola(selected.getMatricola());
+			us.delete(selected.getId());
 			logger.debug("User successfully deleted.");
 
 			// Signal to modal dialog that everything went fine.
@@ -234,7 +231,7 @@ public class UserManagement implements Serializable {
 		//
 		try {
 			UtenteService us = ServiceFactory.createUtenteService();
-			us.changePassword(selected.getMatricola(), password); 
+			us.changePassword(selected.getId(), password); 
 			logger.debug("Password successfully changed.");
 			
 			// Clean up form state.
@@ -273,14 +270,6 @@ public class UserManagement implements Serializable {
 		this.selected = selected;
 	}
 
-	public String getMatricola() {
-		return matricola;
-	}
-
-	public void setMatricola(String matricola) {
-		this.matricola = matricola;
-	}
-
 	public String getUsername() {
 		return username;
 	}
@@ -305,12 +294,12 @@ public class UserManagement implements Serializable {
 		this.cognome = cognome;
 	}
 
-	public String getTipoAccount() {
-		return tipoAccount;
+	public String getNote() {
+		return note;
 	}
 
-	public void setTipoAccount(String tipoAccount) {
-		this.tipoAccount = tipoAccount;
+	public void setNote(String note) {
+		this.note = note;
 	}
 
 	public String getPassword() {

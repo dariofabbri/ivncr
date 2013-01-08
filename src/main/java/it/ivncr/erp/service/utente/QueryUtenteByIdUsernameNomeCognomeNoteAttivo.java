@@ -5,27 +5,28 @@ import it.ivncr.erp.service.Query;
 
 import org.hibernate.Session;
 
-public class QueryUtenteByMatricolaUsernameNomeCognomeTipoAccount extends Query<Utente> {
+public class QueryUtenteByIdUsernameNomeCognomeNoteAttivo extends Query<Utente> {
 
-	private Integer matricola;
+	private Integer id;
 	private String username;
 	private String nome;
 	private String cognome;
-	private String tipoAccount;
+	private String note;
+	private Boolean attivo;
 	
-	public QueryUtenteByMatricolaUsernameNomeCognomeTipoAccount(Session session) {
+	public QueryUtenteByIdUsernameNomeCognomeNoteAttivo(Session session) {
 		
 		super(session);
 		
-		sortCriteria = "matricola";
+		sortCriteria = "id";
 	}
 
-	public Integer getMatricola() {
-		return matricola;
+	public Integer getId() {
+		return id;
 	}
 
-	public void setMatricola(Integer matricola) {
-		this.matricola = matricola;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public String getUsername() {
@@ -52,12 +53,20 @@ public class QueryUtenteByMatricolaUsernameNomeCognomeTipoAccount extends Query<
 		this.cognome = cognome;
 	}
 
-	public String getTipoAccount() {
-		return tipoAccount;
+	public String getNote() {
+		return note;
 	}
 
-	public void setTipoAccount(String tipoAccount) {
-		this.tipoAccount = tipoAccount;
+	public void setNote(String note) {
+		this.note = note;
+	}
+
+	public Boolean getAttivo() {
+		return attivo;
+	}
+
+	public void setAttivo(Boolean attivo) {
+		this.attivo = attivo;
 	}
 
 	@Override
@@ -74,8 +83,8 @@ public class QueryUtenteByMatricolaUsernameNomeCognomeTipoAccount extends Query<
 				"from Utente ute " +
 				"where 1 = 1 ";
 		
-		if(matricola != null)
-			hql += "and ute.matricola = :matricola ";
+		if(id != null)
+			hql += "and ute.id = :id ";
 		
 		if(username != null)
 			hql += "and upper(ute.username) like :username ";
@@ -86,8 +95,11 @@ public class QueryUtenteByMatricolaUsernameNomeCognomeTipoAccount extends Query<
 		if(cognome != null)
 			hql += "and upper(ute.cognome) like :cognome ";
 		
-		if(tipoAccount != null)
-			hql += "and upper(ute.tipoAccount) like :tipoAccount ";
+		if(note != null)
+			hql += "and upper(ute.note) like :note ";
+		
+		if(attivo != null)
+			hql += "and ute.attivo = :attivo ";
 
 		return hql;
 	}
@@ -99,8 +111,8 @@ public class QueryUtenteByMatricolaUsernameNomeCognomeTipoAccount extends Query<
 				"from Utente ute " +
 				"where 1 = 1 ";
 		
-		if(matricola != null)
-			hql += "and ute.matricola = :matricola ";
+		if(id != null)
+			hql += "and ute.id = :id ";
 		
 		if(username != null)
 			hql += "and upper(ute.username) like :username ";
@@ -111,8 +123,11 @@ public class QueryUtenteByMatricolaUsernameNomeCognomeTipoAccount extends Query<
 		if(cognome != null)
 			hql += "and upper(ute.cognome) like :cognome ";
 		
-		if(tipoAccount != null)
-			hql += "and upper(ute.tipoAccount) like :tipoAccount ";
+		if(note != null)
+			hql += "and upper(ute.note) like :note ";
+		
+		if(attivo != null)
+			hql += "and ute.attivo = :attivo ";
 
 		if(sortCriteria != null) {
 			hql += "order by ute." + sortCriteria + " ";
@@ -131,8 +146,8 @@ public class QueryUtenteByMatricolaUsernameNomeCognomeTipoAccount extends Query<
 		for (int i = 0; i < named_params.length; ++i) {
 			String param = named_params[i];
 
-			if (param.equals("matricola"))
-				q.setParameter("matricola", matricola);
+			if (param.equals("id"))
+				q.setParameter("id", id);
 			
 			else if (param.equals("username"))
 				q.setParameter("username", "%" + username.toUpperCase() + "%");
@@ -143,8 +158,11 @@ public class QueryUtenteByMatricolaUsernameNomeCognomeTipoAccount extends Query<
 			else if (param.equals("cognome"))
 				q.setParameter("cognome", "%" + cognome.toUpperCase() + "%");
 			
-			else if (param.equals("tipoAccount"))
-				q.setParameter("tipoAccount",  "%" + tipoAccount.toUpperCase() + "%");
+			else if (param.equals("note"))
+				q.setParameter("note",  "%" + note.toUpperCase() + "%");
+		
+			else if (param.equals("attivo"))
+				q.setParameter("attivo", attivo);
 		}
 	}
 }

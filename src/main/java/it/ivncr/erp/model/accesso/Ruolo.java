@@ -16,36 +16,36 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "sec_role")
+@Table(name = "acc_ruolo")
 public class Ruolo {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "sec_role_id_seq")
-	@SequenceGenerator(name = "sec_role_id_seq", sequenceName = "sec_role_id_seq")
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "acc_ruolo_id_seq")
+	@SequenceGenerator(name = "acc_ruolo_id_seq", sequenceName = "acc_ruolo_id_seq")
 	@Column(name="id")
 	private Integer id;
 	
-	@Column(name="rolename")
-	private String rolename;
+	@Column(name="nome")
+	private String nome;
 	
-	@Column(name="description")
-	private String description;
+	@Column(name="descrizione")
+	private String descrizione;
 
 	@OneToMany
 	@JoinTable(
-			name="sec_role_permission",
-			joinColumns = { @JoinColumn(name="roleid", referencedColumnName="id")},
-			inverseJoinColumns = { @JoinColumn(name="permissionid", referencedColumnName="id")}
+			name="acc_ruolo_permesso",
+			joinColumns = { @JoinColumn(name="ruolo_id", referencedColumnName="id")},
+			inverseJoinColumns = { @JoinColumn(name="permesso_id", referencedColumnName="id")}
 	)
-	private List<Permesso> permissions;
+	private List<Permesso> permessi;
 
 	@OneToMany
 	@JoinTable(
-			name="sec_user_role",
-			joinColumns = { @JoinColumn(name="roleid", referencedColumnName="id")},
-			inverseJoinColumns = { @JoinColumn(name="userid", referencedColumnName="id")}
+			name="acc_utente_ruolo",
+			joinColumns = { @JoinColumn(name="ruolo_id", referencedColumnName="id")},
+			inverseJoinColumns = { @JoinColumn(name="utente_id", referencedColumnName="id")}
 	)
-	private Set<Utente> users;
+	private Set<Utente> utenti;
 
 	public Integer getId() {
 		return id;
@@ -55,35 +55,35 @@ public class Ruolo {
 		this.id = id;
 	}
 
-	public String getRolename() {
-		return rolename;
+	public String getNome() {
+		return nome;
 	}
 
-	public void setRolename(String rolename) {
-		this.rolename = rolename;
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
-	public String getDescription() {
-		return description;
+	public String getDescrizione() {
+		return descrizione;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setDescrizione(String descrizione) {
+		this.descrizione = descrizione;
 	}
 
-	public List<Permesso> getPermissions() {
-		return permissions;
+	public List<Permesso> getPermessi() {
+		return permessi;
 	}
 
-	public void setPermissions(List<Permesso> permissions) {
-		this.permissions = permissions;
+	public void setPermessi(List<Permesso> permessi) {
+		this.permessi = permessi;
 	}
 
-	public Set<Utente> getUsers() {
-		return users;
+	public Set<Utente> getUtenti() {
+		return utenti;
 	}
 
-	public void setUsers(Set<Utente> users) {
-		this.users = users;
+	public void setUtenti(Set<Utente> utenti) {
+		this.utenti = utenti;
 	}
 }

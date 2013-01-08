@@ -1,11 +1,15 @@
 package it.ivncr.erp.security;
 
 
+import it.ivncr.erp.model.accesso.Permesso;
+import it.ivncr.erp.model.accesso.Ruolo;
 import it.ivncr.erp.model.accesso.Utente;
 import it.ivncr.erp.service.ServiceFactory;
+import it.ivncr.erp.service.security.SecurityService;
 import it.ivncr.erp.service.utente.UtenteService;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.shiro.authc.AccountException;
@@ -47,7 +51,7 @@ public class DatabaseBackedRealm extends AuthorizingRealm {
 		//
 		String digest = utente.getDigest();
 		String salt = utente.getSalt();
-		Integer iterations = utente.getIterations();
+		Integer iterations = utente.getIterazioni();
 
 		// Create authentication info.
 		//
@@ -84,22 +88,24 @@ public class DatabaseBackedRealm extends AuthorizingRealm {
 		// Extract username from principal.
 		//
 		String username = (String) getAvailablePrincipal(principals);
-		
 
-		// Lookup user.
+		// Look up roles.
 		//
-		UtenteService us = ServiceFactory.createUtenteService();
-		Utente utente = us.retrieveByUsername(username);
-		if (utente == null)
-			throw new UnknownAccountException("No account found for user [" + username + "]");
-
-		// Extract roles from tipoAccount field.
-		//
+		SecurityService ss = ServiceFactory.createSecurityService();
+		List<Ruolo> rolesList = ss.getRoles(username);
 		Set<String> roles = new HashSet<String>();
-		roles.add(utente.getTipoAccount());
-		
+		for (Ruolo r : rolesList)
+			roles.add(r.getNome());
+
+		// Look up permissions.
+		//
+		List<Permesso> permissionsList = ss.getPermissions(username);
+		Set<String> permissions = new HashSet<String>();
+		for (Permesso p : permissionsList)
+			permissions.add(p.getPermesso());
+
 		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo(roles);
-		//info.setStringPermissions(permissions);
+		info.setStringPermissions(permissions);		
 		
 		return info;
 	}

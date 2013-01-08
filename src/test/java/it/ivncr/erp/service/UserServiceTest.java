@@ -1,9 +1,8 @@
 package it.ivncr.erp.service;
 
+import it.ivncr.erp.model.accesso.Ruolo;
 import it.ivncr.erp.model.accesso.Utente;
 import it.ivncr.erp.service.utente.UtenteService;
-
-import java.util.Random;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -16,15 +15,16 @@ public class UserServiceTest extends BaseServiceTest {
 		UtenteService us = ServiceFactory.createUtenteService();
 		
 		Utente utente = us.create(
-				new Random().nextInt(10000),
 				"gino", 
 				"password", 
 				"Gino", 
 				"Pilota", 
-				"Capoturno");
+				"Utente di prova");
 		Assert.assertNotNull(utente);
-		
-		System.out.println(utente.getMatricola());
+		System.out.println(utente.getId());
+
+		Ruolo ruolo = us.addRuolo(utente.getId(), 1);
+        Assert.assertNotNull(ruolo);
 	}
 	
 	@Test
@@ -35,8 +35,8 @@ public class UserServiceTest extends BaseServiceTest {
 		Utente utente = us.retrieveByUsername("gino");
 		Assert.assertNotNull(utente);
 		
-		System.out.println(utente.getMatricola());
+		System.out.println(utente.getId());
 		
-		us.deleteByMatricola(utente.getMatricola());
+		us.delete(utente.getId());
 	}
 }

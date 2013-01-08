@@ -56,7 +56,7 @@ public class ChangePassword implements Serializable {
 		//
 		try {
 			UtenteService us = ServiceFactory.createUtenteService();
-			us.changePassword(loginInfoBean.getUtente().getMatricola(), password); 
+			us.changePassword(loginInfoBean.getUtente().getId(), password); 
 			logger.debug("Password successfully changed.");
 			
 			// Clean up form state.

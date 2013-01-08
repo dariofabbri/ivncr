@@ -15,27 +15,28 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "sec_permission")
+@Table(name = "acc_permesso")
 public class Permesso {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "sec_permission_id_seq")
-	@SequenceGenerator(name = "sec_permission_id_seq", sequenceName = "sec_permission_id_seq")
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "acc_permesso_id_seq")
+	@SequenceGenerator(name = "acc_permesso_id_seq", sequenceName = "acc_permesso_id_seq")
 	@Column(name="id")
 	private Integer id;
 	
-	@Column(name="permstring")
-	private String permissionString;
+	@Column(name="permesso")
+	private String permesso;
 
 
 	@OneToMany
 	@JoinTable(
-			name="sec_role_permission",
-			joinColumns = { @JoinColumn(name="permissionid", referencedColumnName="id")},
-			inverseJoinColumns = { @JoinColumn(name="roleid", referencedColumnName="id")}
+			name="acc_ruolo_prmesso",
+			joinColumns = { @JoinColumn(name="permesso_id", referencedColumnName="id")},
+			inverseJoinColumns = { @JoinColumn(name="ruolo_id", referencedColumnName="id")}
 	)
-	private List<Ruolo> roles;
-	
+	private List<Ruolo> ruoli;
+
+
 	public Integer getId() {
 		return id;
 	}
@@ -44,19 +45,19 @@ public class Permesso {
 		this.id = id;
 	}
 
-	public String getPermissionString() {
-		return permissionString;
+	public String getPermesso() {
+		return permesso;
 	}
 
-	public void setPermissionString(String permissionString) {
-		this.permissionString = permissionString;
+	public void setPermesso(String permesso) {
+		this.permesso = permesso;
 	}
 
-	public List<Ruolo> getRoles() {
-		return roles;
+	public List<Ruolo> getRuoli() {
+		return ruoli;
 	}
 
-	public void setRoles(List<Ruolo> roles) {
-		this.roles = roles;
+	public void setRuoli(List<Ruolo> ruoli) {
+		this.ruoli = ruoli;
 	}
 }

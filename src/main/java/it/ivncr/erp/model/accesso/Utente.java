@@ -1,6 +1,7 @@
 package it.ivncr.erp.model.accesso;
 
 
+import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -15,17 +16,26 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "sec_user")
+@Table(name = "acc_utente")
 public class Utente {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "sec_user_id_seq")
-	@SequenceGenerator(name = "sec_user_id_seq", sequenceName = "sec_user_id_seq")
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "acc_utente_id_seq")
+	@SequenceGenerator(name = "acc_utente_id_seq", sequenceName = "acc_utente_id_seq")
 	@Column(name="id")
 	private Integer id;
 	
 	@Column(name="username")
 	private String username;
+
+	@Column(name="nome")
+	private String nome;
+	
+	@Column(name="cognome")
+	private String cognome;
+	
+	@Column(name="note")
+	private String note;
 	
 	@Column(name="digest")
 	private String digest;
@@ -33,27 +43,32 @@ public class Utente {
 	@Column(name="salt")
 	private String salt;
 	
-	@Column(name="iterations")
-	private Integer iterations;
-
-	@Column(name="firstName")
-	private String firstName;
+	@Column(name="iterazioni")
+	private Integer iterazioni;
 	
-	@Column(name="lastName")
-	private String lastName;
+	@Column(name="ultimo_login_ts")
+	private Date ultimoLogin;
 	
-	@Column(name="description")
-	private String description;
+	@Column(name="creazione_ts")
+	private Date creazione;
+	
+	@Column(name="ultima_attivazione_ts")
+	private Date ultimaAttivazione;
+	
+	@Column(name="ultima_disattivazione_ts")
+	private Date ultimaDisattivazione;
+	
+	@Column(name="attivo")
+	private Boolean attivo;
 
 	@OneToMany
 	@JoinTable(
-			name="sec_user_role",
-			joinColumns = { @JoinColumn(name="userid", referencedColumnName="id")},
-			inverseJoinColumns = { @JoinColumn(name="roleid", referencedColumnName="id")}
+			name="acc_utente_ruolo",
+			joinColumns = { @JoinColumn(name="utente_id", referencedColumnName="id")},
+			inverseJoinColumns = { @JoinColumn(name="ruolo_id", referencedColumnName="id")}
 	)
-	private Set<Ruolo> roles;
-	
-	
+	private Set<Ruolo> ruoli;
+
 	public Integer getId() {
 		return id;
 	}
@@ -68,6 +83,30 @@ public class Utente {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public String getCognome() {
+		return cognome;
+	}
+
+	public void setCognome(String cognome) {
+		this.cognome = cognome;
+	}
+
+	public String getNote() {
+		return note;
+	}
+
+	public void setNote(String note) {
+		this.note = note;
 	}
 
 	public String getDigest() {
@@ -86,43 +125,59 @@ public class Utente {
 		this.salt = salt;
 	}
 
-	public Integer getIterations() {
-		return iterations;
+	public Integer getIterazioni() {
+		return iterazioni;
 	}
 
-	public void setIterations(Integer iterations) {
-		this.iterations = iterations;
+	public void setIterazioni(Integer iterazioni) {
+		this.iterazioni = iterazioni;
 	}
 
-	public String getFirstName() {
-		return firstName;
+	public Date getUltimoLogin() {
+		return ultimoLogin;
 	}
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+	public void setUltimoLogin(Date ultimoLogin) {
+		this.ultimoLogin = ultimoLogin;
 	}
 
-	public String getLastName() {
-		return lastName;
+	public Date getCreazione() {
+		return creazione;
 	}
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
+	public void setCreazione(Date creazione) {
+		this.creazione = creazione;
 	}
 
-	public String getDescription() {
-		return description;
+	public Date getUltimaAttivazione() {
+		return ultimaAttivazione;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setUltimaAttivazione(Date ultimaAttivazione) {
+		this.ultimaAttivazione = ultimaAttivazione;
 	}
 
-	public Set<Ruolo> getRoles() {
-		return roles;
+	public Date getUltimaDisattivazione() {
+		return ultimaDisattivazione;
 	}
 
-	public void setRoles(Set<Ruolo> roles) {
-		this.roles = roles;
+	public void setUltimaDisattivazione(Date ultimaDisattivazione) {
+		this.ultimaDisattivazione = ultimaDisattivazione;
+	}
+
+	public Boolean getAttivo() {
+		return attivo;
+	}
+
+	public void setAttivo(Boolean attivo) {
+		this.attivo = attivo;
+	}
+
+	public Set<Ruolo> getRuoli() {
+		return ruoli;
+	}
+
+	public void setRuoli(Set<Ruolo> ruoli) {
+		this.ruoli = ruoli;
 	}
 }

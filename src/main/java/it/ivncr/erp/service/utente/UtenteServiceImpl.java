@@ -1,11 +1,15 @@
 package it.ivncr.erp.service.utente;
 
+import it.ivncr.erp.model.accesso.Ruolo;
 import it.ivncr.erp.model.accesso.Utente;
 import it.ivncr.erp.service.AbstractService;
+import it.ivncr.erp.service.AlreadyPresentException;
 import it.ivncr.erp.service.NotFoundException;
 import it.ivncr.erp.service.QueryResult;
 import it.ivncr.erp.service.SortDirection;
 
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
@@ -18,21 +22,23 @@ public class UtenteServiceImpl extends AbstractService implements UtenteService 
 	
 	@Override
 	public QueryResult<Utente> list(
-			Integer matricola,
-			String username,
+			Integer id, 
+			String username, 
 			String nome,
-			String cognome,
-			String tipoAccount,
+			String cognome, 
+			String note, 
+			Boolean attivo, 
 			Integer offset,
 			Integer limit) {
 
-		QueryUtenteByMatricolaUsernameNomeCognomeTipoAccount q = new QueryUtenteByMatricolaUsernameNomeCognomeTipoAccount(session);
+		QueryUtenteByIdUsernameNomeCognomeNoteAttivo q = new QueryUtenteByIdUsernameNomeCognomeNoteAttivo(session);
 
-		q.setMatricola(matricola);
+		q.setId(id);
 		q.setUsername(username);
 		q.setNome(nome);
 		q.setCognome(cognome);
-		q.setTipoAccount(tipoAccount);
+		q.setNote(note);
+		q.setAttivo(attivo);
 		q.setOffset(offset);
 		q.setLimit(limit);
 		
@@ -50,22 +56,23 @@ public class UtenteServiceImpl extends AbstractService implements UtenteService 
 			SortDirection sortDirection,
 			Map<String, String> filters) {
 
-		QueryUtenteByMatricolaUsernameNomeCognomeTipoAccount q = new QueryUtenteByMatricolaUsernameNomeCognomeTipoAccount(session);
+		QueryUtenteByIdUsernameNomeCognomeNoteAttivo q = new QueryUtenteByIdUsernameNomeCognomeNoteAttivo(session);
 
-		Integer matricola = null;
-		if(filters.get("matricola") != null)
-			matricola = Integer.decode(filters.get("matricola"));
+		Integer id = null;
+		if(filters.get("id") != null)
+			id = Integer.decode(filters.get("id"));
 		
 		String username = filters.get("username");
 		String nome = filters.get("nome");
 		String cognome = filters.get("cognome");
-		String tipoAccount = filters.get("tipoAccount");
+		String note = filters.get("note");
 		
-		q.setMatricola(matricola);
+		q.setId(id);
 		q.setUsername(username);
 		q.setNome(nome);
 		q.setCognome(cognome);
-		q.setTipoAccount(tipoAccount);
+		q.setNote(note);
+		q.setAttivo(true);
 		
 		q.setOffset(first);
 		q.setLimit(pageSize);
@@ -80,9 +87,9 @@ public class UtenteServiceImpl extends AbstractService implements UtenteService 
 	}
 	
 	@Override
-	public Utente retrieveByMatricola(Integer matricola) {
+	public Utente retrieve(Integer id) {
 
-		Utente utente = (Utente)session.get(Utente.class, matricola);
+		Utente utente = (Utente)session.get(Utente.class, id);
 		logger.debug("Utente found: " + utente);
 		
 		return utente;
@@ -103,11 +110,11 @@ public class UtenteServiceImpl extends AbstractService implements UtenteService 
 	}
 
 	@Override
-	public void deleteByMatricola(Integer matricola) {
+	public void delete(Integer id) {
 		
-		Utente utente = retrieveByMatricola(matricola);
+		Utente utente = retrieve(id);
 		if(utente == null) {
-			String message = String.format("It has not been possible to retrieve specified user: %d", matricola);
+			String message = String.format("It has not been possible to retrieve specified user: %d", id);
 			logger.info(message);
 			throw new NotFoundException(message);
 		}
@@ -118,27 +125,30 @@ public class UtenteServiceImpl extends AbstractService implements UtenteService 
 
 	@Override
 	public Utente create(
-			Integer matricola,
-			String username,
-			String password,
-			String nome, 
+			String username, 
+			String password, 
+			String nome,
 			String cognome, 
-			String tipoAccount) {
+			String note) {
+		
+		Date now = new Date();
 		
 		Utente utente = new Utente();
 		
-		utente.setMatricola(matricola);
 		utente.setUsername(username);
 		utente.setNome(nome);
 		utente.setCognome(cognome);
-		utente.setTipoAccount(tipoAccount);
+		utente.setNote(note);
+		utente.setCreazione(now);
+		utente.setUltimaAttivazione(now);
+		utente.setAttivo(true);
 		
 		String salt = generateSalt();
 		String digest = generateDigest(password, salt, HASH_ITERATIONS);
 
 		utente.setDigest(digest);
 		utente.setSalt(salt);
-		utente.setIterations(HASH_ITERATIONS);
+		utente.setIterazioni(HASH_ITERATIONS);
 		
 		session.save(utente);
 		logger.debug("Utente successfully created.");
@@ -148,15 +158,15 @@ public class UtenteServiceImpl extends AbstractService implements UtenteService 
 
 	@Override
 	public Utente update(
-			Integer matricola, 
+			Integer id, 
 			String username,
 			String nome, 
 			String cognome, 
-			String tipoAccount) {
+			String note) {
 
-		Utente utente = retrieveByMatricola(matricola);
+		Utente utente = retrieve(id);
 		if(utente == null) {
-			String message = String.format("It has not been possible to retrieve specified user: %d", matricola);
+			String message = String.format("It has not been possible to retrieve specified user: %d", id);
 			logger.info(message);
 			throw new NotFoundException(message);
 		}
@@ -164,7 +174,7 @@ public class UtenteServiceImpl extends AbstractService implements UtenteService 
 		utente.setUsername(username);
 		utente.setNome(nome);
 		utente.setCognome(cognome);
-		utente.setTipoAccount(tipoAccount);
+		utente.setNote(note);
 		
 		session.update(utente);
 		logger.debug("Utente successfully updated.");
@@ -173,11 +183,11 @@ public class UtenteServiceImpl extends AbstractService implements UtenteService 
 	}
 	
 	@Override
-	public Utente changePassword(Integer matricola, String password) {
+	public Utente changePassword(Integer id, String password) {
 
-		Utente utente = retrieveByMatricola(matricola);
+		Utente utente = retrieve(id);
 		if(utente == null) {
-			String message = String.format("It has not been possible to retrieve specified user: %d", matricola);
+			String message = String.format("It has not been possible to retrieve specified user: %d", id);
 			logger.info(message);
 			throw new NotFoundException(message);
 		}
@@ -187,7 +197,7 @@ public class UtenteServiceImpl extends AbstractService implements UtenteService 
 
 		utente.setDigest(digest);
 		utente.setSalt(salt);
-		utente.setIterations(HASH_ITERATIONS);
+		utente.setIterazioni(HASH_ITERATIONS);
 		
 		session.update(utente);
 		logger.debug("Password successfully changed.");
@@ -195,6 +205,93 @@ public class UtenteServiceImpl extends AbstractService implements UtenteService 
 		return utente;
 	}
 	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Ruolo> listRuoli(Integer id) {
+
+		Utente utente = retrieve(id);
+		if(utente == null) {
+			String message = String.format("It has not been possible to retrieve specified user: %d", id);
+			logger.info(message);
+			throw new NotFoundException(message);
+		}
+		
+		String hql = 
+				"select distinct ruo from Ruolo ruo " +
+				"inner join ruo.utenti ute " +
+				"where ute.id = :id ";
+		Query query = session.createQuery(hql);
+		query.setParameter("id", id);
+		List<Ruolo> list = query.list();
+		
+		logger.debug("Found ruoli list: " + list);
+		return list;
+	}
+	
+	@Override
+	public Ruolo addRuolo(Integer utenteId, Integer ruoloId) {
+
+		Utente utente = retrieve(utenteId);
+		if(utente == null) {
+			String message = String.format("It has not been possible to retrieve specified user: %d", utenteId);
+			logger.info(message);
+			throw new NotFoundException(message);
+		}
+
+		Ruolo ruolo = (Ruolo) session.get(Ruolo.class, ruoloId);
+		if (ruolo == null) {
+			String message = String.format(
+					"It has not been possible to retrieve specified role: %d",
+					ruoloId);
+			logger.info(message);
+			throw new NotFoundException(message);
+		}
+
+		if (utente.getRuoli().contains(ruolo)) {
+			String message = String
+					.format("Specified role %d already associated to specified user %d.", ruoloId, utenteId);
+			logger.info(message);
+			throw new AlreadyPresentException(message);
+		}
+
+		utente.getRuoli().add(ruolo);
+		session.update(utente);
+
+		return ruolo;
+	}
+	
+	@Override
+	public void deleteRuolo(Integer utenteId, Integer ruoloId) {
+
+		Utente utente = retrieve(utenteId);
+		if (utente == null) {
+			String message = String.format(
+					"It has not been possible to retrieve specified user: %d",
+					utenteId);
+			logger.info(message);
+			throw new NotFoundException(message);
+		}
+
+		Ruolo foundRole = null;
+		for (Ruolo role : utente.getRuoli()) {
+
+			if (role.getId().equals(ruoloId)) {
+				foundRole = role;
+				break;
+			}
+		}
+
+		if (foundRole == null) {
+			String message = String.format(
+					"It has not been possible to find role %d associated to user %d.",
+					ruoloId, utenteId);
+			logger.info(message);
+			throw new NotFoundException(message);
+		}
+
+		utente.getRuoli().remove(foundRole);
+		session.update(utente);
+	}
 	
 	private String generateSalt() {
 		

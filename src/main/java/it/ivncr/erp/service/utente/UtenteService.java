@@ -1,20 +1,23 @@
 package it.ivncr.erp.service.utente;
 
+import it.ivncr.erp.model.accesso.Ruolo;
 import it.ivncr.erp.model.accesso.Utente;
 import it.ivncr.erp.service.QueryResult;
 import it.ivncr.erp.service.Service;
 import it.ivncr.erp.service.SortDirection;
 
+import java.util.List;
 import java.util.Map;
 
 public interface UtenteService extends Service {
 
 	QueryResult<Utente> list(
-			Integer matricola,
+			Integer id,
 			String username,
 			String nome,
 			String cognome,
-			String tipoAccount,
+			String note,
+			Boolean attivo,
 			Integer offset,
 			Integer limit);
 
@@ -25,27 +28,32 @@ public interface UtenteService extends Service {
 			SortDirection sortDirection,
 			Map<String, String> filters);
 
-	Utente retrieveByMatricola(Integer matricola);
+	Utente retrieve(Integer id);
 	Utente retrieveByUsername(String username);
 
-	void deleteByMatricola(Integer matricola);
+	void delete(Integer id);
 
 	Utente create(
-			Integer matricola, 
 			String username, 
 			String password, 
 			String nome, 
-			String cognome, 
-			String tipoAccount);
+			String cognome,
+			String note);
 
 	Utente update(
-			Integer matricola, 
+			Integer id, 
 			String username, 
 			String nome, 
 			String cognome, 
-			String tipoAccount);
+			String note);
 
 	Utente changePassword(
-			Integer matricola, 
-			String password); 
+			Integer id, 
+			String password);
+	
+	List<Ruolo> listRuoli(Integer id);
+	
+	Ruolo addRuolo(Integer utenteId, Integer ruoloId);
+	
+	void deleteRuolo(Integer utenteId, Integer ruoloId);
 }

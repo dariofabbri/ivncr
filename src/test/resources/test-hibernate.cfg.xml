@@ -8,7 +8,7 @@
     <session-factory>
 
         <!-- Database connection settings -->
-        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
         <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/ivncr</property>
         <property name="hibernate.connection.username">ivncr</property>
         <property name="hibernate.connection.password">ivncr</property>
@@ -33,7 +33,9 @@
         <property name="show_sql">true</property>
 
 		<!-- Entities mappings -->
-        <mapping class="it.dariofabbri.controlloaccessirai.model.Utente" />
+        <mapping class="it.ivncr.erp.model.accesso.Permesso" />
+        <mapping class="it.ivncr.erp.model.accesso.Ruolo" />
+        <mapping class="it.ivncr.erp.model.accesso.Utente" />
 
     </session-factory>
 
