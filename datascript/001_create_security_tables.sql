@@ -25,7 +25,8 @@ CREATE TABLE acc_ruolo
 CREATE TABLE acc_permesso
 (
 	id serial NOT NULL PRIMARY KEY,
-	permesso VARCHAR(255) NOT NULL UNIQUE
+	permesso VARCHAR(255) NOT NULL UNIQUE,
+  descrizione VARCHAR(4000)
 );
 
 CREATE TABLE acc_utente_ruolo

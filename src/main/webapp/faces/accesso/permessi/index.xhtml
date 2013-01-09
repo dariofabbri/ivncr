@@ -1,0 +1,80 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/main.xhtml">
+
+	<ui:define name="container">
+
+		<h:form id="form">
+
+			<h1 class="title ui-widget-header ui-corner-all">Gestione permessi</h1>
+			
+			<p:outputPanel id="buttons" style="display: block; margin-top: 2em; margin-bottom: 2em;">
+
+				<p:commandButton 
+					value="Nuovo permesso"
+					onclick="createDialog.show();"
+					icon="ui-icon-star" />
+
+				<p:commandButton 
+					value="Elimina permesso selezionato"
+					disabled="#{gestionePermessi.selected == null}"
+					onclick="deleteDialog.show();"
+					icon="ui-icon-trash" />
+
+				<p:commandButton 
+					value="Modifica permesso selezionato"
+					disabled="#{gestionePermessi.selected == null}"
+					onclick="updateDialog.show();"
+					icon="ui-icon-pencil" />
+
+			</p:outputPanel>
+
+			<p:dataTable var="permesso" 
+				value="#{gestionePermessi.model}"
+				paginator="true" 
+				paginatorPosition="bottom" rows="10"
+				paginatorTemplate="{CurrentPageReport} {RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+				currentPageReportTemplate="Trovati {totalRecords} record - Pagina {currentPage} di {totalPages}"
+				rowsPerPageTemplate="5,10,50" 
+				pageLinks="10"
+				emptyMessage="Nessun record trovato" 
+				selectionMode="single"
+				selection="#{gestionePermessi.selected}" id="permessiTable" lazy="true">
+
+				<p:ajax event="rowSelect" update=":form:buttons,:updateForm:wrapper"/>
+
+				<p:ajax event="rowUnselect" update=":form:buttons,:updateForm:wrapper"/>
+        		
+				<f:facet name="header">
+			    	Lista dei permessi  
+			    </f:facet>
+
+				<p:column headerText="Permesso" sortBy="#{permesso.permesso}"
+					filterBy="#{permesso.permesso}">
+					<h:outputText value="#{permesso.permesso}" />
+				</p:column>
+
+				<p:column headerText="Descrizione" sortBy="#{permesso.descrizione}"
+					filterBy="#{permesso.descrizione}">
+					<h:outputText value="#{permesso.descrizione}" />
+				</p:column>
+
+			</p:dataTable>
+
+		</h:form>
+		
+		<ui:include src="create.xhtml"/>
+		
+		<ui:include src="update.xhtml"/>		
+		
+		<ui:include src="delete.xhtml"/>
+		
+	</ui:define>
+
+</ui:composition>
+
+</html>

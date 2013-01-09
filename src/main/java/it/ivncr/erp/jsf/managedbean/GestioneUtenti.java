@@ -23,9 +23,9 @@ import org.slf4j.LoggerFactory;
 
 @ManagedBean
 @ViewScoped
-public class UserManagement implements Serializable {
+public class GestioneUtenti implements Serializable {
 
-	private static final Logger logger = LoggerFactory.getLogger(UserManagement.class);
+	private static final Logger logger = LoggerFactory.getLogger(GestioneUtenti.class);
 
 	private static final long serialVersionUID = 1L;
 
@@ -39,7 +39,7 @@ public class UserManagement implements Serializable {
 	private String password;
 	private String confirmPassword;
 	
-	public UserManagement() {
+	public GestioneUtenti() {
 		
 		model = new LazyDataModel<Utente>() {
 

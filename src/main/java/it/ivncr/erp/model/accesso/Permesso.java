@@ -26,6 +26,9 @@ public class Permesso {
 	
 	@Column(name="permesso")
 	private String permesso;
+	
+	@Column(name="descrizione")
+	private String descrizione;
 
 
 	@OneToMany
@@ -51,6 +54,14 @@ public class Permesso {
 
 	public void setPermesso(String permesso) {
 		this.permesso = permesso;
+	}
+
+	public String getDescrizione() {
+		return descrizione;
+	}
+
+	public void setDescrizione(String descrizione) {
+		this.descrizione = descrizione;
 	}
 
 	public List<Ruolo> getRuoli() {

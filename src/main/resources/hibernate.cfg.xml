@@ -12,7 +12,7 @@
         <property name="transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</property>
 
         <!-- SQL dialect -->
-        <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
+        <property name="dialect">org.hibernate.dialect.PostgreSQL82Dialect</property>
 
         <!-- Enable Hibernate's automatic session context management -->
         <property name="hibernate.current_session_context_class">thread</property>

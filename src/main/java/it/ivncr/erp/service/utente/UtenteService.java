@@ -2,14 +2,12 @@ package it.ivncr.erp.service.utente;
 
 import it.ivncr.erp.model.accesso.Ruolo;
 import it.ivncr.erp.model.accesso.Utente;
+import it.ivncr.erp.service.EntityService;
 import it.ivncr.erp.service.QueryResult;
-import it.ivncr.erp.service.Service;
-import it.ivncr.erp.service.SortDirection;
 
 import java.util.List;
-import java.util.Map;
 
-public interface UtenteService extends Service {
+public interface UtenteService extends EntityService<Utente> {
 
 	QueryResult<Utente> list(
 			Integer id,
@@ -20,13 +18,6 @@ public interface UtenteService extends Service {
 			Boolean attivo,
 			Integer offset,
 			Integer limit);
-
-	QueryResult<Utente> list(
-			int first,
-			int pageSize,
-			String sortCriteria,
-			SortDirection sortDirection,
-			Map<String, String> filters);
 
 	Utente retrieve(Integer id);
 	Utente retrieveByUsername(String username);

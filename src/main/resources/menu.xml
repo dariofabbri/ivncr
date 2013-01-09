@@ -7,9 +7,9 @@
         <separator/>
         
        	<submenu label="Accesso al sistema">
-       		<menuitem value="Utenti" url="/private/accesso/utenti/index.xhtml" permission="utente:list"/>
-       		<menuitem value="Ruoli" url="/private/accesso/ruoli/index.xhtml" permission="ruolo:list"/>
-       		<menuitem value="Permessi" url="/private/accesso/permessi/index.xhtml" permission="permesso:list"/>
+       		<menuitem value="Utenti" url="/faces/accesso/utenti/index.xhtml" permission="utente:list"/>
+       		<menuitem value="Ruoli" url="/faces/accesso/ruoli/index.xhtml" permission="ruolo:list"/>
+       		<menuitem value="Permessi" url="/faces/accesso/permessi/index.xhtml" permission="permesso:list"/>
        	</submenu>
         	
 	</submenu>

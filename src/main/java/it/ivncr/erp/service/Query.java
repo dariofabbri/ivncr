@@ -19,6 +19,9 @@ public abstract class Query<T> {
 
 		offset = 0;
 		limit = 10;
+		
+		sortCriteria = "id";
+		sortDirection = SortDirection.Ascending;
 	}
 
 	public ScrollableResults scroll() {

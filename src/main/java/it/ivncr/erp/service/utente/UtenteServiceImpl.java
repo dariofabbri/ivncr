@@ -31,7 +31,7 @@ public class UtenteServiceImpl extends AbstractService implements UtenteService 
 			Integer offset,
 			Integer limit) {
 
-		QueryUtenteByIdUsernameNomeCognomeNoteAttivo q = new QueryUtenteByIdUsernameNomeCognomeNoteAttivo(session);
+		QueryByIdUsernameNomeCognomeNoteAttivo q = new QueryByIdUsernameNomeCognomeNoteAttivo(session);
 
 		q.setId(id);
 		q.setUsername(username);
@@ -56,7 +56,7 @@ public class UtenteServiceImpl extends AbstractService implements UtenteService 
 			SortDirection sortDirection,
 			Map<String, String> filters) {
 
-		QueryUtenteByIdUsernameNomeCognomeNoteAttivo q = new QueryUtenteByIdUsernameNomeCognomeNoteAttivo(session);
+		QueryByIdUsernameNomeCognomeNoteAttivo q = new QueryByIdUsernameNomeCognomeNoteAttivo(session);
 
 		Integer id = null;
 		if(filters.get("id") != null)

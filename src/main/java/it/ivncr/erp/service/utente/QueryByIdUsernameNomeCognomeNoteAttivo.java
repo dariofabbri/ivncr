@@ -5,7 +5,7 @@ import it.ivncr.erp.service.Query;
 
 import org.hibernate.Session;
 
-public class QueryUtenteByIdUsernameNomeCognomeNoteAttivo extends Query<Utente> {
+public class QueryByIdUsernameNomeCognomeNoteAttivo extends Query<Utente> {
 
 	private Integer id;
 	private String username;
@@ -14,11 +14,9 @@ public class QueryUtenteByIdUsernameNomeCognomeNoteAttivo extends Query<Utente> 
 	private String note;
 	private Boolean attivo;
 	
-	public QueryUtenteByIdUsernameNomeCognomeNoteAttivo(Session session) {
+	public QueryByIdUsernameNomeCognomeNoteAttivo(Session session) {
 		
 		super(session);
-		
-		sortCriteria = "id";
 	}
 
 	public Integer getId() {
