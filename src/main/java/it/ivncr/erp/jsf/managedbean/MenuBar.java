@@ -57,6 +57,7 @@ public class MenuBar implements Serializable {
 		}
 		
 		menuModel = buildMenuModel(doc);
+		logger.debug("Menu model successfully built.");
 	}
 	
 	private MenuModel buildMenuModel(Document doc) {
