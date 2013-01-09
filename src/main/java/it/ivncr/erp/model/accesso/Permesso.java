@@ -30,7 +30,7 @@ public class Permesso {
 
 	@OneToMany
 	@JoinTable(
-			name="acc_ruolo_prmesso",
+			name="acc_ruolo_permesso",
 			joinColumns = { @JoinColumn(name="permesso_id", referencedColumnName="id")},
 			inverseJoinColumns = { @JoinColumn(name="ruolo_id", referencedColumnName="id")}
 	)

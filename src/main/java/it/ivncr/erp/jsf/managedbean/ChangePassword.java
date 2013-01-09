@@ -23,8 +23,8 @@ public class ChangePassword implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	@ManagedProperty("#{loginInfoBean}")
-    private LoginInfoBean loginInfoBean;
+	@ManagedProperty("#{loginInfo}")
+    private LoginInfo loginInfo;
 	
 	private String password;
 	private String confirmPassword;
@@ -56,7 +56,7 @@ public class ChangePassword implements Serializable {
 		//
 		try {
 			UtenteService us = ServiceFactory.createUtenteService();
-			us.changePassword(loginInfoBean.getUtente().getId(), password); 
+			us.changePassword(loginInfo.getUtente().getId(), password); 
 			logger.debug("Password successfully changed.");
 			
 			// Clean up form state.
@@ -79,12 +79,12 @@ public class ChangePassword implements Serializable {
 		}
 	}
 
-	public LoginInfoBean getLoginInfoBean() {
-		return loginInfoBean;
+	public LoginInfo getLoginInfoBean() {
+		return loginInfo;
 	}
 
-	public void setLoginInfoBean(LoginInfoBean loginInfoBean) {
-		this.loginInfoBean = loginInfoBean;
+	public void setLoginInfoBean(LoginInfo loginInfo) {
+		this.loginInfo = loginInfo;
 	}
 
 	public String getPassword() {

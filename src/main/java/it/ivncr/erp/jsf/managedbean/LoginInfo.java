@@ -18,9 +18,9 @@ import org.slf4j.LoggerFactory;
 
 @ManagedBean
 @SessionScoped
-public class LoginInfoBean implements Serializable {
+public class LoginInfo implements Serializable {
 
-	private static final Logger logger = LoggerFactory.getLogger(LoginInfoBean.class);
+	private static final Logger logger = LoggerFactory.getLogger(LoginInfo.class);
 	
 	private static final long serialVersionUID = 1L;
 
@@ -47,7 +47,13 @@ public class LoginInfoBean implements Serializable {
             logger.debug("Exception caught while logging out current user.", e);
         }
         
-		return "/public/login?faces-redirect=true";
+		return "/faces/login/login?faces-redirect=true";
+	}
+	
+	public boolean isPermitted(String permission) {
+		
+		Subject currentUser = SecurityUtils.getSubject();
+		return currentUser.isPermitted(permission);
 	}
 	
 	public String doLogin() {
@@ -82,7 +88,7 @@ public class LoginInfoBean implements Serializable {
  			}
  		}
 
-        return "/private/index?faces-redirect=true";
+        return "/index?faces-redirect=true";
 	}
 	
 	private void reset() {

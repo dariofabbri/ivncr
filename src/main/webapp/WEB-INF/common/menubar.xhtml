@@ -1,0 +1,23 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:mytags="http://java.sun.com/jsf/composite/mytags"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<h:form>
+	
+		<p:menubar model="#{menuBar.menuModel}">
+	        
+	        <f:facet name="options">  
+	            <p:commandButton 
+	            	value="Logout" 
+	            	icon="ui-icon-extlink" 
+	            	action="#{loginInfo.doLogoff}" />  
+	        </f:facet>  
+
+	    </p:menubar>
+	
+	</h:form>
+	
+</html>

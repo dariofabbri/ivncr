@@ -14,6 +14,10 @@ public class AjaxAwarePassThruAuthenticationFilter
 	protected boolean onAccessDenied(ServletRequest request, ServletResponse response) 
 			throws Exception {
 
+		if(isLoginRequest(request, response)) {
+			return super.onAccessDenied(request, response);
+		}
+		
 		if(request instanceof HttpServletRequest) {
 			HttpServletRequest hsreq = (HttpServletRequest)request;
 			

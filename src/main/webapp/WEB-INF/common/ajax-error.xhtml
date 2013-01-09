@@ -1,0 +1,30 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<h:form>
+		
+		<p:ajaxStatus onerror="globalAjaxErrorDialog.show();" />
+	
+		<p:dialog id="globalAjaxErrorDialog"
+			header="Attenzione"
+			widgetVar="globalAjaxErrorDialog"
+			showEffect="fade" hideEffect="fade"
+			modal="true">
+	
+			<h:panelGrid columns="1" cellpadding="5">
+				  
+				<h:outputText value="La sessione è scaduta oppure si è verificato un problema nella comunicazione con il server. Premere OK per tornare alla pagina di login." />
+				  
+				<p:commandButton id="confirm" value="OK"
+					onclick="window.location.reload()" />
+
+			</h:panelGrid>
+				
+		</p:dialog>
+		
+	</h:form>
+	
+</html>

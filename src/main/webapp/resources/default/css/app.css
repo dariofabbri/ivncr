@@ -1,0 +1,20 @@
+.ui-widget,
+.ui-widget .ui-widget {
+    font-size: 90% !important;
+}
+
+.ui-datatable th {
+	vertical-align: top;
+}
+
+.ui-menu .ui-menuitem-text {
+	font-size: 1.2em !important;
+}
+
+.title {
+	height: 1em;
+	padding: .2em 0 .4em .5em;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 1.3em;
+	font-weight: normal;
+}
