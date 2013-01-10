@@ -28,7 +28,7 @@
 				<p:commandButton 
 					value="Dettaglio ruolo selezionato"
 					disabled="#{gestioneRuoli.selected == null}"
-					onclick="updateDialog.show();"
+					action="#{gestioneRuoli.startUpdate}"
 					icon="ui-icon-pencil" />
 
 			</p:outputPanel>

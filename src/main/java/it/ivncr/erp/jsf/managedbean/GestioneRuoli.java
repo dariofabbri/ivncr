@@ -12,8 +12,9 @@ import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 
 import org.primefaces.context.RequestContext;
 import org.primefaces.model.LazyDataModel;
@@ -22,7 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @ManagedBean
-@ViewScoped
+@SessionScoped
 public class GestioneRuoli implements Serializable {
 
 	private static final Logger logger = LoggerFactory.getLogger(GestioneRuoli.class);
@@ -31,9 +32,7 @@ public class GestioneRuoli implements Serializable {
 
 	private LazyDataModel<Ruolo> model;
 	private Ruolo selected;
-	
-	private String nome;
-	private String descrizione;
+	private Ruolo edited;
 	
 	public GestioneRuoli() {
 		
@@ -79,35 +78,58 @@ public class GestioneRuoli implements Serializable {
 		};
 	}
 	
-	private void clean() {
-		
-		nome = null;
-		descrizione = null;
-	}
-	
 	public String startCreate() {
 		
-		return "create?faces-redirect=true";
+		edited = new Ruolo();
+		
+		logger.debug("Moving to detail page for new record creation.");
+		return "detail?faces-redirect=true";
 	}
 	
-	public void doCreate() {
+	public String startUpdate() {
 		
-		// Create the new entity.
+		if(selected == null) {
+			logger.error("Invalid status. No row selected on start update request.");
+			throw new RuntimeException("Invalid status. No row selected on start update request.");
+		}
+		edited = selected;
+		
+		logger.debug("Moving to detail page for record update.");
+		return "detail?faces-redirect=true";
+	}
+	
+	public void doSave(ActionEvent event) {
+		
+		logger.debug("Entering doSave() method.");
+		
+		// Save the entity.
 		//
 		try {
 			RuoloService rs = ServiceFactory.createRuoloService();
-			rs.create(
-					nome, 
-					descrizione);
-			logger.debug("Entity successfully created.");
 			
-			// Clean up form state.
+			// If no id is present, creation is required.
 			//
-			clean();
+			if(edited.getId() == null) {
+				edited = rs.create(
+						edited.getNome(), 
+						edited.getDescrizione());
+				logger.debug("Entity successfully created.");
+			} else {
+				edited = rs.update(
+						edited.getId(),
+						edited.getNome(), 
+						edited.getDescrizione());
+				logger.debug("Entity successfully updated.");
+			}
 			
-			// Signal to modal dialog that everything went fine.
+			
+			// Everything went fine.
 			//
-			RequestContext.getCurrentInstance().addCallbackParam("ok", true);
+			FacesMessage message = new FacesMessage(
+					FacesMessage.SEVERITY_INFO, 
+					"Successo", 
+					"Il salvataggio dei dati si è concluso con successo.");
+			FacesContext.getCurrentInstance().addMessage(null, message);
 			
 		} catch(Exception e) {
 			
@@ -116,35 +138,7 @@ public class GestioneRuoli implements Serializable {
 			FacesMessage message = new FacesMessage(
 					FacesMessage.SEVERITY_ERROR, 
 					"Errore di sistema", 
-					"Si è verificato un errore in fase di creazione del record.");
-			FacesContext.getCurrentInstance().addMessage(null, message);
-		}
-	}
-	
-	public void doUpdate() {
-
-		// Update the entity.
-		//
-		try {
-			RuoloService rs = ServiceFactory.createRuoloService();
-			rs.update(
-					selected.getId(),
-					selected.getNome(),
-					selected.getDescrizione());
-			logger.debug("Entity successfully updated.");
-
-			// Signal to modal dialog that everything went fine.
-			//
-			RequestContext.getCurrentInstance().addCallbackParam("ok", true);
-			
-		} catch(Exception e) {
-			
-			logger.warn("Exception caught while updating entity.", e);
-
-			FacesMessage message = new FacesMessage(
-					FacesMessage.SEVERITY_ERROR, 
-					"Errore di sistema", 
-					"Si è verificato un errore in fase di aggiornamento del record.");
+					"Si è verificato un errore in fase di salvataggio del record.");
 			FacesContext.getCurrentInstance().addMessage(null, message);
 		}
 	}
@@ -173,6 +167,10 @@ public class GestioneRuoli implements Serializable {
 			rs.delete(selected.getId());
 			logger.debug("Entity successfully deleted.");
 
+			// Clean up selection.
+			//
+			selected = null;
+			
 			// Signal to modal dialog that everything went fine.
 			//
 			RequestContext.getCurrentInstance().addCallbackParam("ok", true);
@@ -205,19 +203,11 @@ public class GestioneRuoli implements Serializable {
 		this.selected = selected;
 	}
 
-	public String getNome() {
-		return nome;
+	public Ruolo getEdited() {
+		return edited;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-	public String getDescrizione() {
-		return descrizione;
-	}
-
-	public void setDescrizione(String descrizione) {
-		this.descrizione = descrizione;
+	public void setEdited(Ruolo edited) {
+		this.edited = edited;
 	}
 }

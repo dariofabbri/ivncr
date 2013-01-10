@@ -1,0 +1,73 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<ui:composition template="/WEB-INF/templates/main.xhtml">
+	
+		<ui:define name="container">
+	
+			<p:panel id="detailPanel"
+					header="Ruolo" 
+					style="margin-left: 10%; margin-right: 10%;">
+						
+				<p:tabView effect="fade" effectDuration="normal" id="tabView" dynamic="true">
+				
+					<p:tab id="detailTab" title="Dettaglio">
+					
+						<h:form>
+							
+							<h:outputText value="Il pannello permette di inserire e modificare i dati relativi al ruolo."/>
+
+							<h:panelGrid columns="4" styleClass="form-panel" id="wrapper">
+
+								<f:facet name="header">
+									<p:messages globalOnly="true" showDetail="true"/>
+            					</f:facet>
+																				
+								<p:outputLabel for="nome" value="Nome:" />
+								<p:inputText value="#{gestioneRuoli.edited.nome}" id="nome"
+									required="true" requiredMessage="Il campo è obbligatorio"
+									style="width: 250px;"/>
+								<p:watermark for="nome" value="Identificativo del ruolo" />  
+								<p:message for="nome" showSummary="true" showDetail="false"/>
+												
+								<p:outputLabel for="descrizione" value="Descrizione:" />
+								<p:inputText value="#{gestioneRuoli.edited.descrizione}" id="descrizione"
+									style="width: 250px;"/>
+								<p:watermark for="descrizione" value="Descrizione del ruolo" />  
+								<p:message for="descrizione" showSummary="true" showDetail="false"/>
+
+								<f:facet name="footer">
+									<p:commandButton value="Salva"
+										actionListener="#{gestioneRuoli.doSave}"
+										update=":tabView"/>
+				
+									<p:button value="Chiudi" href="index.xhtml"/>
+								</f:facet>
+												
+							</h:panelGrid>
+							
+						</h:form>
+						
+					</p:tab>
+				
+					<p:tab id="permessiTab" title="Permessi" disabled="#{empty gestioneRuoli.edited.id}">
+						
+					</p:tab>
+				
+				</p:tabView>
+
+			</p:panel>
+						    
+		    <p:draggable 
+		    	for="detailPanel" 
+		    	handle=".ui-panel-titlebar"
+		    	opacity="0.3"/>
+			
+		</ui:define>
+	
+	</ui:composition>
+
+</html>
