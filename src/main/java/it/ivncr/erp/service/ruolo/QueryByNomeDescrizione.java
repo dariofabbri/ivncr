@@ -42,7 +42,7 @@ public class QueryByNomeDescrizione extends Query<Ruolo> {
 
 		String hql = 
 				"select count(*) " +
-				"from Role ruo " +
+				"from Ruolo ruo " +
 				"where 1 = 1 ";
 		
 		if(nome != null)
@@ -58,7 +58,7 @@ public class QueryByNomeDescrizione extends Query<Ruolo> {
 	protected String getQueryHql() {
 
 		String hql = 
-				"from Role ruo " +
+				"from Ruolo ruo " +
 				"where 1 = 1 ";
 				
 		if(nome != null)

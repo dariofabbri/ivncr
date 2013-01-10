@@ -1,0 +1,76 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/main.xhtml">
+
+	<ui:define name="container">
+
+		<h:form id="form">
+
+			<h1 class="title ui-widget-header ui-corner-all">Gestione ruoli</h1>
+			
+			<p:outputPanel id="buttons" style="display: block; margin-top: 2em; margin-bottom: 2em;">
+
+				<p:commandButton 
+					value="Nuovo ruolo"
+					action="#{gestioneRuoli.startCreate}"
+					icon="ui-icon-star" />
+
+				<p:commandButton 
+					value="Elimina ruolo selezionato"
+					disabled="#{gestioneRuoli.selected == null}"
+					onclick="deleteDialog.show();"
+					icon="ui-icon-trash" />
+
+				<p:commandButton 
+					value="Dettaglio ruolo selezionato"
+					disabled="#{gestioneRuoli.selected == null}"
+					onclick="updateDialog.show();"
+					icon="ui-icon-pencil" />
+
+			</p:outputPanel>
+
+			<p:dataTable var="ruolo" 
+				value="#{gestioneRuoli.model}"
+				paginator="true" 
+				paginatorPosition="bottom" rows="10"
+				paginatorTemplate="{CurrentPageReport} {RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+				currentPageReportTemplate="Trovati {totalRecords} record - Pagina {currentPage} di {totalPages}"
+				rowsPerPageTemplate="5,10,50" 
+				pageLinks="10"
+				emptyMessage="Nessun record trovato" 
+				selectionMode="single"
+				selection="#{gestioneRuoli.selected}" id="ruoliTable" lazy="true">
+
+				<p:ajax event="rowSelect" update=":form:buttons"/>
+
+				<p:ajax event="rowUnselect" update=":form:buttons"/>
+        		
+				<f:facet name="header">
+			    	Lista dei ruoli
+			    </f:facet>
+
+				<p:column headerText="Nome" sortBy="#{ruolo.nome}"
+					filterBy="#{ruolo.nome}">
+					<h:outputText value="#{ruolo.nome}" />
+				</p:column>
+
+				<p:column headerText="Descrizione" sortBy="#{ruolo.descrizione}"
+					filterBy="#{ruolo.descrizione}">
+					<h:outputText value="#{ruolo.descrizione}" />
+				</p:column>
+
+			</p:dataTable>
+
+		</h:form>
+		
+		<ui:include src="delete.xhtml"/>
+		
+	</ui:define>
+
+</ui:composition>
+
+</html>
