@@ -1,0 +1,44 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+					
+	<h:form>
+		
+		<p:messages globalOnly="true" showDetail="true" closable="true"/>
+
+		<p:focus/>
+		
+		<h:panelGrid columns="4" styleClass="form-panel" id="wrapper">
+
+			<f:facet name="header">
+				<h:outputText value="Il pannello permette di inserire e modificare i dati relativi al ruolo."/>
+       					</f:facet>
+															
+			<p:outputLabel for="nome" value="Nome:" />
+			<p:inputText value="#{dettaglioRuolo.edited.nome}" id="nome"
+				required="true" requiredMessage="Il campo è obbligatorio"
+				style="width: 250px;"/>
+			<p:watermark for="nome" value="Identificativo del ruolo" />  
+			<p:message for="nome" showSummary="true" showDetail="false"/>
+							
+			<p:outputLabel for="descrizione" value="Descrizione:" />
+			<p:inputText value="#{dettaglioRuolo.edited.descrizione}" id="descrizione"
+				style="width: 250px;"/>
+			<p:watermark for="descrizione" value="Descrizione del ruolo" />  
+			<p:message for="descrizione" showSummary="true" showDetail="false"/>
+
+			<f:facet name="footer">
+				<p:commandButton value="Salva"
+					actionListener="#{dettaglioRuolo.doSave}"
+					update=":tabView"/>
+
+				<p:button value="Chiudi" href="index.xhtml"/>
+			</f:facet>
+							
+		</h:panelGrid>
+		
+	</h:form>
+
+</html>

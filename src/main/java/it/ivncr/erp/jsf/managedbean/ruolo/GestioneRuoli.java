@@ -1,6 +1,5 @@
-package it.ivncr.erp.jsf.managedbean;
+package it.ivncr.erp.jsf.managedbean.ruolo;
 
-import it.ivncr.erp.model.accesso.Permesso;
 import it.ivncr.erp.model.accesso.Ruolo;
 import it.ivncr.erp.service.QueryResult;
 import it.ivncr.erp.service.ServiceFactory;
@@ -8,7 +7,6 @@ import it.ivncr.erp.service.SortDirection;
 import it.ivncr.erp.service.ruolo.RuoloService;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -16,10 +14,8 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 
 import org.primefaces.context.RequestContext;
-import org.primefaces.event.TabChangeEvent;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 import org.slf4j.Logger;
@@ -36,9 +32,6 @@ public class GestioneRuoli implements Serializable {
 	private LazyDataModel<Ruolo> model;
 	private Ruolo selected;
 	private Ruolo edited;
-	private List<Permesso> permessi;
-	private List<Permesso> filteredPermessi;
-	private Permesso[] selectedPermessi;
 	
 	public GestioneRuoli() {
 		
@@ -87,7 +80,6 @@ public class GestioneRuoli implements Serializable {
 	public String startCreate() {
 		
 		edited = new Ruolo();
-		permessi = new ArrayList<Permesso>();
 		
 		logger.debug("Moving to detail page for new record creation.");
 		return "detail?faces-redirect=true";
@@ -101,70 +93,9 @@ public class GestioneRuoli implements Serializable {
 		}
 		
 		edited = selected;
-		permessi = new ArrayList<Permesso>();
 		
 		logger.debug("Moving to detail page for record update.");
 		return "detail?faces-redirect=true";
-	}
-	
-	public void onTabChange(TabChangeEvent event) {
-
-		logger.debug("Selected tab changed.");
-		
-		// If permessi tab has been selected it is necessary to initialize
-		// the permessi list in the bean.
-		//
-		if(event.getTab().getId().equals("permessiTab")) {
-		
-			logger.debug("Loading permessi list.");
-			RuoloService rs = ServiceFactory.createRuoloService();
-			permessi = rs.retrievePermessi(edited.getId());
-		}
-	}
-
-	public void doSave(ActionEvent event) {
-		
-		logger.debug("Entering doSave() method.");
-		
-		// Save the entity.
-		//
-		try {
-			RuoloService rs = ServiceFactory.createRuoloService();
-			
-			// If no id is present, creation is required.
-			//
-			if(edited.getId() == null) {
-				edited = rs.create(
-						edited.getNome(), 
-						edited.getDescrizione());
-				logger.debug("Entity successfully created.");
-			} else {
-				edited = rs.update(
-						edited.getId(),
-						edited.getNome(), 
-						edited.getDescrizione());
-				logger.debug("Entity successfully updated.");
-			}
-			
-			
-			// Everything went fine.
-			//
-			FacesMessage message = new FacesMessage(
-					FacesMessage.SEVERITY_INFO, 
-					"Successo", 
-					"Il salvataggio dei dati si è concluso con successo.");
-			FacesContext.getCurrentInstance().addMessage(null, message);
-			
-		} catch(Exception e) {
-			
-			logger.warn("Exception caught while creating entity.", e);
-			
-			FacesMessage message = new FacesMessage(
-					FacesMessage.SEVERITY_ERROR, 
-					"Errore di sistema", 
-					"Si è verificato un errore in fase di salvataggio del record.");
-			FacesContext.getCurrentInstance().addMessage(null, message);
-		}
 	}
 	
 	public void doDelete() {
@@ -233,29 +164,5 @@ public class GestioneRuoli implements Serializable {
 
 	public void setEdited(Ruolo edited) {
 		this.edited = edited;
-	}
-
-	public List<Permesso> getPermessi() {
-		return permessi;
-	}
-
-	public void setPermessi(List<Permesso> permessi) {
-		this.permessi = permessi;
-	}
-
-	public List<Permesso> getFilteredPermessi() {
-		return filteredPermessi;
-	}
-
-	public void setFilteredPermessi(List<Permesso> filteredPermessi) {
-		this.filteredPermessi = filteredPermessi;
-	}
-
-	public Permesso[] getSelectedPermessi() {
-		return selectedPermessi;
-	}
-
-	public void setSelectedPermessi(Permesso[] selectedPermessi) {
-		this.selectedPermessi = selectedPermessi;
 	}
 }

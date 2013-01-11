@@ -1,5 +1,6 @@
-package it.ivncr.erp.jsf.managedbean;
+package it.ivncr.erp.jsf.managedbean.utente;
 
+import it.ivncr.erp.jsf.managedbean.session.LoginInfo;
 import it.ivncr.erp.service.ServiceFactory;
 import it.ivncr.erp.service.utente.UtenteService;
 

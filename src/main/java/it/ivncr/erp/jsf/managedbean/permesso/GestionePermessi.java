@@ -1,4 +1,4 @@
-package it.ivncr.erp.jsf.managedbean;
+package it.ivncr.erp.jsf.managedbean.permesso;
 
 import it.ivncr.erp.model.accesso.Permesso;
 import it.ivncr.erp.service.QueryResult;

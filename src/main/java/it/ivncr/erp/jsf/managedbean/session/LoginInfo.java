@@ -1,4 +1,4 @@
-package it.ivncr.erp.jsf.managedbean;
+package it.ivncr.erp.jsf.managedbean.session;
 
 import it.ivncr.erp.model.accesso.Utente;
 

@@ -1,4 +1,4 @@
-package it.ivncr.erp.jsf.managedbean;
+package it.ivncr.erp.jsf.managedbean.session;
 
 import java.io.InputStream;
 import java.io.Serializable;

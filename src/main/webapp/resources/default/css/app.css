@@ -7,6 +7,15 @@
 	vertical-align: top;
 }
 
+.ui-datatable th.ui-selection-column {
+	vertical-align: bottom;
+}
+
+.ui-datatable td.ui-selection-column {
+	vertical-align: middle;
+	text-align: center;
+}
+
 .ui-menu .ui-menuitem-text {
 	font-size: 1.2em !important;
 }
