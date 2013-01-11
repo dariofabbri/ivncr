@@ -12,14 +12,20 @@
 			header="Attenzione"
 			widgetVar="globalAjaxErrorDialog"
 			showEffect="fade" hideEffect="fade"
-			modal="true">
-	
+			modal="true"
+			closable="false"
+			width="450px">
+			
 			<h:panelGrid columns="1" cellpadding="5">
-				  
+	
 				<h:outputText value="La sessione è scaduta oppure si è verificato un problema nella comunicazione con il server. Premere OK per tornare alla pagina di login." />
-				  
-				<p:commandButton id="confirm" value="OK"
-					onclick="window.location.reload()" />
+
+				<f:facet name="footer">					  
+					<p:commandButton 
+						id="confirm" 
+						value="OK"
+						onclick="window.location.reload()" />
+				</f:facet>
 
 			</h:panelGrid>
 				

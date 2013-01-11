@@ -26,7 +26,7 @@
 					icon="ui-icon-trash" />
 
 				<p:commandButton 
-					value="Dettaglio ruolo selezionato"
+					value="Modifica ruolo selezionato"
 					disabled="#{gestioneRuoli.selected == null}"
 					action="#{gestioneRuoli.startUpdate}"
 					icon="ui-icon-pencil" />
@@ -43,7 +43,8 @@
 				pageLinks="10"
 				emptyMessage="Nessun record trovato" 
 				selectionMode="single"
-				selection="#{gestioneRuoli.selected}" id="ruoliTable" lazy="true">
+				selection="#{gestioneRuoli.selected}" 
+				id="ruoliTable" lazy="true">
 
 				<p:ajax event="rowSelect" update=":form:buttons"/>
 

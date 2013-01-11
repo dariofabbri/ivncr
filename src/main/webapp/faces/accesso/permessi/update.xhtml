@@ -13,9 +13,9 @@
 
 		<h:form id="updateForm">
 		
-			<p:messages globalOnly="true" autoUpdate="true" showDetail="true"/>
+			<p:messages globalOnly="true" showDetail="true" closable="true"/>
 		
-			<h:panelGrid columns="4" cellpadding="5" id="wrapper">
+			<h:panelGrid columns="4" cellpadding="5">
 
 				<p:outputLabel for="permesso" value="Permesso:" />
 				<p:inputText value="#{gestionePermessi.selected.permesso}" id="permesso"
@@ -34,6 +34,7 @@
 				<f:facet name="footer">
 					<p:commandButton value="Aggiorna"
 						actionListener="#{gestionePermessi.doUpdate}"
+						update="@form"
 						oncomplete="if(args.ok) {window.location.reload()}"/>
 
 					<p:commandButton value="Annulla"

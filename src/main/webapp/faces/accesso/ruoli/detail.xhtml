@@ -14,16 +14,20 @@
 						
 				<p:tabView effect="fade" effectDuration="normal" id="tabView" dynamic="true">
 				
+					<p:ajax event="tabChange" listener="#{gestioneRuoli.onTabChange}" />
+					
 					<p:tab id="detailTab" title="Dettaglio">
 					
 						<h:form>
 							
-							<h:outputText value="Il pannello permette di inserire e modificare i dati relativi al ruolo."/>
+							<p:messages globalOnly="true" showDetail="true" closable="true"/>
 
+							<p:focus/>
+							
 							<h:panelGrid columns="4" styleClass="form-panel" id="wrapper">
 
 								<f:facet name="header">
-									<p:messages globalOnly="true" showDetail="true"/>
+									<h:outputText value="Il pannello permette di inserire e modificare i dati relativi al ruolo."/>
             					</f:facet>
 																				
 								<p:outputLabel for="nome" value="Nome:" />
@@ -54,7 +58,47 @@
 					</p:tab>
 				
 					<p:tab id="permessiTab" title="Permessi" disabled="#{empty gestioneRuoli.edited.id}">
-						
+					
+						<h:form>
+							<p:dataTable
+								id="permessiTable" 
+								var="permesso" 
+								value="#{gestioneRuoli.permessi}"
+								widgetVar="permessiTable"
+								emptyMessage="Nessun record trovato"
+								filteredValue="#{gestioneRuoli.filteredPermessi}"
+								rowKey="#{permesso.id}"
+								selection="#{gestioneRuoli.selectedPermessi}"
+								paginator="true" 
+								paginatorPosition="bottom" rows="10"
+								paginatorTemplate="{CurrentPageReport} {RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+								currentPageReportTemplate="Trovati {totalRecords} record - Pagina {currentPage} di {totalPages}"
+								rowsPerPageTemplate="5,10,50" 
+								pageLinks="10">
+											        		
+								<f:facet name="header">
+							    	Lista dei permessi
+							    </f:facet>
+				
+								<p:column selectionMode="multiple">
+								</p:column>
+								
+								<p:column headerText="Permesso" 
+									filterBy="#{permesso.permesso}"
+									filterMatchMode="contains"
+									sortBy="#{permesso.permesso}">
+									<h:outputText value="#{permesso.permesso}" />
+								</p:column>
+				
+								<p:column headerText="Descrizione" 
+									filterBy="#{permesso.descrizione}"
+									filterMatchMode="contains"
+									sortBy="#{permesso.descrizione}">
+									<h:outputText value="#{permesso.descrizione}" />
+								</p:column>
+								
+							</p:dataTable>
+						</h:form>				
 					</p:tab>
 				
 				</p:tabView>

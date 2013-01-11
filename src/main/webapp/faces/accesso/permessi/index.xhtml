@@ -45,9 +45,9 @@
 				selectionMode="single"
 				selection="#{gestionePermessi.selected}" id="permessiTable" lazy="true">
 
-				<p:ajax event="rowSelect" update=":form:buttons,:updateForm:wrapper"/>
+				<p:ajax event="rowSelect" update=":form:buttons,:updateForm"/>
 
-				<p:ajax event="rowUnselect" update=":form:buttons,:updateForm:wrapper"/>
+				<p:ajax event="rowUnselect" update=":form:buttons,:updateForm"/>
         		
 				<f:facet name="header">
 			    	Lista dei permessi  

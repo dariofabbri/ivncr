@@ -26,7 +26,6 @@
 						globalOnly="true" 
 						showSummary="true"
 						showDetail="true" 
-						autoUpdate="true" 
 						closable="true"/>
 					
   					<h:panelGrid columns="2">
@@ -40,7 +39,8 @@
   					
   					<p:commandButton 
   						value="Accedi" 
-  						action="#{loginInfo.doLogin}" 
+  						action="#{loginInfo.doLogin}"
+  						update="@form"
   						style="margin-left:150px; margin-top:20px;"/>  
             
 			    </p:panel> 
