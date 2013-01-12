@@ -15,6 +15,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.TabChangeEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,11 +44,16 @@ public class DettaglioRuolo implements Serializable {
 		// the permessi list in the bean.
 		//
 		if(event.getTab().getId().equals("permessiTab")) {
-		
-			logger.debug("Loading permessi list.");
-			RuoloService rs = ServiceFactory.createRuoloService();
-			permessi = rs.retrievePermessi(edited.getId());
+
+			loadList();
 		}
+	}
+	
+	private void loadList() {
+		
+		logger.debug("Loading permessi list.");
+		RuoloService rs = ServiceFactory.createRuoloService();
+		permessi = rs.retrievePermessi(edited.getId());		
 	}
 
 	public void doSave(ActionEvent event) {
@@ -93,6 +99,51 @@ public class DettaglioRuolo implements Serializable {
 					"Si è verificato un errore in fase di salvataggio del record.");
 			FacesContext.getCurrentInstance().addMessage(null, message);
 		}
+	}
+	
+	public void doRemovePermessi() {
+		
+		logger.debug("Entering doSave() method.");
+		
+		if(selected == null || selected.length == 0) {
+			logger.error("Selection should not be empty at this point.");
+			throw new RuntimeException("Selection should not be empty at this point.");
+		}
+		
+		// Get selected ids.
+		//
+		Integer[] ids = new Integer[selected.length];
+		for(int i = 0; i < selected.length; ++i) {
+			ids[i] = selected[i].getId();
+		}
+		
+		// Save the entity.
+		//
+		try {
+			RuoloService rs = ServiceFactory.createRuoloService();
+			rs.deletePermessi(
+				edited.getId(),
+				ids);
+			
+			// Reload updated list.
+			//
+			loadList();
+			
+			// Signal to modal dialog that everything went fine.
+			//
+			RequestContext.getCurrentInstance().addCallbackParam("ok", true);
+
+		} catch(Exception e) {
+			
+			logger.warn("Exception caught while deleting entity.", e);
+			
+			FacesMessage message = new FacesMessage(
+					FacesMessage.SEVERITY_ERROR, 
+					"Errore di sistema", 
+					"Si è verificato un errore in fase di rimozione dei record.");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+		}
+
 	}
 
 	public Ruolo getEdited() {

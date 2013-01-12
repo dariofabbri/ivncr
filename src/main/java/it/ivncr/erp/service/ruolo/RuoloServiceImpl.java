@@ -155,6 +155,32 @@ public class RuoloServiceImpl extends AbstractService implements RuoloService {
 		
 		return list;
 	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Permesso> retrievePermessiNotAssociated(Integer id) {
+
+		Ruolo ruolo = (Ruolo)session.get(Ruolo.class, id);
+		if(ruolo == null) {
+			String message = String.format("It has not been possible to retrieve specified ruolo: %d", id);
+			logger.info(message);
+			throw new NotFoundException(message);
+		}
+
+		String hql = 
+				"from Permesso per " +
+				"where per.id not in " +
+				"(select per2.id from Ruolo ruo " +
+				"inner join ruo.permessi per2 " +
+				"where ruo.id = :ruoloId) " +
+				"order by per.permesso ";
+		Query query = session.createQuery(hql);
+		query.setParameter("id", id);
+		List<Permesso> list = (List<Permesso>)query.list();
+		logger.debug("Permessi found: " + list);
+		
+		return list;
+	}
 	
 	@Override
 	public Permesso addPermesso(Integer ruoloId, Integer permessoId) {
@@ -186,6 +212,37 @@ public class RuoloServiceImpl extends AbstractService implements RuoloService {
 	}
 	
 	@Override
+	public void addPermessi(Integer ruoloId, Integer[] permessiId) {
+
+		Ruolo ruolo = retrieve(ruoloId);
+		if(ruolo == null) {
+			String message = String.format("It has not been possible to retrieve specified role: %d", ruoloId);
+			logger.info(message);
+			throw new NotFoundException(message);
+		}
+		
+		for(Integer permessoId : permessiId) {
+			
+			Permesso permesso = (Permesso)session.get(Permesso.class, permessoId);
+			if(permesso == null) {
+				String message = String.format("It has not been possible to retrieve specified permesso: %d", permessoId);
+				logger.info(message);
+				throw new NotFoundException(message);
+			}
+			
+			if(ruolo.getPermessi().contains(permesso)) {
+				String message = String.format("Specified permesso %d already associated to specified ruolo %d.", permessoId, ruoloId);
+				logger.info(message);
+				throw new AlreadyPresentException(message);
+			}
+
+			ruolo.getPermessi().add(permesso);
+		}
+		
+		session.update(ruolo);
+	}
+	
+	@Override
 	public void deletePermesso(Integer ruoloId, Integer permessoId) {
 
 		Ruolo ruolo = retrieve(ruoloId);
@@ -211,6 +268,60 @@ public class RuoloServiceImpl extends AbstractService implements RuoloService {
 		}
 		
 		ruolo.getPermessi().remove(found);
+		session.update(ruolo);
+		session.flush();
+	}
+	
+	/*
+	@Override
+	public void deletePermessi(Integer ruoloId, Integer[] permessiId) {
+
+		Ruolo ruolo = retrieve(ruoloId);
+		if(ruolo == null) {
+			String message = String.format("It has not been possible to retrieve specified ruolo: %d", ruoloId);
+			logger.info(message);
+			throw new NotFoundException(message);
+		}
+		
+		String hql = 
+				"delete from Ruolo.permessi per " +
+				"where per.id in (:permessiId) ";
+		Query query = session.createQuery(hql);
+		query.setParameterList("permessiId", permessiId);
+		query.executeUpdate();
+	}
+	*/
+
+	@Override
+	public void deletePermessi(Integer ruoloId, Integer[] permessiId) {
+
+		Ruolo ruolo = retrieve(ruoloId);
+		if(ruolo == null) {
+			String message = String.format("It has not been possible to retrieve specified ruolo: %d", ruoloId);
+			logger.info(message);
+			throw new NotFoundException(message);
+		}
+		
+		for(Integer permessoId : permessiId) {
+			
+			Permesso found = null;
+			for(Permesso permesso : ruolo.getPermessi()) {
+				
+				if(permesso.getId().equals(permessoId)) {
+					found = permesso;
+					break;
+				}
+			}
+			
+			if(found == null) {
+				String message = String.format("It has not been possible to find permesso %d associated to ruolo %d.", permessoId, ruoloId);
+				logger.info(message);
+				throw new NotFoundException(message);
+			}
+			
+			ruolo.getPermessi().remove(found);	
+		}
+		
 		session.update(ruolo);
 		session.flush();
 	}

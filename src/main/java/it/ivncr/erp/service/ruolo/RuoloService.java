@@ -26,7 +26,13 @@ public interface RuoloService extends EntityService<Ruolo> {
 
 	List<Permesso> retrievePermessi(Integer id);
 	
+	List<Permesso> retrievePermessiNotAssociated(Integer id);
+	
 	Permesso addPermesso(Integer ruoloId, Integer permessoId);
 	
+	void addPermessi(Integer ruoloId, Integer[] permessiId);
+	
 	void deletePermesso(Integer ruoloId, Integer permessoId);
+
+	void deletePermessi(Integer ruoloId, Integer[] permessiId);
 }

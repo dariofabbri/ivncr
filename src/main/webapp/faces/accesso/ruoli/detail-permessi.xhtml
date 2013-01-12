@@ -10,12 +10,12 @@
 
 			<p:commandButton 
 				value="Aggiungi permessi"
-				onclick="addDialog.show();"
+				onclick="addPermessiDialog.show();"
 				icon="ui-icon-star" />
 
 			<p:commandButton 
 				value="Rimuovi permessi selezionati"
-				onclick="removeDialog.show();"
+				onclick="removePermessiDialog.show();"
 				icon="ui-icon-trash" />
 
 		</p:outputPanel>
@@ -61,5 +61,7 @@
 		</p:dataTable>
 
 	</h:form>				
+		
+	<ui:include src="detail-permessi-remove.xhtml"/>
 
 </html>

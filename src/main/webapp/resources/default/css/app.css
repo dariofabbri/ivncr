@@ -9,6 +9,7 @@
 
 .ui-datatable th.ui-selection-column {
 	vertical-align: bottom;
+	text-align: center;
 }
 
 .ui-datatable td.ui-selection-column {
