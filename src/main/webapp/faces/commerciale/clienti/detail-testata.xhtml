@@ -1,0 +1,50 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+			
+	<h:form>
+	
+		<h:panelGrid columns="5">
+		
+			<p:outputLabel for="codice" value="Codice:" />
+			<p:inputText value="#{dettaglioClienteTestata.codice}" id="codice"
+				required="true" requiredMessage="Il campo è obbligatorio"
+				style="width: 250px;"/>
+			<p:watermark for="codice" value="Codice identificativo del cliente" />  
+			<p:message for="codice" showSummary="true" showDetail="false"/>
+			<p:tooltip for="codice" showEffect="fade" value="Il codice del cliente rappresnta blah vlahh" />
+		
+			<p:outputLabel for="ragioneSociale" value="Ragione sociale:" />
+			<p:inputText value="#{dettaglioClienteTestata.ragioneSociale}" id="ragioneSociale"
+				required="true" requiredMessage="Il campo è obbligatorio"
+				style="width: 250px;"/>
+			<p:watermark for="ragioneSociale" value="Ragione sociale del cliente" />  
+			<p:message for="ragioneSociale" showSummary="true" showDetail="false"/>
+			<p:tooltip for="ragioneSociale" showEffect="fade" value="Il codice del cliente rappresnta blah vlahh" />
+		
+			<p:outputLabel for="partitaIva" value="Partita IVA:" />
+			<p:inputText value="#{dettaglioClienteTestata.partitaIva}" id="partitaIva"
+				required="true" requiredMessage="Il campo è obbligatorio"
+				style="width: 250px;"/>
+			<p:watermark for="partitaIva" value="Partita IVA del cliente" />  
+			<p:message for="partitaIva" showSummary="true" showDetail="false"/>
+			<p:tooltip for="partitaIva" showEffect="fade" value="Il codice del cliente rappresnta blah vlahh" />
+
+			<p:outputLabel for="codiceTipoCliente" value="Tipo cliente:" />
+			<p:selectOneMenu
+				id="codiceTipoCliente" 
+				value="#{dettaglioClienteTestata.codiceTipoCliente}"
+				effect="fade">
+				<f:selectItem itemLabel="Selezionare un tipo" itemValue="" />
+				<f:selectItems 
+					value="#{dettaglioClienteTestata.listTipoCliente}" var="item"
+					itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+			</p:selectOneMenu>
+
+		</h:panelGrid>
+
+	</h:form>
+
+</html>
