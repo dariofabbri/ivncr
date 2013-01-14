@@ -61,13 +61,23 @@
 		<h:panelGrid columns="6" >
 		
 		<h:outputText value="Attivo: " />  
-		<p:selectBooleanCheckbox value="#{dettaglioClienteGenerale.value1}" />		
+		<p:selectBooleanCheckbox value="#{dettaglioClienteGenerale.attivo}" />		
 		
 		<h:outputText value="Dal:" />  
 		<p:calendar value="#{dettaglioClienteGenerale.dateAttiveDal}" id="dateAttiveDal" showOn="button" />             
         
         <h:outputText value="Al:" />  
-        <p:calendar value="#{dettaglioClienteGenerale.dateAttiveAl}" id="dateAttiveAl" showOn="button" />		
+        <p:calendar value="#{dettaglioClienteGenerale.dateAttiveAl}" id="dateAttiveAl" showOn="button" />	
+        
+        
+        <h:outputText value="Bloccato " />  
+		<p:selectBooleanCheckbox value="#{dettaglioClienteGenerale.bloccato}" />		
+		
+		<h:outputText value="Dal:" />  
+		<p:calendar value="#{dettaglioClienteGenerale.dateBloccatoDal}" id="dateBloccatoDal" showOn="button" />             
+        
+        <h:outputText value="Al:" />  
+        <p:calendar value="#{dettaglioClienteGenerale.dateBloccatoAl}" id="dateBloccatoAl" showOn="button" />		
 		
 		</h:panelGrid>	
 

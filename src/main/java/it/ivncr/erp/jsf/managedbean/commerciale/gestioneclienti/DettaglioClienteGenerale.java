@@ -28,11 +28,14 @@ public class DettaglioClienteGenerale implements Serializable {
 	private String fax;
 	private String email;
 	
-	private boolean value1;	  
-	private boolean value2;
+	private boolean attivo;	  
+	private boolean bloccato;
 	
 	private Date dateAttiveDal; 
 	private Date dateAttiveAl; 
+	
+	private Date dateBloccatoDal; 
+	private Date dateBloccatoAl;
 	
 	private Integer codiceTipoBusinessPartner;
 	
@@ -108,23 +111,8 @@ public class DettaglioClienteGenerale implements Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
-	}	
-	
-    public boolean isValue1() {  
-        return value1;  
-    }  
-  
-    public void setValue1(boolean value1) {  
-        this.value1 = value1;  
-    }  
-  
-    public boolean isValue2() {  
-        return value2;  
-    }  
-  
-    public void setValue2(boolean value2) {  
-        this.value2 = value2;  
-    }
+	}		
+
 
 	public Date getDateAttiveDal() {
 		return dateAttiveDal;
@@ -140,5 +128,37 @@ public class DettaglioClienteGenerale implements Serializable {
 
 	public void setDateAttiveAl(Date dateAttiveAl) {
 		this.dateAttiveAl = dateAttiveAl;
+	}
+
+	public boolean isBloccato() {
+		return bloccato;
+	}
+
+	public void setBloccato(boolean bloccato) {
+		this.bloccato = bloccato;
+	}
+
+	public boolean isAttivo() {
+		return attivo;
+	}
+
+	public void setAttivo(boolean attivo) {
+		this.attivo = attivo;
+	}
+
+	public Date getDateBloccatoAl() {
+		return dateBloccatoAl;
+	}
+
+	public void setDateBloccatoAl(Date dateBloccatoAl) {
+		this.dateBloccatoAl = dateBloccatoAl;
+	}
+
+	public Date getDateBloccatoDal() {
+		return dateBloccatoDal;
+	}
+
+	public void setDateBloccatoDal(Date dateBloccatoDal) {
+		this.dateBloccatoDal = dateBloccatoDal;
 	}  
 }
