@@ -72,7 +72,7 @@ public class UtenteServiceImpl extends AbstractService implements UtenteService 
 		q.setNome(nome);
 		q.setCognome(cognome);
 		q.setNote(note);
-		q.setAttivo(true);
+		q.setAttivo(null);
 		
 		q.setOffset(first);
 		q.setLimit(pageSize);

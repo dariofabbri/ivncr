@@ -9,26 +9,46 @@
 	<ui:define name="container">
 
 		<h:form id="form">
+		
+			<p:growl id="growl" showSummary="true" showDetail="true" life="2000"/>
 
 			<h1 class="title ui-widget-header ui-corner-all">Gestione utenti</h1>
 			
 			<p:outputPanel id="buttons" style="display: block; margin-top: 2em; margin-bottom: 2em;">
 
 				<p:commandButton 
-					value="Nuovo utente"
+					value="Crea"
 					action="#{gestioneUtenti.startCreate}"
 					icon="ui-icon-star" />
 
 				<p:commandButton 
-					value="Elimina utente selezionato"
-					disabled="#{gestioneUtenti.selected == null}"
+					value="Elimina"
+					disabled="#{empty gestioneUtenti.selected}"
 					onclick="deleteDialog.show();"
 					icon="ui-icon-trash" />
 
 				<p:commandButton 
-					value="Modifica utente selezionato"
-					disabled="#{gestioneUtenti.selected == null}"
+					value="Modifica"
+					disabled="#{empty gestioneUtenti.selected}"
 					action="#{gestioneUtenti.startUpdate}"
+					icon="ui-icon-pencil" />
+
+				<p:commandButton 
+					value="Cambia password"
+					disabled="#{empty gestioneUtenti.selected}"
+					onclick="changePasswordDialog.show();"
+					icon="ui-icon-pencil" />
+
+				<p:commandButton 
+					value="Attiva"
+					disabled="#{(empty gestioneUtenti.selected) or gestioneUtenti.selected.attivo}"
+					onclick="activateDialog.show();"
+					icon="ui-icon-pencil" />
+
+				<p:commandButton 
+					value="Disattiva"
+					disabled="#{(empty gestioneUtenti.selected) or (not gestioneUtenti.selected.attivo)}"
+					onclick="deactivateDialog.show();"
 					icon="ui-icon-pencil" />
 
 			</p:outputPanel>

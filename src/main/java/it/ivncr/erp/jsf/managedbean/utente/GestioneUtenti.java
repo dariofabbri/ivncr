@@ -126,6 +126,14 @@ public class GestioneUtenti implements Serializable {
 			//
 			selected = null;
 			
+			// Add a message.
+			//
+			FacesMessage message = new FacesMessage(
+					FacesMessage.SEVERITY_INFO, 
+					"Record cancellato", 
+					"La cancellazione dell'utente selezionato si è conclusa con successo.");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			
 			// Signal to modal dialog that everything went fine.
 			//
 			RequestContext.getCurrentInstance().addCallbackParam("ok", true);
