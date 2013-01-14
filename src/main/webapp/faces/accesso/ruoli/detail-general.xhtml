@@ -14,13 +14,13 @@
 
 			<f:facet name="header">
 				<h:outputText value="Il pannello permette di inserire e modificare i dati relativi al ruolo."/>
-       					</f:facet>
+       		</f:facet>
 															
 			<p:outputLabel for="nome" value="Nome:" />
 			<p:inputText value="#{dettaglioRuolo.edited.nome}" id="nome"
 				required="true" requiredMessage="Il campo è obbligatorio"
 				style="width: 250px;"/>
-			<p:watermark for="nome" value="Identificativo del ruolo" />  
+			<p:watermark for="nome" value="Identificativo del ruolo" />
 			<p:message for="nome" showSummary="true" showDetail="false"/>
 							
 			<p:outputLabel for="descrizione" value="Descrizione:" />
@@ -33,8 +33,6 @@
 				<p:commandButton value="Salva"
 					actionListener="#{dettaglioRuolo.doSave}"
 					update=":tabView"/>
-
-				<p:button value="Chiudi" href="index.xhtml"/>
 			</f:facet>
 							
 		</h:panelGrid>

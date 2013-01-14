@@ -1,6 +1,8 @@
 package it.ivncr.erp.jsf.managedbean.session;
 
 import it.ivncr.erp.model.accesso.Utente;
+import it.ivncr.erp.service.ServiceFactory;
+import it.ivncr.erp.service.utente.UtenteService;
 
 import java.io.Serializable;
 
@@ -87,6 +89,11 @@ public class LoginInfo implements Serializable {
  				break;
  			}
  		}
+ 		
+ 		// Record last login timestamp.
+ 		//
+ 		UtenteService us = ServiceFactory.createUtenteService();
+ 		this.utente = us.updateLastLogonTimestamp(utente.getId());
 
         return "/index?faces-redirect=true";
 	}

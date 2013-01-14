@@ -12,7 +12,7 @@ import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.context.RequestContext;
@@ -22,7 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @ManagedBean
-@ViewScoped
+@SessionScoped
 public class GestioneUtenti implements Serializable {
 
 	private static final Logger logger = LoggerFactory.getLogger(GestioneUtenti.class);
@@ -31,13 +31,7 @@ public class GestioneUtenti implements Serializable {
 
 	private LazyDataModel<Utente> model;
 	private Utente selected;
-	
-	private String username;
-	private String nome;
-	private String cognome;
-	private String note;
-	private String password;
-	private String confirmPassword;
+	private Utente edited;
 	
 	public GestioneUtenti() {
 		
@@ -83,173 +77,67 @@ public class GestioneUtenti implements Serializable {
 		};
 	}
 	
-	private void clean() {
+	public String startCreate() {
 		
-		username = null;
-		nome = null;
-		cognome = null;
-		note = null;
-		password = null;
-		confirmPassword = null;
+		edited = new Utente();
+		
+		logger.debug("Moving to detail page for new record creation.");
+		return "detail?faces-redirect=true";
 	}
 	
-	public void doCreate() {
-
-		// Check if password matches confirmation field.
-		//
-		if(!password.equals(confirmPassword)) {
-			
-			logger.debug("Password and confirmation do not match.");
-			
-			FacesMessage message = new FacesMessage(
-					FacesMessage.SEVERITY_ERROR, 
-					"Le password differiscono", 
-					"La password e la relativa conferma differiscono");
-			FacesContext.getCurrentInstance().addMessage(null, message);
-			return;
+	public String startUpdate() {
+		
+		if(selected == null) {
+			logger.error("Invalid status. No row selected on start update request.");
+			throw new RuntimeException("Invalid status. No row selected on start update request.");
 		}
 		
-		// Create the new user.
-		//
-		try {
-			UtenteService us = ServiceFactory.createUtenteService();
-			us.create(
-					username, 
-					password, 
-					nome, 
-					cognome, 
-					note);
-			logger.debug("User successfully created.");
-			
-			// Clean up form state.
-			//
-			clean();
-			
-			// Signal to modal dialog that everything went fine.
-			//
-			RequestContext.getCurrentInstance().addCallbackParam("ok", true);
-			
-		} catch(Exception e) {
-			
-			logger.warn("Exception caught while creating user.", e);
-			
-			FacesMessage message = new FacesMessage(
-					FacesMessage.SEVERITY_ERROR, 
-					"Errore di sistema", 
-					"Si è verificato un errore in fase di creazione dell'utente");
-			FacesContext.getCurrentInstance().addMessage(null, message);
-		}
-	}
-	
-	public void doUpdate() {
-
-		// Update the user.
-		//
-		try {
-			UtenteService us = ServiceFactory.createUtenteService();
-			us.update(
-					selected.getId(),
-					selected.getUsername(),
-					selected.getNome(),
-					selected.getCognome(),
-					selected.getNote());
-			logger.debug("User successfully updated.");
-
-			// Signal to modal dialog that everything went fine.
-			//
-			RequestContext.getCurrentInstance().addCallbackParam("ok", true);
-			
-		} catch(Exception e) {
-			
-			logger.warn("Exception caught while updating user.", e);
-
-			FacesMessage message = new FacesMessage(
-					FacesMessage.SEVERITY_ERROR, 
-					"Errore di sistema", 
-					"Si è verificato un errore in fase di aggiornamento dell'utente");
-			FacesContext.getCurrentInstance().addMessage(null, message);
-		}
+		edited = selected;
+		
+		logger.debug("Moving to detail page for record update.");
+		return "detail?faces-redirect=true";
 	}
 	
 	public void doDelete() {
 
-		// Check if a user has been selected.
+		// Check if a row has been selected.
 		//
 		if(selected == null) {
 			
-			logger.warn("No user selected on deletion.");
+			logger.warn("No entity selected for deletion.");
 
 			FacesMessage message = new FacesMessage(
 					FacesMessage.SEVERITY_ERROR, 
 					"Errore di sistema", 
-					"Nessun utente selezionato.");
+					"Nessun record selezionato.");
 			FacesContext.getCurrentInstance().addMessage(null, message);
 			return;
 		}
 		
-		// Delete the selected user.
+		// Delete the selected entity.
 		//
 		try {
 			
 			UtenteService us = ServiceFactory.createUtenteService();
 			us.delete(selected.getId());
-			logger.debug("User successfully deleted.");
+			logger.debug("Entity successfully deleted.");
 
+			// Clean up selection.
+			//
+			selected = null;
+			
 			// Signal to modal dialog that everything went fine.
 			//
 			RequestContext.getCurrentInstance().addCallbackParam("ok", true);
 
 		} catch(Exception e) {
 			
-			logger.warn("Exception caught while deleting user.", e);
+			logger.warn("Exception caught while deleting entity.", e);
 
 			FacesMessage message = new FacesMessage(
 					FacesMessage.SEVERITY_ERROR, 
 					"Errore di sistema", 
-					"Si è verificato un errore in fase di cancellazione dell'utente");
-			FacesContext.getCurrentInstance().addMessage(null, message);
-		}
-	}
-	
-	public void doChangePassword() {
-
-		// Check if password matches confirmation field.
-		//
-		if(!password.equals(confirmPassword)) {
-			
-			logger.debug("Password and confirmation do not match.");
-			
-			FacesMessage message = new FacesMessage(
-					FacesMessage.SEVERITY_ERROR, 
-					"Le password differiscono", 
-					"La password e la relativa conferma differiscono");
-			FacesContext.getCurrentInstance().addMessage(null, message);
-			return;
-		}
-		
-		// Change the password
-		//
-		try {
-			UtenteService us = ServiceFactory.createUtenteService();
-			us.changePassword(selected.getId(), password); 
-			logger.debug("Password successfully changed.");
-			
-			// Clean up form state.
-			//
-			clean();
-			
-			// Signal to modal dialog that everything went fine.
-			//
-			RequestContext.getCurrentInstance().addCallbackParam("ok", true);
-			
-		} catch(Exception e) {
-			
-			logger.warn("Exception caught while creating user.", e);
-			
-			FacesMessage message = new FacesMessage(
-					FacesMessage.SEVERITY_ERROR, 
-					"Errore di sistema", 
-					"Si è verificato un errore in fase di creazione dell'utente");
+					"Si è verificato un errore in fase di cancellazione del record.");
 			FacesContext.getCurrentInstance().addMessage(null, message);
 		}
 	}
@@ -270,51 +158,11 @@ public class GestioneUtenti implements Serializable {
 		this.selected = selected;
 	}
 
-	public String getUsername() {
-		return username;
+	public Utente getEdited() {
+		return edited;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-	public String getCognome() {
-		return cognome;
-	}
-
-	public void setCognome(String cognome) {
-		this.cognome = cognome;
-	}
-
-	public String getNote() {
-		return note;
-	}
-
-	public void setNote(String note) {
-		this.note = note;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getConfirmPassword() {
-		return confirmPassword;
-	}
-
-	public void setConfirmPassword(String confirmPassword) {
-		this.confirmPassword = confirmPassword;
+	public void setEdited(Utente edited) {
+		this.edited = edited;
 	}
 }

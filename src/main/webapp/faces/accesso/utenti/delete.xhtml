@@ -13,7 +13,7 @@
 	
 		<h:form id="deleteForm">
 		
-			<p:messages globalOnly="true" autoUpdate="true" showDetail="true"/>
+			<p:messages globalOnly="true" showDetail="true" closable="true"/>
 	
 			<h:panelGrid columns="1" cellpadding="5" id="wrapper">
 		
@@ -21,7 +21,8 @@
 				
 				<f:facet name="footer">
 					<p:commandButton value="Elimina"
-						actionListener="#{userManagement.doDelete}" 
+						actionListener="#{gestioneUtenti.doDelete}"
+						update="@form"
 						oncomplete="if(args.ok) { window.location.reload(); }"/>
 	
 					<p:commandButton value="Annulla"

@@ -40,6 +40,10 @@
 	text-align: left;
 }
 
+.form-panel td {
+	vertical-align: text-top;
+}
+
 .form-panel tfoot td {
 	
 	padding-top: 1em;

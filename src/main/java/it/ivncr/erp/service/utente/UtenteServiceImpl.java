@@ -205,6 +205,23 @@ public class UtenteServiceImpl extends AbstractService implements UtenteService 
 		return utente;
 	}
 	
+	@Override
+	public Utente updateLastLogonTimestamp(Integer id) {
+		
+		Utente utente = retrieve(id);
+		if(utente == null) {
+			String message = String.format("It has not been possible to retrieve specified user: %d", id);
+			logger.info(message);
+			throw new NotFoundException(message);
+		}
+		
+		utente.setUltimoLogin(new Date());
+		session.update(utente);
+		logger.debug("Last logon timestamp successfully updated.");
+		
+		return utente;
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Ruolo> listRuoli(Integer id) {

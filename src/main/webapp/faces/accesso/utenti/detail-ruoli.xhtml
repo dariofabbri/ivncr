@@ -1,0 +1,66 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+					
+	<h:form>
+	
+		<p:growl 
+			id="growl" 
+			showSummary="true" 
+			showDetail="true" 
+			life="2000"	/>
+								
+		<p:outputPanel id="buttons" style="display: block; margin-top: 2em; margin-bottom: 2em;">
+
+			<p:commandButton 
+				value="Aggiorna permessi"
+				actionListener="#{dettaglioRuolo.doUpdatePermessi}"
+				update="growl"
+				icon="ui-icon-disk" />
+
+		</p:outputPanel>
+	
+		<p:dataTable
+			id="permessiTable" 
+			var="permesso" 
+			value="#{dettaglioRuolo.permessi}"
+			widgetVar="permessiTable"
+			emptyMessage="Nessun record trovato"
+			filteredValue="#{dettaglioRuolo.filtered}"
+			rowKey="#{permesso.id}"
+			selection="#{dettaglioRuolo.selected}"
+			paginator="true" 
+			paginatorPosition="bottom"
+			rows="10"
+			paginatorTemplate="{CurrentPageReport} {RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+			currentPageReportTemplate="Trovati {totalRecords} record - Pagina {currentPage} di {totalPages}"
+			rowsPerPageTemplate="5,10,50" 
+			pageLinks="10">
+						        		
+			<f:facet name="header">
+		    	Lista dei permessi
+		    </f:facet>
+
+			<p:column selectionMode="multiple"/>
+			
+			<p:column headerText="Permesso" 
+				filterBy="#{permesso.permesso}"
+				filterMatchMode="contains"
+				sortBy="#{permesso.permesso}">
+				<h:outputText value="#{permesso.permesso}" />
+			</p:column>
+
+			<p:column headerText="Descrizione" 
+				filterBy="#{permesso.descrizione}"
+				filterMatchMode="contains"
+				sortBy="#{permesso.descrizione}">
+				<h:outputText value="#{permesso.descrizione}" />
+			</p:column>
+			
+		</p:dataTable>
+
+	</h:form>				
+
+</html>

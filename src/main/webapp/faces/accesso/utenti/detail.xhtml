@@ -9,7 +9,7 @@
 		<ui:define name="container">
 	
 			<p:panel id="detailPanel"
-					header="Ruolo">
+					header="Utente">
 			
 				<f:facet name="actions">
 					<p:button
@@ -21,7 +21,7 @@
 	
 				<p:tabView effect="fade" effectDuration="normal" id="tabView" dynamic="true">
 				
-					<p:ajax event="tabChange" listener="#{dettaglioRuolo.onTabChange}" />
+					<p:ajax event="tabChange" listener="#{dettaglioUtente.onTabChange}" />
 					
 					<p:tab id="detailTab" title="Dettaglio">
 					
@@ -29,16 +29,16 @@
 						
 					</p:tab>
 				
-					<p:tab id="permessiTab" title="Permessi" disabled="#{empty dettaglioRuolo.edited.id}">
+					<p:tab id="ruoliTab" title="Ruoli" disabled="#{empty dettaglioUtente.edited.id}">
 
-						<ui:include src="detail-permessi.xhtml"/>
+						<ui:include src="detail-ruoli.xhtml"/>
 
 					</p:tab>
 				
 				</p:tabView>
 
 			</p:panel>
-						    
+			
 		</ui:define>
 	
 	</ui:composition>
