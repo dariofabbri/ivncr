@@ -1,11 +1,11 @@
-package it.ivncr.erp.jsf.managedbean.ruolo;
+package it.ivncr.erp.jsf.managedbean.utente;
 
-import it.ivncr.erp.model.accesso.Permesso;
 import it.ivncr.erp.model.accesso.Ruolo;
+import it.ivncr.erp.model.accesso.Utente;
 import it.ivncr.erp.service.QueryResult;
 import it.ivncr.erp.service.ServiceFactory;
-import it.ivncr.erp.service.permesso.PermessoService;
 import it.ivncr.erp.service.ruolo.RuoloService;
+import it.ivncr.erp.service.utente.UtenteService;
 
 import java.io.Serializable;
 import java.util.List;
@@ -15,7 +15,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 
 import org.primefaces.event.TabChangeEvent;
 import org.slf4j.Logger;
@@ -23,74 +22,81 @@ import org.slf4j.LoggerFactory;
 
 @ManagedBean
 @ViewScoped
-public class DettaglioRuolo implements Serializable {
+public class DettaglioUtente implements Serializable {
 
 	private static final Logger logger = LoggerFactory
-			.getLogger(DettaglioRuolo.class);
+			.getLogger(DettaglioUtente.class);
 
 	private static final long serialVersionUID = 1L;
 
-	@ManagedProperty("#{gestioneRuoli.edited}")
-	private Ruolo edited;
+	@ManagedProperty("#{gestioneUtenti.edited}")
+	private Utente edited;
+	
+	private String password;
+	private String confirmPassword;
 
-	private List<Permesso> permessi;
-	private List<Permesso> filtered;
-	private Permesso[] selected;
+	private List<Ruolo> ruoli;
+	private List<Ruolo> filtered;
+	private Ruolo[] selected;
 	
 	public void onTabChange(TabChangeEvent event) {
 
 		logger.debug("Selected tab changed.");
 		
-		// If permessi tab has been selected it is necessary to initialize
-		// the permessi list in the bean.
+		// If ruoli tab has been selected it is necessary to initialize
+		// the ruoli list in the bean.
 		//
-		if(event.getTab().getId().equals("permessiTab")) {
+		if(event.getTab().getId().equals("ruoliTab")) {
 
 			loadList();
 		}
 	}
-	
-	private void loadList() {
-		
-		logger.debug("Loading permessi list.");
-		PermessoService ps = ServiceFactory.createPermessoService();
-		QueryResult<Permesso> result = ps.list(null, null, null, null);
-		permessi = result.getResults();
-		
-		RuoloService rs = ServiceFactory.createRuoloService();
-		List<Permesso> list = rs.retrievePermessi(edited.getId());
-		selected = list.toArray(new Permesso[0]);
-	}
 
-	public void doSave(ActionEvent event) {
+	public void doSave() {
 		
 		logger.debug("Entering doSave() method.");
 		
 		// Save the entity.
 		//
 		try {
-			RuoloService rs = ServiceFactory.createRuoloService();
+			UtenteService us = ServiceFactory.createUtenteService();
 			
-			// If no id is present, creation is required.
-			//
 			if(edited.getId() == null) {
 				
-				edited = rs.create(
-						edited.getNome(), 
-						edited.getDescrizione());
+				// Check if password matches confirmation field.
+				//
+				if(!password.equals(confirmPassword)) {
+
+					logger.debug("Password and confirmation do not match.");
+
+					FacesMessage message = new FacesMessage(
+							FacesMessage.SEVERITY_ERROR, 
+							"Le password differiscono", 
+							"La password e la relativa conferma differiscono.");
+					FacesContext.getCurrentInstance().addMessage(null, message);
+					return;
+				}
+				
+				edited = us.create(
+						edited.getUsername(),
+						password,
+						edited.getNome(),
+						edited.getCognome(),
+						edited.getNote());
 				
 				logger.debug("Entity successfully created.");
 				
 			} else {
-				
-				edited = rs.update(
+								
+				edited = us.update(
 						edited.getId(),
-						edited.getNome(), 
-						edited.getDescrizione());
-				
+						edited.getUsername(),
+						edited.getNome(),
+						edited.getCognome(),
+						edited.getNote());
+					
 				logger.debug("Entity successfully updated.");
 			}
-			
 			
 			// Everything went fine.
 			//
@@ -112,9 +118,9 @@ public class DettaglioRuolo implements Serializable {
 		}
 	}
 	
-	public void doUpdatePermessi() {
+	public void doUpdateRuoli() {
 		
-		logger.debug("Entering doUpdatePermessi() method.");
+		logger.debug("Entering doUpdateRuoli() method.");
 
 		// Get selected ids.
 		//
@@ -123,11 +129,11 @@ public class DettaglioRuolo implements Serializable {
 			ids[i] = selected[i].getId();
 		}
 		
-		// Set the permissions.
+		// Set the roles.
 		//
 		try {
-			RuoloService rs = ServiceFactory.createRuoloService();
-			rs.setPermessi(
+			UtenteService us = ServiceFactory.createUtenteService();
+			us.setRuoli(
 				edited.getId(),
 				ids);
 			
@@ -151,35 +157,63 @@ public class DettaglioRuolo implements Serializable {
 		}
 	}
 
-	public Ruolo getEdited() {
+	private void loadList() {
+		
+		logger.debug("Loading ruoli list.");
+		RuoloService rs = ServiceFactory.createRuoloService();
+		QueryResult<Ruolo> result = rs.list(null, null, null, null);
+		ruoli = result.getResults();
+		
+		UtenteService us = ServiceFactory.createUtenteService();
+		List<Ruolo> list = us.listRuoli(edited.getId());
+		selected = list.toArray(new Ruolo[0]);
+	}
+
+	public Utente getEdited() {
 		return edited;
 	}
 
-	public void setEdited(Ruolo edited) {
+	public void setEdited(Utente edited) {
 		this.edited = edited;
 	}
 
-	public List<Permesso> getPermessi() {
-		return permessi;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setPermessi(List<Permesso> permessi) {
-		this.permessi = permessi;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
-	public List<Permesso> getFiltered() {
+	public String getConfirmPassword() {
+		return confirmPassword;
+	}
+
+	public void setConfirmPassword(String confirmPassword) {
+		this.confirmPassword = confirmPassword;
+	}
+
+	public List<Ruolo> getRuoli() {
+		return ruoli;
+	}
+
+	public void setRuoli(List<Ruolo> ruoli) {
+		this.ruoli = ruoli;
+	}
+
+	public List<Ruolo> getFiltered() {
 		return filtered;
 	}
 
-	public void setFiltered(List<Permesso> filtered) {
+	public void setFiltered(List<Ruolo> filtered) {
 		this.filtered = filtered;
 	}
 
-	public Permesso[] getSelected() {
+	public Ruolo[] getSelected() {
 		return selected;
 	}
 
-	public void setSelected(Permesso[] selected) {
+	public void setSelected(Ruolo[] selected) {
 		this.selected = selected;
 	}
 }

@@ -2,7 +2,6 @@ package it.ivncr.erp.service.security;
 
 import it.ivncr.erp.model.accesso.Permesso;
 import it.ivncr.erp.model.accesso.Ruolo;
-import it.ivncr.erp.model.accesso.Utente;
 import it.ivncr.erp.service.AbstractService;
 
 import java.util.List;
@@ -10,20 +9,6 @@ import java.util.List;
 import org.hibernate.Query;
 
 public class SecurityServiceImpl extends AbstractService implements SecurityService {
-
-	public Utente getByUsername(String username) {
-
-		String hql = 
-				"from Utente ute " +
-				"where ute.username = :username";
-		Query query = session.createQuery(hql);
-		query.setParameter("username", username);
-		Utente utente = (Utente)query.uniqueResult();
-		logger.debug("Utente found: " + utente);
-		
-		return utente;
-	}
-
 	
 	@SuppressWarnings("unchecked")
 	public List<Ruolo> getRoles(String username) {
@@ -56,4 +41,6 @@ public class SecurityServiceImpl extends AbstractService implements SecurityServ
 		
 		return permissions;
 	}
+	
+	
 }

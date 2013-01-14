@@ -1,0 +1,66 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+					
+	<h:form>
+	
+		<p:growl 
+			id="growl" 
+			showSummary="true" 
+			showDetail="true" 
+			life="2000"	/>
+								
+		<p:outputPanel id="buttons" style="display: block; margin-top: 2em; margin-bottom: 2em;">
+
+			<p:commandButton 
+				value="Aggiorna ruoli"
+				actionListener="#{dettaglioUtente.doUpdateRuoli}"
+				update="growl"
+				icon="ui-icon-disk" />
+
+		</p:outputPanel>
+	
+		<p:dataTable
+			id="ruoliTable" 
+			var="ruolo" 
+			value="#{dettaglioUtente.ruoli}"
+			widgetVar="ruoliTable"
+			emptyMessage="Nessun record trovato"
+			filteredValue="#{dettaglioUtente.filtered}"
+			rowKey="#{ruolo.id}"
+			selection="#{dettaglioUtente.selected}"
+			paginator="true"
+			paginatorPosition="bottom"
+			rows="10"
+			paginatorTemplate="{CurrentPageReport} {RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+			currentPageReportTemplate="Trovati {totalRecords} record - Pagina {currentPage} di {totalPages}"
+			rowsPerPageTemplate="5,10,50" 
+			pageLinks="10">
+						        		
+			<f:facet name="header">
+		    	Lista dei ruoli
+		    </f:facet>
+
+			<p:column selectionMode="multiple"/>
+			
+			<p:column headerText="Nome" 
+				filterBy="#{ruolo.nome}"
+				filterMatchMode="contains"
+				sortBy="#{ruolo.nome}">
+				<h:outputText value="#{ruolo.nome}" />
+			</p:column>
+
+			<p:column headerText="Descrizione" 
+				filterBy="#{ruolo.descrizione}"
+				filterMatchMode="contains"
+				sortBy="#{ruolo.descrizione}">
+				<h:outputText value="#{ruolo.descrizione}" />
+			</p:column>
+			
+		</p:dataTable>
+
+	</h:form>				
+
+</html>
