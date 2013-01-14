@@ -35,4 +35,6 @@ public interface RuoloService extends EntityService<Ruolo> {
 	void deletePermesso(Integer ruoloId, Integer permessoId);
 
 	void deletePermessi(Integer ruoloId, Integer[] permessiId);
+	
+	void setPermessi(Integer ruoloId, Integer[] permessiId);
 }

@@ -1,7 +1,7 @@
 package it.ivncr.erp.model.accesso;
 
 
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -37,7 +37,7 @@ public class Permesso {
 			joinColumns = { @JoinColumn(name="permesso_id", referencedColumnName="id")},
 			inverseJoinColumns = { @JoinColumn(name="ruolo_id", referencedColumnName="id")}
 	)
-	private List<Ruolo> ruoli;
+	private Set<Ruolo> ruoli;
 
 
 	public Integer getId() {
@@ -64,11 +64,11 @@ public class Permesso {
 		this.descrizione = descrizione;
 	}
 
-	public List<Ruolo> getRuoli() {
+	public Set<Ruolo> getRuoli() {
 		return ruoli;
 	}
 
-	public void setRuoli(List<Ruolo> ruoli) {
+	public void setRuoli(Set<Ruolo> ruoli) {
 		this.ruoli = ruoli;
 	}
 }

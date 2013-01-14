@@ -5,18 +5,20 @@
 	xmlns:p="http://primefaces.org/ui">
 					
 	<h:form>
+	
+		<p:growl 
+			id="growl" 
+			showSummary="true" 
+			showDetail="true" 
+			life="2000"	/>
 								
 		<p:outputPanel id="buttons" style="display: block; margin-top: 2em; margin-bottom: 2em;">
 
 			<p:commandButton 
-				value="Aggiungi permessi"
-				onclick="addPermessiDialog.show();"
-				icon="ui-icon-star" />
-
-			<p:commandButton 
-				value="Rimuovi permessi selezionati"
-				onclick="removePermessiDialog.show();"
-				icon="ui-icon-trash" />
+				value="Aggiorna permessi"
+				actionListener="#{dettaglioRuolo.doUpdatePermessi}"
+				update="growl"
+				icon="ui-icon-disk" />
 
 		</p:outputPanel>
 	
@@ -30,7 +32,7 @@
 			rowKey="#{permesso.id}"
 			selection="#{dettaglioRuolo.selected}"
 			paginator="true" 
-			paginatorPosition="bottom" 
+			paginatorPosition="bottom"
 			rows="10"
 			paginatorTemplate="{CurrentPageReport} {RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
 			currentPageReportTemplate="Trovati {totalRecords} record - Pagina {currentPage} di {totalPages}"
@@ -41,8 +43,7 @@
 		    	Lista dei permessi
 		    </f:facet>
 
-			<p:column selectionMode="multiple">
-			</p:column>
+			<p:column selectionMode="multiple"/>
 			
 			<p:column headerText="Permesso" 
 				filterBy="#{permesso.permesso}"
@@ -61,7 +62,5 @@
 		</p:dataTable>
 
 	</h:form>				
-		
-	<ui:include src="detail-permessi-remove.xhtml"/>
 
 </html>

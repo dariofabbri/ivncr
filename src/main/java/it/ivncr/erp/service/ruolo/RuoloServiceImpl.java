@@ -172,7 +172,7 @@ public class RuoloServiceImpl extends AbstractService implements RuoloService {
 				"where per.id not in " +
 				"(select per2.id from Ruolo ruo " +
 				"inner join ruo.permessi per2 " +
-				"where ruo.id = :ruoloId) " +
+				"where ruo.id = :id) " +
 				"order by per.permesso ";
 		Query query = session.createQuery(hql);
 		query.setParameter("id", id);
@@ -320,6 +320,39 @@ public class RuoloServiceImpl extends AbstractService implements RuoloService {
 			}
 			
 			ruolo.getPermessi().remove(found);	
+		}
+		
+		session.update(ruolo);
+		session.flush();
+	}
+
+	@Override
+	public void setPermessi(Integer ruoloId, Integer[] permessiId) {
+
+		Ruolo ruolo = retrieve(ruoloId);
+		if(ruolo == null) {
+			String message = String.format("It has not been possible to retrieve specified ruolo: %d", ruoloId);
+			logger.info(message);
+			throw new NotFoundException(message);
+		}
+		
+		// Remove all permissions.
+		//
+		ruolo.getPermessi().clear();
+		
+		// Iterate on passed array, retrieve selected permissions
+		// and add them back to the current role.
+		//
+		for(Integer permessoId : permessiId) {
+			
+			Permesso permesso = (Permesso)session.get(Permesso.class, permessoId);
+			if(permesso == null) {
+				String message = String.format("It has not been possible to retrieve specified permesso: %d", permessoId);
+				logger.info(message);
+				throw new NotFoundException(message);
+			}
+
+			ruolo.getPermessi().add(permesso);
 		}
 		
 		session.update(ruolo);

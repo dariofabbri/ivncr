@@ -2,7 +2,9 @@ package it.ivncr.erp.jsf.managedbean.ruolo;
 
 import it.ivncr.erp.model.accesso.Permesso;
 import it.ivncr.erp.model.accesso.Ruolo;
+import it.ivncr.erp.service.QueryResult;
 import it.ivncr.erp.service.ServiceFactory;
+import it.ivncr.erp.service.permesso.PermessoService;
 import it.ivncr.erp.service.ruolo.RuoloService;
 
 import java.io.Serializable;
@@ -52,8 +54,13 @@ public class DettaglioRuolo implements Serializable {
 	private void loadList() {
 		
 		logger.debug("Loading permessi list.");
+		PermessoService ps = ServiceFactory.createPermessoService();
+		QueryResult<Permesso> result = ps.list(null, null, null, null);
+		permessi = result.getResults();
+		
 		RuoloService rs = ServiceFactory.createRuoloService();
-		permessi = rs.retrievePermessi(edited.getId());		
+		List<Permesso> list = rs.retrievePermessi(edited.getId());
+		selected = list.toArray(new Permesso[0]);
 	}
 
 	public void doSave(ActionEvent event) {
@@ -101,6 +108,46 @@ public class DettaglioRuolo implements Serializable {
 		}
 	}
 	
+	public void doUpdatePermessi() {
+		
+		logger.debug("Entering doSave() method.");
+
+		// Get selected ids.
+		//
+		Integer[] ids = new Integer[selected.length];
+		for(int i = 0; i < selected.length; ++i) {
+			ids[i] = selected[i].getId();
+		}
+		
+		// Set the permissions.
+		//
+		try {
+			RuoloService rs = ServiceFactory.createRuoloService();
+			rs.setPermessi(
+				edited.getId(),
+				ids);
+			
+			// Everything went fine.
+			//
+			FacesMessage message = new FacesMessage(
+					FacesMessage.SEVERITY_INFO, 
+					"Successo", 
+					"Il salvataggio dei dati si è concluso con successo.");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+
+		} catch(Exception e) {
+			
+			logger.warn("Exception caught while updating entity.", e);
+			
+			FacesMessage message = new FacesMessage(
+					FacesMessage.SEVERITY_ERROR, 
+					"Errore di sistema", 
+					"Si è verificato un errore in fase di rimozione dei record.");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+		}
+	}
+
+	
 	public void doRemovePermessi() {
 		
 		logger.debug("Entering doSave() method.");
@@ -117,7 +164,7 @@ public class DettaglioRuolo implements Serializable {
 			ids[i] = selected[i].getId();
 		}
 		
-		// Save the entity.
+		// Remove the permissions.
 		//
 		try {
 			RuoloService rs = ServiceFactory.createRuoloService();
@@ -143,7 +190,6 @@ public class DettaglioRuolo implements Serializable {
 					"Si è verificato un errore in fase di rimozione dei record.");
 			FacesContext.getCurrentInstance().addMessage(null, message);
 		}
-
 	}
 
 	public Ruolo getEdited() {
