@@ -16,6 +16,7 @@ import org.apache.shiro.authc.AccountException;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.DisabledAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationException;
@@ -44,8 +45,16 @@ public class DatabaseBackedRealm extends AuthorizingRealm {
 		//
 		UtenteService us = ServiceFactory.createUtenteService();
 		Utente utente = us.retrieveByUsername(username);
-		if (utente == null)
-			throw new UnknownAccountException("No account found for user [" + username + "]");
+		if (utente == null) {
+			throw new UnknownAccountException(String.format("No account has been found for user [%s].", username));
+
+		}
+		
+		// Check if the user is enabled.
+		//
+		if(!utente.getAttivo()) {
+			throw new DisabledAccountException(String.format("Account for user [%s] has been disabled.", username));
+		}
 		
 		// Extract digested password informations.
 		//

@@ -4,7 +4,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 
-<ui:composition template="/templates/main.xhtml">
+<ui:composition template="/WEB-INF/templates/main.xhtml">
 
 	<ui:define name="container">
 
@@ -16,31 +16,25 @@
 
 				<p:commandButton 
 					value="Nuovo utente"
-					onclick="createDialog.show();"
+					action="#{gestioneUtenti.startCreate}"
 					icon="ui-icon-star" />
 
 				<p:commandButton 
 					value="Elimina utente selezionato"
-					disabled="#{userManagement.selected == null}"
+					disabled="#{gestioneUtenti.selected == null}"
 					onclick="deleteDialog.show();"
 					icon="ui-icon-trash" />
 
 				<p:commandButton 
 					value="Modifica utente selezionato"
-					disabled="#{userManagement.selected == null}"
-					onclick="updateDialog.show();"
-					icon="ui-icon-pencil" />
-
-				<p:commandButton 
-					value="Cambia password utente selezionato"
-					disabled="#{userManagement.selected == null}"
-					onclick="changePasswordDialog.show();"
+					disabled="#{gestioneUtenti.selected == null}"
+					action="#{gestioneUtenti.startUpdate}"
 					icon="ui-icon-pencil" />
 
 			</p:outputPanel>
 
 			<p:dataTable var="utente" 
-				value="#{userManagement.model}"
+				value="#{gestioneUtenti.model}"
 				paginator="true" 
 				paginatorPosition="bottom" rows="10"
 				paginatorTemplate="{CurrentPageReport} {RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
@@ -49,31 +43,20 @@
 				pageLinks="10"
 				emptyMessage="Nessun record trovato" 
 				selectionMode="single"
-				selection="#{userManagement.selected}" id="utentiTable" lazy="true">
+				selection="#{gestioneUtenti.selected}" 
+				id="utentiTable" lazy="true">
 
-				<p:ajax event="rowSelect" update=":form:buttons,:updateForm:wrapper,:changePasswordForm:wrapper"/>
+				<p:ajax event="rowSelect" update=":form:buttons"/>
 
-				<p:ajax event="rowUnselect" update=":form:buttons,:updateForm:wrapper,:changePasswordForm:wrapper"/>
+				<p:ajax event="rowUnselect" update=":form:buttons"/>
         		
 				<f:facet name="header">
-			    	Lista degli utenti  
+			    	Lista degli utenti
 			    </f:facet>
-
-				<p:column headerText="Matricola" sortBy="#{utente.matricola}">
-				<!--
-					filterBy="#{utente.matricola}">
-				-->
-					<h:outputText value="#{utente.matricola}" />
-				</p:column>
 
 				<p:column headerText="Username" sortBy="#{utente.username}"
 					filterBy="#{utente.username}">
 					<h:outputText value="#{utente.username}" />
-				</p:column>
-
-				<p:column headerText="Cognome" sortBy="#{utente.cognome}"
-					filterBy="#{utente.cognome}">
-					<h:outputText value="#{utente.cognome}" />
 				</p:column>
 
 				<p:column headerText="Nome" sortBy="#{utente.nome}"
@@ -81,22 +64,30 @@
 					<h:outputText value="#{utente.nome}" />
 				</p:column>
 
-				<p:column headerText="Tipo account" sortBy="#{utente.tipoAccount}"
-					filterBy="#{utente.tipoAccount}">
-					<h:outputText value="#{utente.tipoAccount}" />
+				<p:column headerText="Cognome" sortBy="#{utente.cognome}"
+					filterBy="#{utente.cognome}">
+					<h:outputText value="#{utente.cognome}" />
+				</p:column>
+
+				<p:column headerText="Creato il" sortBy="#{utente.creazione}"
+					filterBy="#{utente.creazione}">
+					<h:outputText value="#{utente.creazione}">
+						<f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="#{appConfig.timeZone}" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Ultimo login" sortBy="#{utente.ultimoLogin}"
+					filterBy="#{utente.ultimoLogin}">
+					<h:outputText value="#{utente.ultimoLogin}">
+						<f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="#{appConfig.timeZone}" />
+					</h:outputText>
 				</p:column>
 
 			</p:dataTable>
 
 		</h:form>
 		
-		<ui:include src="create.xhtml"/>
-		
-		<ui:include src="update.xhtml"/>		
-		
 		<ui:include src="delete.xhtml"/>
-		
-		<ui:include src="password.xhtml"/>
 		
 	</ui:define>
 

@@ -205,6 +205,23 @@ public class UtenteServiceImpl extends AbstractService implements UtenteService 
 		return utente;
 	}
 	
+	@Override
+	public Utente updateLastLogonTimestamp(Integer id) {
+		
+		Utente utente = retrieve(id);
+		if(utente == null) {
+			String message = String.format("It has not been possible to retrieve specified user: %d", id);
+			logger.info(message);
+			throw new NotFoundException(message);
+		}
+		
+		utente.setUltimoLogin(new Date());
+		session.update(utente);
+		logger.debug("Last logon timestamp successfully updated.");
+		
+		return utente;
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Ruolo> listRuoli(Integer id) {
@@ -291,6 +308,43 @@ public class UtenteServiceImpl extends AbstractService implements UtenteService 
 
 		utente.getRuoli().remove(foundRole);
 		session.update(utente);
+	}
+
+	@Override
+	public void setRuoli(Integer utenteId, Integer[] ruoliId) {
+
+		Utente utente = retrieve(utenteId);
+		if (utente == null) {
+			String message = String.format(
+					"It has not been possible to retrieve specified user: %d",
+					utenteId);
+			logger.info(message);
+			throw new NotFoundException(message);
+		}
+		
+		// Remove all roles.
+		//
+		utente.getRuoli().clear();
+		
+		// Iterate on passed array, retrieve selected roes
+		// and add them back to the current user.
+		//
+		for(Integer ruoloId : ruoliId) {
+
+			Ruolo ruolo = (Ruolo) session.get(Ruolo.class, ruoloId);
+			if (ruolo == null) {
+				String message = String.format(
+						"It has not been possible to retrieve specified role: %d",
+						ruoloId);
+				logger.info(message);
+				throw new NotFoundException(message);
+			}
+
+			utente.getRuoli().add(ruolo);
+		}
+		
+		session.update(utente);
+		session.flush();
 	}
 	
 	private String generateSalt() {

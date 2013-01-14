@@ -23,24 +23,24 @@ public class DettaglioClienteTestata implements Serializable {
 	private String codice;
 	private String ragioneSociale;
 	private String partitaIva;
-	private Integer codiceTipoCliente;
+	private Integer codiceGruppoCliente;
 	private List<TipoCliente> listTipoCliente;
 
 	public DettaglioClienteTestata() {
-		
+
 		listTipoCliente = new ArrayList<TipoCliente>();
-		
+
 		TipoCliente tc = new TipoCliente();
 		tc.setId(1);
 		tc.setDescrizione("Grande utenza");
 		listTipoCliente.add(tc);
-		
+
 		tc = new TipoCliente();
 		tc.setId(2);
 		tc.setDescrizione("Piccola utenza");
 		listTipoCliente.add(tc);
 	}
-	
+
 	public String getCodice() {
 		return codice;
 	}
@@ -65,13 +65,6 @@ public class DettaglioClienteTestata implements Serializable {
 		this.partitaIva = partitaIva;
 	}
 
-	public Integer getCodiceTipoCliente() {
-		return codiceTipoCliente;
-	}
-
-	public void setCodiceTipoCliente(Integer codiceTipoCliente) {
-		this.codiceTipoCliente = codiceTipoCliente;
-	}
 
 	public List<TipoCliente> getListTipoCliente() {
 		return listTipoCliente;
@@ -79,5 +72,13 @@ public class DettaglioClienteTestata implements Serializable {
 
 	public void setListTipoCliente(List<TipoCliente> listTipoCliente) {
 		this.listTipoCliente = listTipoCliente;
+	}
+
+	public Integer getCodiceGruppoCliente() {
+		return codiceGruppoCliente;
+	}
+
+	public void setCodiceGruppoCliente(Integer codiceGruppoCliente) {
+		this.codiceGruppoCliente = codiceGruppoCliente;
 	}
 }

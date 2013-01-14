@@ -42,9 +42,13 @@ public interface UtenteService extends EntityService<Utente> {
 			Integer id, 
 			String password);
 	
+	Utente updateLastLogonTimestamp(Integer id);
+
 	List<Ruolo> listRuoli(Integer id);
 	
 	Ruolo addRuolo(Integer utenteId, Integer ruoloId);
 	
 	void deleteRuolo(Integer utenteId, Integer ruoloId);
+		
+	void setRuoli(Integer utenteId, Integer[] ruoliId);
 }

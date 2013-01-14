@@ -12,6 +12,8 @@ import javax.faces.bean.ViewScoped;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
+
 @ManagedBean
 @ViewScoped
 public class DettaglioClienteGenerale implements Serializable {
@@ -22,7 +24,18 @@ public class DettaglioClienteGenerale implements Serializable {
 
 	private String telefono1;
 	private String telefono2;
+	private String cellulare;
+	private String fax;
+	private String email;
+	
+	private boolean value1;	  
+	private boolean value2;
+	
+	private Date dateAttiveDal; 
+	private Date dateAttiveAl; 
+	
 	private Integer codiceTipoBusinessPartner;
+	
 	private List<TipoBusinessPartner> listTipoBusinessPartner;
 
 	public DettaglioClienteGenerale() {
@@ -72,4 +85,60 @@ public class DettaglioClienteGenerale implements Serializable {
 			List<TipoBusinessPartner> listTipoBusinessPartner) {
 		this.listTipoBusinessPartner = listTipoBusinessPartner;
 	}
+
+	public String getCellulare() {
+		return cellulare;
+	}
+
+	public void setCellulare(String cellulare) {
+		this.cellulare = cellulare;
+	}
+
+	public String getFax() {
+		return fax;
+	}
+
+	public void setFax(String fax) {
+		this.fax = fax;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}	
+	
+    public boolean isValue1() {  
+        return value1;  
+    }  
+  
+    public void setValue1(boolean value1) {  
+        this.value1 = value1;  
+    }  
+  
+    public boolean isValue2() {  
+        return value2;  
+    }  
+  
+    public void setValue2(boolean value2) {  
+        this.value2 = value2;  
+    }
+
+	public Date getDateAttiveDal() {
+		return dateAttiveDal;
+	}
+
+	public void setDateAttiveDal(Date dateAttiveDal) {
+		this.dateAttiveDal = dateAttiveDal;
+	}
+
+	public Date getDateAttiveAl() {
+		return dateAttiveAl;
+	}
+
+	public void setDateAttiveAl(Date dateAttiveAl) {
+		this.dateAttiveAl = dateAttiveAl;
+	}  
 }

@@ -32,16 +32,17 @@
 			<p:message for="partitaIva" showSummary="true" showDetail="false"/>
 			<p:tooltip for="partitaIva" showEffect="fade" value="Il codice del cliente rappresnta blah vlahh" />
 
-			<p:outputLabel for="codiceTipoCliente" value="Tipo cliente:" />
+			<p:outputLabel for="codiceGruppoCliente" value="Gruppo cliente:" />
 			<p:selectOneMenu
-				id="codiceTipoCliente" 
-				value="#{dettaglioClienteTestata.codiceTipoCliente}"
+			required="true" requiredMessage="Il campo è obbligatorio"
+				id="codiceGruppoCliente" 
+				value="#{dettaglioClienteTestata.codiceGruppoCliente}"
 				effect="fade">
-				<f:selectItem itemLabel="Selezionare un tipo" itemValue="" />
+				<f:selectItem itemLabel="Selezionare un Gruppo" itemValue="" />
 				<f:selectItems 
 					value="#{dettaglioClienteTestata.listTipoCliente}" var="item"
 					itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
-			</p:selectOneMenu>
+			</p:selectOneMenu>			 
 
 		</h:panelGrid>
 
