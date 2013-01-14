@@ -58,26 +58,33 @@
 			
 		</h:panelGrid>
 		
-		<h:panelGrid columns="6" >
+		<h:panelGrid columns="11" >
 		
 		<h:outputText value="Attivo: " />  
 		<p:selectBooleanCheckbox value="#{dettaglioClienteGenerale.attivo}" />		
-		
 		<h:outputText value="Dal:" />  
-		<p:calendar value="#{dettaglioClienteGenerale.dateAttiveDal}" id="dateAttiveDal" showOn="button" />             
-        
+		<p:calendar value="#{dettaglioClienteGenerale.dateAttiveDal}" id="dateAttiveDal" showOn="button" />       
         <h:outputText value="Al:" />  
-        <p:calendar value="#{dettaglioClienteGenerale.dateAttiveAl}" id="dateAttiveAl" showOn="button" />	
-        
+        <p:calendar value="#{dettaglioClienteGenerale.dateAttiveAl}" id="dateAttiveAl" showOn="button" />
+        <p:outputLabel for="osservazioniAttivo" value="Osservazioni:" />
+		<p:inputText value="#{dettaglioClienteGenerale.osservazioniAttivo}" id="osservazioniAttivo"
+				style="width: 250px;"/>
+		<p:watermark for="osservazioniAttivo" value="Osservazioni" />  
+		<p:message for="osservazioniAttivo" showSummary="true" showDetail="false"/>
+		<p:tooltip for="osservazioniAttivo" showEffect="fade" value="Osservazioni" />	        
         
         <h:outputText value="Bloccato " />  
 		<p:selectBooleanCheckbox value="#{dettaglioClienteGenerale.bloccato}" />		
-		
 		<h:outputText value="Dal:" />  
-		<p:calendar value="#{dettaglioClienteGenerale.dateBloccatoDal}" id="dateBloccatoDal" showOn="button" />             
-        
+		<p:calendar value="#{dettaglioClienteGenerale.dateBloccatoDal}" id="dateBloccatoDal" showOn="button" />        
         <h:outputText value="Al:" />  
         <p:calendar value="#{dettaglioClienteGenerale.dateBloccatoAl}" id="dateBloccatoAl" showOn="button" />		
+		<p:outputLabel for="osservazioniBloccato" value="Osservazioni:" />
+		<p:inputText value="#{dettaglioClienteGenerale.osservazioniBloccato}" id="osservazioniBloccato"
+				style="width: 250px;"/>
+		<p:watermark for="osservazioniBloccato" value="Osservazioni" />  
+		<p:message for="osservazioniBloccato" showSummary="true" showDetail="false"/>
+		<p:tooltip for="osservazioniBloccato" showEffect="fade" value="Osservazioni" />
 		
 		</h:panelGrid>	
 

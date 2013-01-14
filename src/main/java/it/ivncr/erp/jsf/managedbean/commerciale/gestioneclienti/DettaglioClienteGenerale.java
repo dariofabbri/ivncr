@@ -27,6 +27,9 @@ public class DettaglioClienteGenerale implements Serializable {
 	private String cellulare;
 	private String fax;
 	private String email;
+	private String OsservazioniAttivo;
+	private String OsservazioniBloccato;
+	
 	
 	private boolean attivo;	  
 	private boolean bloccato;
@@ -160,5 +163,21 @@ public class DettaglioClienteGenerale implements Serializable {
 
 	public void setDateBloccatoDal(Date dateBloccatoDal) {
 		this.dateBloccatoDal = dateBloccatoDal;
+	}
+
+	public String getOsservazioniAttivo() {
+		return OsservazioniAttivo;
+	}
+
+	public void setOsservazioniAttivo(String osservazioniAttivo) {
+		OsservazioniAttivo = osservazioniAttivo;
+	}
+
+	public String getOsservazioniBloccato() {
+		return OsservazioniBloccato;
+	}
+
+	public void setOsservazioniBloccato(String osservazioniBloccato) {
+		OsservazioniBloccato = osservazioniBloccato;
 	}  
 }

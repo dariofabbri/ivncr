@@ -1,0 +1,22 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+			
+	<h:form>
+	
+		<h:panelGrid columns="5">
+		
+			<p:outputLabel for="telefono1" value="Telefono 1:" />
+			<p:inputText value="#{dettaglioClienteGenerale.telefono1}" id="telefono1"
+				style="width: 250px;"/>
+			<p:watermark for="telefono1" value="Primo contatto telefonico del cliente" />  
+			<p:message for="telefono1" showSummary="true" showDetail="false"/>
+			<p:tooltip for="telefono1" showEffect="fade" value="Primo contatto telefonico del cliente" />
+			
+		</h:panelGrid>	
+
+	</h:form>
+
+</html>
