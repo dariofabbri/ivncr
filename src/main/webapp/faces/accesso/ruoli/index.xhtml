@@ -9,27 +9,47 @@
 	<ui:define name="container">
 
 		<h:form id="form">
+		
+			<p:growl id="growl" showSummary="true" showDetail="true" life="2000"/>
 
 			<h1 class="title ui-widget-header ui-corner-all">Gestione ruoli</h1>
 			
 			<p:outputPanel id="buttons" style="display: block; margin-top: 2em; margin-bottom: 2em;">
 
-				<p:commandButton 
-					value="Nuovo ruolo"
+				<p:commandButton
+					id="createButton"
+					value="Crea"
 					action="#{gestioneRuoli.startCreate}"
-					icon="ui-icon-star" />
+					icon="ui-icon-star"/>
+				<p:tooltip 
+					for="createButton" 
+					value="Crea un nuovo ruolo" 
+					showEffect="fade" 
+					hideEffect="fade"/>
 
-				<p:commandButton 
-					value="Elimina ruolo selezionato"
+				<p:commandButton
+					id="deleteButton"
+					value="Elimina"
 					disabled="#{gestioneRuoli.selected == null}"
 					onclick="deleteDialog.show();"
 					icon="ui-icon-trash" />
+				<p:tooltip 
+					for="deleteButton" 
+					value="Elimina il ruolo selezionato" 
+					showEffect="fade" 
+					hideEffect="fade"/>
 
-				<p:commandButton 
-					value="Modifica ruolo selezionato"
+				<p:commandButton
+					id="updateButton" 
+					value="Modifica"
 					disabled="#{gestioneRuoli.selected == null}"
 					action="#{gestioneRuoli.startUpdate}"
 					icon="ui-icon-pencil" />
+				<p:tooltip 
+					for="updateButton" 
+					value="Modifica il ruolo selezionato" 
+					showEffect="fade" 
+					hideEffect="fade"/>
 
 			</p:outputPanel>
 

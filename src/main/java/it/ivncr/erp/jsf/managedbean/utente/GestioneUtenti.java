@@ -15,7 +15,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
-import org.primefaces.context.RequestContext;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 import org.slf4j.Logger;
@@ -121,10 +120,6 @@ public class GestioneUtenti implements Serializable {
 			UtenteService us = ServiceFactory.createUtenteService();
 			us.delete(selected.getId());
 			logger.debug("Entity successfully deleted.");
-
-			// Clean up selection.
-			//
-			selected = null;
 			
 			// Add a message.
 			//
@@ -133,10 +128,6 @@ public class GestioneUtenti implements Serializable {
 					"Record cancellato", 
 					"La cancellazione dell'utente selezionato si è conclusa con successo.");
 			FacesContext.getCurrentInstance().addMessage(null, message);
-			
-			// Signal to modal dialog that everything went fine.
-			//
-			RequestContext.getCurrentInstance().addCallbackParam("ok", true);
 
 		} catch(Exception e) {
 			
@@ -147,6 +138,12 @@ public class GestioneUtenti implements Serializable {
 					"Errore di sistema", 
 					"Si è verificato un errore in fase di cancellazione del record.");
 			FacesContext.getCurrentInstance().addMessage(null, message);
+			
+		} finally {
+
+			// Clean up selection.
+			//
+			selected = null;
 		}
 	}
 

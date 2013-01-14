@@ -22,8 +22,8 @@
 				<f:facet name="footer">
 					<p:commandButton value="Elimina"
 						actionListener="#{gestioneUtenti.doDelete}"
-						update="@form"
-						oncomplete="if(args.ok) { window.location.reload(); }"/>
+						update=":form"
+						oncomplete="deleteDialog.hide();"/>
 	
 					<p:commandButton value="Annulla"
 						oncomplete="deleteDialog.hide();" />

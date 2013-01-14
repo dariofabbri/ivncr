@@ -15,7 +15,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
-import org.primefaces.context.RequestContext;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 import org.slf4j.Logger;
@@ -100,9 +99,13 @@ public class GestionePermessi implements Serializable {
 			//
 			clean();
 			
-			// Signal to modal dialog that everything went fine.
+			// Add a message.
 			//
-			RequestContext.getCurrentInstance().addCallbackParam("ok", true);
+			FacesMessage message = new FacesMessage(
+					FacesMessage.SEVERITY_INFO, 
+					"Record creato", 
+					"La creazione del nuovo permesso si è conclusa con successo.");
+			FacesContext.getCurrentInstance().addMessage(null, message);
 			
 		} catch(Exception e) {
 			
@@ -127,10 +130,14 @@ public class GestionePermessi implements Serializable {
 					selected.getPermesso(),
 					selected.getDescrizione());
 			logger.debug("Entity successfully updated.");
-
-			// Signal to modal dialog that everything went fine.
+			
+			// Add a message.
 			//
-			RequestContext.getCurrentInstance().addCallbackParam("ok", true);
+			FacesMessage message = new FacesMessage(
+					FacesMessage.SEVERITY_INFO, 
+					"Record aggiornato", 
+					"La modifica del permesso selezionato si è conclusa con successo.");
+			FacesContext.getCurrentInstance().addMessage(null, message);
 			
 		} catch(Exception e) {
 			
@@ -167,10 +174,14 @@ public class GestionePermessi implements Serializable {
 			PermessoService ps = ServiceFactory.createPermessoService();
 			ps.delete(selected.getId());
 			logger.debug("Entity successfully deleted.");
-
-			// Signal to modal dialog that everything went fine.
+			
+			// Add a message.
 			//
-			RequestContext.getCurrentInstance().addCallbackParam("ok", true);
+			FacesMessage message = new FacesMessage(
+					FacesMessage.SEVERITY_INFO, 
+					"Record eliminato", 
+					"La cancellazione del permesso selezionato si è conclusa con successo.");
+			FacesContext.getCurrentInstance().addMessage(null, message);
 
 		} catch(Exception e) {
 			
@@ -181,6 +192,12 @@ public class GestionePermessi implements Serializable {
 					"Errore di sistema", 
 					"Si è verificato un errore in fase di cancellazione del record.");
 			FacesContext.getCurrentInstance().addMessage(null, message);
+			
+		} finally {
+
+			// Clean up selection.
+			//
+			selected = null;
 		}
 	}
 

@@ -9,27 +9,47 @@
 	<ui:define name="container">
 
 		<h:form id="form">
+		
+			<p:growl id="growl" showSummary="true" showDetail="true" life="2000"/>
 
 			<h1 class="title ui-widget-header ui-corner-all">Gestione permessi</h1>
 			
 			<p:outputPanel id="buttons" style="display: block; margin-top: 2em; margin-bottom: 2em;">
 
-				<p:commandButton 
-					value="Nuovo permesso"
+				<p:commandButton
+					id="createButton"
+					value="Crea"
 					onclick="createDialog.show();"
 					icon="ui-icon-star" />
+				<p:tooltip 
+					for="createButton" 
+					value="Crea un nuovo permesso" 
+					showEffect="fade" 
+					hideEffect="fade"/>
 
-				<p:commandButton 
-					value="Elimina permesso selezionato"
-					disabled="#{gestionePermessi.selected == null}"
+				<p:commandButton
+					id="deleteButton"
+					value="Elimina"
+					disabled="#{empty gestionePermessi.selected}"
 					onclick="deleteDialog.show();"
 					icon="ui-icon-trash" />
+				<p:tooltip 
+					for="deleteButton" 
+					value="Elimina il permesso selezionato" 
+					showEffect="fade" 
+					hideEffect="fade"/>
 
-				<p:commandButton 
-					value="Modifica permesso selezionato"
-					disabled="#{gestionePermessi.selected == null}"
+				<p:commandButton
+					id="updateButton"
+					value="Modifica"
+					disabled="#{empty gestionePermessi.selected}"
 					onclick="updateDialog.show();"
 					icon="ui-icon-pencil" />
+				<p:tooltip 
+					for="updateButton" 
+					value="Modifica il permesso selezionato" 
+					showEffect="fade" 
+					hideEffect="fade"/>
 
 			</p:outputPanel>
 

@@ -31,18 +31,18 @@ public class DettaglioUtente implements Serializable {
 
 	@ManagedProperty("#{gestioneUtenti.edited}")
 	private Utente edited;
-	
+
 	private String password;
 	private String confirmPassword;
 
 	private List<Ruolo> ruoli;
 	private List<Ruolo> filtered;
 	private Ruolo[] selected;
-	
+
 	public void onTabChange(TabChangeEvent event) {
 
 		logger.debug("Selected tab changed.");
-		
+
 		// If ruoli tab has been selected it is necessary to initialize
 		// the ruoli list in the bean.
 		//
@@ -53,16 +53,16 @@ public class DettaglioUtente implements Serializable {
 	}
 
 	public void doSave() {
-		
+
 		logger.debug("Entering doSave() method.");
-		
+
 		// Save the entity.
 		//
 		try {
 			UtenteService us = ServiceFactory.createUtenteService();
-			
+
 			if(edited.getId() == null) {
-				
+
 				// Check if password matches confirmation field.
 				//
 				if(!password.equals(confirmPassword)) {
@@ -70,56 +70,56 @@ public class DettaglioUtente implements Serializable {
 					logger.debug("Password and confirmation do not match.");
 
 					FacesMessage message = new FacesMessage(
-							FacesMessage.SEVERITY_ERROR, 
-							"Le password differiscono", 
+							FacesMessage.SEVERITY_ERROR,
+							"Le password differiscono",
 							"La password e la relativa conferma differiscono.");
 					FacesContext.getCurrentInstance().addMessage(null, message);
 					return;
 				}
-				
+
 				edited = us.create(
 						edited.getUsername(),
 						password,
 						edited.getNome(),
 						edited.getCognome(),
 						edited.getNote());
-				
+
 				logger.debug("Entity successfully created.");
-				
+
 			} else {
-								
+
 				edited = us.update(
 						edited.getId(),
 						edited.getUsername(),
 						edited.getNome(),
 						edited.getCognome(),
 						edited.getNote());
-					
+
 				logger.debug("Entity successfully updated.");
 			}
-			
+
 			// Everything went fine.
 			//
 			FacesMessage message = new FacesMessage(
-					FacesMessage.SEVERITY_INFO, 
-					"Successo", 
+					FacesMessage.SEVERITY_INFO,
+					"Successo",
 					"Il salvataggio dei dati si è concluso con successo.");
 			FacesContext.getCurrentInstance().addMessage(null, message);
-			
+
 		} catch(Exception e) {
-			
+
 			logger.warn("Exception caught while creating entity.", e);
-			
+
 			FacesMessage message = new FacesMessage(
-					FacesMessage.SEVERITY_ERROR, 
-					"Errore di sistema", 
+					FacesMessage.SEVERITY_ERROR,
+					"Errore di sistema",
 					"Si è verificato un errore in fase di salvataggio del record.");
 			FacesContext.getCurrentInstance().addMessage(null, message);
 		}
 	}
-	
+
 	public void doUpdateRuoli() {
-		
+
 		logger.debug("Entering doUpdateRuoli() method.");
 
 		// Get selected ids.
@@ -128,7 +128,7 @@ public class DettaglioUtente implements Serializable {
 		for(int i = 0; i < selected.length; ++i) {
 			ids[i] = selected[i].getId();
 		}
-		
+
 		// Set the roles.
 		//
 		try {
@@ -136,34 +136,34 @@ public class DettaglioUtente implements Serializable {
 			us.setRuoli(
 				edited.getId(),
 				ids);
-			
+
 			// Everything went fine.
 			//
 			FacesMessage message = new FacesMessage(
-					FacesMessage.SEVERITY_INFO, 
-					"Successo", 
+					FacesMessage.SEVERITY_INFO,
+					"Successo",
 					"Il salvataggio dei dati si è concluso con successo.");
 			FacesContext.getCurrentInstance().addMessage(null, message);
 
 		} catch(Exception e) {
-			
+
 			logger.warn("Exception caught while updating entity.", e);
-			
+
 			FacesMessage message = new FacesMessage(
-					FacesMessage.SEVERITY_ERROR, 
-					"Errore di sistema", 
+					FacesMessage.SEVERITY_ERROR,
+					"Errore di sistema",
 					"Si è verificato un errore in fase di aggiornamento dei record.");
 			FacesContext.getCurrentInstance().addMessage(null, message);
 		}
 	}
 
 	private void loadList() {
-		
+
 		logger.debug("Loading ruoli list.");
 		RuoloService rs = ServiceFactory.createRuoloService();
 		QueryResult<Ruolo> result = rs.list(null, null, null, null);
 		ruoli = result.getResults();
-		
+
 		UtenteService us = ServiceFactory.createUtenteService();
 		List<Ruolo> list = us.listRuoli(edited.getId());
 		selected = list.toArray(new Ruolo[0]);

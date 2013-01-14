@@ -17,39 +17,75 @@
 			<p:outputPanel id="buttons" style="display: block; margin-top: 2em; margin-bottom: 2em;">
 
 				<p:commandButton 
+					id="createButton"
 					value="Crea"
 					action="#{gestioneUtenti.startCreate}"
 					icon="ui-icon-star" />
+				<p:tooltip 
+					for="createButton" 
+					value="Crea un nuovo utente" 
+					showEffect="fade" 
+					hideEffect="fade"/>
 
 				<p:commandButton 
+					id="deleteButton"
 					value="Elimina"
 					disabled="#{empty gestioneUtenti.selected}"
 					onclick="deleteDialog.show();"
 					icon="ui-icon-trash" />
+				<p:tooltip 
+					for="deleteButton" 
+					value="Elimina l'utente selezionato selezionato" 
+					showEffect="fade" 
+					hideEffect="fade"/>
 
 				<p:commandButton 
+					id="updateButton"
 					value="Modifica"
 					disabled="#{empty gestioneUtenti.selected}"
 					action="#{gestioneUtenti.startUpdate}"
 					icon="ui-icon-pencil" />
+				<p:tooltip 
+					for="updateButton" 
+					value="Modifica l'utente selezionato" 
+					showEffect="fade" 
+					hideEffect="fade"/>
 
 				<p:commandButton 
+					id="changePasswordButton"
 					value="Cambia password"
 					disabled="#{empty gestioneUtenti.selected}"
 					onclick="changePasswordDialog.show();"
 					icon="ui-icon-pencil" />
+				<p:tooltip 
+					for="changePasswordButton" 
+					value="Cambia la password dell'utente selezionato" 
+					showEffect="fade" 
+					hideEffect="fade"/>
 
 				<p:commandButton 
+					id="activateButton"
 					value="Attiva"
 					disabled="#{(empty gestioneUtenti.selected) or gestioneUtenti.selected.attivo}"
 					onclick="activateDialog.show();"
 					icon="ui-icon-pencil" />
+				<p:tooltip 
+					for="activateButton" 
+					value="Attiva l'utente selezionato" 
+					showEffect="fade" 
+					hideEffect="fade"/>
 
 				<p:commandButton 
+					id="deactivateButton"
 					value="Disattiva"
 					disabled="#{(empty gestioneUtenti.selected) or (not gestioneUtenti.selected.attivo)}"
 					onclick="deactivateDialog.show();"
 					icon="ui-icon-pencil" />
+				<p:tooltip 
+					for="deactivateButton" 
+					value="Disattiva l'utente selezionato" 
+					showEffect="fade" 
+					hideEffect="fade"/>
 
 			</p:outputPanel>
 

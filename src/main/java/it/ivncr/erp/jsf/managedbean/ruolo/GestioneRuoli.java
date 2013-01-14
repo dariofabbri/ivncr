@@ -15,7 +15,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
-import org.primefaces.context.RequestContext;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 import org.slf4j.Logger;
@@ -121,14 +120,14 @@ public class GestioneRuoli implements Serializable {
 			RuoloService rs = ServiceFactory.createRuoloService();
 			rs.delete(selected.getId());
 			logger.debug("Entity successfully deleted.");
-
-			// Clean up selection.
-			//
-			selected = null;
 			
-			// Signal to modal dialog that everything went fine.
+			// Add a message.
 			//
-			RequestContext.getCurrentInstance().addCallbackParam("ok", true);
+			FacesMessage message = new FacesMessage(
+					FacesMessage.SEVERITY_INFO, 
+					"Record cancellato", 
+					"La cancellazione del ruolo selezionato si è conclusa con successo.");
+			FacesContext.getCurrentInstance().addMessage(null, message);
 
 		} catch(Exception e) {
 			
@@ -139,6 +138,12 @@ public class GestioneRuoli implements Serializable {
 					"Errore di sistema", 
 					"Si è verificato un errore in fase di cancellazione del record.");
 			FacesContext.getCurrentInstance().addMessage(null, message);
+			
+		} finally {
+
+			// Clean up selection.
+			//
+			selected = null;
 		}
 	}
 
