@@ -15,23 +15,23 @@
 		<p:outputPanel id="buttons" style="display: block; margin-top: 2em; margin-bottom: 2em;">
 
 			<p:commandButton 
-				value="Aggiorna permessi"
-				actionListener="#{dettaglioRuolo.doUpdatePermessi}"
+				value="Aggiorna ruoli"
+				actionListener="#{dettaglioUtente.doUpdateRuoli}"
 				update="growl"
 				icon="ui-icon-disk" />
 
 		</p:outputPanel>
 	
 		<p:dataTable
-			id="permessiTable" 
-			var="permesso" 
-			value="#{dettaglioRuolo.permessi}"
-			widgetVar="permessiTable"
+			id="ruoliTable" 
+			var="ruolo" 
+			value="#{dettaglioUtente.ruoli}"
+			widgetVar="ruoliTable"
 			emptyMessage="Nessun record trovato"
-			filteredValue="#{dettaglioRuolo.filtered}"
-			rowKey="#{permesso.id}"
-			selection="#{dettaglioRuolo.selected}"
-			paginator="true" 
+			filteredValue="#{dettaglioUtente.filtered}"
+			rowKey="#{ruolo.id}"
+			selection="#{dettaglioUtente.selected}"
+			paginator="true"
 			paginatorPosition="bottom"
 			rows="10"
 			paginatorTemplate="{CurrentPageReport} {RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
@@ -40,23 +40,23 @@
 			pageLinks="10">
 						        		
 			<f:facet name="header">
-		    	Lista dei permessi
+		    	Lista dei ruoli
 		    </f:facet>
 
 			<p:column selectionMode="multiple"/>
 			
-			<p:column headerText="Permesso" 
-				filterBy="#{permesso.permesso}"
+			<p:column headerText="Nome" 
+				filterBy="#{ruolo.nome}"
 				filterMatchMode="contains"
-				sortBy="#{permesso.permesso}">
-				<h:outputText value="#{permesso.permesso}" />
+				sortBy="#{ruolo.nome}">
+				<h:outputText value="#{ruolo.nome}" />
 			</p:column>
 
 			<p:column headerText="Descrizione" 
-				filterBy="#{permesso.descrizione}"
+				filterBy="#{ruolo.descrizione}"
 				filterMatchMode="contains"
-				sortBy="#{permesso.descrizione}">
-				<h:outputText value="#{permesso.descrizione}" />
+				sortBy="#{ruolo.descrizione}">
+				<h:outputText value="#{ruolo.descrizione}" />
 			</p:column>
 			
 		</p:dataTable>

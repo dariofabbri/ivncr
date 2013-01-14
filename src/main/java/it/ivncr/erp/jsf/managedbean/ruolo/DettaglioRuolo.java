@@ -17,7 +17,6 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
-import org.primefaces.context.RequestContext;
 import org.primefaces.event.TabChangeEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,15 +74,20 @@ public class DettaglioRuolo implements Serializable {
 			// If no id is present, creation is required.
 			//
 			if(edited.getId() == null) {
+				
 				edited = rs.create(
 						edited.getNome(), 
 						edited.getDescrizione());
+				
 				logger.debug("Entity successfully created.");
+				
 			} else {
+				
 				edited = rs.update(
 						edited.getId(),
 						edited.getNome(), 
 						edited.getDescrizione());
+				
 				logger.debug("Entity successfully updated.");
 			}
 			
@@ -110,7 +114,7 @@ public class DettaglioRuolo implements Serializable {
 	
 	public void doUpdatePermessi() {
 		
-		logger.debug("Entering doSave() method.");
+		logger.debug("Entering doUpdatePermessi() method.");
 
 		// Get selected ids.
 		//
@@ -142,52 +146,7 @@ public class DettaglioRuolo implements Serializable {
 			FacesMessage message = new FacesMessage(
 					FacesMessage.SEVERITY_ERROR, 
 					"Errore di sistema", 
-					"Si è verificato un errore in fase di rimozione dei record.");
-			FacesContext.getCurrentInstance().addMessage(null, message);
-		}
-	}
-
-	
-	public void doRemovePermessi() {
-		
-		logger.debug("Entering doSave() method.");
-		
-		if(selected == null || selected.length == 0) {
-			logger.error("Selection should not be empty at this point.");
-			throw new RuntimeException("Selection should not be empty at this point.");
-		}
-		
-		// Get selected ids.
-		//
-		Integer[] ids = new Integer[selected.length];
-		for(int i = 0; i < selected.length; ++i) {
-			ids[i] = selected[i].getId();
-		}
-		
-		// Remove the permissions.
-		//
-		try {
-			RuoloService rs = ServiceFactory.createRuoloService();
-			rs.deletePermessi(
-				edited.getId(),
-				ids);
-			
-			// Reload updated list.
-			//
-			loadList();
-			
-			// Signal to modal dialog that everything went fine.
-			//
-			RequestContext.getCurrentInstance().addCallbackParam("ok", true);
-
-		} catch(Exception e) {
-			
-			logger.warn("Exception caught while deleting entity.", e);
-			
-			FacesMessage message = new FacesMessage(
-					FacesMessage.SEVERITY_ERROR, 
-					"Errore di sistema", 
-					"Si è verificato un errore in fase di rimozione dei record.");
+					"Si è verificato un errore in fase di aggiornamento dei record.");
 			FacesContext.getCurrentInstance().addMessage(null, message);
 		}
 	}
