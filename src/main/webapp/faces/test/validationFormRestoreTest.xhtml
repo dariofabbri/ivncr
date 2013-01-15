@@ -1,0 +1,57 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:head>
+		<h:outputStylesheet library="default" name="css/app.css"  />
+	</h:head>
+
+	<h:body>
+					
+		<h:form>
+			
+			<p:messages globalOnly="true" showDetail="true" closable="true"/>
+
+			<p:outputPanel id="mypanel">	
+															
+				<p:outputLabel for="username" value="Username:" />
+				<p:inputText value="#{validationFormRestoreTest.username}" id="username"
+					required="true" requiredMessage="Il campo è obbligatorio"
+					style="width: 250px;"/>
+				<p:watermark for="username" value="Identificativo dell\'utente" />
+				<p:message for="username" showSummary="true" showDetail="false"/>
+																
+				<p:outputLabel for="nome" value="Nome:" />
+				<p:inputText value="#{validationFormRestoreTest.nome}" id="nome"
+					required="true" requiredMessage="Il campo è obbligatorio"
+					style="width: 250px;"/>
+				<p:watermark for="nome" value="Nome dell\'utente" />  
+				<p:message for="nome" showSummary="true" showDetail="false"/>
+																
+				<p:outputLabel for="cognome" value="Cognome:" />
+				<p:inputText value="#{validationFormRestoreTest.cognome}" id="cognome"
+					required="true" requiredMessage="Il campo è obbligatorio"
+					style="width: 250px;"/>
+				<p:watermark for="cognome" value="Cognome dell\'utente" />  
+				<p:message for="cognome" showSummary="true" showDetail="false"/>
+																
+				<p:outputLabel for="note" value="Note:" />
+				<p:inputTextarea value="#{validationFormRestoreTest.note}" id="note"
+					style="width: 250px;"/>
+				<p:watermark for="note" value="Spazio per eventuali annotazioni" />  
+				<p:message for="note" showSummary="true" showDetail="false"/>
+				
+			</p:outputPanel>
+			
+			<p:commandButton value="Salva"
+				actionListener="#{validationFormRestoreTest.doSave}"
+				update="mypanel"/>
+					
+		</h:form>
+	
+	</h:body>
+
+</html>

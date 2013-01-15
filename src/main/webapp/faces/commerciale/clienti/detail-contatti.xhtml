@@ -3,46 +3,44 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
-	
 			
 	<h:form>	
 							
-			<p:dataTable var="contatti" 
-				value="#{DettaglioClientiContatti.model}"
-				paginator="true" 
-				paginatorPosition="bottom" rows="10"
-				paginatorTemplate="{CurrentPageReport} {RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
-				currentPageReportTemplate="Trovati {totalRecords} record - Pagina {currentPage} di {totalPages}"
-				rowsPerPageTemplate="5,10,50" 
-				pageLinks="10"
-				emptyMessage="Nessun record trovato" 
-				selectionMode="single"
-				selection="#{dettaglioClientiContatti.selected}" 
-				id="contattiTable" 
-				lazy="true">
+		<p:dataTable var="contatto" 
+			value="#{dettaglioClientiContatti.model}"
+			paginator="true" 
+			paginatorPosition="bottom" rows="10"
+			paginatorTemplate="{CurrentPageReport} {RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+			currentPageReportTemplate="Trovati {totalRecords} record - Pagina {currentPage} di {totalPages}"
+			rowsPerPageTemplate="5,10,50" 
+			pageLinks="10"
+			emptyMessage="Nessun record trovato" 
+			selectionMode="single"
+			selection="#{dettaglioClientiContatti.selected}" 
+			id="contattiTable" 
+			lazy="true">
 
-				<!--
-				<p:ajax event="rowSelect" update=":form:buttons,:updateForm"/>
+			<!--
+			<p:ajax event="rowSelect" update=":form:buttons,:updateForm"/>
 
-				<p:ajax event="rowUnselect" update=":form:buttons,:updateForm"/>
-				-->
-        		
-				<f:facet name="header">
-			    	Lista dei Contatti
-			    </f:facet>
+			<p:ajax event="rowUnselect" update=":form:buttons,:updateForm"/>
+			-->
+       		
+			<f:facet name="header">
+		    	Lista dei contatti
+		    </f:facet>
 
-				<p:column headerText="Codice" sortBy="#{contatti.codice}"
-					filterBy="#{contatti.codice}">
-					<h:outputText value="#{contatti.codice}" />
-				</p:column>
+			<p:column headerText="Codice" sortBy="#{contatto.codice}"
+				filterBy="#{contatto.codice}">
+				<h:outputText value="#{contatto.codice}" />
+			</p:column>
 
-				<p:column headerText="Ragione sociale" sortBy="#{contatti.ragioneSociale}"
-					filterBy="#{contatti.ragioneSociale}">
-					<h:outputText value="#{contatti.ragioneSociale}" />
-				</p:column>
+			<p:column headerText="Ragione sociale" sortBy="#{contatto.ragioneSociale}"
+				filterBy="#{contatto.ragioneSociale}">
+				<h:outputText value="#{contatto.ragioneSociale}" />
+			</p:column>
 
-			</p:dataTable>
-			
+		</p:dataTable>
 			
 	</h:form>
 

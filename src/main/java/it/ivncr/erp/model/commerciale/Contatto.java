@@ -1,6 +1,6 @@
 package it.ivncr.erp.model.commerciale;
 
-public class Contatti {
+public class Contatto {
 
 	private Integer id;
 	private String codice;

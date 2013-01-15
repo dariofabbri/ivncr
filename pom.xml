@@ -19,6 +19,7 @@
 	</properties>
 
 	<dependencies>
+	
 		<dependency>
 			<groupId>com.sun.faces</groupId>
 			<artifactId>jsf-api</artifactId>
@@ -29,9 +30,39 @@
 			<artifactId>jsf-impl</artifactId>
 			<version>2.1.17</version>
 		</dependency>
+		
+	<!--
+		<dependency>
+			<groupId>org.apache.myfaces.core</groupId>
+			<artifactId>myfaces-api</artifactId>
+			<version>2.1.10</version>
+		</dependency>
+        <dependency>
+			<groupId>org.apache.myfaces.core</groupId>
+			<artifactId>myfaces-impl</artifactId>
+			<version>2.1.10</version>
+		</dependency>
+	-->
+
+		<dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
+        
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+			<scope>provided</scope>
+		</dependency>
+            
 		<dependency>
 			<groupId>org.primefaces</groupId>
 			<artifactId>primefaces</artifactId>
+			<!--
+			<version>3.4.2</version>
+			-->
 			<version>3.5-SNAPSHOT</version>
 		</dependency>
 		<dependency>
@@ -73,12 +104,6 @@
 			<groupId>postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<version>9.1-901.jdbc4</version>
-		</dependency>
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>2.5</version>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>

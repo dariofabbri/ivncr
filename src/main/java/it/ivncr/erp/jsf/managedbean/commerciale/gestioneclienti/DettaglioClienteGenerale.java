@@ -4,6 +4,7 @@ import it.ivncr.erp.model.commerciale.TipoBusinessPartner;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -11,8 +12,6 @@ import javax.faces.bean.ViewScoped;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Date;
 
 @ManagedBean
 @ViewScoped
@@ -27,8 +26,8 @@ public class DettaglioClienteGenerale implements Serializable {
 	private String cellulare;
 	private String fax;
 	private String email;
-	private String OsservazioniAttivo;
-	private String OsservazioniBloccato;
+	private String osservazioniAttivo;
+	private String osservazioniBloccato;
 	
 	
 	private boolean attivo;	  
@@ -166,18 +165,18 @@ public class DettaglioClienteGenerale implements Serializable {
 	}
 
 	public String getOsservazioniAttivo() {
-		return OsservazioniAttivo;
+		return osservazioniAttivo;
 	}
 
 	public void setOsservazioniAttivo(String osservazioniAttivo) {
-		OsservazioniAttivo = osservazioniAttivo;
+		this.osservazioniAttivo = osservazioniAttivo;
 	}
 
 	public String getOsservazioniBloccato() {
-		return OsservazioniBloccato;
+		return osservazioniBloccato;
 	}
 
 	public void setOsservazioniBloccato(String osservazioniBloccato) {
-		OsservazioniBloccato = osservazioniBloccato;
-	}  
+		this.osservazioniBloccato = osservazioniBloccato;
+	}
 }

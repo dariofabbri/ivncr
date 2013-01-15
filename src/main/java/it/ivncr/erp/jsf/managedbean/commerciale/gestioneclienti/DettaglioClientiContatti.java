@@ -1,7 +1,7 @@
 package it.ivncr.erp.jsf.managedbean.commerciale.gestioneclienti;
 
 
-import it.ivncr.erp.model.commerciale.Contatti;
+import it.ivncr.erp.model.commerciale.Contatto;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,15 +24,15 @@ public class DettaglioClientiContatti implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private LazyDataModel<Contatti> model;
-	private Contatti selected;
+	private LazyDataModel<Contatto> model;
+	private Contatto selected;
 	
 	public DettaglioClientiContatti(){
-		model = new LazyDataModel<Contatti>() {
+		model = new LazyDataModel<Contatto>() {
 
 			private static final long serialVersionUID = 1L;
 			@Override
-			public List<Contatti> load(
+			public List<Contatto> load(
 					int first, 
 					int pageSize, 
 					String sortField,
@@ -40,19 +40,19 @@ public class DettaglioClientiContatti implements Serializable {
 					Map<String, String> filters) {
 				logger.debug("Fetching data model.");
 
-				List<Contatti> list = new ArrayList<Contatti>();
+				List<Contatto> list = new ArrayList<Contatto>();
 
-				Contatti contatti = new Contatti();
-				contatti.setId(1);
-				contatti.setCodice("C001");
-				contatti.setRagioneSociale("Ambasciata degli Stati Uniti");
-				list.add(contatti);
+				Contatto contatto = new Contatto();
+				contatto.setId(1);
+				contatto.setCodice("C001");
+				contatto.setRagioneSociale("Ambasciata degli Stati Uniti");
+				list.add(contatto);
 				
-				contatti = new Contatti();
-				contatti.setId(2);
-				contatti.setCodice("C003");
-				contatti.setRagioneSociale("Banca Di Italia");
-				list.add(contatti);
+				contatto = new Contatto();
+				contatto.setId(2);
+				contatto.setCodice("C003");
+				contatto.setRagioneSociale("Banca Di Italia");
+				list.add(contatto);
 				
 				this.setRowCount(list.size());
 
@@ -60,13 +60,13 @@ public class DettaglioClientiContatti implements Serializable {
 			}
 			
 			@Override
-			public Object getRowKey(Contatti contatti) {
+			public Object getRowKey(Contatto contatto) {
 				
-				return contatti == null ? null : contatti.getId();
+				return contatto == null ? null : contatto.getId();
 			}
 
 			@Override
-			public Contatti getRowData(String rowKey) {
+			public Contatto getRowData(String rowKey) {
 				
 				return null;
 			}
@@ -80,19 +80,19 @@ public String startCreate() {
 	}
 
 
-	public LazyDataModel<Contatti> getModel() {
+	public LazyDataModel<Contatto> getModel() {
 		return model;
 	}
 
-	public void setModel(LazyDataModel<Contatti> model) {
+	public void setModel(LazyDataModel<Contatto> model) {
 		this.model = model;
 	}
 
-	public Contatti getSelected() {
+	public Contatto getSelected() {
 		return selected;
 	}
 
-	public void setSelected(Contatti selected) {
+	public void setSelected(Contatto selected) {
 		this.selected = selected;
 	}
 }
