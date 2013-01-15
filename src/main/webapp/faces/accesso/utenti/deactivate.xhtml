@@ -5,28 +5,28 @@
 	xmlns:p="http://primefaces.org/ui">
 	
 	<p:dialog 
-		header="Eliminazione permesso" 
-		widgetVar="deleteDialog" 
+		header="Disattivazione utente" 
+		widgetVar="deactivateDialog" 
 		modal="true"
 		showEffect="fade" 
 		hideEffect="fade"> 
 	
-		<h:form id="deleteForm">
+		<h:form id="deactivateForm">
 		
 			<p:messages globalOnly="true" showDetail="true" closable="true"/>
 	
-			<h:panelGrid columns="1" cellpadding="5">
+			<h:panelGrid columns="1" cellpadding="5" id="wrapper">
 		
-				<h:outputText value="Si conferma l'eliminazione del permesso selezionato?"/>
+				<h:outputText value="Si conferma la disattivazione dell'utente selezionato?"/>
 				
 				<f:facet name="footer">
-					<p:commandButton value="Elimina"
-						actionListener="#{gestionePermessi.doDelete}"
-						update="@form,:form" 
-						oncomplete="if(args.ok) { deleteDialog.hide(); }"/>
+					<p:commandButton value="Disattiva"
+						actionListener="#{gestioneUtenti.doDeactivate}"
+						update=":form"
+						oncomplete="deactivateDialog.hide();"/>
 	
 					<p:commandButton value="Annulla"
-						oncomplete="deleteDialog.hide();" />
+						oncomplete="deactivateDialog.hide();" />
 				</f:facet>
 			
 			</h:panelGrid>

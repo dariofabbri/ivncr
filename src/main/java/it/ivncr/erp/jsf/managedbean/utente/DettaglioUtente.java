@@ -24,8 +24,7 @@ import org.slf4j.LoggerFactory;
 @ViewScoped
 public class DettaglioUtente implements Serializable {
 
-	private static final Logger logger = LoggerFactory
-			.getLogger(DettaglioUtente.class);
+	private static final Logger logger = LoggerFactory.getLogger(DettaglioUtente.class);
 
 	private static final long serialVersionUID = 1L;
 

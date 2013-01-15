@@ -15,6 +15,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import org.primefaces.context.RequestContext;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 import org.slf4j.Logger;
@@ -30,95 +31,99 @@ public class GestionePermessi implements Serializable {
 
 	private LazyDataModel<Permesso> model;
 	private Permesso selected;
-	
+
 	private String permesso;
 	private String descrizione;
-	
+
 	public GestionePermessi() {
-		
+
 		model = new LazyDataModel<Permesso>() {
 
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public List<Permesso> load(
-					int first, 
-					int pageSize, 
+					int first,
+					int pageSize,
 					String sortField,
 					SortOrder sortOrder, Map<String, String> filters) {
 
 				logger.debug("Fetching data model.");
-				
+
 				PermessoService ps = ServiceFactory.createPermessoService();
 				QueryResult<Permesso> result = ps.list(
-						first, 
-						pageSize, 
-						sortField, 
-						SortDirection.fromSortOrder(sortOrder), 
+						first,
+						pageSize,
+						sortField,
+						SortDirection.fromSortOrder(sortOrder),
 						filters);
-				
+
 				this.setRowCount(result.getRecords());
-				
+
 				return result.getResults();
 			}
-			
+
 			@Override
 			public Object getRowKey(Permesso permesso) {
-				
+
 				return permesso == null ? null : permesso.getId();
 			}
 
 			@Override
 			public Permesso getRowData(String rowKey) {
-				
+
 				PermessoService ps = ServiceFactory.createPermessoService();
 				Permesso permesso = ps.retrieve(Integer.decode(rowKey));
 				return permesso;
 			}
 		};
 	}
-	
+
 	private void clean() {
-		
+
 		permesso = null;
 		descrizione = null;
 	}
-	
+
 	public void doCreate() {
-		
+
 		// Create the new entity.
 		//
 		try {
 			PermessoService ps = ServiceFactory.createPermessoService();
 			ps.create(
-					permesso, 
+					permesso,
 					descrizione);
 			logger.debug("Entity successfully created.");
-			
+
 			// Clean up form state.
 			//
 			clean();
-			
+
 			// Add a message.
 			//
 			FacesMessage message = new FacesMessage(
-					FacesMessage.SEVERITY_INFO, 
-					"Record creato", 
+					FacesMessage.SEVERITY_INFO,
+					"Record creato",
 					"La creazione del nuovo permesso si è conclusa con successo.");
 			FacesContext.getCurrentInstance().addMessage(null, message);
-			
+
+			// Signal to modal dialog that everything went fine.
+			//
+			RequestContext.getCurrentInstance().addCallbackParam("ok", true);
+
 		} catch(Exception e) {
-			
+
 			logger.warn("Exception caught while creating entity.", e);
-			
+
 			FacesMessage message = new FacesMessage(
-					FacesMessage.SEVERITY_ERROR, 
-					"Errore di sistema", 
+					FacesMessage.SEVERITY_ERROR,
+					"Errore di sistema",
 					"Si è verificato un errore in fase di creazione del record.");
 			FacesContext.getCurrentInstance().addMessage(null, message);
 		}
 	}
-	
+
 	public void doUpdate() {
 
 		// Update the entity.
@@ -130,69 +135,77 @@ public class GestionePermessi implements Serializable {
 					selected.getPermesso(),
 					selected.getDescrizione());
 			logger.debug("Entity successfully updated.");
-			
+
 			// Add a message.
 			//
 			FacesMessage message = new FacesMessage(
-					FacesMessage.SEVERITY_INFO, 
-					"Record aggiornato", 
+					FacesMessage.SEVERITY_INFO,
+					"Record aggiornato",
 					"La modifica del permesso selezionato si è conclusa con successo.");
 			FacesContext.getCurrentInstance().addMessage(null, message);
-			
+
+			// Signal to modal dialog that everything went fine.
+			//
+			RequestContext.getCurrentInstance().addCallbackParam("ok", true);
+
 		} catch(Exception e) {
-			
+
 			logger.warn("Exception caught while updating entity.", e);
 
 			FacesMessage message = new FacesMessage(
-					FacesMessage.SEVERITY_ERROR, 
-					"Errore di sistema", 
+					FacesMessage.SEVERITY_ERROR,
+					"Errore di sistema",
 					"Si è verificato un errore in fase di aggiornamento del record.");
 			FacesContext.getCurrentInstance().addMessage(null, message);
 		}
 	}
-	
+
 	public void doDelete() {
 
 		// Check if a row has been selected.
 		//
 		if(selected == null) {
-			
+
 			logger.warn("No entity selected for deletion.");
 
 			FacesMessage message = new FacesMessage(
-					FacesMessage.SEVERITY_ERROR, 
-					"Errore di sistema", 
+					FacesMessage.SEVERITY_ERROR,
+					"Errore di sistema",
 					"Nessun record selezionato.");
 			FacesContext.getCurrentInstance().addMessage(null, message);
 			return;
 		}
-		
+
 		// Delete the selected entity.
 		//
 		try {
-			
+
 			PermessoService ps = ServiceFactory.createPermessoService();
 			ps.delete(selected.getId());
 			logger.debug("Entity successfully deleted.");
-			
+
 			// Add a message.
 			//
 			FacesMessage message = new FacesMessage(
-					FacesMessage.SEVERITY_INFO, 
-					"Record eliminato", 
+					FacesMessage.SEVERITY_INFO,
+					"Record eliminato",
 					"La cancellazione del permesso selezionato si è conclusa con successo.");
 			FacesContext.getCurrentInstance().addMessage(null, message);
 
+			// Signal to modal dialog that everything went fine.
+			//
+			RequestContext.getCurrentInstance().addCallbackParam("ok", true);
+
 		} catch(Exception e) {
-			
+
 			logger.warn("Exception caught while deleting entity.", e);
 
 			FacesMessage message = new FacesMessage(
-					FacesMessage.SEVERITY_ERROR, 
-					"Errore di sistema", 
+					FacesMessage.SEVERITY_ERROR,
+					"Errore di sistema",
 					"Si è verificato un errore in fase di cancellazione del record.");
 			FacesContext.getCurrentInstance().addMessage(null, message);
-			
+
 		} finally {
 
 			// Clean up selection.

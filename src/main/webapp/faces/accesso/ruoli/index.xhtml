@@ -30,6 +30,7 @@
 				<p:commandButton
 					id="deleteButton"
 					value="Elimina"
+					update=":deleteForm"
 					disabled="#{gestioneRuoli.selected == null}"
 					onclick="deleteDialog.show();"
 					icon="ui-icon-trash" />

@@ -45,8 +45,78 @@
 					style="width: 250px;"/>
 				<p:watermark for="note" value="Spazio per eventuali annotazioni" />  
 				<p:message for="note" showSummary="true" showDetail="false"/>
-
+	
 			</h:panelGrid>
+			
+			<c:if test="#{not empty dettaglioUtente.edited.id}">
+		
+				<h:panelGrid columns="2">
+			
+					<p:outputLabel for="ultimoLogin" value="Ultimo login:" />
+					<p:inputText value="#{dettaglioUtente.edited.ultimoLogin}" id="ultimoLogin"
+						disabled="true" style="width: 250px;">
+						<f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="#{appConfig.timeZone}" />
+					</p:inputText>
+				
+					<p:outputLabel for="creazione" value="Creato il:" />
+					<p:inputText value="#{dettaglioUtente.edited.creazione}" id="creazione"
+						disabled="true" style="width: 250px;">
+						<f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="#{appConfig.timeZone}" />
+					</p:inputText>
+				
+					<p:outputLabel for="ultimaAttivazione" value="Ultima attivazione:" />
+					<p:inputText value="#{dettaglioUtente.edited.ultimaAttivazione}" id="ultimaAttivazione"
+						disabled="true" style="width: 250px;">
+						<f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="#{appConfig.timeZone}" />
+					</p:inputText>
+				
+					<p:outputLabel for="ultimaDisattivazione" value="Ultima disattivazione:" />
+					<p:inputText value="#{dettaglioUtente.edited.ultimaDisattivazione}" id="ultimaDisattivazione"
+						disabled="true" style="width: 250px;">
+						<f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="#{appConfig.timeZone}" />
+					</p:inputText>
+				
+					<p:outputLabel for="attivo" value="Attivo:" />
+					<p:selectBooleanCheckbox id="attivo" value="#{dettaglioUtente.edited.attivo}"
+						disabled="true"/>
+						
+				</h:panelGrid>
+	
+			</c:if>
+			
+			<c:if test="#{empty dettaglioUtente.edited.id}">
+			
+				<h:panelGrid columns="4">
+																	
+					<p:outputLabel for="password" value="Password:" />
+					<p:password value="#{dettaglioUtente.password}" id="password"
+						required="true" requiredMessage="Il campo è obbligatorio"
+						feedback="true" inline="false"
+						redisplay="true"
+						promptLabel="Immettere la password"
+						weakLabel="Password debole" 
+						goodLabel="Password accettabile" 
+						strongLabel="Password forte"
+						style="width: 250px;" />
+					<p:watermark for="password" value="Password iniziale di accesso" />
+					<p:message for="password" showSummary="true" showDetail="false"/>
+																	
+					<p:outputLabel for="confirmPassword" value="Password:" />
+					<p:password value="#{dettaglioUtente.confirmPassword}" id="confirmPassword"
+						required="true" requiredMessage="Il campo è obbligatorio"
+						feedback="true" inline="false"
+						redisplay="true"
+						promptLabel="Confermare la password"
+						weakLabel="Password debole" 
+						goodLabel="Password accettabile" 
+						strongLabel="Password forte"
+						style="width: 250px;" />
+					<p:watermark for="confirmPassword" value="Confermare la password" />
+					<p:message for="confirmPassword" showSummary="true" showDetail="false"/>
+					
+				</h:panelGrid>
+					
+			</c:if>
 	
 			<f:facet name="footer">
 				<p:commandButton value="Salva"

@@ -34,8 +34,8 @@
 				<f:facet name="footer">
 					<p:commandButton value="Aggiorna"
 						actionListener="#{gestionePermessi.doUpdate}"
-						update=":form"
-						oncomplete="updateDialog.hide();"/>
+						update="@form,:form"
+						oncomplete="if(args.ok) { updateDialog.hide(); }"/>
 
 					<p:commandButton value="Annulla"
 						oncomplete="updateDialog.hide();" />

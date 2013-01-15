@@ -34,8 +34,8 @@
 				<f:facet name="footer">
 					<p:commandButton value="Crea"
 						actionListener="#{gestionePermessi.doCreate}" 
-						update=":form" 
-						oncomplete="createDialog.hide();"/>
+						update="@form,:form" 
+						oncomplete="if(args.ok) { createDialog.hide(); }"/>
 
 					<p:commandButton value="Annulla"
 						oncomplete="createDialog.hide();" />

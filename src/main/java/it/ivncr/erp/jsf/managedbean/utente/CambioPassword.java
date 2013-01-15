@@ -1,6 +1,6 @@
 package it.ivncr.erp.jsf.managedbean.utente;
 
-import it.ivncr.erp.jsf.managedbean.session.LoginInfo;
+import it.ivncr.erp.model.accesso.Utente;
 import it.ivncr.erp.service.ServiceFactory;
 import it.ivncr.erp.service.utente.UtenteService;
 
@@ -18,74 +18,85 @@ import org.slf4j.LoggerFactory;
 
 @ManagedBean
 @ViewScoped
-public class ChangePassword implements Serializable {
+public class CambioPassword implements Serializable {
 
-	private static final Logger logger = LoggerFactory.getLogger(ChangePassword.class);
+	private static final Logger logger = LoggerFactory.getLogger(CambioPassword.class);
 
 	private static final long serialVersionUID = 1L;
-	
-	@ManagedProperty("#{loginInfo}")
-    private LoginInfo loginInfo;
-	
+
+	@ManagedProperty("#{gestioneUtenti.selected}")
+	private Utente selected;
+
 	private String password;
 	private String confirmPassword;
-	
-	
-	private void clean() {
-		
-		password = null;
-		confirmPassword = null;
-	}
-	
+
 	public void doChangePassword() {
+
+		// Check if a row has been selected.
+		//
+		if(selected == null) {
+
+			logger.warn("No user selected for password change.");
+
+			FacesMessage message = new FacesMessage(
+					FacesMessage.SEVERITY_ERROR,
+					"Errore di sistema",
+					"Nessun record selezionato.");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			return;
+		}
 
 		// Check if password matches confirmation field.
 		//
 		if(!password.equals(confirmPassword)) {
-			
+
 			logger.debug("Password and confirmation do not match.");
-			
+
 			FacesMessage message = new FacesMessage(
-					FacesMessage.SEVERITY_ERROR, 
-					"Le password differiscono", 
+					FacesMessage.SEVERITY_ERROR,
+					"Le password differiscono",
 					"La password e la relativa conferma differiscono");
 			FacesContext.getCurrentInstance().addMessage(null, message);
 			return;
 		}
-		
+
 		// Change the password
 		//
 		try {
 			UtenteService us = ServiceFactory.createUtenteService();
-			us.changePassword(loginInfo.getUtente().getId(), password); 
+			us.changePassword(selected.getId(), password);
 			logger.debug("Password successfully changed.");
-			
-			// Clean up form state.
+
+			// Everything went fine.
 			//
-			clean();
-			
+			FacesMessage message = new FacesMessage(
+					FacesMessage.SEVERITY_INFO,
+					"Successo",
+					"La modifica della password si è conclusa con successo.");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+
 			// Signal to modal dialog that everything went fine.
 			//
 			RequestContext.getCurrentInstance().addCallbackParam("ok", true);
-			
+
 		} catch(Exception e) {
-			
-			logger.warn("Exception caught while creating user.", e);
-			
+
+			logger.warn("Exception caught while changing password.", e);
+
 			FacesMessage message = new FacesMessage(
-					FacesMessage.SEVERITY_ERROR, 
-					"Errore di sistema", 
-					"Si è verificato un errore in fase di creazione dell'utente");
+					FacesMessage.SEVERITY_ERROR,
+					"Errore di sistema",
+					"Si è verificato un errore in fase di modifica della password.");
 			FacesContext.getCurrentInstance().addMessage(null, message);
 		}
 	}
 
-	public LoginInfo getLoginInfoBean() {
-		return loginInfo;
+	public Utente getSelected() {
+		return selected;
 	}
 
-	public void setLoginInfoBean(LoginInfo loginInfo) {
-		this.loginInfo = loginInfo;
+	public void setSelected(Utente selected) {
+		this.selected = selected;
 	}
 
 	public String getPassword() {

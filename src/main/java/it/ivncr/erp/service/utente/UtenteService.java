@@ -25,30 +25,34 @@ public interface UtenteService extends EntityService<Utente> {
 	void delete(Integer id);
 
 	Utente create(
-			String username, 
-			String password, 
-			String nome, 
+			String username,
+			String password,
+			String nome,
 			String cognome,
 			String note);
 
 	Utente update(
-			Integer id, 
-			String username, 
-			String nome, 
-			String cognome, 
+			Integer id,
+			String username,
+			String nome,
+			String cognome,
 			String note);
 
 	Utente changePassword(
-			Integer id, 
+			Integer id,
 			String password);
-	
+
+	Utente activate(Integer id);
+
+	Utente deactivate(Integer id);
+
 	Utente updateLastLogonTimestamp(Integer id);
 
 	List<Ruolo> listRuoli(Integer id);
-	
+
 	Ruolo addRuolo(Integer utenteId, Integer ruoloId);
-	
+
 	void deleteRuolo(Integer utenteId, Integer ruoloId);
-		
+
 	void setRuoli(Integer utenteId, Integer[] ruoliId);
 }
