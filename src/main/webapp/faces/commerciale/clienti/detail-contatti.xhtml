@@ -3,20 +3,47 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
-			
-	<h:form>
 	
-		<h:panelGrid columns="5">
-		
-			<p:outputLabel for="telefono1" value="Telefono 1:" />
-			<p:inputText value="#{dettaglioClienteGenerale.telefono1}" id="telefono1"
-				style="width: 250px;"/>
-			<p:watermark for="telefono1" value="Primo contatto telefonico del cliente" />  
-			<p:message for="telefono1" showSummary="true" showDetail="false"/>
-			<p:tooltip for="telefono1" showEffect="fade" value="Primo contatto telefonico del cliente" />
 			
-		</h:panelGrid>	
+	<h:form>	
+							
+			<p:dataTable var="contatti" 
+				value="#{DettaglioClientiContatti.model}"
+				paginator="true" 
+				paginatorPosition="bottom" rows="10"
+				paginatorTemplate="{CurrentPageReport} {RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+				currentPageReportTemplate="Trovati {totalRecords} record - Pagina {currentPage} di {totalPages}"
+				rowsPerPageTemplate="5,10,50" 
+				pageLinks="10"
+				emptyMessage="Nessun record trovato" 
+				selectionMode="single"
+				selection="#{dettaglioClientiContatti.selected}" 
+				id="contattiTable" 
+				lazy="true">
 
+				<!--
+				<p:ajax event="rowSelect" update=":form:buttons,:updateForm"/>
+
+				<p:ajax event="rowUnselect" update=":form:buttons,:updateForm"/>
+				-->
+        		
+				<f:facet name="header">
+			    	Lista dei Contatti
+			    </f:facet>
+
+				<p:column headerText="Codice" sortBy="#{contatti.codice}"
+					filterBy="#{contatti.codice}">
+					<h:outputText value="#{contatti.codice}" />
+				</p:column>
+
+				<p:column headerText="Ragione sociale" sortBy="#{contatti.ragioneSociale}"
+					filterBy="#{contatti.ragioneSociale}">
+					<h:outputText value="#{contatti.ragioneSociale}" />
+				</p:column>
+
+			</p:dataTable>
+			
+			
 	</h:form>
 
 </html>
