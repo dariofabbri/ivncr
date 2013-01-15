@@ -32,9 +32,6 @@
 		<dependency>
 			<groupId>org.primefaces</groupId>
 			<artifactId>primefaces</artifactId>
-			<!--
-			<version>3.4.2</version>
-			-->
 			<version>3.5-SNAPSHOT</version>
 		</dependency>
 		<dependency>
@@ -57,7 +54,7 @@
 			<artifactId>logback-classic</artifactId>
 			<version>1.0.7</version>
 		</dependency>
-		<dependency>
+   		<dependency>
 			<groupId>org.apache.shiro</groupId>
 			<artifactId>shiro-core</artifactId>
 			<version>1.2.1</version>
