@@ -1,6 +1,6 @@
 package it.ivncr.erp.jsf.managedbean.utente;
 
-import it.ivncr.erp.model.accesso.Utente;
+import it.ivncr.erp.jsf.managedbean.session.LoginInfo;
 import it.ivncr.erp.service.ServiceFactory;
 import it.ivncr.erp.service.utente.UtenteService;
 
@@ -24,27 +24,20 @@ public class CambioPassword implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@ManagedProperty("#{gestioneUtenti.selected}")
-	private Utente selected;
+	@ManagedProperty("#{loginInfo}")
+    private LoginInfo loginInfo;
 
 	private String password;
 	private String confirmPassword;
 
+
+	private void clean() {
+
+		password = null;
+		confirmPassword = null;
+	}
+
 	public void doChangePassword() {
-
-		// Check if a row has been selected.
-		//
-		if(selected == null) {
-
-			logger.warn("No user selected for password change.");
-
-			FacesMessage message = new FacesMessage(
-					FacesMessage.SEVERITY_ERROR,
-					"Errore di sistema",
-					"Nessun record selezionato.");
-			FacesContext.getCurrentInstance().addMessage(null, message);
-			return;
-		}
 
 		// Check if password matches confirmation field.
 		//
@@ -64,8 +57,12 @@ public class CambioPassword implements Serializable {
 		//
 		try {
 			UtenteService us = ServiceFactory.createUtenteService();
-			us.changePassword(selected.getId(), password);
+			us.changePassword(loginInfo.getUtente().getId(), password);
 			logger.debug("Password successfully changed.");
+
+			// Clean up form state.
+			//
+			clean();
 
 			// Everything went fine.
 			//
@@ -81,22 +78,22 @@ public class CambioPassword implements Serializable {
 
 		} catch(Exception e) {
 
-			logger.warn("Exception caught while changing password.", e);
+			logger.warn("Exception caught while creating user.", e);
 
 			FacesMessage message = new FacesMessage(
 					FacesMessage.SEVERITY_ERROR,
 					"Errore di sistema",
-					"Si è verificato un errore in fase di modifica della password.");
+					"Si è verificato un errore in fase di creazione dell'utente");
 			FacesContext.getCurrentInstance().addMessage(null, message);
 		}
 	}
 
-	public Utente getSelected() {
-		return selected;
+	public LoginInfo getLoginInfo() {
+		return loginInfo;
 	}
 
-	public void setSelected(Utente selected) {
-		this.selected = selected;
+	public void setLoginInfo(LoginInfo loginInfo) {
+		this.loginInfo = loginInfo;
 	}
 
 	public String getPassword() {

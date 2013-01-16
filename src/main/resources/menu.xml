@@ -14,7 +14,7 @@
 
 	<submenu label="Impostazioni" icon="ui-icon-wrench">
 
-		<menuitem value="Cambia password" url="/faces/cambiopassword/index.xhtml" /> 
+		<menuitem value="Cambia password" url="/faces/accesso/cambiopassword/index.xhtml" /> 
         
         <separator/>
         
