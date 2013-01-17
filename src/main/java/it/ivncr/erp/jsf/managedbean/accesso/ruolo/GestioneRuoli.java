@@ -1,4 +1,4 @@
-package it.ivncr.erp.jsf.managedbean.ruolo;
+package it.ivncr.erp.jsf.managedbean.accesso.ruolo;
 
 import it.ivncr.erp.model.accesso.Ruolo;
 import it.ivncr.erp.service.QueryResult;

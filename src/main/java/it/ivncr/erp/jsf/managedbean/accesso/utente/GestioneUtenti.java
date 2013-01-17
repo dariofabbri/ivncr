@@ -1,4 +1,4 @@
-package it.ivncr.erp.jsf.managedbean.utente;
+package it.ivncr.erp.jsf.managedbean.accesso.utente;
 
 import it.ivncr.erp.model.accesso.Utente;
 import it.ivncr.erp.service.QueryResult;
