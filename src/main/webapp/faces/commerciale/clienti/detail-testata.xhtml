@@ -31,8 +31,27 @@
 			<p:watermark for="partitaIva" value="Partita IVA del cliente" />  
 			<p:message for="partitaIva" showSummary="true" showDetail="false"/>
 			<p:tooltip for="partitaIva" showEffect="fade" value="Il codice del cliente rappresnta blah vlahh" />
+			
+			<p:outputLabel for="codicefiscale" value="Codice Fiscale:" />
+			<p:inputText value="#{dettaglioClienteTestata.codicefiscale}" id="codicefiscale"
+				required="true" requiredMessage="Il campo è obbligatorio"
+				style="width: 250px;"/>
+			<p:watermark for="codicefiscale" value="Codice Fiscale del cliente" />  
+			<p:message for="codicefiscale" showSummary="true" showDetail="false"/>
+			<p:tooltip for="codicefiscale" showEffect="fade" value="la Codice Fiscale del cliente rappresnta blah vlahh" />
+			
+			<p:outputLabel for="Saldocontabile" value="Saldo Contabile:" />
+			<p:inputText value="#{dettaglioClienteTestata.codicefiscale}" id="Saldocontabile"
+				required="true" requiredMessage="Il campo è obbligatorio"
+				style="width: 250px;"/>
+			<p:watermark for="Saldocontabile" value="Saldo Contabile Cliente" />  
+			<p:message for="Saldocontabile" showSummary="true" showDetail="false"/>
+			<p:tooltip for="Saldocontabile" showEffect="fade" value="Il Saldo Contabile Cliente rappresnta blah vlahh" />
+		</h:panelGrid>
 
+		<h:panelGrid columns="3">
 			<p:outputLabel for="codiceGruppoCliente" value="Gruppo cliente:" />
+			<p:spacer width="8" height="25"/>	
 			<p:selectOneMenu
 				required="true" 
 				requiredMessage="Il campo è obbligatorio"
@@ -41,9 +60,23 @@
 				effect="fade">
 				<f:selectItem itemLabel="Selezionare un gruppo" itemValue="" />
 				<f:selectItems 
-					value="#{dettaglioClienteTestata.listTipoCliente}" var="item"
+					value="#{dettaglioClienteTestata.listGruppoCliente}" var="item"
 					itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
-			</p:selectOneMenu>			 
+			</p:selectOneMenu>	
+			
+			<p:outputLabel for="divisa" value="Tipo Divisa:" />
+			<p:spacer width="8" height="25" />	
+			<p:selectOneMenu
+				required="true" 
+				requiredMessage="Il campo è obbligatorio"
+				id="divisa" 
+				value="#{dettaglioClienteTestata.divisa}"
+				effect="fade">
+				<f:selectItem itemLabel="Selezionare un Tipo" itemValue="" />
+				<f:selectItems 
+					value="#{dettaglioClienteTestata.listDivisa}" var="item"
+					itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+			</p:selectOneMenu>			 		 
 
 		</h:panelGrid>
 

@@ -8,6 +8,20 @@
 	
 		<h:panelGrid columns="5">
 		
+			<p:outputLabel for="nome" value="Nome:" />
+			<p:inputText value="#{dettaglioClienteGenerale.telefono1}" id="nome"
+				style="width: 250px;"/>
+			<p:watermark for="nome" value="Nome del cliente" />  
+			<p:message for="nome" showSummary="true" showDetail="false"/>
+			<p:tooltip for="nome" showEffect="fade" value="Nome del cliente" />
+			
+			<p:outputLabel for="cognome" value="Cognome:" />
+			<p:inputText value="#{dettaglioClienteGenerale.telefono1}" id="cognome"
+				style="width: 250px;"/>
+			<p:watermark for="cognome" value="Cognome del cliente" />  
+			<p:message for="cognome" showSummary="true" showDetail="false"/>
+			<p:tooltip for="cognome" showEffect="fade" value="Cognome del cliente" />		
+		
 			<p:outputLabel for="telefono1" value="Telefono 1:" />
 			<p:inputText value="#{dettaglioClienteGenerale.telefono1}" id="telefono1"
 				style="width: 250px;"/>
@@ -58,15 +72,19 @@
 			
 		</h:panelGrid>
 		
-		<h:panelGrid columns="12" >
+		<h:panelGrid columns="13" >
 		
 		<h:outputText value="Attivo: " />  
 		<p:selectBooleanCheckbox value="#{dettaglioClienteGenerale.attivo}" />	
 		<p:spacer width="30" height="40" />	
+		
 		<h:outputText value="Dal:" />  
-		<p:calendar value="#{dettaglioClienteGenerale.dateAttiveDal}" id="dateAttiveDal" showOn="button" />       
+		<p:calendar value="#{dettaglioClienteGenerale.dateAttiveDal}" id="dateAttiveDal" showOn="button" />  
+		     
         <h:outputText value="Al:" />  
         <p:calendar value="#{dettaglioClienteGenerale.dateAttiveAl}" id="dateAttiveAl" showOn="button" />
+        
+        <p:spacer width="30" height="40" />	
         <p:outputLabel for="osservazioniAttivo" value="Osservazioni:" />
 		<p:inputText value="#{dettaglioClienteGenerale.osservazioniAttivo}" id="osservazioniAttivo"
 				style="width: 250px;"/>
@@ -76,11 +94,15 @@
         
         <h:outputText value="Bloccato: " />  
 		<p:selectBooleanCheckbox value="#{dettaglioClienteGenerale.bloccato}" />
-		<p:spacer width="30" height="40" />		
+		<p:spacer width="30" height="40" />	
+			
 		<h:outputText value="Dal:" />  
-		<p:calendar value="#{dettaglioClienteGenerale.dateBloccatoDal}" id="dateBloccatoDal" showOn="button" />        
+		<p:calendar value="#{dettaglioClienteGenerale.dateBloccatoDal}" id="dateBloccatoDal" showOn="button" />
+		        
         <h:outputText value="Al:" />  
-        <p:calendar value="#{dettaglioClienteGenerale.dateBloccatoAl}" id="dateBloccatoAl" showOn="button" />		
+        <p:calendar value="#{dettaglioClienteGenerale.dateBloccatoAl}" id="dateBloccatoAl" showOn="button" />
+        
+        <p:spacer width="30" height="40" />		
 		<p:outputLabel for="osservazioniBloccato" value="Osservazioni:" />
 		<p:inputText value="#{dettaglioClienteGenerale.osservazioniBloccato}" id="osservazioniBloccato"
 				style="width: 250px;"/>

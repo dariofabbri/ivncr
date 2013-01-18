@@ -49,12 +49,14 @@ public class GestioneClienti implements Serializable {
 				cliente.setId(1);
 				cliente.setCodice("C001");
 				cliente.setRagioneSociale("Ambasciata degli Stati Uniti");
+				cliente.setPartitaIva("IT0000000000000");
 				list.add(cliente);
 
 				cliente = new Cliente();
 				cliente.setId(2);
 				cliente.setCodice("C002");
 				cliente.setRagioneSociale("Metropolitane di Roma");
+				cliente.setPartitaIva("IT0000000000001");
 				list.add(cliente);
 
 				this.setRowCount(list.size());
@@ -98,5 +100,8 @@ public class GestioneClienti implements Serializable {
 	public void setSelected(Cliente selected) {
 		this.selected = selected;
 	}
-
+	
+	public void doSearch() {
+		
+	}
 }

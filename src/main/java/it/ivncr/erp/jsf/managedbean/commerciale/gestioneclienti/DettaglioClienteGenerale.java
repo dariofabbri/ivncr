@@ -21,6 +21,8 @@ public class DettaglioClienteGenerale implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	private String nome;
+	private String cognome;
 	private String telefono1;
 	private String telefono2;
 	private String cellulare;
@@ -178,5 +180,21 @@ public class DettaglioClienteGenerale implements Serializable {
 
 	public void setOsservazioniBloccato(String osservazioniBloccato) {
 		this.osservazioniBloccato = osservazioniBloccato;
+	}
+
+	public String getCognome() {
+		return cognome;
+	}
+
+	public void setCognome(String cognome) {
+		this.cognome = cognome;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 }

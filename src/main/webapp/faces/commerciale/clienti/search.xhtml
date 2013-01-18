@@ -1,0 +1,61 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog 
+		header="Ricerca Avanzata" 
+		widgetVar="createDialog" 
+		modal="true"
+		showEffect="fade" 
+		hideEffect="fade"> 
+
+		<h:form id="createForm">
+		
+			<p:messages globalOnly="true" showDetail="true" closable="true"/>
+		
+			<h:panelGrid columns="4" cellpadding="5">
+
+				<p:outputLabel for="codicefiscale" value="Codice Fiscale:" />
+				<p:inputText value="#{gestionePermessi.descrizione}" id="codicefiscale"
+					style="width: 250px;"/>
+				<p:watermark for="codicefiscale" value="Codice Fiscale opzionale" />
+				<p:message for="codicefiscale" showSummary="true" showDetail="false"/>
+				
+				<p:outputLabel for="indrizzosedelegale" value="Indirizzo Sede Legale:" />
+				<p:inputText value="#{gestionePermessi.descrizione}" id="indrizzosedelegale"
+					style="width: 250px;"/>
+				<p:watermark for="indrizzosedelegale" value="Indirizzo Sede Legale opzionale" />
+				<p:message for="indrizzosedelegale" showSummary="true" showDetail="false"/>
+				
+				<p:outputLabel for="indrizzospedizionefatture" value="Indirizzo Di Spedizione Fatture:" />
+				<p:inputText value="#{gestionePermessi.descrizione}" id="indrizzospedizionefatture"
+					style="width: 250px;"/>
+				<p:watermark for="indrizzospedizionefatture" value="Indirizzo Di Spedizione Fatture opzionale" />
+				<p:message for="indrizzospedizionefatture" showSummary="true" showDetail="false"/>
+				
+				<p:outputLabel for="numeroditelefono" value="Numero Di Telefono:" />
+				<p:inputText value="#{gestionePermessi.descrizione}" id="numeroditelefono"
+					style="width: 250px;"/>
+				<p:watermark for="numeroditelefono" value="Numero Di Telefono opzionale" />
+				<p:message for="numeroditelefono" showSummary="true" showDetail="false"/>
+
+
+				<f:facet name="footer">
+					<p:commandButton value="Cerca"
+						actionListener="#{gestioneClienti.doSearch}" 
+						update="@form,:form" 
+						oncomplete="if(args.ok) {createDialog.hide(); }"/>
+
+					<p:commandButton value="Annulla"
+						oncomplete="createDialog.hide();" />
+				</f:facet>
+				
+			</h:panelGrid>
+			
+		</h:form>
+
+	</p:dialog>
+
+</html>

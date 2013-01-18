@@ -1,5 +1,7 @@
 package it.ivncr.erp.jsf.managedbean.commerciale.gestioneclienti;
 
+import it.ivncr.erp.model.commerciale.Divisa;
+import it.ivncr.erp.model.commerciale.GruppoCliente;
 import it.ivncr.erp.model.commerciale.TipoCliente;
 
 import java.io.Serializable;
@@ -23,22 +25,40 @@ public class DettaglioClienteTestata implements Serializable {
 	private String codice;
 	private String ragioneSociale;
 	private String partitaIva;
+	private String codicefiscale;
+	
 	private Integer codiceGruppoCliente;
-	private List<TipoCliente> listTipoCliente;
+	private Integer divisa;
+	
+	private List<GruppoCliente> listGruppoCliente;
+	private List<Divisa> listDivisa;
 
 	public DettaglioClienteTestata() {
 
-		listTipoCliente = new ArrayList<TipoCliente>();
+		listDivisa = new ArrayList<Divisa>();
 
-		TipoCliente tc = new TipoCliente();
-		tc.setId(1);
-		tc.setDescrizione("Grande utenza");
-		listTipoCliente.add(tc);
+		Divisa dv = new Divisa();
+		dv.setId(1);
+		dv.setDescrizione("€");
+		listDivisa.add(dv);
 
-		tc = new TipoCliente();
-		tc.setId(2);
-		tc.setDescrizione("Piccola utenza");
-		listTipoCliente.add(tc);
+		dv = new Divisa();
+		dv.setId(1);
+		dv.setDescrizione("$");
+		listDivisa.add(dv);
+
+		
+		listGruppoCliente = new ArrayList<GruppoCliente>();
+
+		GruppoCliente gc = new GruppoCliente();
+		gc.setId(1);
+		gc.setDescrizione("Grande Utenza");
+		listGruppoCliente.add(gc);
+
+		gc = new GruppoCliente();
+		gc.setId(2);
+		gc.setDescrizione("Piccola Utenza");
+		listGruppoCliente.add(gc);
 	}
 
 	public String getCodice() {
@@ -64,14 +84,21 @@ public class DettaglioClienteTestata implements Serializable {
 	public void setPartitaIva(String partitaIva) {
 		this.partitaIva = partitaIva;
 	}
-
-
-	public List<TipoCliente> getListTipoCliente() {
-		return listTipoCliente;
+	
+	public List<GruppoCliente> getListGruppoCliente() {
+		return listGruppoCliente;
 	}
 
-	public void setListTipoCliente(List<TipoCliente> listTipoCliente) {
-		this.listTipoCliente = listTipoCliente;
+	public void setListGruppoCliente(List<GruppoCliente> listGruppoCliente) {
+		this.listGruppoCliente = listGruppoCliente;
+	}
+	
+	public List<Divisa> getListDivisa() {
+		return listDivisa;
+	}
+
+	public void setListDivisa(List<Divisa> listDivisa) {
+		this.listDivisa = listDivisa;
 	}
 
 	public Integer getCodiceGruppoCliente() {
@@ -80,5 +107,21 @@ public class DettaglioClienteTestata implements Serializable {
 
 	public void setCodiceGruppoCliente(Integer codiceGruppoCliente) {
 		this.codiceGruppoCliente = codiceGruppoCliente;
+	}
+
+	public String getCodicefiscale() {
+		return codicefiscale;
+	}
+
+	public void setCodicefiscale(String codicefiscale) {
+		this.codicefiscale = codicefiscale;
+	}
+
+	public Integer getDivisa() {
+		return divisa;
+	}
+
+	public void setDivisa(Integer divisa) {
+		this.divisa = divisa;
 	}
 }
