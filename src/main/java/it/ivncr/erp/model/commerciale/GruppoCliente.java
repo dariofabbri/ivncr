@@ -1,7 +1,7 @@
 package it.ivncr.erp.model.commerciale;
 
 public class GruppoCliente {
-	
+
 	private Integer id;
 	private String descrizione;
 
@@ -20,5 +20,4 @@ public class GruppoCliente {
 	public void setDescrizione(String descrizione) {
 		this.descrizione = descrizione;
 	}
-
 }

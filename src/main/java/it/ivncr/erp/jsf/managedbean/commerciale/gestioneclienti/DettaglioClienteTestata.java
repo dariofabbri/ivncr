@@ -2,7 +2,6 @@ package it.ivncr.erp.jsf.managedbean.commerciale.gestioneclienti;
 
 import it.ivncr.erp.model.commerciale.Divisa;
 import it.ivncr.erp.model.commerciale.GruppoCliente;
-import it.ivncr.erp.model.commerciale.TipoCliente;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -25,11 +24,11 @@ public class DettaglioClienteTestata implements Serializable {
 	private String codice;
 	private String ragioneSociale;
 	private String partitaIva;
-	private String codicefiscale;
-	
+	private String codiceFiscale;
+
 	private Integer codiceGruppoCliente;
-	private Integer divisa;
-	
+	private Integer codiceDivisa;
+
 	private List<GruppoCliente> listGruppoCliente;
 	private List<Divisa> listDivisa;
 
@@ -47,7 +46,7 @@ public class DettaglioClienteTestata implements Serializable {
 		dv.setDescrizione("$");
 		listDivisa.add(dv);
 
-		
+
 		listGruppoCliente = new ArrayList<GruppoCliente>();
 
 		GruppoCliente gc = new GruppoCliente();
@@ -84,7 +83,7 @@ public class DettaglioClienteTestata implements Serializable {
 	public void setPartitaIva(String partitaIva) {
 		this.partitaIva = partitaIva;
 	}
-	
+
 	public List<GruppoCliente> getListGruppoCliente() {
 		return listGruppoCliente;
 	}
@@ -92,7 +91,7 @@ public class DettaglioClienteTestata implements Serializable {
 	public void setListGruppoCliente(List<GruppoCliente> listGruppoCliente) {
 		this.listGruppoCliente = listGruppoCliente;
 	}
-	
+
 	public List<Divisa> getListDivisa() {
 		return listDivisa;
 	}
@@ -109,19 +108,19 @@ public class DettaglioClienteTestata implements Serializable {
 		this.codiceGruppoCliente = codiceGruppoCliente;
 	}
 
-	public String getCodicefiscale() {
-		return codicefiscale;
+	public String getCodiceFiscale() {
+		return codiceFiscale;
 	}
 
-	public void setCodicefiscale(String codicefiscale) {
-		this.codicefiscale = codicefiscale;
+	public void setCodiceFiscale(String codiceFiscale) {
+		this.codiceFiscale = codiceFiscale;
 	}
 
-	public Integer getDivisa() {
-		return divisa;
+	public Integer getCodiceDivisa() {
+		return codiceDivisa;
 	}
 
-	public void setDivisa(Integer divisa) {
-		this.divisa = divisa;
+	public void setCodiceDivisa(Integer codiceDivisa) {
+		this.codiceDivisa = codiceDivisa;
 	}
 }

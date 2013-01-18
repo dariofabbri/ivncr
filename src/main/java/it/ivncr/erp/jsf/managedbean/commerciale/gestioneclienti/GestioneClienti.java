@@ -33,18 +33,9 @@ public class GestioneClienti implements Serializable {
 
 			private static final long serialVersionUID = 1L;
 
-			@Override
-			public List<Cliente> load(
-					int first,
-					int pageSize,
-					String sortField,
-					SortOrder sortOrder,
-					Map<String, String> filters) {
+			private final List<Cliente> list = new ArrayList<Cliente>();
 
-				logger.debug("Fetching data model.");
-
-				List<Cliente> list = new ArrayList<Cliente>();
-
+			{
 				Cliente cliente = new Cliente();
 				cliente.setId(1);
 				cliente.setCodice("C001");
@@ -58,6 +49,17 @@ public class GestioneClienti implements Serializable {
 				cliente.setRagioneSociale("Metropolitane di Roma");
 				cliente.setPartitaIva("IT0000000000001");
 				list.add(cliente);
+			}
+
+			@Override
+			public List<Cliente> load(
+					int first,
+					int pageSize,
+					String sortField,
+					SortOrder sortOrder,
+					Map<String, String> filters) {
+
+				logger.debug("Fetching data model.");
 
 				this.setRowCount(list.size());
 
@@ -100,8 +102,8 @@ public class GestioneClienti implements Serializable {
 	public void setSelected(Cliente selected) {
 		this.selected = selected;
 	}
-	
+
 	public void doSearch() {
-		
+
 	}
 }

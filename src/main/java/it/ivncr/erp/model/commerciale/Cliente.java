@@ -7,7 +7,7 @@ public class Cliente {
 	private String codice;
 	private String ragioneSociale;
 	private String partitaIva;
-	private String codicefiscale;
+	private String codiceFiscale;
 
 	public Integer getId() {
 		return id;
@@ -41,11 +41,11 @@ public class Cliente {
 		this.partitaIva = partitaIva;
 	}
 
-	public String getCodicefiscale() {
-		return codicefiscale;
+	public String getCodiceFiscale() {
+		return codiceFiscale;
 	}
 
-	public void setCodicefiscale(String codicefiscale) {
-		this.codicefiscale = codicefiscale;
+	public void setCodiceFiscale(String codiceFiscale) {
+		this.codiceFiscale = codiceFiscale;
 	}
 }
