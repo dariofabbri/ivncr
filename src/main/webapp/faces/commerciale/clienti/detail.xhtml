@@ -26,9 +26,15 @@
 
 					</p:tab>
 					
-					<p:tab id="IndirizzoDiSpedizioneFattureTab" title="Indirizzo di Spedizione Fatture">
+					<p:tab id="indirizziAmministrativiTab" title="Indirizzi amministrativi">
 
-						<ui:include src="detail-IndrizzoDiSpedizioneFattura.xhtml"/>
+						<ui:include src="detail-indirizzi-amministrativi.xhtml"/>
+
+					</p:tab>					
+					
+					<p:tab id="obiettiviServizioTab" title="Obiettivi di servizio">
+
+						<ui:include src="detail-obiettivi-servizio.xhtml"/>
 
 					</p:tab>					
 										
@@ -53,6 +59,10 @@
 				</p:tabView>
 
 			</p:panel>
+			
+			<ui:include src="detail-contatti-create.xhtml"/>
+			
+			<ui:include src="detail-indirizzi-amministrativi-create.xhtml"/>
 			
 		</ui:define>
 	

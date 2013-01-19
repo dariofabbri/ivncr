@@ -25,6 +25,11 @@ public class DettaglioClienteTestata implements Serializable {
 	private String ragioneSociale;
 	private String partitaIva;
 	private String codiceFiscale;
+	
+	private String nome;
+	private String telefoni;
+	private String fax;
+	private String email;
 
 	private Integer codiceGruppoCliente;
 	private Integer codiceDivisa;
@@ -58,6 +63,12 @@ public class DettaglioClienteTestata implements Serializable {
 		gc.setId(2);
 		gc.setDescrizione("Piccola Utenza");
 		listGruppoCliente.add(gc);
+		
+		
+		nome = "Nome Cognome";
+		telefoni = "328.1234567 / 335.7654321";
+		fax = "06.72356723";
+		email = "mail@gmail.com";
 	}
 
 	public String getCodice() {
@@ -122,5 +133,37 @@ public class DettaglioClienteTestata implements Serializable {
 
 	public void setCodiceDivisa(Integer codiceDivisa) {
 		this.codiceDivisa = codiceDivisa;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public String getTelefoni() {
+		return telefoni;
+	}
+
+	public void setTelefoni(String telefoni) {
+		this.telefoni = telefoni;
+	}
+
+	public String getFax() {
+		return fax;
+	}
+
+	public void setFax(String fax) {
+		this.fax = fax;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 }

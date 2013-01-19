@@ -18,26 +18,29 @@ import org.slf4j.LoggerFactory;
 
 @ManagedBean
 @SessionScoped
-public class DettaglioClientiContatti implements Serializable {
+public class DettaglioClientiIndirizziAmministrativi implements Serializable {
 	
-	private static final Logger logger = LoggerFactory.getLogger(DettaglioClientiContatti.class);
+	private static final Logger logger = LoggerFactory.getLogger(DettaglioClientiIndirizziAmministrativi.class);
 
 	private static final long serialVersionUID = 1L;
 
 	private LazyDataModel<Contatto> model;
 	private Contatto selected;
 	
-	private String tipoContatto;
-	private String titolo;
-	private String nome;
-	private String telefono1;
-	private String telefono2;
-	private String cellulare;
-	private String fax;
-	private String email;
+	private String tipoIndirizzo;
+	private String destinatario1;
+	private String destinatario2;
+	private String toponimo;
+	private String indirizzo;
+	private String numeroCivico;
+	private String edificio;
+	private String localita;
+	private String cap;
+	private String provincia;
+	private String paese;
 	
 	
-	public DettaglioClientiContatti(){
+	public DettaglioClientiIndirizziAmministrativi(){
 		model = new LazyDataModel<Contatto>() {
 
 			private static final long serialVersionUID = 1L;
@@ -106,69 +109,91 @@ public class DettaglioClientiContatti implements Serializable {
 		this.selected = selected;
 	}
 
+	public String getTipoIndirizzo() {
+		return tipoIndirizzo;
+	}
+
+	public void setTipoIndirizzo(String tipoIndirizzo) {
+		this.tipoIndirizzo = tipoIndirizzo;
+	}
+
+	public String getDestinatario1() {
+		return destinatario1;
+	}
+
+	public void setDestinatario1(String destinatario1) {
+		this.destinatario1 = destinatario1;
+	}
+
+	public String getDestinatario2() {
+		return destinatario2;
+	}
+
+	public void setDestinatario2(String destinatario2) {
+		this.destinatario2 = destinatario2;
+	}
+
+	public String getToponimo() {
+		return toponimo;
+	}
+
+	public void setToponimo(String toponimo) {
+		this.toponimo = toponimo;
+	}
+
+	public String getIndirizzo() {
+		return indirizzo;
+	}
+
+	public void setIndirizzo(String indirizzo) {
+		this.indirizzo = indirizzo;
+	}
+
+	public String getNumeroCivico() {
+		return numeroCivico;
+	}
+
+	public void setNumeroCivico(String numeroCivico) {
+		this.numeroCivico = numeroCivico;
+	}
+
+	public String getEdificio() {
+		return edificio;
+	}
+
+	public void setEdificio(String edificio) {
+		this.edificio = edificio;
+	}
 	
-	
-	public String getTipoContatto() {
-		return tipoContatto;
+	public String getLocalita() {
+		return localita;
 	}
 
-	public void setTipoContatto(String tipoContatto) {
-		this.tipoContatto = tipoContatto;
+	public void setLocalita(String localita) {
+		this.localita = localita;
 	}
 
-	public String getTitolo() {
-		return titolo;
+	public String getCap() {
+		return cap;
 	}
 
-	public void setTitolo(String titolo) {
-		this.titolo = titolo;
+	public void setCap(String cap) {
+		this.cap = cap;
 	}
 
-	public String getNome() {
-		return nome;
+	public String getProvincia() {
+		return provincia;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setProvincia(String provincia) {
+		this.provincia = provincia;
 	}
 
-	public String getTelefono1() {
-		return telefono1;
+	public String getPaese() {
+		return paese;
 	}
 
-	public void setTelefono1(String telefono1) {
-		this.telefono1 = telefono1;
-	}
-
-	public String getTelefono2() {
-		return telefono2;
-	}
-
-	public void setTelefono2(String telefono2) {
-		this.telefono2 = telefono2;
-	}
-
-	public String getCellulare() {
-		return cellulare;
-	}
-
-	public void setCellulare(String cellulare) {
-		this.cellulare = cellulare;
-	}
-
-	public String getFax() {
-		return fax;
-	}
-
-	public void setFax(String fax) {
-		this.fax = fax;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
+	public void setPaese(String paese) {
+		this.paese = paese;
 	}
 }

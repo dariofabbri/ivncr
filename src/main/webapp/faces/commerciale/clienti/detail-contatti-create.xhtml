@@ -1,0 +1,86 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog 
+		header="Nuovo contatto" 
+		widgetVar="createContattoDialog" 
+		modal="true"
+		showEffect="fade" 
+		hideEffect="fade"> 
+
+		<h:form id="createContattoForm">
+		
+			<p:messages globalOnly="true" showDetail="true" closable="true"/>
+		
+			<h:panelGrid columns="4" cellpadding="5">
+
+				<p:outputLabel for="tipoContatto" value="Tipo contatto:" />
+				<p:inputText value="#{dettaglioClientiContatti.tipoContatto}" id="tipoContatto"
+					style="width: 250px;"/>
+				<p:watermark for="tipoContatto" value="Tipologia del contatto" />  
+				<p:message for="tipoContatto" showSummary="true" showDetail="false"/>
+
+				<p:outputLabel for="titolo" value="Titolo:" />
+				<p:inputText value="#{dettaglioClientiContatti.titolo}" id="titolo"
+					style="width: 250px;"/>
+				<p:watermark for="titolo" value="Titolo del contatto" />  
+				<p:message for="titolo" showSummary="true" showDetail="false"/>
+
+				<p:outputLabel for="nome" value="Nome:" />
+				<p:inputText value="#{dettaglioClientiContatti.nome}" id="nome"
+					required="true" requiredMessage="Il campo è obbligatorio"
+					style="width: 250px;"/>
+				<p:watermark for="nome" value="Nome del contatto" />  
+				<p:message for="nome" showSummary="true" showDetail="false"/>
+
+				<p:outputLabel for="telefono1" value="Telefono 1:" />
+				<p:inputText value="#{dettaglioClientiContatti.telefono1}" id="telefono1"
+					style="width: 250px;"/>
+				<p:watermark for="telefono1" value="Numero di telefono principale del contatto" />  
+				<p:message for="telefono1" showSummary="true" showDetail="false"/>
+
+				<p:outputLabel for="telefono2" value="Telefono 2:" />
+				<p:inputText value="#{dettaglioClientiContatti.telefono2}" id="telefono2"
+					style="width: 250px;"/>
+				<p:watermark for="telefono2" value="Numero di telefono secondario del contatto" />  
+				<p:message for="telefono2" showSummary="true" showDetail="false"/>
+
+				<p:outputLabel for="cellulare" value="Cellulare:" />
+				<p:inputText value="#{dettaglioClientiContatti.cellulare}" id="cellulare"
+					style="width: 250px;"/>
+				<p:watermark for="cellulare" value="Numero di telefono cellulare del contatto" />  
+				<p:message for="cellulare" showSummary="true" showDetail="false"/>
+
+				<p:outputLabel for="fax" value="Fax:" />
+				<p:inputText value="#{dettaglioClientiContatti.fax}" id="fax"
+					style="width: 250px;"/>
+				<p:watermark for="fax" value="Numero di fax del contatto" />  
+				<p:message for="fax" showSummary="true" showDetail="false"/>
+
+				<p:outputLabel for="email" value="Email:" />
+				<p:inputText value="#{dettaglioClientiContatti.email}" id="email"
+					style="width: 250px;"/>
+				<p:watermark for="email" value="Indirizzo email del contatto" />  
+				<p:message for="email" showSummary="true" showDetail="false"/>
+
+
+				<f:facet name="footer">
+					<p:commandButton value="Crea"
+						actionListener="#{dettaglioClientiContatti.doCreate}" 
+						update="@form,:tabView:contattiTab" 
+						oncomplete="if(args.ok) { createContattoDialog.hide(); }"/>
+
+					<p:commandButton value="Annulla"
+						oncomplete="createContattoDialog.hide();" />
+				</f:facet>
+				
+			</h:panelGrid>
+			
+		</h:form>
+
+	</p:dialog>
+
+</html>
