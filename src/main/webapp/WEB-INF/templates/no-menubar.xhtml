@@ -1,12 +1,21 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 
 	<h:head>
-		<h:outputStylesheet library="default" name="css/app.css"  />
+	
+		<f:facet name="first">
+			<meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
+			<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+			<title>IVNCR ERP</title>
+		</f:facet>
+	
 	</h:head>
 	
 	<h:body>
+
+		<h:outputStylesheet library="default" name="css/app.css"  />
 	
 		<ui:insert name="container">The main page content.</ui:insert>
 		

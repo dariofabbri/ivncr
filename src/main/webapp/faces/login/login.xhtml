@@ -4,57 +4,63 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 
-<!--
-	<f:metadata>
-	    <f:viewAction action="#{loginInfo.cleanLoginInfo}"/>
-	</f:metadata>
--->
 
 	<ui:composition template="/WEB-INF/templates/no-menubar.xhtml">
 		
 		<ui:define name="container">
+			
+			<p:panel id="loginPanel"
+				header="Login al sistema" 
+				toggleable="true" 
+				toggleSpeed="500"
+				style="width: 500px; margin-left: auto; margin-right: auto; margin-top: 100px;">
 		
-			<h:form>
-			
-				<p:panel id="loginPanel"
-					header="Login al sistema" 
-					toggleable="true" 
-					toggleSpeed="500"
-					style="width: 500px; margin-left: auto; margin-right: auto; margin-top: 100px;">
-					
-					<p:focus context="loginPanel"/>
-					
-					<p:messages 
-						globalOnly="true" 
-						showSummary="true"
-						showDetail="true" 
-						closable="true"/>
-					
-  					<h:panelGrid columns="2">
+				<h:form>
 
-  						<p:outputLabel for="username" value="Username: " />  
-			            <p:inputText id="username" value="#{loginInfo.username}"/>
-  					
-  						<p:outputLabel for="password" value="Password: " />  
-			            <p:password	id="password" value="#{loginInfo.password}" />
-			            
-  					</h:panelGrid>
-  					
-  					<p:commandButton 
-  						value="Accedi" 
-  						action="#{loginInfo.doLogin}"
-  						update="@form"
-  						style="margin-left:150px; margin-top:20px;"/>  
-            
-			    </p:panel> 
-			    
-			    <p:draggable 
-			    	for="loginPanel" 
-			    	handle=".ui-panel-titlebar"
-			    	opacity="0.3"/>
+					<p:focus/>
+										
+					<p:messages globalOnly="false" showSummary="false" showDetail="true" closable="true"/>
+					
+					<p:panelGrid styleClass="form-panel">
+						
+						<p:row>
+							<p:column>
+		  						<p:outputLabel for="username" value="Username: " />
+		  					</p:column>
+							<p:column>
+					            <p:inputText id="username" value="#{loginInfo.username}"/>
+  							</p:column>
+  						</p:row>
+						
+						<p:row>
+							<p:column>
+		  						<p:outputLabel for="password" value="Password: " />  
+		  					</p:column>
+							<p:column>
+					            <p:password	id="password" value="#{loginInfo.password}" />
+		  					</p:column>
+						</p:row>
+						
+						<p:row>
+							<p:column colspan="2">
+			  					<p:commandButton 
+			  						value="Accedi" 
+			  						action="#{loginInfo.doLogin}"
+			  						update="@form"/>
+		  					</p:column>
+						</p:row>
+						
+  					</p:panelGrid>
 			    	
-			</h:form>
-			
+				</h:form>
+           
+		    </p:panel> 
+		    
+		    <p:draggable 
+		    	for="loginPanel" 
+		    	handle=".ui-panel-titlebar"
+		    	opacity="0.3"/>
+		
 		</ui:define>
 		
 	</ui:composition>
