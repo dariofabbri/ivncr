@@ -16,49 +16,77 @@
 			
 				<h:form>
 					
-					<p:messages globalOnly="true" showDetail="true" closable="true"/>
+					<p:messages globalOnly="false" showSummary="false" showDetail="true" closable="true"/>
 					
 					<p:focus />
 					
-					<h:panelGrid columns="4" styleClass="form-panel">
+					<p:panelGrid styleClass="form-panel">
 										
-						<f:facet name="header">
-							<h:outputText value="Immettere e confermare la nuova password."/>
-			       		</f:facet>
-																	
-						<p:outputLabel for="password" value="Password:" />
-						<p:password value="#{cambioPassword.password}" id="password"
-							required="true" requiredMessage="Il campo è obbligatorio"
-							feedback="true" inline="false"
-							redisplay="true"
-							promptLabel="Immettere la password"
-							weakLabel="Password debole" 
-							goodLabel="Password accettabile" 
-							strongLabel="Password forte"
-							style="width: 250px;" />
-						<p:watermark for="password" value="Password iniziale di accesso" />
-						<p:message for="password" showSummary="true" showDetail="false"/>
-																		
-						<p:outputLabel for="confirmPassword" value="Conferma:" />
-						<p:password value="#{cambioPassword.confirmPassword}" id="confirmPassword"
-							required="true" requiredMessage="Il campo è obbligatorio"
-							feedback="true" inline="false"
-							redisplay="true"
-							promptLabel="Confermare la password"
-							weakLabel="Password debole" 
-							goodLabel="Password accettabile" 
-							strongLabel="Password forte"
-							style="width: 250px;" />
-						<p:watermark for="confirmPassword" value="Confermare la password" />
-						<p:message for="confirmPassword" showSummary="true" showDetail="false"/>
+			       		<p:row>
+			       			<p:column colspan="2" styleClass="form-header">
+								<h:outputText value="Immettere e confermare la nuova password."/>
+							</p:column>
+						</p:row>
+									
+						<p:row>		
+							<p:column>						
+								<p:outputLabel for="password" value="Password:" />
+							</p:column>
+							<p:column>
+								<p:password value="#{cambioPassword.password}" id="password"
+									required="true" requiredMessage="Il campo password è obbligatorio"
+									feedback="true" inline="false"
+									redisplay="true"
+									promptLabel="Immettere la password"
+									weakLabel="Password debole" 
+									goodLabel="Password accettabile" 
+									strongLabel="Password forte"
+									style="width: 250px;" />
+								<p:watermark for="password" value="Password iniziale di accesso" />
+							</p:column>
+						</p:row>
+						<!--
+						<p:row>
+							<p:column colspan="2">
+								<p:message for="password" showSummary="true" showDetail="false"/>
+							</p:column>
+						</p:row>
+						-->
+						
+						<p:row>
+							<p:column>										
+								<p:outputLabel for="confirmPassword" value="Conferma:" />
+							</p:column>
+							<p:column>
+								<p:password value="#{cambioPassword.confirmPassword}" id="confirmPassword"
+									required="true" requiredMessage="La conferma della password è obbligatoria"
+									feedback="true" inline="false"
+									redisplay="true"
+									promptLabel="Confermare la password"
+									weakLabel="Password debole" 
+									goodLabel="Password accettabile" 
+									strongLabel="Password forte"
+									style="width: 250px;" />
+								<p:watermark for="confirmPassword" value="Confermare la password" />
+							</p:column>
+						</p:row>
+						<!--
+						<p:row>
+							<p:column colspan="2">
+								<p:message for="confirmPassword" showSummary="true" showDetail="false"/>
+							</p:column>
+						</p:row>
+						-->
 	
-						<f:facet name="footer">
-							<p:commandButton value="Salva"
-								actionListener="#{cambioPassword.doChangePassword}"
-								update="@form"/>
-						</f:facet>
+						<p:row>
+							<p:column colspan="2">
+								<p:commandButton value="Salva"
+									actionListener="#{cambioPassword.doChangePassword}"
+									update="@form"/>
+							</p:column>
+						</p:row>
 
-					</h:panelGrid>
+					</p:panelGrid>
 				
 				</h:form>
 										
