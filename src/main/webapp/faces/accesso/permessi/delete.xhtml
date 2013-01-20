@@ -12,24 +12,31 @@
 		hideEffect="fade"> 
 	
 		<h:form id="deleteForm">
-		
-			<p:messages globalOnly="true" showDetail="true" closable="true"/>
-	
-			<h:panelGrid columns="1" cellpadding="5">
-		
-				<h:outputText value="Si conferma l'eliminazione del permesso selezionato?"/>
-				
-				<f:facet name="footer">
-					<p:commandButton value="Elimina"
-						actionListener="#{gestionePermessi.doDelete}"
-						update="@form,:form" 
-						oncomplete="if(args.ok) { deleteDialog.hide(); }"/>
-	
-					<p:commandButton value="Annulla"
-						oncomplete="deleteDialog.hide();" />
-				</f:facet>
+					
+			<p:messages globalOnly="false" showSummary="false" showDetail="true" closable="true"/>
 			
-			</h:panelGrid>
+			<p:focus />
+			
+			<p:panelGrid styleClass="form-panel">
+				
+				<p:row>
+					<p:column>		
+						<h:outputText value="Si conferma l'eliminazione del permesso selezionato?"/>
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>		
+						<p:commandButton value="Elimina"
+							actionListener="#{gestionePermessi.doDelete}"
+							update="@form,:form" 
+							oncomplete="if(args.ok) { deleteDialog.hide(); }"/>
+						<p:commandButton value="Annulla"
+							oncomplete="deleteDialog.hide();" />
+					</p:column>
+				</p:row>
+				
+			</p:panelGrid>
 	
 		</h:form>
 		

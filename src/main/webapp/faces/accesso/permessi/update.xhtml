@@ -12,36 +12,48 @@
 		hideEffect="fade"> 
 
 		<h:form id="updateForm">
-		
-			<p:messages globalOnly="true" showDetail="true" closable="true"/>
-		
-			<h:panelGrid columns="4" cellpadding="5">
-
-				<p:outputLabel for="permesso" value="Permesso:" />
-				<p:inputText value="#{gestionePermessi.selected.permesso}" id="permesso"
-					required="true" requiredMessage="Il campo è obbligatorio"
-					style="width: 250px;"/>
-				<p:watermark for="permesso" value="Identificativo del permesso" />  
-				<p:message for="permesso" showSummary="true" showDetail="false"/>
-
-				<p:outputLabel for="descrizione" value="Descrizione:" />
-				<p:inputText value="#{gestionePermessi.selected.descrizione}" id="descrizione"
-					style="width: 250px;"/>
-				<p:watermark for="descrizione" value="Descrizione opzionale" />
-				<p:message for="descrizione" showSummary="true" showDetail="false"/>
-
-
-				<f:facet name="footer">
-					<p:commandButton value="Aggiorna"
-						actionListener="#{gestionePermessi.doUpdate}"
-						update="@form,:form"
-						oncomplete="if(args.ok) { updateDialog.hide(); }"/>
-
-					<p:commandButton value="Annulla"
-						oncomplete="updateDialog.hide();" />
-				</f:facet>
+					
+			<p:messages globalOnly="false" showSummary="false" showDetail="true" closable="true"/>
+			
+			<p:panelGrid styleClass="form-panel">
 				
-			</h:panelGrid>
+				<p:row>
+					<p:column>
+						<p:outputLabel for="permesso" value="Permesso:" />
+					</p:column>
+					
+					<p:column>
+						<p:inputText value="#{gestionePermessi.selected.permesso}" id="permesso"
+							required="true" requiredMessage="Il campo è obbligatorio"
+							style="width: 250px;"/>
+						<p:watermark for="permesso" value="Identificativo del permesso" />
+					</p:column>
+				</p:row>
+				
+				<p:row>
+					<p:column>
+						<p:outputLabel for="descrizione" value="Descrizione:" />
+					</p:column>
+					
+					<p:column>
+						<p:inputText value="#{gestionePermessi.selected.descrizione}" id="descrizione"
+							style="width: 250px;"/>
+						<p:watermark for="descrizione" value="Descrizione opzionale" />
+					</p:column>
+				</p:row>
+				
+				<p:row>
+					<p:column colspan="2">
+						<p:commandButton value="Aggiorna"
+							actionListener="#{gestionePermessi.doUpdate}"
+							update="@form,:form"
+							oncomplete="if(args.ok) { updateDialog.hide(); }"/>
+						<p:commandButton value="Annulla"
+							oncomplete="updateDialog.hide();" />
+					</p:column>
+				</p:row>
+				
+			</p:panelGrid>
 			
 		</h:form>
 

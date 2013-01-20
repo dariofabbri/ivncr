@@ -20,7 +20,7 @@
 .ui-menu .ui-menuitem-text {
 	font-size: 1.2em !important;
 }
-
+                
 .title {
 	height: 1em;
 	padding: .2em 0 .4em .5em;
@@ -44,4 +44,8 @@
 .form-panel td {
 	border: none;
 	vertical-align: text-top;
+}
+
+.form-panel .ui-inputfield {
+	width: 300px;
 }
