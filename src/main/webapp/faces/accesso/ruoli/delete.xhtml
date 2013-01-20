@@ -12,24 +12,29 @@
 		hideEffect="fade"> 
 	
 		<h:form id="deleteForm">
-		
-			<p:messages globalOnly="true" showDetail="true" closable="true"/>
-	
-			<h:panelGrid columns="1" cellpadding="5" id="wrapper">
-		
-				<h:outputText value="Si conferma l'eliminazione del ruolo selezionato?"/>
-				
-				<f:facet name="footer">
-					<p:commandButton value="Elimina"
-						actionListener="#{gestioneRuoli.doDelete}"
-						update=":form"
-						oncomplete="deleteDialog.hide()"/>
-	
-					<p:commandButton value="Annulla"
-						oncomplete="deleteDialog.hide();" />
-				</f:facet>
+					
+			<p:messages globalOnly="false" showSummary="false" showDetail="true" closable="true"/>
 			
-			</h:panelGrid>
+			<p:panelGrid styleClass="form-panel">
+				
+				<p:row>
+					<p:column>
+						<h:outputText value="Si conferma l'eliminazione del ruolo selezionato?"/>
+					</p:column>
+				</p:row>
+				
+				<p:row>
+					<p:column>
+						<p:commandButton value="Elimina"
+							actionListener="#{gestioneRuoli.doDelete}"
+							update=":form"
+							oncomplete="deleteDialog.hide()"/>
+						<p:commandButton value="Annulla"
+							oncomplete="deleteDialog.hide();" />
+					</p:column>
+				</p:row>
+			
+			</p:panelGrid>
 	
 		</h:form>
 		

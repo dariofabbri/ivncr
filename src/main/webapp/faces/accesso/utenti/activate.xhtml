@@ -12,24 +12,29 @@
 		hideEffect="fade"> 
 	
 		<h:form id="activateForm">
-		
-			<p:messages globalOnly="true" showDetail="true" closable="true"/>
-	
-			<h:panelGrid columns="1" cellpadding="5" id="wrapper">
-		
-				<h:outputText value="Si conferma l'attivazione dell'utente selezionato?"/>
-				
-				<f:facet name="footer">
-					<p:commandButton value="Attiva"
-						actionListener="#{gestioneUtenti.doActivate}"
-						update=":form"
-						oncomplete="activateDialog.hide();"/>
-	
-					<p:commandButton value="Annulla"
-						oncomplete="activateDialog.hide();" />
-				</f:facet>
+					
+			<p:messages globalOnly="false" showSummary="false" showDetail="true" closable="true"/>
 			
-			</h:panelGrid>
+			<p:panelGrid styleClass="form-panel">
+				
+				<p:row>
+					<p:column>
+						<h:outputText value="Si conferma l'attivazione dell'utente selezionato?"/>
+					</p:column>
+				</p:row>	
+				
+				<p:row>
+					<p:column>
+						<p:commandButton value="Attiva"
+							actionListener="#{gestioneUtenti.doActivate}"
+							update=":form"
+							oncomplete="activateDialog.hide();"/>
+						<p:commandButton value="Annulla"
+							oncomplete="activateDialog.hide();" />
+					</p:column>
+				</p:row>
+			
+			</p:panelGrid>
 	
 		</h:form>
 		

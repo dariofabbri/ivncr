@@ -5,37 +5,49 @@
 	xmlns:p="http://primefaces.org/ui">
 					
 	<h:form>
-		
-		<p:messages globalOnly="true" showDetail="true" closable="true"/>
+					
+		<p:messages globalOnly="false" showSummary="false" showDetail="true" closable="true"/>
 
 		<p:focus/>
 		
-		<h:panelGrid columns="4" styleClass="form-panel" id="wrapper">
+		<p:panelGrid styleClass="form-panel">
+			
+			<p:row>
+				<p:column colspan="2">
+					<h:outputText value="Il pannello permette di inserire e modificare i dati relativi al ruolo."/>
+				</p:column>
+			</p:row>
 
-			<f:facet name="header">
-				<h:outputText value="Il pannello permette di inserire e modificare i dati relativi al ruolo."/>
-       		</f:facet>
-															
-			<p:outputLabel for="nome" value="Nome:" />
-			<p:inputText value="#{dettaglioRuolo.edited.nome}" id="nome"
-				required="true" requiredMessage="Il campo è obbligatorio"
-				style="width: 250px;"/>
-			<p:watermark for="nome" value="Identificativo del ruolo" />
-			<p:message for="nome" showSummary="true" showDetail="false"/>
-							
-			<p:outputLabel for="descrizione" value="Descrizione:" />
-			<p:inputText value="#{dettaglioRuolo.edited.descrizione}" id="descrizione"
-				style="width: 250px;"/>
-			<p:watermark for="descrizione" value="Descrizione del ruolo" />  
-			<p:message for="descrizione" showSummary="true" showDetail="false"/>
+			<p:row>
+				<p:column>
+					<p:outputLabel for="nome" value="Nome:" />
+				</p:column>
+				<p:column>															
+					<p:inputText value="#{dettaglioRuolo.edited.nome}" id="nome"
+						required="true" requiredMessage="Il campo è obbligatorio"/>
+					<p:watermark for="nome" value="Identificativo del ruolo" />
+				</p:column>
+			</p:row>
 
-			<f:facet name="footer">
-				<p:commandButton value="Salva"
-					actionListener="#{dettaglioRuolo.doSave}"
-					update=":tabView"/>
-			</f:facet>
+			<p:row>
+				<p:column>
+					<p:outputLabel for="descrizione" value="Descrizione:" />
+				</p:column>
+				<p:column>
+					<p:inputText value="#{dettaglioRuolo.edited.descrizione}" id="descrizione"/>
+					<p:watermark for="descrizione" value="Descrizione del ruolo" />
+				</p:column>
+			</p:row>  
+
+			<p:row>
+				<p:column colspan="2">
+					<p:commandButton value="Salva"
+						actionListener="#{dettaglioRuolo.doSave}"
+						update=":tabView"/>
+				</p:column>
+			</p:row>
 							
-		</h:panelGrid>
+		</p:panelGrid>
 		
 	</h:form>
 

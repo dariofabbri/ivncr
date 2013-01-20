@@ -261,6 +261,12 @@ public class GestioneUtenti implements Serializable {
 					"Errore di sistema",
 					"Si è verificato un errore in fase di attivazione dell'utente.");
 			FacesContext.getCurrentInstance().addMessage(null, message);
+
+		} finally {
+
+			// Clean up selection.
+			//
+			selected = null;
 		}
 	}
 
@@ -309,6 +315,12 @@ public class GestioneUtenti implements Serializable {
 					"Errore di sistema",
 					"Si è verificato un errore in fase di diattivazione dell'utente.");
 			FacesContext.getCurrentInstance().addMessage(null, message);
+
+		} finally {
+
+			// Clean up selection.
+			//
+			selected = null;
 		}
 	}
 

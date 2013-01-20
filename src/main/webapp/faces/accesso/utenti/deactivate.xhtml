@@ -12,24 +12,29 @@
 		hideEffect="fade"> 
 	
 		<h:form id="deactivateForm">
-		
-			<p:messages globalOnly="true" showDetail="true" closable="true"/>
-	
-			<h:panelGrid columns="1" cellpadding="5" id="wrapper">
-		
-				<h:outputText value="Si conferma la disattivazione dell'utente selezionato?"/>
-				
-				<f:facet name="footer">
-					<p:commandButton value="Disattiva"
-						actionListener="#{gestioneUtenti.doDeactivate}"
-						update=":form"
-						oncomplete="deactivateDialog.hide();"/>
-	
-					<p:commandButton value="Annulla"
-						oncomplete="deactivateDialog.hide();" />
-				</f:facet>
+					
+			<p:messages globalOnly="false" showSummary="false" showDetail="true" closable="true"/>
 			
-			</h:panelGrid>
+			<p:panelGrid styleClass="form-panel">
+				
+				<p:row>
+					<p:column>
+						<h:outputText value="Si conferma la disattivazione dell'utente selezionato?"/>
+					</p:column>
+				</p:row>		
+				
+				<p:row>
+					<p:column>
+						<p:commandButton value="Disattiva"
+							actionListener="#{gestioneUtenti.doDeactivate}"
+							update=":form"
+							oncomplete="deactivateDialog.hide();"/>
+						<p:commandButton value="Annulla"
+							oncomplete="deactivateDialog.hide();" />
+					</p:column>
+				</p:row>
+			
+			</p:panelGrid>
 	
 		</h:form>
 		

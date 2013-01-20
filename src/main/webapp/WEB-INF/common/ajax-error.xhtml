@@ -3,34 +3,42 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
-	
-	<h:form>
 		
-		<p:ajaxStatus onerror="globalAjaxErrorDialog.show();" />
-	
-		<p:dialog id="globalAjaxErrorDialog"
-			header="Attenzione"
-			widgetVar="globalAjaxErrorDialog"
-			showEffect="fade" hideEffect="fade"
-			modal="true"
-			closable="false"
-			width="450px">
-			
-			<h:panelGrid columns="1" cellpadding="5">
-	
-				<h:outputText value="La sessione è scaduta oppure si è verificato un problema nella comunicazione con il server. Premere OK per tornare alla pagina di login." />
+	<p:ajaxStatus onerror="globalAjaxErrorDialog.show();" />
 
-				<f:facet name="footer">					  
-					<p:commandButton 
-						id="confirm" 
-						value="OK"
-						onclick="window.location.reload()" />
-				</f:facet>
+	<p:dialog id="globalAjaxErrorDialog"
+		header="Attenzione"
+		widgetVar="globalAjaxErrorDialog"
+		showEffect="fade" hideEffect="fade"
+		modal="true"
+		closable="false"
+		width="450px">
 
-			</h:panelGrid>
+		<h:form>
 				
-		</p:dialog>
+			<p:messages globalOnly="false" showSummary="false" showDetail="true" closable="true"/>
+			
+			<p:panelGrid styleClass="form-panel">
+				
+				<p:row>
+					<p:column>
+						<h:outputText value="La sessione è scaduta oppure si è verificato un problema nella comunicazione con il server. Premere OK per tornare alla pagina di login." />
+					</p:column>
+				</p:row>
+				
+				<p:row>
+					<p:column>
+						<p:commandButton 
+							id="confirm" 
+							value="OK"
+							onclick="window.location.reload()" />
+					</p:column>
+				</p:row>
+
+			</p:panelGrid>
 		
-	</h:form>
+		</h:form>
+			
+	</p:dialog>
 	
 </html>
