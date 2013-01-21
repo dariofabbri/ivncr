@@ -13,7 +13,7 @@
 		<p:panelGrid styleClass="form-panel">
 			
 			<p:row>
-				<p:column colspan="2">
+				<p:column colspan="2" styleClass="form-header">
 					<h:outputText value="Il pannello permette di inserire e modificare i dati relativi al ruolo."/>
 				</p:column>
 			</p:row>
@@ -24,7 +24,7 @@
 				</p:column>
 				<p:column>															
 					<p:inputText value="#{dettaglioRuolo.edited.nome}" id="nome"
-						required="true" requiredMessage="Il campo è obbligatorio"/>
+						required="true" requiredMessage="Il nome del ruolo è obbligatorio"/>
 					<p:watermark for="nome" value="Identificativo del ruolo" />
 				</p:column>
 			</p:row>
@@ -40,7 +40,7 @@
 			</p:row>  
 
 			<p:row>
-				<p:column colspan="2">
+				<p:column colspan="2" styleClass="form-footer">
 					<p:commandButton value="Salva"
 						actionListener="#{dettaglioRuolo.doSave}"
 						update=":tabView"/>

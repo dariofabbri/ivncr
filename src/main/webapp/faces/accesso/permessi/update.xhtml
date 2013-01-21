@@ -16,6 +16,13 @@
 			<p:messages globalOnly="false" showSummary="false" showDetail="true" closable="true"/>
 			
 			<p:panelGrid styleClass="form-panel">
+							
+				<p:row>
+					<p:column colspan="2" styleClass="form-header">
+						<h:outputText value="
+							Il pannello permette di modificare i dati di un permesso esistente."/>
+					</p:column>
+				</p:row>
 				
 				<p:row>
 					<p:column>
@@ -24,7 +31,7 @@
 					
 					<p:column>
 						<p:inputText value="#{gestionePermessi.selected.permesso}" id="permesso"
-							required="true" requiredMessage="Il campo è obbligatorio"/>
+							required="true" requiredMessage="Il campo permesso è obbligatorio"/>
 						<p:watermark for="permesso" value="Identificativo del permesso" />
 					</p:column>
 				</p:row>
@@ -41,7 +48,7 @@
 				</p:row>
 				
 				<p:row>
-					<p:column colspan="2">
+					<p:column colspan="2" styleClass="form-footer">
 						<p:commandButton value="Aggiorna"
 							actionListener="#{gestionePermessi.doUpdate}"
 							update="@form,:form"

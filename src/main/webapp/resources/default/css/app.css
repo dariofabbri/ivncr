@@ -17,6 +17,11 @@
 	text-align: center;
 }
 
+.ui-datatable .ui-sortable-column-icon {
+	float: left;
+	margin-top: 0px;
+}
+	
 .ui-menu .ui-menuitem-text {
 	font-size: 1.2em !important;
 }
@@ -35,6 +40,12 @@
 	padding-top: 1em;
 	padding-bottom: 1em;
 	text-align: left;
+	max-width: 300px;
+}
+
+.form-panel .form-footer {
+	
+	padding-top: 1em;
 }
 
 .form-panel tr {

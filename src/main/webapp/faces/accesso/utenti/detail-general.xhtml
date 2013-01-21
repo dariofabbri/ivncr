@@ -30,7 +30,7 @@
 							</p:column>
 							<p:column>
 								<p:inputText value="#{dettaglioUtente.edited.username}" id="username"
-									required="true" requiredMessage="Il campo è obbligatorio"/>
+									required="true" requiredMessage="Il campo username è obbligatorio"/>
 								<p:watermark for="username" value="Identificativo dell\'utente" />
 							</p:column>
 						</p:row>
@@ -41,7 +41,7 @@
 							</p:column>
 							<p:column>
 								<p:inputText value="#{dettaglioUtente.edited.nome}" id="nome"
-									required="true" requiredMessage="Il campo è obbligatorio"/>
+									required="true" requiredMessage="Il campo nome è obbligatorio"/>
 								<p:watermark for="nome" value="Nome dell\'utente" />
 							</p:column>
 						</p:row>
@@ -52,7 +52,7 @@
 							</p:column>
 							<p:column>
 								<p:inputText value="#{dettaglioUtente.edited.cognome}" id="cognome"
-									required="true" requiredMessage="Il campo è obbligatorio"/>
+									required="true" requiredMessage="Il campo cognome è obbligatorio"/>
 								<p:watermark for="cognome" value="Cognome dell\'utente" />
 							</p:column>
 						</p:row>  
@@ -147,7 +147,7 @@
 								</p:column>
 								<p:column>
 									<p:password value="#{dettaglioUtente.password}" id="password"
-										required="true" requiredMessage="Il campo è obbligatorio"
+										required="true" requiredMessage="Il campo password è obbligatorio"
 										feedback="true" inline="false"
 										redisplay="true"
 										promptLabel="Immettere la password"
@@ -164,7 +164,7 @@
 								</p:column>
 								<p:column>
 									<p:password value="#{dettaglioUtente.confirmPassword}" id="confirmPassword"
-										required="true" requiredMessage="Il campo è obbligatorio"
+										required="true" requiredMessage="La conferma della password è obbligatoria"
 										feedback="true" inline="false"
 										redisplay="true"
 										promptLabel="Confermare la password"
@@ -185,7 +185,7 @@
 			
 			<p:row>
 			
-				<p:column colspan="2">
+				<p:column colspan="2" styleClass="form-footer">
 					<p:commandButton value="Salva"
 						actionListener="#{dettaglioUtente.doSave}"
 						update=":tabView"/>
