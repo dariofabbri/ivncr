@@ -80,10 +80,9 @@
 				</p:selectOneMenu>			 		 
 				<p:watermark for="codiceDivisa" value="Selezionare una divisa" />  
 				<p:message for="codiceDivisa" showSummary="true" showDetail="false"/>
-				<p:tooltip for="codiceDivisa" showEffect="fade" value="Tooltip codice divisa" />
-	
+				<p:tooltip for="codiceDivisa" showEffect="fade" value="Tooltip codice divisa" />		
+							
 			</h:panelGrid>
-			
 			
 			<p:fieldset legend="Contatto principale" toggleable="true" toggleSpeed="500"> 
 	
@@ -104,6 +103,33 @@
 				</h:panelGrid>
 				
 			</p:fieldset>
+	
+		</h:panelGrid>
+		
+		<h:panelGrid columns="4">
+			
+			<p:commandButton
+							id="createButton"
+							value="Crea"
+							onclick="createContattoDialog.show();"
+							icon="ui-icon-star"/>
+						<p:tooltip 
+							for="createButton" 
+							value="Crea un nuovo ruolo" 
+							showEffect="fade" 
+							hideEffect="fade"/>
+							
+				<p:commandButton
+							id="updateButton" 
+							value="Modifica"
+							disabled="#{gestioneRuoli.selected == null}"
+							action="#{gestioneRuoli.startUpdate}"
+							icon="ui-icon-pencil" />
+						<p:tooltip 
+							for="updateButton" 
+							value="Modifica il ruolo selezionato" 
+							showEffect="fade" 
+							hideEffect="fade"/>
 	
 		</h:panelGrid>
 	
