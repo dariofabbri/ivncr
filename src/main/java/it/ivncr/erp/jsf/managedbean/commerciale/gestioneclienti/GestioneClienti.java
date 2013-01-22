@@ -25,6 +25,7 @@ public class GestioneClienti implements Serializable {
 
 	private LazyDataModel<Cliente> model;
 	private Cliente selected;
+	private Cliente edited;
 
 
 	public GestioneClienti() {
@@ -82,10 +83,24 @@ public class GestioneClienti implements Serializable {
 
 	public String startCreate() {
 
+		edited = new Cliente();
+
 		logger.debug("Moving to detail page for new record creation.");
 		return "detail?faces-redirect=true";
 	}
 
+	public String startUpdate() {
+
+		if(selected == null) {
+			logger.error("Invalid status. No row selected on start update request.");
+			throw new RuntimeException("Invalid status. No row selected on start update request.");
+		}
+
+		edited = selected;
+
+		logger.debug("Moving to detail page for record update.");
+		return "detail?faces-redirect=true";
+	}
 
 	public LazyDataModel<Cliente> getModel() {
 		return model;
@@ -101,6 +116,14 @@ public class GestioneClienti implements Serializable {
 
 	public void setSelected(Cliente selected) {
 		this.selected = selected;
+	}
+
+	public Cliente getEdited() {
+		return edited;
+	}
+
+	public void setEdited(Cliente edited) {
+		this.edited = edited;
 	}
 
 	public void doSearch() {

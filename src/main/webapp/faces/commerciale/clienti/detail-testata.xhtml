@@ -11,7 +11,7 @@
 			<h:panelGrid columns="5">
 			
 				<p:outputLabel for="codice" value="Codice:" />
-				<p:inputText value="#{dettaglioClienteTestata.codice}" id="codice"
+				<p:inputText value="#{dettaglioClienteTestata.edited.codice}" id="codice"
 					required="true" requiredMessage="Il campo è obbligatorio"
 					style="width: 250px;"/>
 				<p:watermark for="codice" value="Codice identificativo del cliente" />  
@@ -19,7 +19,7 @@
 				<p:tooltip for="codice" showEffect="fade" value="Il codice del cliente rappresnta blah vlahh" />
 			
 				<p:outputLabel for="ragioneSociale" value="Ragione sociale:" />
-				<p:inputText value="#{dettaglioClienteTestata.ragioneSociale}" id="ragioneSociale"
+				<p:inputText value="#{dettaglioClienteTestata.edited.ragioneSociale}" id="ragioneSociale"
 					required="true" requiredMessage="Il campo è obbligatorio"
 					style="width: 250px;"/>
 				<p:watermark for="ragioneSociale" value="Ragione sociale del cliente" />  
@@ -27,35 +27,35 @@
 				<p:tooltip for="ragioneSociale" showEffect="fade" value="Il codice del cliente rappresnta blah vlahh" />
 			
 				<p:outputLabel for="partitaIva" value="Partita IVA:" />
-				<p:inputText value="#{dettaglioClienteTestata.partitaIva}" id="partitaIva"
+				<p:inputText value="#{dettaglioClienteTestata.edited.partitaIva}" id="partitaIva"
 					required="true" requiredMessage="Il campo è obbligatorio"
 					style="width: 250px;"/>
 				<p:watermark for="partitaIva" value="Partita IVA del cliente" />  
 				<p:message for="partitaIva" showSummary="true" showDetail="false"/>
 				<p:tooltip for="partitaIva" showEffect="fade" value="Il codice del cliente rappresnta blah vlahh" />
 				
-				<p:outputLabel for="codiceFiscale" value="Codice Fiscale:" />
-				<p:inputText value="#{dettaglioClienteTestata.codiceFiscale}" id="codiceFiscale"
+				<p:outputLabel for="codiceFiscale" value="Codice fiscale:" />
+				<p:inputText value="#{dettaglioClienteTestata.edited.codiceFiscale}" id="codiceFiscale"
 					required="true" requiredMessage="Il campo è obbligatorio"
 					style="width: 250px;"/>
-				<p:watermark for="codiceFiscale" value="Codice Fiscale del cliente" />  
+				<p:watermark for="codiceFiscale" value="Codice fiscale del cliente" />  
 				<p:message for="codiceFiscale" showSummary="true" showDetail="false"/>
 				<p:tooltip for="codiceFiscale" showEffect="fade" value="Il codice fiscale del cliente rappresnta blah vlahh" />
 				
-				<p:outputLabel for="Saldocontabile" value="Saldo Contabile:" />
-				<p:inputText value="#{dettaglioClienteTestata.codiceFiscale}" id="Saldocontabile"
+				<p:outputLabel for="saldoContabile" value="Saldo contabile:" />
+				<p:inputText value="#{dettaglioClienteTestata.edited.saldoContabile}" id="saldoContabile"
 					required="true" requiredMessage="Il campo è obbligatorio"
 					style="width: 250px;"/>
-				<p:watermark for="Saldocontabile" value="Saldo Contabile Cliente" />  
-				<p:message for="Saldocontabile" showSummary="true" showDetail="false"/>
-				<p:tooltip for="Saldocontabile" showEffect="fade" value="Il Saldo Contabile Cliente rappresnta blah vlahh" />
+				<p:watermark for="saldoContabile" value="Saldo contabile cliente" />  
+				<p:message for="saldoContabile" showSummary="true" showDetail="false"/>
+				<p:tooltip for="saldoContabile" showEffect="fade" value="Il Saldo Contabile Cliente rappresnta blah vlahh" />
 
 				<p:outputLabel for="codiceGruppoCliente" value="Gruppo cliente:" />
 				<p:selectOneMenu
 					required="true" 
 					requiredMessage="Il campo è obbligatorio"
 					id="codiceGruppoCliente" 
-					value="#{dettaglioClienteTestata.codiceGruppoCliente}"
+					value="#{dettaglioClienteTestata.edited.codiceGruppoCliente}"
 					effect="fade">
 					<f:selectItem itemLabel="Selezionare un gruppo" itemValue="" />
 					<f:selectItems 
@@ -71,7 +71,7 @@
 					required="true" 
 					requiredMessage="Il campo è obbligatorio"
 					id="codiceDivisa" 
-					value="#{dettaglioClienteTestata.codiceDivisa}"
+					value="#{dettaglioClienteTestata.edited.codiceDivisa}"
 					effect="fade">
 					<f:selectItem itemLabel="Selezionare una divisa" itemValue="" />
 					<f:selectItems 

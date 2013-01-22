@@ -1,5 +1,6 @@
 package it.ivncr.erp.jsf.managedbean.commerciale.gestioneclienti;
 
+import it.ivncr.erp.model.commerciale.Cliente;
 import it.ivncr.erp.model.commerciale.Divisa;
 import it.ivncr.erp.model.commerciale.GruppoCliente;
 
@@ -7,7 +8,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 import org.slf4j.Logger;
@@ -21,23 +24,20 @@ public class DettaglioClienteTestata implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private String codice;
-	private String ragioneSociale;
-	private String partitaIva;
-	private String codiceFiscale;
-	
+	@ManagedProperty("#{gestioneClienti.edited}")
+	private Cliente edited;
+
 	private String nome;
 	private String telefoni;
 	private String fax;
 	private String email;
 
-	private Integer codiceGruppoCliente;
-	private Integer codiceDivisa;
-
 	private List<GruppoCliente> listGruppoCliente;
 	private List<Divisa> listDivisa;
 
-	public DettaglioClienteTestata() {
+
+	@PostConstruct
+	public void init() {
 
 		listDivisa = new ArrayList<Divisa>();
 
@@ -63,36 +63,24 @@ public class DettaglioClienteTestata implements Serializable {
 		gc.setId(2);
 		gc.setDescrizione("Piccola Utenza");
 		listGruppoCliente.add(gc);
-		
-		
+
+		loadRiepilogoContatto();
+	}
+
+	public void loadRiepilogoContatto() {
+
 		nome = "Nome Cognome";
 		telefoni = "328.1234567 / 335.7654321";
 		fax = "06.72356723";
 		email = "mail@gmail.com";
 	}
 
-	public String getCodice() {
-		return codice;
+	public Cliente getEdited() {
+		return edited;
 	}
 
-	public void setCodice(String codice) {
-		this.codice = codice;
-	}
-
-	public String getRagioneSociale() {
-		return ragioneSociale;
-	}
-
-	public void setRagioneSociale(String ragioneSociale) {
-		this.ragioneSociale = ragioneSociale;
-	}
-
-	public String getPartitaIva() {
-		return partitaIva;
-	}
-
-	public void setPartitaIva(String partitaIva) {
-		this.partitaIva = partitaIva;
+	public void setEdited(Cliente edited) {
+		this.edited = edited;
 	}
 
 	public List<GruppoCliente> getListGruppoCliente() {
@@ -109,30 +97,6 @@ public class DettaglioClienteTestata implements Serializable {
 
 	public void setListDivisa(List<Divisa> listDivisa) {
 		this.listDivisa = listDivisa;
-	}
-
-	public Integer getCodiceGruppoCliente() {
-		return codiceGruppoCliente;
-	}
-
-	public void setCodiceGruppoCliente(Integer codiceGruppoCliente) {
-		this.codiceGruppoCliente = codiceGruppoCliente;
-	}
-
-	public String getCodiceFiscale() {
-		return codiceFiscale;
-	}
-
-	public void setCodiceFiscale(String codiceFiscale) {
-		this.codiceFiscale = codiceFiscale;
-	}
-
-	public Integer getCodiceDivisa() {
-		return codiceDivisa;
-	}
-
-	public void setCodiceDivisa(Integer codiceDivisa) {
-		this.codiceDivisa = codiceDivisa;
 	}
 
 	public String getNome() {

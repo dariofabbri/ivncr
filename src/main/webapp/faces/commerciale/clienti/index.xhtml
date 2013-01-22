@@ -18,7 +18,7 @@
 
 				<p:commandButton 
 					id="searchButton"
-					value="Ricerca Avanzata"
+					value="Ricerca avanzata"
 					icon="ui-icon-search" 
 					update=":createForm" 
 					onclick="createDialog.show();"/>
@@ -57,11 +57,9 @@
 				id="clientiTable" 
 				lazy="true">
 
-				<!--
-				<p:ajax event="rowSelect" update=":form:buttons,:updateForm"/>
+				<p:ajax event="rowSelect" update=":form:buttons"/>
 
-				<p:ajax event="rowUnselect" update=":form:buttons,:updateForm"/>
-				-->
+				<p:ajax event="rowUnselect" update=":form:buttons"/>
         		
 				<f:facet name="header">
 			    	Lista dei clienti

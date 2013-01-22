@@ -36,35 +36,35 @@
 		<h:panelGrid columns="5">
 		
 			<p:outputLabel for="telefono1" value="Telefono 1:" />
-			<p:inputText value="#{dettaglioClienteGenerale.telefono1}" id="telefono1"
+			<p:inputText value="#{dettaglioClienteGenerale.edited.telefono1}" id="telefono1"
 				style="width: 250px;"/>
 			<p:watermark for="telefono1" value="Primo contatto telefonico del cliente" />  
 			<p:message for="telefono1" showSummary="true" showDetail="false"/>
 			<p:tooltip for="telefono1" showEffect="fade" value="Primo contatto telefonico del cliente" />
 
 			<p:outputLabel for="telefono2" value="Telefono 2:" />
-			<p:inputText value="#{dettaglioClienteGenerale.telefono2}" id="telefono2"
+			<p:inputText value="#{dettaglioClienteGenerale.edited.telefono2}" id="telefono2"
 				style="width: 250px;"/>
 			<p:watermark for="telefono2" value="Contatto telefonico alternativo del cliente" />  
 			<p:message for="telefono2" showSummary="true" showDetail="false"/>
 			<p:tooltip for="telefono2" showEffect="fade" value="Contatto telefonico alternativo del cliente" />
 
 			<p:outputLabel for="cellulare" value="Cellulare:" />
-			<p:inputText value="#{dettaglioClienteGenerale.cellulare}" id="cellulare"
+			<p:inputText value="#{dettaglioClienteGenerale.edited.cellulare}" id="cellulare"
 				style="width: 250px;"/>
 			<p:watermark for="cellulare" value="Contatto telefonico cellulare del cliente" />  
 			<p:message for="cellulare" showSummary="true" showDetail="false"/>
 			<p:tooltip for="cellulare" showEffect="fade" value="Contatto telefonico cellulare del cliente" />
 
 			<p:outputLabel for="fax" value="Fax:" />
-			<p:inputText value="#{dettaglioClienteGenerale.fax}" id="fax"
+			<p:inputText value="#{dettaglioClienteGenerale.edited.fax}" id="fax"
 				style="width: 250px;"/>
 			<p:watermark for="fax" value="fax del cliente" />  
 			<p:message for="fax" showSummary="true" showDetail="false"/>
 			<p:tooltip for="fax" showEffect="fade" value="fax del cliente" />
 
 			<p:outputLabel for="email" value="E-mail:" />
-			<p:inputText value="#{dettaglioClienteGenerale.email}" id="email"
+			<p:inputText value="#{dettaglioClienteGenerale.edited.email}" id="email"
 				style="width: 250px;"/>
 			<p:watermark for="email" value="email del cliente" />  
 			<p:message for="email" showSummary="true" showDetail="false"/>
@@ -73,7 +73,7 @@
 			<p:outputLabel for="codiceTipoBusinessPartner" value="Tipo business partner:" />
 			<p:selectOneMenu
 				id="codiceTipoBusinessPartner" 
-				value="#{dettaglioClienteGenerale.codiceTipoBusinessPartner}"
+				value="#{dettaglioClienteGenerale.edited.codiceTipoBusinessPartner}"
 				effect="fade">
 				<f:selectItem itemLabel="Selezionare un tipo" itemValue="" />
 				<f:selectItems 
@@ -88,40 +88,40 @@
 		<h:panelGrid columns="13" >
 		
 		<h:outputText value="Attivo: " />  
-		<p:selectBooleanCheckbox value="#{dettaglioClienteGenerale.attivo}" />	
+		<p:selectBooleanCheckbox value="#{dettaglioClienteGenerale.edited.attivo}" />	
 		<p:spacer width="30" height="40" />	
 		
 		<h:outputText value="Dal:" />  
-		<p:calendar value="#{dettaglioClienteGenerale.dateAttiveDal}" id="dateAttiveDal" showOn="button" />  
+		<p:calendar value="#{dettaglioClienteGenerale.edited.attivoDal}" id="attivoDal" showOn="button" />  
 		     
         <h:outputText value="Al:" />  
-        <p:calendar value="#{dettaglioClienteGenerale.dateAttiveAl}" id="dateAttiveAl" showOn="button" />
+        <p:calendar value="#{dettaglioClienteGenerale.edited.attivoAl}" id="attivoAl" showOn="button" />
         
         <p:spacer width="30" height="40" />	
-        <p:outputLabel for="osservazioniAttivo" value="Osservazioni:" />
-		<p:inputText value="#{dettaglioClienteGenerale.osservazioniAttivo}" id="osservazioniAttivo"
+        <p:outputLabel for="attivoOsservazioni" value="Osservazioni:" />
+		<p:inputText value="#{dettaglioClienteGenerale.edited.attivoOsservazioni}" id="attivoOsservazioni"
 				style="width: 250px;"/>
-		<p:watermark for="osservazioniAttivo" value="Osservazioni" />  
-		<p:message for="osservazioniAttivo" showSummary="true" showDetail="false"/>
-		<p:tooltip for="osservazioniAttivo" showEffect="fade" value="Osservazioni" />	        
+		<p:watermark for="attivoOsservazioni" value="Osservazioni" />  
+		<p:message for="attivoOsservazioni" showSummary="true" showDetail="false"/>
+		<p:tooltip for="attivoOsservazioni" showEffect="fade" value="Osservazioni" />	        
         
         <h:outputText value="Bloccato: " />  
-		<p:selectBooleanCheckbox value="#{dettaglioClienteGenerale.bloccato}" />
+		<p:selectBooleanCheckbox value="#{dettaglioClienteGenerale.edited.bloccato}" />
 		<p:spacer width="30" height="40" />	
 			
 		<h:outputText value="Dal:" />  
-		<p:calendar value="#{dettaglioClienteGenerale.dateBloccatoDal}" id="dateBloccatoDal" showOn="button" />
+		<p:calendar value="#{dettaglioClienteGenerale.edited.bloccatoDal}" id="bloccatoDal" showOn="button" />
 		        
         <h:outputText value="Al:" />  
-        <p:calendar value="#{dettaglioClienteGenerale.dateBloccatoAl}" id="dateBloccatoAl" showOn="button" />
+        <p:calendar value="#{dettaglioClienteGenerale.edited.bloccatoAl}" id="bloccatoAl" showOn="button" />
         
         <p:spacer width="30" height="40" />		
-		<p:outputLabel for="osservazioniBloccato" value="Osservazioni:" />
-		<p:inputText value="#{dettaglioClienteGenerale.osservazioniBloccato}" id="osservazioniBloccato"
+		<p:outputLabel for="bloccatoOsservazioni" value="Osservazioni:" />
+		<p:inputText value="#{dettaglioClienteGenerale.edited.bloccatoOsservazioni}" id="bloccatoOsservazioni"
 				style="width: 250px;"/>
-		<p:watermark for="osservazioniBloccato" value="Osservazioni" />  
-		<p:message for="osservazioniBloccato" showSummary="true" showDetail="false"/>
-		<p:tooltip for="osservazioniBloccato" showEffect="fade" value="Osservazioni" />
+		<p:watermark for="bloccatoOsservazioni" value="Osservazioni" />  
+		<p:message for="bloccatoOsservazioni" showSummary="true" showDetail="false"/>
+		<p:tooltip for="bloccatoOsservazioni" showEffect="fade" value="Osservazioni" />
 		
 		</h:panelGrid>	
 
