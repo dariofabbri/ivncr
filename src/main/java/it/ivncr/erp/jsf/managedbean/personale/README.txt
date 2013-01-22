@@ -1,0 +1,1 @@
+Empty folders are not tracked by git.
