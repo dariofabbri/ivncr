@@ -9,6 +9,14 @@
 		<ui:define name="container">
 	
 			<p:panel id="detailPanel" header="Cliente">
+			
+				<f:facet name="actions">
+					<p:button
+						styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default"
+						value="Indietro"
+						href="index.xhtml"
+						icon="ui-icon-arrowthick-1-w"/>
+				</f:facet>
 
 				<ui:include src="detail-testata.xhtml"/>			
 
@@ -44,15 +52,11 @@
 
 					</p:tab>				
 										
-					<p:tab id="ContrattiTab" title="Contratti">
-
-						<!--  -->
+					<p:tab id="contrattiTab" title="Contratti">
 
 					</p:tab>
 					
-					<p:tab id="OrdineDiServizioTab" title="Ordine di Servizio">
-
-						<!--  -->
+					<p:tab id="ordineDiServizioTab" title="Ordine di servizio">
 
 					</p:tab>
 					
