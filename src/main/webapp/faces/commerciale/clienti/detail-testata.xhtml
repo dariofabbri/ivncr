@@ -5,133 +5,198 @@
 	xmlns:p="http://primefaces.org/ui">
 			
 	<h:form>
-	
-		<h:panelGrid columns="2" styleClass="form-panel">
-			
-			<h:panelGrid columns="5">
-			
-				<p:outputLabel for="codice" value="Codice:" />
-				<p:inputText value="#{dettaglioClienteTestata.edited.codice}" id="codice"
-					required="true" requiredMessage="Il campo è obbligatorio"
-					style="width: 250px;"/>
-				<p:watermark for="codice" value="Codice identificativo del cliente" />  
-				<p:message for="codice" showSummary="true" showDetail="false"/>
-				<p:tooltip for="codice" showEffect="fade" value="Il codice del cliente rappresnta blah vlahh" />
-			
-				<p:outputLabel for="ragioneSociale" value="Ragione sociale:" />
-				<p:inputText value="#{dettaglioClienteTestata.edited.ragioneSociale}" id="ragioneSociale"
-					required="true" requiredMessage="Il campo è obbligatorio"
-					style="width: 250px;"/>
-				<p:watermark for="ragioneSociale" value="Ragione sociale del cliente" />  
-				<p:message for="ragioneSociale" showSummary="true" showDetail="false"/>
-				<p:tooltip for="ragioneSociale" showEffect="fade" value="Il codice del cliente rappresnta blah vlahh" />
-			
-				<p:outputLabel for="partitaIva" value="Partita IVA:" />
-				<p:inputText value="#{dettaglioClienteTestata.edited.partitaIva}" id="partitaIva"
-					required="true" requiredMessage="Il campo è obbligatorio"
-					style="width: 250px;"/>
-				<p:watermark for="partitaIva" value="Partita IVA del cliente" />  
-				<p:message for="partitaIva" showSummary="true" showDetail="false"/>
-				<p:tooltip for="partitaIva" showEffect="fade" value="Il codice del cliente rappresnta blah vlahh" />
-				
-				<p:outputLabel for="codiceFiscale" value="Codice fiscale:" />
-				<p:inputText value="#{dettaglioClienteTestata.edited.codiceFiscale}" id="codiceFiscale"
-					required="true" requiredMessage="Il campo è obbligatorio"
-					style="width: 250px;"/>
-				<p:watermark for="codiceFiscale" value="Codice fiscale del cliente" />  
-				<p:message for="codiceFiscale" showSummary="true" showDetail="false"/>
-				<p:tooltip for="codiceFiscale" showEffect="fade" value="Il codice fiscale del cliente rappresnta blah vlahh" />
-				
-				<p:outputLabel for="saldoContabile" value="Saldo contabile:" />
-				<p:inputText value="#{dettaglioClienteTestata.edited.saldoContabile}" id="saldoContabile"
-					required="true" requiredMessage="Il campo è obbligatorio"
-					style="width: 250px;"/>
-				<p:watermark for="saldoContabile" value="Saldo contabile cliente" />  
-				<p:message for="saldoContabile" showSummary="true" showDetail="false"/>
-				<p:tooltip for="saldoContabile" showEffect="fade" value="Il Saldo Contabile Cliente rappresnta blah vlahh" />
+							
+		<p:messages globalOnly="false" showSummary="false" showDetail="true" closable="true"/>
 
-				<p:outputLabel for="codiceGruppoCliente" value="Gruppo cliente:" />
-				<p:selectOneMenu
-					required="true" 
-					requiredMessage="Il campo è obbligatorio"
-					id="codiceGruppoCliente" 
-					value="#{dettaglioClienteTestata.edited.codiceGruppoCliente}"
-					effect="fade">
-					<f:selectItem itemLabel="Selezionare un gruppo" itemValue="" />
-					<f:selectItems 
-						value="#{dettaglioClienteTestata.listGruppoCliente}" var="item"
-						itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
-				</p:selectOneMenu>	
-				<p:watermark for="codiceGruppoCliente" value="Selezionare un gruppo" />  
-				<p:message for="codiceGruppoCliente" showSummary="true" showDetail="false"/>
-				<p:tooltip for="codiceGruppoCliente" showEffect="fade" value="Tooltip codice gruppo cliente" />
-				
-				<p:outputLabel for="codiceDivisa" value="Divisa:" />
-				<p:selectOneMenu
-					required="true" 
-					requiredMessage="Il campo è obbligatorio"
-					id="codiceDivisa" 
-					value="#{dettaglioClienteTestata.edited.codiceDivisa}"
-					effect="fade">
-					<f:selectItem itemLabel="Selezionare una divisa" itemValue="" />
-					<f:selectItems 
-						value="#{dettaglioClienteTestata.listDivisa}" var="item"
-						itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
-				</p:selectOneMenu>			 		 
-				<p:watermark for="codiceDivisa" value="Selezionare una divisa" />  
-				<p:message for="codiceDivisa" showSummary="true" showDetail="false"/>
-				<p:tooltip for="codiceDivisa" showEffect="fade" value="Tooltip codice divisa" />		
-							
-			</h:panelGrid>
-			
-			<p:fieldset legend="Contatto principale" toggleable="true" toggleSpeed="500"> 
-	
-				<h:panelGrid columns="2">
-				
-					<h:outputText value="Nome:" />
-					<h:outputText value="#{dettaglioClienteTestata.nome}" style="font-style: italic;"/>
-				
-					<h:outputText value="Telefoni:" />
-					<h:outputText value="#{dettaglioClienteTestata.telefoni}"  style="font-style: italic;"/>
-				
-					<h:outputText value="Fax:" />
-					<h:outputText value="#{dettaglioClienteTestata.fax}"  style="font-style: italic;"/>
-				
-					<h:outputText value="Email:" />
-					<h:outputText value="#{dettaglioClienteTestata.email}"  style="font-style: italic;"/>
-				
-				</h:panelGrid>
-				
-			</p:fieldset>
-	
-		</h:panelGrid>
+		<p:focus/>
 		
-		<h:panelGrid columns="4">
+		<p:panelGrid styleClass="form-panel">
 			
-			<p:commandButton
-							id="createButton"
-							value="Crea"
-							onclick="createContattoDialog.show();"
-							icon="ui-icon-star"/>
-						<p:tooltip 
-							for="createButton" 
-							value="Crea un nuovo ruolo" 
-							showEffect="fade" 
-							hideEffect="fade"/>
+			<p:row>
+				
+				<p:column>
+		
+					<p:panelGrid styleClass="form-panel">
+						
+						<p:row>
+							<p:column>
+								<p:outputLabel for="codice" value="Codice:" />
+							</p:column>
+							<p:column>
+								<p:inputText value="#{dettaglioClienteTestata.edited.codice}" id="codice"
+									required="true" requiredMessage="Il campo codice è obbligatorio"/>
+								<p:watermark for="codice" value="Codice identificativo del cliente" />  
+								<p:tooltip for="codice" showEffect="fade" value="Il codice rappresenta univocamente il cliente" />
+							</p:column>
+						</p:row>
+						
+						<p:row>
+							<p:column>							
+								<p:outputLabel for="ragioneSociale" value="Ragione sociale:" />
+							</p:column>
+							<p:column>
+								<p:inputText value="#{dettaglioClienteTestata.edited.ragioneSociale}" id="ragioneSociale"
+									required="true" requiredMessage="Il campo ragione sociale è obbligatorio"/>
+								<p:watermark for="ragioneSociale" value="Ragione sociale del cliente" />  
+								<p:tooltip for="ragioneSociale" showEffect="fade" value="Campo ragione sociale del cliente" />
+							</p:column>
+						</p:row>
+						
+						<p:row>
+							<p:column>
+								<p:outputLabel for="partitaIva" value="Partita IVA:" />
+							</p:column>
+							<p:column>
+								<p:inputText value="#{dettaglioClienteTestata.edited.partitaIva}" id="partitaIva"/>
+								<p:watermark for="partitaIva" value="Partita IVA del cliente" />  
+								<p:tooltip for="partitaIva" showEffect="fade" value="Partita IVA del cliente" />
+							</p:column>
+						</p:row>
+
+						<p:row>
+							<p:column>				
+								<p:outputLabel for="codiceFiscale" value="Codice fiscale:" />
+							</p:column>
+							<p:column>
+								<p:inputText value="#{dettaglioClienteTestata.edited.codiceFiscale}" id="codiceFiscale"/>
+								<p:watermark for="codiceFiscale" value="Codice fiscale del cliente" />  
+								<p:tooltip for="codiceFiscale" showEffect="fade" value="Codice fiscale del cliente" />
+							</p:column>
+						</p:row>
+
+						<p:row>
+							<p:column>
+								<p:outputLabel for="codiceGruppoCliente" value="Gruppo cliente:" />
+							</p:column>
+							<p:column>
+								<p:selectOneMenu
+									required="true" 
+									requiredMessage="Il campo gruppo cliente è obbligatorio"
+									id="codiceGruppoCliente" 
+									value="#{dettaglioClienteTestata.edited.codiceGruppoCliente}"
+									effect="fade">
+									<f:selectItem itemLabel="Selezionare un gruppo" itemValue="" />
+									<f:selectItems 
+										value="#{dettaglioClienteTestata.listGruppoCliente}" var="item"
+										itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+								</p:selectOneMenu>	
+								<p:tooltip for="codiceGruppoCliente" showEffect="fade" value="Gruppo cliente" />
+							</p:column>
+						</p:row>
+						
+						<p:row>
+							<p:column>
+								<p:outputLabel for="codiceDivisa" value="Divisa:" />
+							</p:column>
+							<p:column>
+								<p:selectOneMenu
+									required="true" 
+									requiredMessage="Il campo divisa è obbligatorio"
+									id="codiceDivisa" 
+									value="#{dettaglioClienteTestata.edited.codiceDivisa}"
+									effect="fade">
+									<f:selectItem itemLabel="Selezionare una divisa" itemValue="" />
+									<f:selectItems 
+										value="#{dettaglioClienteTestata.listDivisa}" var="item"
+										itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+								</p:selectOneMenu>			 		 
+								<p:tooltip for="codiceDivisa" showEffect="fade" value="Divisa" />
+							</p:column>
+						</p:row>	
+
+					</p:panelGrid>
+					
+				</p:column>
+				
+				<p:column rendered="#{dettaglioClienteTestata.edited.id}">							
+					
+					<p:fieldset legend="Contatto principale" toggleable="true" toggleSpeed="500"> 
+			
+						<p:panelGrid styleClass="form-panel">
+						
+							<p:row>
+								<p:column>
+									<h:outputText value="Nome:" />
+								</p:column>
+								<p:column>
+									<h:outputText value="#{dettaglioClienteTestata.nome}" style="font-style: italic;"/>
+								</p:column>
+							</p:row>
+						
+							<p:row>
+								<p:column>
+									<h:outputText value="Telefoni:" />
+								</p:column>
+								<p:column>
+									<h:outputText value="#{dettaglioClienteTestata.telefoni}"  style="font-style: italic;"/>
+								</p:column>
+							</p:row>
+						
+							<p:row>
+								<p:column>
+									<h:outputText value="Fax:" />
+								</p:column>
+								<p:column>
+									<h:outputText value="#{dettaglioClienteTestata.fax}"  style="font-style: italic;"/>
+								</p:column>
+							</p:row>
+						
+							<p:row>
+								<p:column>
+									<h:outputText value="Email:" />
+								</p:column>
+								<p:column>
+									<h:outputText value="#{dettaglioClienteTestata.email}"  style="font-style: italic;"/>
+								</p:column>
+							</p:row>
+						
+						</p:panelGrid>
+						
+					</p:fieldset>
+					
+				</p:column>
+				
+				<p:column rendered="#{dettaglioClienteTestata.edited.id}">
+					
+					<p:fieldset legend="Altre informazioni" toggleable="true" toggleSpeed="500"> 
+			
+						<p:panelGrid styleClass="form-panel">
 							
-				<p:commandButton
-							id="updateButton" 
-							value="Modifica"
-							disabled="#{gestioneRuoli.selected == null}"
-							action="#{gestioneRuoli.startUpdate}"
-							icon="ui-icon-pencil" />
-						<p:tooltip 
-							for="updateButton" 
-							value="Modifica il ruolo selezionato" 
-							showEffect="fade" 
-							hideEffect="fade"/>
+							<p:row>
+								<p:column>
+									<h:outputText value="Saldo contabile:" />
+								</p:column>
+								<p:column>
+									<h:outputText value="#{dettaglioClienteTestata.edited.saldoContabile}" style="font-style: italic;"/>
+								</p:column>
+							</p:row>
+						
+						</p:panelGrid>
+						
+					</p:fieldset>
+					
+				</p:column>
+				
+			</p:row>
+			
+			<p:row>
+			
+				<p:column colspan="2" styleClass="form-footer">
+					<p:commandButton
+						id="createButton"
+						value="Salva"
+						actionListener="#{dettaglioClienteTestata.doSave}"
+						icon="ui-icon-star"/>
+					<p:tooltip 
+						for="createButton" 
+						value="Salva i dati del cliente" 
+						showEffect="fade" 
+						hideEffect="fade"/>
+				</p:column>
+				
+			</p:row>
 	
-		</h:panelGrid>
+		</p:panelGrid>
 	
 	</h:form>
 
