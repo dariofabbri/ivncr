@@ -21,8 +21,7 @@
 				<ui:include src="detail-testata.xhtml"/>			
 
 				<p:tabView effect="fade" effectDuration="normal" id="tabView" rendered="#{dettaglioCliente.edited.id}">
-
-<!--					
+					
 					<p:tab id="generalTab" title="Generale">
 					
 						<ui:include src="detail-generale.xhtml"/>
@@ -43,13 +42,13 @@
 					
 					<p:tab id="obiettiviServizioTab" title="Obiettivi di servizio">
 
-						<ui:include src="detail-obiettivi-servizio.xhtml"/>
+						<!-- <ui:include src="detail-obiettivi-servizio.xhtml"/> -->
 
 					</p:tab>		
 					
 					<p:tab id="dettaglioFatturazione" title="Dettaglio di fatturazione">
 
-						<ui:include src="detail-fatturazione.xhtml"/>
+						<!-- <ui:include src="detail-obiettivi-servizio.xhtml"/> -->
 
 					</p:tab>				
 										
@@ -67,17 +66,13 @@
 
 					</p:tab>
 				
-					-->
-				
 				</p:tabView>
-				
+
 			</p:panel>
 			
-			<!--
 			<ui:include src="detail-contatti-create.xhtml"/>
 			
 			<ui:include src="detail-indirizzi-amministrativi-create.xhtml"/>
-			-->
 			
 		</ui:define>
 	

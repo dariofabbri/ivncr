@@ -75,6 +75,11 @@ public class DettaglioClienteTestata implements Serializable {
 		email = "mail@gmail.com";
 	}
 
+	public void doSave() {
+
+		logger.debug("doSave() called!");
+	}
+
 	public Cliente getEdited() {
 		return edited;
 	}
