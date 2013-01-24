@@ -31,13 +31,13 @@
 
 				<p:commandButton 
 					value="Elimina cliente selezionato"
-					disabled="#{gestioneClienti.selected == null}"
+					disabled="#{empty gestioneClienti.selected}"
 					onclick="deleteDialog.show();"
 					icon="ui-icon-trash" />
 
 				<p:commandButton 
 					value="Modifica cliente selezionato"
-					disabled="#{gestioneClienti.selected == null}"
+					disabled="#{empty gestioneClienti.selected}"
 					action="#{gestioneClienti.startUpdate}"
 					icon="ui-icon-pencil" />
 
@@ -75,7 +75,7 @@
 					<h:outputText value="#{cliente.ragioneSociale}" />
 				</p:column>
 				
-				<p:column headerText="Partita Iva" sortBy="#{cliente.partitaIva}"
+				<p:column headerText="Partita IVA" sortBy="#{cliente.partitaIva}"
 					filterBy="#{cliente.partitaIva}">
 					<h:outputText value="#{cliente.partitaIva}" />
 				</p:column>

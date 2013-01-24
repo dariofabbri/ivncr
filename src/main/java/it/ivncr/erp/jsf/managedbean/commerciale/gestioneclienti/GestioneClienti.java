@@ -1,9 +1,12 @@
 package it.ivncr.erp.jsf.managedbean.commerciale.gestioneclienti;
 
 import it.ivncr.erp.model.commerciale.Cliente;
+import it.ivncr.erp.service.QueryResult;
+import it.ivncr.erp.service.ServiceFactory;
+import it.ivncr.erp.service.SortDirection;
+import it.ivncr.erp.service.cliente.ClienteService;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -34,24 +37,6 @@ public class GestioneClienti implements Serializable {
 
 			private static final long serialVersionUID = 1L;
 
-			private final List<Cliente> list = new ArrayList<Cliente>();
-
-			{
-				Cliente cliente = new Cliente();
-				cliente.setId(1);
-				cliente.setCodice("C001");
-				cliente.setRagioneSociale("Ambasciata degli Stati Uniti");
-				cliente.setPartitaIva("IT0000000000000");
-				list.add(cliente);
-
-				cliente = new Cliente();
-				cliente.setId(2);
-				cliente.setCodice("C002");
-				cliente.setRagioneSociale("Metropolitane di Roma");
-				cliente.setPartitaIva("IT0000000000001");
-				list.add(cliente);
-			}
-
 			@Override
 			public List<Cliente> load(
 					int first,
@@ -62,9 +47,17 @@ public class GestioneClienti implements Serializable {
 
 				logger.debug("Fetching data model.");
 
-				this.setRowCount(list.size());
+				ClienteService cs = ServiceFactory.createService("Cliente");
+				QueryResult<Cliente> result = cs.list(
+						first,
+						pageSize,
+						sortField,
+						SortDirection.fromSortOrder(sortOrder),
+						filters);
 
-				return list;
+				this.setRowCount(result.getRecords());
+
+				return result.getResults();
 			}
 
 			@Override
@@ -76,7 +69,9 @@ public class GestioneClienti implements Serializable {
 			@Override
 			public Cliente getRowData(String rowKey) {
 
-				return null;
+				ClienteService cs = ServiceFactory.createService("Cliente");
+				Cliente cliente = cs.retrieve(Integer.decode(rowKey));
+				return cliente;
 			}
 		};
 	}

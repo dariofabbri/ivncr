@@ -107,7 +107,7 @@ public class DettaglioUtente implements Serializable {
 
 		} catch(Exception e) {
 
-			logger.warn("Exception caught while creating entity.", e);
+			logger.warn("Exception caught while saving entity.", e);
 
 			FacesMessage message = new FacesMessage(
 					FacesMessage.SEVERITY_ERROR,

@@ -1,8 +1,10 @@
 package it.ivncr.erp.jsf.managedbean.commerciale.gestioneclienti;
 
+import it.ivncr.erp.model.commerciale.Cliente;
 import it.ivncr.erp.model.commerciale.Divisa;
 import it.ivncr.erp.model.commerciale.GruppoCliente;
 import it.ivncr.erp.service.ServiceFactory;
+import it.ivncr.erp.service.cliente.ClienteService;
 import it.ivncr.erp.service.lut.LUTService;
 
 import java.io.Serializable;
@@ -10,10 +12,13 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -63,8 +68,15 @@ public class DettaglioClienteTestata implements Serializable {
 		//
 		if(id != null) {
 
-			// TODO: services still missing.
-			//
+			ClienteService cs = ServiceFactory.createService("Cliente");
+			Cliente cliente = cs.retrieveDeep(id);
+
+			codice = cliente.getCodice();
+			ragioneSociale = cliente.getRagioneSociale();
+			partitaIva = cliente.getPartitaIva();
+			codiceFiscale = cliente.getCodiceFiscale();
+			codiceGruppoCliente = cliente.getGruppoCliente() != null ? cliente.getGruppoCliente().getId() : null;
+			codiceDivisa = cliente.getDivisa() != null ? cliente.getDivisa().getId() : null;
 
 			// Load contact summary data.
 			//
@@ -82,7 +94,88 @@ public class DettaglioClienteTestata implements Serializable {
 
 	public void doSave() {
 
-		logger.debug("doSave() called!");
+		// Apply form-level validations.
+		//
+		if(!formValidations())
+			return;
+
+		// User service to persist data.
+		//
+		ClienteService cs = ServiceFactory.createService("Cliente");
+
+		try {
+
+			// If the user already exists, just update the record.
+			//
+			if(id != null) {
+
+				cs.updateTestata(
+						id,
+						codice,
+						ragioneSociale,
+						partitaIva,
+						codiceFiscale,
+						codiceGruppoCliente,
+						codiceDivisa);
+
+				logger.debug("Entity successfully updated.");
+			}
+
+			// Otherwise create a new record.
+			//
+			else {
+
+				Cliente cliente = cs.create(
+						codice,
+						ragioneSociale,
+						partitaIva,
+						codiceFiscale,
+						codiceGruppoCliente,
+						codiceDivisa);
+				id = cliente.getId();
+
+				logger.debug("Entity successfully created.");
+
+			}
+
+			// Everything went fine.
+			//
+			FacesMessage message = new FacesMessage(
+					FacesMessage.SEVERITY_INFO,
+					"Successo",
+					"Il salvataggio dei dati si è concluso con successo.");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+
+		} catch(Exception e) {
+
+			logger.warn("Exception caught while saving entity.", e);
+
+			FacesMessage message = new FacesMessage(
+					FacesMessage.SEVERITY_ERROR,
+					"Errore di sistema",
+					"Si è verificato un errore in fase di salvataggio del record.");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+		}
+	}
+
+	private boolean formValidations() {
+
+		// At least one between codice fiscale and partita IVA must be specified.
+		//
+		if(StringUtils.isEmpty(codiceFiscale) && StringUtils.isEmpty(partitaIva)) {
+			FacesMessage message = new FacesMessage(
+					FacesMessage.SEVERITY_ERROR,
+					"Errore",
+					"E' necessario inserire almeno uno tra codice fiscale e partita IVA.");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			return false;
+		}
+
+		// Normalize fields.
+		//
+		codiceFiscale = codiceFiscale.toUpperCase();
+
+		return true;
 	}
 
 	public Integer getId() {

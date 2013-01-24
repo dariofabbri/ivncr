@@ -15,6 +15,7 @@ public interface ClienteService extends EntityService<Cliente> {
 			Integer limit);
 
 	Cliente retrieve(Integer id);
+	Cliente retrieveDeep(Integer id);
 	Cliente retrieveByCodice(String codice);
 
 	Cliente create(
@@ -24,4 +25,14 @@ public interface ClienteService extends EntityService<Cliente> {
 			String codiceFiscale,
 			Integer codiceGruppoCliente,
 			Integer codiceDivisa);
+
+	Cliente updateTestata(
+			Integer id,
+			String codice,
+			String ragioneSociale,
+			String partitaIva,
+			String codiceFiscale,
+			Integer codiceGruppoCliente,
+			Integer codiceDivisa);
+
 }

@@ -4,6 +4,7 @@ import it.ivncr.erp.model.commerciale.Cliente;
 import it.ivncr.erp.model.commerciale.Divisa;
 import it.ivncr.erp.model.commerciale.GruppoCliente;
 import it.ivncr.erp.service.AbstractService;
+import it.ivncr.erp.service.NotFoundException;
 import it.ivncr.erp.service.QueryResult;
 import it.ivncr.erp.service.SortDirection;
 
@@ -16,9 +17,9 @@ public class ClienteServiceImpl extends AbstractService implements ClienteServic
 
 	@Override
 	public QueryResult<Cliente> list(
-			int first, 
+			int first,
 			int pageSize,
-			String sortCriteria, 
+			String sortCriteria,
 			SortDirection sortDirection,
 			Map<String, String> filters) {
 
@@ -47,11 +48,11 @@ public class ClienteServiceImpl extends AbstractService implements ClienteServic
 
 	@Override
 	public QueryResult<Cliente> list(
-			String codice, 
+			String codice,
 			String ragioneSociale,
-			String partitaIva, 
+			String partitaIva,
 			String codiceFiscale,
-			Integer offset, 
+			Integer offset,
 			Integer limit) {
 
 		QueryByCodiceRagioneSocialePartitaIvaCodiceFiscale q = new QueryByCodiceRagioneSocialePartitaIvaCodiceFiscale(session);
@@ -79,6 +80,23 @@ public class ClienteServiceImpl extends AbstractService implements ClienteServic
 	}
 
 	@Override
+	public Cliente retrieveDeep(Integer id) {
+
+		String hql =
+				"from Cliente cli " +
+				"left join fetch cli.gruppoCliente gcl " +
+				"left join fetch cli.divisa div " +
+				"left join fetch cli.tipoBusinessPartner tbp " +
+				"where cli.id = :id ";
+		Query query = session.createQuery(hql);
+		query.setParameter("id", id);
+		Cliente cliente = (Cliente)query.uniqueResult();
+		logger.debug("Cliente found: " + cliente);
+
+		return cliente;
+	}
+
+	@Override
 	public Cliente retrieveByCodice(String codice) {
 
 		String hql =
@@ -94,11 +112,11 @@ public class ClienteServiceImpl extends AbstractService implements ClienteServic
 
 	@Override
 	public Cliente create(
-			String codice, 
+			String codice,
 			String ragioneSociale,
-			String partitaIva, 
+			String partitaIva,
 			String codiceFiscale,
-			Integer codiceGruppoCliente, 
+			Integer codiceGruppoCliente,
 			Integer codiceDivisa) {
 
 		Date now = new Date();
@@ -107,11 +125,11 @@ public class ClienteServiceImpl extends AbstractService implements ClienteServic
 		//
 		GruppoCliente gruppoCliente = (GruppoCliente)session.get(GruppoCliente.class, codiceGruppoCliente);
 		Divisa divisa = (Divisa)session.get(Divisa.class, codiceDivisa);
-		
+
 		// Create the new entity.
 		//
 		Cliente cliente = new Cliente();
-		
+
 		// Set entity fields.
 		//
 		cliente.setCodice(codice);
@@ -120,17 +138,59 @@ public class ClienteServiceImpl extends AbstractService implements ClienteServic
 		cliente.setCodiceFiscale(codiceFiscale);
 		cliente.setGruppoCliente(gruppoCliente);
 		cliente.setDivisa(divisa);
-		
+
 		cliente.setCreazione(now);
 		cliente.setUltimaModifica(now);
 		cliente.setAttivo(true);
 		cliente.setAttivoDal(now);
-		
+		cliente.setBloccato(false);
+
 		// Persist the entity to the database.
 		//
 		session.save(cliente);
 		logger.debug("Cliente successfully created.");
-		
+
+		return cliente;
+	}
+
+	@Override
+	public Cliente updateTestata(
+			Integer id,
+			String codice,
+			String ragioneSociale,
+			String partitaIva,
+			String codiceFiscale,
+			Integer codiceGruppoCliente,
+			Integer codiceDivisa) {
+
+		Cliente cliente = retrieve(id);
+		if(cliente == null) {
+			String message = String.format("It has not been possible to retrieve specified entity: %d", id);
+			logger.info(message);
+			throw new NotFoundException(message);
+		}
+
+		Date now = new Date();
+
+		// Fetch referred entities.
+		//
+		GruppoCliente gruppoCliente = (GruppoCliente)session.get(GruppoCliente.class, codiceGruppoCliente);
+		Divisa divisa = (Divisa)session.get(Divisa.class, codiceDivisa);
+
+		// Set entity fields.
+		//
+		cliente.setCodice(codice);
+		cliente.setRagioneSociale(ragioneSociale);
+		cliente.setPartitaIva(partitaIva);
+		cliente.setCodiceFiscale(codiceFiscale);
+		cliente.setGruppoCliente(gruppoCliente);
+		cliente.setDivisa(divisa);
+
+		cliente.setUltimaModifica(now);
+
+		session.update(cliente);
+		logger.debug("Entity successfully updated.");
+
 		return cliente;
 	}
 }

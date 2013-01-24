@@ -47,7 +47,8 @@
 								<p:outputLabel for="partitaIva" value="Partita IVA:" />
 							</p:column>
 							<p:column>
-								<p:inputText value="#{dettaglioClienteTestata.partitaIva}" id="partitaIva"/>
+								<p:inputText value="#{dettaglioClienteTestata.partitaIva}" id="partitaIva"
+									validator="partitaIvaValidator" validatorMessage="Il codice di partita IVA inserito non è valido"/>
 								<p:watermark for="partitaIva" value="Partita IVA del cliente" />  
 								<p:tooltip for="partitaIva" showEffect="fade" value="Partita IVA del cliente" />
 							</p:column>
@@ -58,7 +59,8 @@
 								<p:outputLabel for="codiceFiscale" value="Codice fiscale:" />
 							</p:column>
 							<p:column>
-								<p:inputText value="#{dettaglioClienteTestata.codiceFiscale}" id="codiceFiscale"/>
+								<p:inputText value="#{dettaglioClienteTestata.codiceFiscale}" id="codiceFiscale"
+									validator="codiceFiscaleValidator" validatorMessage="Il codice fiscale inserito non è valido"/>
 								<p:watermark for="codiceFiscale" value="Codice fiscale del cliente" />  
 								<p:tooltip for="codiceFiscale" showEffect="fade" value="Codice fiscale del cliente" />
 							</p:column>
@@ -108,7 +110,7 @@
 					
 				</p:column>
 				
-				<p:column rendered="#{dettaglioClienteTestata.id}">							
+				<p:column rendered="#{not empty dettaglioClienteTestata.id}">							
 					
 					<p:fieldset legend="Contatto principale" toggleable="true" toggleSpeed="500"> 
 			
@@ -156,7 +158,7 @@
 					
 				</p:column>
 				
-				<p:column rendered="#{dettaglioClienteTestata.id}">
+				<p:column rendered="#{not empty dettaglioClienteTestata.id}">
 					
 					<p:fieldset legend="Altre informazioni" toggleable="true" toggleSpeed="500"> 
 			
@@ -186,7 +188,7 @@
 						id="createButton"
 						value="Salva"
 						actionListener="#{dettaglioClienteTestata.doSave}"
-						update="@form"
+						update="@form,:tabView"
 						icon="ui-icon-star"/>
 					<p:tooltip 
 						for="createButton" 
