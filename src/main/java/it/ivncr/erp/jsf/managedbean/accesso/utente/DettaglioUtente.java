@@ -58,7 +58,7 @@ public class DettaglioUtente implements Serializable {
 		// Save the entity.
 		//
 		try {
-			UtenteService us = ServiceFactory.createUtenteService();
+			UtenteService us = ServiceFactory.createService("Utente");
 
 			if(edited.getId() == null) {
 
@@ -131,7 +131,7 @@ public class DettaglioUtente implements Serializable {
 		// Set the roles.
 		//
 		try {
-			UtenteService us = ServiceFactory.createUtenteService();
+			UtenteService us = ServiceFactory.createService("Utente");
 			us.setRuoli(
 				edited.getId(),
 				ids);
@@ -159,11 +159,11 @@ public class DettaglioUtente implements Serializable {
 	private void loadList() {
 
 		logger.debug("Loading ruoli list.");
-		RuoloService rs = ServiceFactory.createRuoloService();
+		RuoloService rs = ServiceFactory.createService("Ruolo");
 		QueryResult<Ruolo> result = rs.list(null, null, null, null);
 		ruoli = result.getResults();
 
-		UtenteService us = ServiceFactory.createUtenteService();
+		UtenteService us = ServiceFactory.createService("Utente");
 		List<Ruolo> list = us.listRuoli(edited.getId());
 		selected = list.toArray(new Ruolo[0]);
 	}

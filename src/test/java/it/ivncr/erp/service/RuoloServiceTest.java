@@ -13,7 +13,7 @@ public class RuoloServiceTest extends BaseServiceTest {
 	@Test
 	public void testCreate() {
 		
-		RuoloService rs = ServiceFactory.createRuoloService();
+		RuoloService rs = ServiceFactory.createService("Ruolo");
 		
 		Ruolo ruolo = rs.create("testrole", "Ruolo di test");
 		

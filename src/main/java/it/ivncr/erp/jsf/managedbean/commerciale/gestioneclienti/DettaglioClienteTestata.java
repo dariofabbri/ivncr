@@ -48,7 +48,7 @@ public class DettaglioClienteTestata implements Serializable {
 	@PostConstruct
 	public void init() {
 
-		LUTService lutService = ServiceFactory.createLUTService();
+		LUTService lutService = ServiceFactory.createService("LUT");
 
 		// Load gruppo cliente LUT.
 		//

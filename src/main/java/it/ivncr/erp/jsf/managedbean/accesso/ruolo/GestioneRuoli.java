@@ -47,7 +47,7 @@ public class GestioneRuoli implements Serializable {
 
 				logger.debug("Fetching data model.");
 				
-				RuoloService rs = ServiceFactory.createRuoloService();
+				RuoloService rs = ServiceFactory.createService("Ruolo");
 				QueryResult<Ruolo> result = rs.list(
 						first, 
 						pageSize, 
@@ -69,7 +69,7 @@ public class GestioneRuoli implements Serializable {
 			@Override
 			public Ruolo getRowData(String rowKey) {
 				
-				RuoloService rs = ServiceFactory.createRuoloService();
+				RuoloService rs = ServiceFactory.createService("Ruolo");
 				Ruolo ruolo = rs.retrieve(Integer.decode(rowKey));
 				return ruolo;
 			}
@@ -117,7 +117,7 @@ public class GestioneRuoli implements Serializable {
 		//
 		try {
 			
-			RuoloService rs = ServiceFactory.createRuoloService();
+			RuoloService rs = ServiceFactory.createService("Ruolo");
 			rs.delete(selected.getId());
 			logger.debug("Entity successfully deleted.");
 			

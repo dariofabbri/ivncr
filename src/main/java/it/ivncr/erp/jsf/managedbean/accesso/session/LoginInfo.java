@@ -92,7 +92,7 @@ public class LoginInfo implements Serializable {
  		
  		// Record last login timestamp.
  		//
- 		UtenteService us = ServiceFactory.createUtenteService();
+ 		UtenteService us = ServiceFactory.createService("Utente");
  		this.utente = us.updateLastLogonTimestamp(utente.getId());
 
         return "/index?faces-redirect=true";

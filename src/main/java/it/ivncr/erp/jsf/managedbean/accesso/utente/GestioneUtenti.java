@@ -51,7 +51,7 @@ public class GestioneUtenti implements Serializable {
 
 				logger.debug("Fetching data model.");
 
-				UtenteService us = ServiceFactory.createUtenteService();
+				UtenteService us = ServiceFactory.createService("Utente");
 				QueryResult<Utente> result = us.list(
 						first,
 						pageSize,
@@ -73,7 +73,7 @@ public class GestioneUtenti implements Serializable {
 			@Override
 			public Utente getRowData(String rowKey) {
 
-				UtenteService us = ServiceFactory.createUtenteService();
+				UtenteService us = ServiceFactory.createService("Utente");
 				Utente utente = us.retrieve(Integer.decode(rowKey));
 				return utente;
 			}
@@ -121,7 +121,7 @@ public class GestioneUtenti implements Serializable {
 		//
 		try {
 
-			UtenteService us = ServiceFactory.createUtenteService();
+			UtenteService us = ServiceFactory.createService("Utente");
 			us.delete(selected.getId());
 			logger.debug("Entity successfully deleted.");
 
@@ -188,7 +188,7 @@ public class GestioneUtenti implements Serializable {
 		// Change the password
 		//
 		try {
-			UtenteService us = ServiceFactory.createUtenteService();
+			UtenteService us = ServiceFactory.createService("Utente");
 			us.changePassword(selected.getId(), password);
 			logger.debug("Password successfully changed.");
 
@@ -236,7 +236,7 @@ public class GestioneUtenti implements Serializable {
 		//
 		try {
 
-			UtenteService us = ServiceFactory.createUtenteService();
+			UtenteService us = ServiceFactory.createService("Utente");
 			us.activate(selected.getId());
 			logger.debug("User successfully activated.");
 
@@ -290,7 +290,7 @@ public class GestioneUtenti implements Serializable {
 		//
 		try {
 
-			UtenteService us = ServiceFactory.createUtenteService();
+			UtenteService us = ServiceFactory.createService("Utente");
 			us.deactivate(selected.getId());
 			logger.debug("User successfully deactivated.");
 

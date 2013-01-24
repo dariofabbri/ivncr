@@ -53,11 +53,11 @@ public class DettaglioRuolo implements Serializable {
 	private void loadList() {
 		
 		logger.debug("Loading permessi list.");
-		PermessoService ps = ServiceFactory.createPermessoService();
+		PermessoService ps = ServiceFactory.createService("Permesso");
 		QueryResult<Permesso> result = ps.list(null, null, null, null);
 		permessi = result.getResults();
 		
-		RuoloService rs = ServiceFactory.createRuoloService();
+		RuoloService rs = ServiceFactory.createService("Ruolo");
 		List<Permesso> list = rs.retrievePermessi(edited.getId());
 		selected = list.toArray(new Permesso[0]);
 	}
@@ -69,7 +69,7 @@ public class DettaglioRuolo implements Serializable {
 		// Save the entity.
 		//
 		try {
-			RuoloService rs = ServiceFactory.createRuoloService();
+			RuoloService rs = ServiceFactory.createService("Ruolo");
 			
 			// If no id is present, creation is required.
 			//
@@ -126,7 +126,7 @@ public class DettaglioRuolo implements Serializable {
 		// Set the permissions.
 		//
 		try {
-			RuoloService rs = ServiceFactory.createRuoloService();
+			RuoloService rs = ServiceFactory.createService("Ruolo");
 			rs.setPermessi(
 				edited.getId(),
 				ids);

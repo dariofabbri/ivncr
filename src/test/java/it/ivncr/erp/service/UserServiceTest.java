@@ -12,7 +12,7 @@ public class UserServiceTest extends BaseServiceTest {
 	@Test
 	public void testCreate() {
 		
-		UtenteService us = ServiceFactory.createUtenteService();
+		UtenteService us = ServiceFactory.createService("Utente");
 		
 		Utente utente = us.create(
 				"gino", 
@@ -30,7 +30,7 @@ public class UserServiceTest extends BaseServiceTest {
 	@Test
 	public void testDelete() {
 		
-		UtenteService us = ServiceFactory.createUtenteService();
+		UtenteService us = ServiceFactory.createService("Utente");
 		
 		Utente utente = us.retrieveByUsername("gino");
 		Assert.assertNotNull(utente);

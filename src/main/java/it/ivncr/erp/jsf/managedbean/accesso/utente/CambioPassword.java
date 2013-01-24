@@ -56,7 +56,7 @@ public class CambioPassword implements Serializable {
 		// Change the password
 		//
 		try {
-			UtenteService us = ServiceFactory.createUtenteService();
+			UtenteService us = ServiceFactory.createService("Utente");
 			us.changePassword(loginInfo.getUtente().getId(), password);
 			logger.debug("Password successfully changed.");
 

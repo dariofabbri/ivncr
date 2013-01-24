@@ -50,7 +50,7 @@ public class GestionePermessi implements Serializable {
 
 				logger.debug("Fetching data model.");
 
-				PermessoService ps = ServiceFactory.createPermessoService();
+				PermessoService ps = ServiceFactory.createService("Permesso");
 				QueryResult<Permesso> result = ps.list(
 						first,
 						pageSize,
@@ -72,7 +72,7 @@ public class GestionePermessi implements Serializable {
 			@Override
 			public Permesso getRowData(String rowKey) {
 
-				PermessoService ps = ServiceFactory.createPermessoService();
+				PermessoService ps = ServiceFactory.createService("Permesso");
 				Permesso permesso = ps.retrieve(Integer.decode(rowKey));
 				return permesso;
 			}
@@ -90,7 +90,7 @@ public class GestionePermessi implements Serializable {
 		// Create the new entity.
 		//
 		try {
-			PermessoService ps = ServiceFactory.createPermessoService();
+			PermessoService ps = ServiceFactory.createService("Permesso");
 			ps.create(
 					permesso,
 					descrizione);
@@ -129,7 +129,7 @@ public class GestionePermessi implements Serializable {
 		// Update the entity.
 		//
 		try {
-			PermessoService ps = ServiceFactory.createPermessoService();
+			PermessoService ps = ServiceFactory.createService("Permesso");
 			ps.update(
 					selected.getId(),
 					selected.getPermesso(),
@@ -180,7 +180,7 @@ public class GestionePermessi implements Serializable {
 		//
 		try {
 
-			PermessoService ps = ServiceFactory.createPermessoService();
+			PermessoService ps = ServiceFactory.createService("Permesso");
 			ps.delete(selected.getId());
 			logger.debug("Entity successfully deleted.");
 
