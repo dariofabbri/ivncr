@@ -36,6 +36,11 @@
         <mapping class="it.ivncr.erp.model.accesso.Permesso" />
         <mapping class="it.ivncr.erp.model.accesso.Ruolo" />
         <mapping class="it.ivncr.erp.model.accesso.Utente" />
+        
+        <mapping class="it.ivncr.erp.model.commerciale.Cliente" />
+        <mapping class="it.ivncr.erp.model.commerciale.Divisa" />
+        <mapping class="it.ivncr.erp.model.commerciale.GruppoCliente" />
+        <mapping class="it.ivncr.erp.model.commerciale.TipoBusinessPartner" />
 
     </session-factory>
 

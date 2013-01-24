@@ -1,8 +1,24 @@
 package it.ivncr.erp.model.commerciale;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "com_gruppo_cliente")
 public class GruppoCliente {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "com_gruppo_cliente_id_seq")
+	@SequenceGenerator(name = "com_gruppo_cliente_id_seq", sequenceName = "com_gruppo_cliente_id_seq")
+	@Column(name="id")
 	private Integer id;
+
+	@Column(name="descrizione")
 	private String descrizione;
 
 	public Integer getId() {

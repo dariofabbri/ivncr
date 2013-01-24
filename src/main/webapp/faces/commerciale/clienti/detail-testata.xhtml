@@ -23,7 +23,7 @@
 								<p:outputLabel for="codice" value="Codice:" />
 							</p:column>
 							<p:column>
-								<p:inputText value="#{dettaglioClienteTestata.edited.codice}" id="codice"
+								<p:inputText value="#{dettaglioClienteTestata.codice}" id="codice"
 									required="true" requiredMessage="Il campo codice è obbligatorio"/>
 								<p:watermark for="codice" value="Codice identificativo del cliente" />  
 								<p:tooltip for="codice" showEffect="fade" value="Il codice rappresenta univocamente il cliente" />
@@ -35,7 +35,7 @@
 								<p:outputLabel for="ragioneSociale" value="Ragione sociale:" />
 							</p:column>
 							<p:column>
-								<p:inputText value="#{dettaglioClienteTestata.edited.ragioneSociale}" id="ragioneSociale"
+								<p:inputText value="#{dettaglioClienteTestata.ragioneSociale}" id="ragioneSociale"
 									required="true" requiredMessage="Il campo ragione sociale è obbligatorio"/>
 								<p:watermark for="ragioneSociale" value="Ragione sociale del cliente" />  
 								<p:tooltip for="ragioneSociale" showEffect="fade" value="Campo ragione sociale del cliente" />
@@ -47,7 +47,7 @@
 								<p:outputLabel for="partitaIva" value="Partita IVA:" />
 							</p:column>
 							<p:column>
-								<p:inputText value="#{dettaglioClienteTestata.edited.partitaIva}" id="partitaIva"/>
+								<p:inputText value="#{dettaglioClienteTestata.partitaIva}" id="partitaIva"/>
 								<p:watermark for="partitaIva" value="Partita IVA del cliente" />  
 								<p:tooltip for="partitaIva" showEffect="fade" value="Partita IVA del cliente" />
 							</p:column>
@@ -58,7 +58,7 @@
 								<p:outputLabel for="codiceFiscale" value="Codice fiscale:" />
 							</p:column>
 							<p:column>
-								<p:inputText value="#{dettaglioClienteTestata.edited.codiceFiscale}" id="codiceFiscale"/>
+								<p:inputText value="#{dettaglioClienteTestata.codiceFiscale}" id="codiceFiscale"/>
 								<p:watermark for="codiceFiscale" value="Codice fiscale del cliente" />  
 								<p:tooltip for="codiceFiscale" showEffect="fade" value="Codice fiscale del cliente" />
 							</p:column>
@@ -73,7 +73,7 @@
 									required="true" 
 									requiredMessage="Il campo gruppo cliente è obbligatorio"
 									id="codiceGruppoCliente" 
-									value="#{dettaglioClienteTestata.edited.codiceGruppoCliente}"
+									value="#{dettaglioClienteTestata.codiceGruppoCliente}"
 									effect="fade">
 									<f:selectItem itemLabel="Selezionare un gruppo" itemValue="" />
 									<f:selectItems 
@@ -93,7 +93,7 @@
 									required="true" 
 									requiredMessage="Il campo divisa è obbligatorio"
 									id="codiceDivisa" 
-									value="#{dettaglioClienteTestata.edited.codiceDivisa}"
+									value="#{dettaglioClienteTestata.codiceDivisa}"
 									effect="fade">
 									<f:selectItem itemLabel="Selezionare una divisa" itemValue="" />
 									<f:selectItems 
@@ -108,7 +108,7 @@
 					
 				</p:column>
 				
-				<p:column rendered="#{dettaglioClienteTestata.edited.id}">							
+				<p:column rendered="#{dettaglioClienteTestata.id}">							
 					
 					<p:fieldset legend="Contatto principale" toggleable="true" toggleSpeed="500"> 
 			
@@ -156,7 +156,7 @@
 					
 				</p:column>
 				
-				<p:column rendered="#{dettaglioClienteTestata.edited.id}">
+				<p:column rendered="#{dettaglioClienteTestata.id}">
 					
 					<p:fieldset legend="Altre informazioni" toggleable="true" toggleSpeed="500"> 
 			
@@ -167,7 +167,7 @@
 									<h:outputText value="Saldo contabile:" />
 								</p:column>
 								<p:column>
-									<h:outputText value="#{dettaglioClienteTestata.edited.saldoContabile}" style="font-style: italic;"/>
+									<h:outputText value="#{dettaglioClienteTestata.saldoContabile}" style="font-style: italic;"/>
 								</p:column>
 							</p:row>
 						

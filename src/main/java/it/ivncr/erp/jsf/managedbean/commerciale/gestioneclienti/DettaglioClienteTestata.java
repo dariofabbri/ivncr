@@ -1,11 +1,12 @@
 package it.ivncr.erp.jsf.managedbean.commerciale.gestioneclienti;
 
-import it.ivncr.erp.model.commerciale.Cliente;
 import it.ivncr.erp.model.commerciale.Divisa;
 import it.ivncr.erp.model.commerciale.GruppoCliente;
+import it.ivncr.erp.service.ServiceFactory;
+import it.ivncr.erp.service.lut.LUTService;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -24,8 +25,16 @@ public class DettaglioClienteTestata implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@ManagedProperty("#{gestioneClienti.edited}")
-	private Cliente edited;
+	@ManagedProperty("#{gestioneClienti.edited.id}")
+	private Integer id;
+
+	private String codice;
+	private String ragioneSociale;
+	private String partitaIva;
+	private String codiceFiscale;
+	private Integer codiceGruppoCliente;
+	private Integer codiceDivisa;
+	private BigDecimal saldoContabile;
 
 	private String nome;
 	private String telefoni;
@@ -39,32 +48,28 @@ public class DettaglioClienteTestata implements Serializable {
 	@PostConstruct
 	public void init() {
 
-		listDivisa = new ArrayList<Divisa>();
+		LUTService lutService = ServiceFactory.createLUTService();
 
-		Divisa dv = new Divisa();
-		dv.setId(1);
-		dv.setDescrizione("€");
-		listDivisa.add(dv);
+		// Load gruppo cliente LUT.
+		//
+		listGruppoCliente = lutService.listItems("GruppoCliente");
 
-		dv = new Divisa();
-		dv.setId(1);
-		dv.setDescrizione("$");
-		listDivisa.add(dv);
+		// Load divisa LUT.
+		//
+		listDivisa = lutService.listItems("Divisa");
 
+		// If we are editing an existing record, it is time to fetch
+		// it from the database and fill in the bean fields.
+		//
+		if(id != null) {
 
-		listGruppoCliente = new ArrayList<GruppoCliente>();
+			// TODO: services still missing.
+			//
 
-		GruppoCliente gc = new GruppoCliente();
-		gc.setId(1);
-		gc.setDescrizione("Grande Utenza");
-		listGruppoCliente.add(gc);
-
-		gc = new GruppoCliente();
-		gc.setId(2);
-		gc.setDescrizione("Piccola Utenza");
-		listGruppoCliente.add(gc);
-
-		loadRiepilogoContatto();
+			// Load contact summary data.
+			//
+			loadRiepilogoContatto();
+		}
 	}
 
 	public void loadRiepilogoContatto() {
@@ -80,28 +85,68 @@ public class DettaglioClienteTestata implements Serializable {
 		logger.debug("doSave() called!");
 	}
 
-	public Cliente getEdited() {
-		return edited;
+	public Integer getId() {
+		return id;
 	}
 
-	public void setEdited(Cliente edited) {
-		this.edited = edited;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
-	public List<GruppoCliente> getListGruppoCliente() {
-		return listGruppoCliente;
+	public String getCodice() {
+		return codice;
 	}
 
-	public void setListGruppoCliente(List<GruppoCliente> listGruppoCliente) {
-		this.listGruppoCliente = listGruppoCliente;
+	public void setCodice(String codice) {
+		this.codice = codice;
 	}
 
-	public List<Divisa> getListDivisa() {
-		return listDivisa;
+	public String getRagioneSociale() {
+		return ragioneSociale;
 	}
 
-	public void setListDivisa(List<Divisa> listDivisa) {
-		this.listDivisa = listDivisa;
+	public void setRagioneSociale(String ragioneSociale) {
+		this.ragioneSociale = ragioneSociale;
+	}
+
+	public String getPartitaIva() {
+		return partitaIva;
+	}
+
+	public void setPartitaIva(String partitaIva) {
+		this.partitaIva = partitaIva;
+	}
+
+	public String getCodiceFiscale() {
+		return codiceFiscale;
+	}
+
+	public void setCodiceFiscale(String codiceFiscale) {
+		this.codiceFiscale = codiceFiscale;
+	}
+
+	public Integer getCodiceGruppoCliente() {
+		return codiceGruppoCliente;
+	}
+
+	public void setCodiceGruppoCliente(Integer codiceGruppoCliente) {
+		this.codiceGruppoCliente = codiceGruppoCliente;
+	}
+
+	public Integer getCodiceDivisa() {
+		return codiceDivisa;
+	}
+
+	public void setCodiceDivisa(Integer codiceDivisa) {
+		this.codiceDivisa = codiceDivisa;
+	}
+
+	public BigDecimal getSaldoContabile() {
+		return saldoContabile;
+	}
+
+	public void setSaldoContabile(BigDecimal saldoContabile) {
+		this.saldoContabile = saldoContabile;
 	}
 
 	public String getNome() {
@@ -134,5 +179,21 @@ public class DettaglioClienteTestata implements Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public List<GruppoCliente> getListGruppoCliente() {
+		return listGruppoCliente;
+	}
+
+	public void setListGruppoCliente(List<GruppoCliente> listGruppoCliente) {
+		this.listGruppoCliente = listGruppoCliente;
+	}
+
+	public List<Divisa> getListDivisa() {
+		return listDivisa;
+	}
+
+	public void setListDivisa(List<Divisa> listDivisa) {
+		this.listDivisa = listDivisa;
 	}
 }

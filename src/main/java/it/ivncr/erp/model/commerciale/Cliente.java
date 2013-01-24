@@ -3,34 +3,98 @@ package it.ivncr.erp.model.commerciale;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "com_cliente")
 public class Cliente {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "com_cliente_id_seq")
+	@SequenceGenerator(name = "com_cliente_id_seq", sequenceName = "com_cliente_id_seq")
+	@Column(name="id")
 	private Integer id;
-	private String codice;
-	private String ragioneSociale;
-	private String partitaIva;
-	private String codiceFiscale;
-	private BigDecimal saldoContabile;
-	private Integer codiceGruppoCliente;
-	private Integer codiceDivisa;
 
+	@Column(name="codice")
+	private String codice;
+
+	@Column(name="ragione_sociale")
+	private String ragioneSociale;
+
+	@Column(name="partita_iva")
+	private String partitaIva;
+
+	@Column(name="codice_fiscale")
+	private String codiceFiscale;
+
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="gruppo_cliente_id")
+	private GruppoCliente gruppoCliente;
+
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="divisa_id")
+	private Divisa divisa;
+
+	@Column(name="telefono_1")
 	private String telefono1;
+
+	@Column(name="telefono_2")
 	private String telefono2;
+
+	@Column(name="cellulare")
 	private String cellulare;
+
+	@Column(name="fax")
 	private String fax;
+
+	@Column(name="email")
 	private String email;
 
+	@Column(name="attivo")
 	private boolean attivo;
+
+	@Column(name="attivo_dal_ts")
 	private Date attivoDal;
+
+	@Column(name="attivo_al_ts")
 	private Date attivoAl;
-	private String attivoOsservazioni;
 
+	@Column(name="attivo_note")
+	private String attivoNote;
+
+	@Column(name="bloccato")
 	private boolean bloccato;
-	private Date bloccatoDal;
-	private Date bloccatoAl;
-	private String bloccatoOsservazioni;
 
-	private Integer codiceTipoBusinessPartner;
+	@Column(name="bloccato_dal_ts")
+	private Date bloccatoDal;
+
+	@Column(name="bloccato_al_ts")
+	private Date bloccatoAl;
+
+	@Column(name="bloccato_note")
+	private String bloccatoNote;
+
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="tipo_business_partner_id")
+	private TipoBusinessPartner tipoBusinessPartner;
+
+	@Column(name="saldo_contabile")
+	private BigDecimal saldoContabile;
+
+	@Column(name="creazione_ts")
+	private Date creazione;
+
+	@Column(name="ultima_modifica_ts")
+	private Date ultimaModifica;
 
 	public Integer getId() {
 		return id;
@@ -72,28 +136,20 @@ public class Cliente {
 		this.codiceFiscale = codiceFiscale;
 	}
 
-	public BigDecimal getSaldoContabile() {
-		return saldoContabile;
+	public GruppoCliente getGruppoCliente() {
+		return gruppoCliente;
 	}
 
-	public void setSaldoContabile(BigDecimal saldoContabile) {
-		this.saldoContabile = saldoContabile;
+	public void setGruppoCliente(GruppoCliente gruppoCliente) {
+		this.gruppoCliente = gruppoCliente;
 	}
 
-	public Integer getCodiceGruppoCliente() {
-		return codiceGruppoCliente;
+	public Divisa getDivisa() {
+		return divisa;
 	}
 
-	public void setCodiceGruppoCliente(Integer codiceGruppoCliente) {
-		this.codiceGruppoCliente = codiceGruppoCliente;
-	}
-
-	public Integer getCodiceDivisa() {
-		return codiceDivisa;
-	}
-
-	public void setCodiceDivisa(Integer codiceDivisa) {
-		this.codiceDivisa = codiceDivisa;
+	public void setDivisa(Divisa divisa) {
+		this.divisa = divisa;
 	}
 
 	public String getTelefono1() {
@@ -160,12 +216,12 @@ public class Cliente {
 		this.attivoAl = attivoAl;
 	}
 
-	public String getAttivoOsservazioni() {
-		return attivoOsservazioni;
+	public String getAttivoNote() {
+		return attivoNote;
 	}
 
-	public void setAttivoOsservazioni(String attivoOsservazioni) {
-		this.attivoOsservazioni = attivoOsservazioni;
+	public void setAttivoNote(String attivoNote) {
+		this.attivoNote = attivoNote;
 	}
 
 	public boolean isBloccato() {
@@ -192,19 +248,43 @@ public class Cliente {
 		this.bloccatoAl = bloccatoAl;
 	}
 
-	public String getBloccatoOsservazioni() {
-		return bloccatoOsservazioni;
+	public String getBloccatoNote() {
+		return bloccatoNote;
 	}
 
-	public void setBloccatoOsservazioni(String bloccatoOsservazioni) {
-		this.bloccatoOsservazioni = bloccatoOsservazioni;
+	public void setBloccatoNote(String bloccatoNote) {
+		this.bloccatoNote = bloccatoNote;
 	}
 
-	public Integer getCodiceTipoBusinessPartner() {
-		return codiceTipoBusinessPartner;
+	public TipoBusinessPartner getTipoBusinessPartner() {
+		return tipoBusinessPartner;
 	}
 
-	public void setCodiceTipoBusinessPartner(Integer codiceTipoBusinessPartner) {
-		this.codiceTipoBusinessPartner = codiceTipoBusinessPartner;
+	public void setTipoBusinessPartner(TipoBusinessPartner tipoBusinessPartner) {
+		this.tipoBusinessPartner = tipoBusinessPartner;
+	}
+
+	public BigDecimal getSaldoContabile() {
+		return saldoContabile;
+	}
+
+	public void setSaldoContabile(BigDecimal saldoContabile) {
+		this.saldoContabile = saldoContabile;
+	}
+
+	public Date getCreazione() {
+		return creazione;
+	}
+
+	public void setCreazione(Date creazione) {
+		this.creazione = creazione;
+	}
+
+	public Date getUltimaModifica() {
+		return ultimaModifica;
+	}
+
+	public void setUltimaModifica(Date ultimaModifica) {
+		this.ultimaModifica = ultimaModifica;
 	}
 }
