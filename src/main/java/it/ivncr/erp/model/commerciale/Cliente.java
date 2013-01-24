@@ -60,7 +60,7 @@ public class Cliente {
 	private String email;
 
 	@Column(name="attivo")
-	private boolean attivo;
+	private Boolean attivo;
 
 	@Column(name="attivo_dal_ts")
 	private Date attivoDal;
@@ -72,7 +72,7 @@ public class Cliente {
 	private String attivoNote;
 
 	@Column(name="bloccato")
-	private boolean bloccato;
+	private Boolean bloccato;
 
 	@Column(name="bloccato_dal_ts")
 	private Date bloccatoDal;
@@ -192,11 +192,11 @@ public class Cliente {
 		this.email = email;
 	}
 
-	public boolean isAttivo() {
+	public Boolean isAttivo() {
 		return attivo;
 	}
 
-	public void setAttivo(boolean attivo) {
+	public void setAttivo(Boolean attivo) {
 		this.attivo = attivo;
 	}
 
@@ -224,11 +224,11 @@ public class Cliente {
 		this.attivoNote = attivoNote;
 	}
 
-	public boolean isBloccato() {
+	public Boolean isBloccato() {
 		return bloccato;
 	}
 
-	public void setBloccato(boolean bloccato) {
+	public void setBloccato(Boolean bloccato) {
 		this.bloccato = bloccato;
 	}
 

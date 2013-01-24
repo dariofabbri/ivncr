@@ -25,13 +25,23 @@ public class ServiceFactory {
 	@SuppressWarnings("unchecked")
 	public static <T extends Service> T createService(String name) {
 		
+		// It is assumed that the ServiceFactory is located at the root of the service
+		// portion of the packages hierarchy. It is therefore used to retrieve
+		// the base package name.
+		//
 		Package baseServicePackage = ServiceFactory.class.getPackage();
 		
+		// The service interface name is created using the convention that it is contained in
+		// a package directly below the base service package named as the service itself and that 
+		// its name is the name of the service plus Service suffix.
+		//
 		String serviceInterfaceName = String.format("%s.%s.%sService",
 				baseServicePackage.getName(),
 				name.toLowerCase(),
 				name);
 		
+		// Check if the service interface can be found by the classloader.
+		//
 		Class<T> serviceInterface = null;
 		try {
 			serviceInterface = (Class<T>) Class.forName(serviceInterfaceName);
@@ -41,18 +51,33 @@ public class ServiceFactory {
 			throw new RuntimeException(message, e);
 		}
 		
-		if(!Service.class.isAssignableFrom(serviceInterface)) {
-			String message = String.format("Specified service interface %s does not implement Service interface.", serviceInterfaceName);
+		// Check that the found service interface is really an interface.
+		//
+		if(!serviceInterface.isInterface()) {
+			String message = String.format("Specified service interface %s is not an interface!", serviceInterfaceName);
 			logger.error(message);
 			throw new RuntimeException(message);
 		}
 		
+		// Check that the found interface extends the Service interface.
+		//
+		if(!Service.class.isAssignableFrom(serviceInterface)) {
+			String message = String.format("Specified service interface %s does not extend Service interface.", serviceInterfaceName);
+			logger.error(message);
+			throw new RuntimeException(message);
+		}
+
 		
+		// The implementation class name is built with a convention similar to that of the service
+		// interface, but using the ServiceImpl suffix.
+		//
 		String serviceImplementationName = String.format("%s.%s.%sServiceImpl",
 				baseServicePackage.getName(),
 				name.toLowerCase(),
 				name);
 		
+		// Retrieve the class using the classloader.
+		//
 		Class<T> serviceImplementation = null;
 		try {
 			serviceImplementation = (Class<T>) Class.forName(serviceImplementationName);
@@ -62,12 +87,16 @@ public class ServiceFactory {
 			throw new RuntimeException(message, e);
 		}
 		
+		// Check that the implementation class implements the corresponding service interface.
+		//
 		if(!serviceInterface.isAssignableFrom(serviceImplementation)) {
 			String message = String.format("Specified service implementation %s does not implement the corresponding interface %s.", serviceImplementationName, serviceInterfaceName);
 			logger.error(message);
 			throw new RuntimeException(message);
 		}
 		
+		// Create the service by injecting the Hibernate session using the decorator.
+		//
 		return createService(serviceImplementation, serviceInterface);
 	}
 
