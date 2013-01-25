@@ -5,123 +5,139 @@
 	xmlns:p="http://primefaces.org/ui">
 			
 	<h:form>
-	
-	<h:panelGrid columns="4">
-			
-			<p:commandButton
-							id="createButton"
-							value="Crea"
-							onclick="createContattoDialog.show();"
-							icon="ui-icon-star"/>
-						<p:tooltip 
-							for="createButton" 
-							value="Crea un nuovo ruolo" 
-							showEffect="fade" 
-							hideEffect="fade"/>
 							
-				<p:commandButton
-							id="updateButton" 
-							value="Modifica"
-							disabled="#{gestioneRuoli.selected == null}"
-							action="#{gestioneRuoli.startUpdate}"
-							icon="ui-icon-pencil" />
-						<p:tooltip 
-							for="updateButton" 
-							value="Modifica il ruolo selezionato" 
-							showEffect="fade" 
-							hideEffect="fade"/>
-	
-		</h:panelGrid>
-	
-		<h:panelGrid columns="5">
+		<p:messages globalOnly="false" showSummary="false" showDetail="true" closable="true"/>
+
+		<p:focus/>
 		
-			<p:outputLabel for="telefono1" value="Telefono 1:" />
-			<p:inputText value="#{dettaglioClienteGenerale.edited.telefono1}" id="telefono1"
-				style="width: 250px;"/>
-			<p:watermark for="telefono1" value="Primo contatto telefonico del cliente" />  
-			<p:message for="telefono1" showSummary="true" showDetail="false"/>
-			<p:tooltip for="telefono1" showEffect="fade" value="Primo contatto telefonico del cliente" />
-
-			<p:outputLabel for="telefono2" value="Telefono 2:" />
-			<p:inputText value="#{dettaglioClienteGenerale.edited.telefono2}" id="telefono2"
-				style="width: 250px;"/>
-			<p:watermark for="telefono2" value="Contatto telefonico alternativo del cliente" />  
-			<p:message for="telefono2" showSummary="true" showDetail="false"/>
-			<p:tooltip for="telefono2" showEffect="fade" value="Contatto telefonico alternativo del cliente" />
-
-			<p:outputLabel for="cellulare" value="Cellulare:" />
-			<p:inputText value="#{dettaglioClienteGenerale.edited.cellulare}" id="cellulare"
-				style="width: 250px;"/>
-			<p:watermark for="cellulare" value="Contatto telefonico cellulare del cliente" />  
-			<p:message for="cellulare" showSummary="true" showDetail="false"/>
-			<p:tooltip for="cellulare" showEffect="fade" value="Contatto telefonico cellulare del cliente" />
-
-			<p:outputLabel for="fax" value="Fax:" />
-			<p:inputText value="#{dettaglioClienteGenerale.edited.fax}" id="fax"
-				style="width: 250px;"/>
-			<p:watermark for="fax" value="fax del cliente" />  
-			<p:message for="fax" showSummary="true" showDetail="false"/>
-			<p:tooltip for="fax" showEffect="fade" value="fax del cliente" />
-
-			<p:outputLabel for="email" value="E-mail:" />
-			<p:inputText value="#{dettaglioClienteGenerale.edited.email}" id="email"
-				style="width: 250px;"/>
-			<p:watermark for="email" value="email del cliente" />  
-			<p:message for="email" showSummary="true" showDetail="false"/>
-			<p:tooltip for="email" showEffect="fade" value="email del cliente" />
-						
-			<p:outputLabel for="codiceTipoBusinessPartner" value="Tipo business partner:" />
-			<p:selectOneMenu
-				id="codiceTipoBusinessPartner" 
-				value="#{dettaglioClienteGenerale.edited.codiceTipoBusinessPartner}"
-				effect="fade">
-				<f:selectItem itemLabel="Selezionare un tipo" itemValue="" />
-				<f:selectItems 
-					value="#{dettaglioClienteGenerale.listTipoBusinessPartner}" var="item"
-					itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
-			</p:selectOneMenu>
+		<p:panelGrid styleClass="form-panel">
 			
+			<p:row>				
+				<p:column colspan="2">
+					<p:commandButton
+						id="saveButton"
+						value="Salva"
+						actionListener="#{dettaglioClienteGenerale.doSave}"
+						update="@form,:testataForm"
+						icon="ui-icon-star"/>
+					<p:tooltip 
+						for="saveButton" 
+						value="Salva i dati generali del cliente" 
+						showEffect="fade" 
+						hideEffect="fade"/>
+				</p:column>
+			</p:row>
+
+			<p:row>
+				<p:column>		
+					<p:outputLabel for="telefono1" value="Telefono 1:" />
+				</p:column>
+				<p:column>
+					<p:inputText value="#{dettaglioClienteGenerale.telefono1}" id="telefono1" />
+					<p:watermark for="telefono1" value="Primo contatto telefonico del cliente" />  
+					<p:tooltip for="telefono1" showEffect="fade" value="Primo contatto telefonico del cliente" />
+				</p:column>
+			</p:row>
 			
+			<p:row>
+				<p:column>
+					<p:outputLabel for="telefono2" value="Telefono 2:" />
+				</p:column>
+				<p:column>
+					<p:inputText value="#{dettaglioClienteGenerale.telefono2}" id="telefono2" />
+					<p:watermark for="telefono2" value="Contatto telefonico alternativo del cliente" />  
+					<p:tooltip for="telefono2" showEffect="fade" value="Contatto telefonico alternativo del cliente" />
+				</p:column>
+			</p:row>
+
+			<p:row>
+				<p:column>
+					<p:outputLabel for="cellulare" value="Cellulare:" />
+				</p:column>
+				<p:column>
+					<p:inputText value="#{dettaglioClienteGenerale.cellulare}" id="cellulare" />
+					<p:watermark for="cellulare" value="Contatto telefonico cellulare del cliente" />  
+					<p:tooltip for="cellulare" showEffect="fade" value="Contatto telefonico cellulare del cliente" />
+				</p:column>
+			</p:row>
+
+			<p:row>
+				<p:column>
+					<p:outputLabel for="fax" value="Fax:" />
+				</p:column>
+				<p:column>
+					<p:inputText value="#{dettaglioClienteGenerale.fax}" id="fax" />
+					<p:watermark for="fax" value="Fax del cliente" />  
+					<p:tooltip for="fax" showEffect="fade" value="Fax del cliente" />
+				</p:column>
+			</p:row>
+
+			<p:row>
+				<p:column>
+					<p:outputLabel for="email" value="E-mail:" />
+				</p:column>
+				<p:column>
+					<p:inputText value="#{dettaglioClienteGenerale.email}" id="email" />
+					<p:watermark for="email" value="Email del cliente" />  
+					<p:tooltip for="email" showEffect="fade" value="Email del cliente" />
+				</p:column>
+			</p:row>
+
+			<p:row>
+				<p:column>
+					<p:outputLabel for="codiceTipoBusinessPartner" value="Tipo business partner:" />
+				</p:column>
+				<p:column>
+					<p:selectOneMenu
+						id="codiceTipoBusinessPartner" 
+						value="#{dettaglioClienteGenerale.codiceTipoBusinessPartner}"
+						effect="fade">
+						<f:selectItem itemLabel="Selezionare un tipo" itemValue="" />
+						<f:selectItems 
+							value="#{dettaglioClienteGenerale.listTipoBusinessPartner}" var="item"
+							itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+					</p:selectOneMenu>
+					<p:tooltip for="codiceTipoBusinessPartner" showEffect="fade" value="Fax del cliente" />
+				</p:column>
+			</p:row>
 			
-		</h:panelGrid>
+		</p:panelGrid>
 		
 		<h:panelGrid columns="13" >
-		
-		<h:outputText value="Attivo: " />  
-		<p:selectBooleanCheckbox value="#{dettaglioClienteGenerale.edited.attivo}" />	
-		<p:spacer width="30" height="40" />	
-		
-		<h:outputText value="Dal:" />  
-		<p:calendar value="#{dettaglioClienteGenerale.edited.attivoDal}" id="attivoDal" showOn="button" />  
-		     
-        <h:outputText value="Al:" />  
-        <p:calendar value="#{dettaglioClienteGenerale.edited.attivoAl}" id="attivoAl" showOn="button" />
-        
-        <p:spacer width="30" height="40" />	
-        <p:outputLabel for="attivoOsservazioni" value="Osservazioni:" />
-		<p:inputText value="#{dettaglioClienteGenerale.edited.attivoOsservazioni}" id="attivoOsservazioni"
-				style="width: 250px;"/>
-		<p:watermark for="attivoOsservazioni" value="Osservazioni" />  
-		<p:message for="attivoOsservazioni" showSummary="true" showDetail="false"/>
-		<p:tooltip for="attivoOsservazioni" showEffect="fade" value="Osservazioni" />	        
-        
-        <h:outputText value="Bloccato: " />  
-		<p:selectBooleanCheckbox value="#{dettaglioClienteGenerale.edited.bloccato}" />
-		<p:spacer width="30" height="40" />	
 			
-		<h:outputText value="Dal:" />  
-		<p:calendar value="#{dettaglioClienteGenerale.edited.bloccatoDal}" id="bloccatoDal" showOn="button" />
-		        
-        <h:outputText value="Al:" />  
-        <p:calendar value="#{dettaglioClienteGenerale.edited.bloccatoAl}" id="bloccatoAl" showOn="button" />
-        
-        <p:spacer width="30" height="40" />		
-		<p:outputLabel for="bloccatoOsservazioni" value="Osservazioni:" />
-		<p:inputText value="#{dettaglioClienteGenerale.edited.bloccatoOsservazioni}" id="bloccatoOsservazioni"
-				style="width: 250px;"/>
-		<p:watermark for="bloccatoOsservazioni" value="Osservazioni" />  
-		<p:message for="bloccatoOsservazioni" showSummary="true" showDetail="false"/>
-		<p:tooltip for="bloccatoOsservazioni" showEffect="fade" value="Osservazioni" />
+			<h:outputText value="Attivo: " />  
+			<p:selectBooleanCheckbox value="#{dettaglioClienteGenerale.attivo}" />	
+			<p:spacer width="30" height="40" />	
+			
+			<h:outputText value="Dal:" />  
+			<p:calendar value="#{dettaglioClienteGenerale.attivoDal}" id="attivoDal" showOn="button" />  
+			     
+	        <h:outputText value="Al:" />  
+	        <p:calendar value="#{dettaglioClienteGenerale.attivoAl}" id="attivoAl" showOn="button" />
+	        
+	        <p:spacer width="30" height="40" />	
+	        <p:outputLabel for="attivoNote" value="Osservazioni:" />
+			<p:inputText value="#{dettaglioClienteGenerale.attivoNote}" id="attivoNote" />
+			<p:watermark for="attivoNote" value="Osservazioni" />  
+			<p:message for="attivoNote" showSummary="true" showDetail="false"/>
+			<p:tooltip for="attivoNote" showEffect="fade" value="Osservazioni" />	        
+	        
+	        <h:outputText value="Bloccato: " />  
+			<p:selectBooleanCheckbox value="#{dettaglioClienteGenerale.bloccato}" />
+			<p:spacer width="30" height="40" />	
+				
+			<h:outputText value="Dal:" />  
+			<p:calendar value="#{dettaglioClienteGenerale.bloccatoDal}" id="bloccatoDal" showOn="button" />
+			        
+	        <h:outputText value="Al:" />  
+	        <p:calendar value="#{dettaglioClienteGenerale.bloccatoAl}" id="bloccatoAl" showOn="button" />
+	        
+	        <p:spacer width="30" height="40" />		
+			<p:outputLabel for="bloccatoNote" value="Osservazioni:" />
+			<p:inputText value="#{dettaglioClienteGenerale.bloccatoNote}" id="bloccatoNote" />
+			<p:watermark for="bloccatoNote" value="Osservazioni" />  
+			<p:message for="bloccatoNote" showSummary="true" showDetail="false"/>
+			<p:tooltip for="bloccatoNote" showEffect="fade" value="Osservazioni" />
 		
 		</h:panelGrid>	
 

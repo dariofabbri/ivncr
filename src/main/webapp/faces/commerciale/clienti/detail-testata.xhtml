@@ -4,7 +4,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 			
-	<h:form>
+	<h:form id="testataForm">
 							
 		<p:messages globalOnly="false" showSummary="false" showDetail="true" closable="true"/>
 
@@ -185,13 +185,13 @@
 			
 				<p:column colspan="2" styleClass="form-footer">
 					<p:commandButton
-						id="createButton"
+						id="saveButton"
 						value="Salva"
 						actionListener="#{dettaglioClienteTestata.doSave}"
 						update="@form,:tabView"
 						icon="ui-icon-star"/>
 					<p:tooltip 
-						for="createButton" 
+						for="saveButton" 
 						value="Salva i dati del cliente" 
 						showEffect="fade" 
 						hideEffect="fade"/>
