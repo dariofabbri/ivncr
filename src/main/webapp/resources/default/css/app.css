@@ -25,6 +25,10 @@
 .ui-menu .ui-menuitem-text {
 	font-size: 1.2em !important;
 }
+
+.ui-menu.ui-menubar {
+	margin-bottom: 1em;
+}
                 
 .title {
 	height: 1em;
@@ -46,6 +50,7 @@
 .form-panel .form-footer {
 	
 	padding-top: 1em;
+	padding-bottom: 1em;
 }
 
 .form-panel tr {
@@ -54,9 +59,17 @@
 
 .form-panel td {
 	border: none;
-	vertical-align: text-top;
+	vertical-align: top;
 }
 
-.form-panel .ui-inputfield {
+.form-panel .ui-inputtext,
+.form-panel .ui-inputtextarea,
+.form-panel .ui-password
+{
 	width: 300px;
+}
+
+.info-label {
+	font-style: italic;
+	max-width: 300px;
 }

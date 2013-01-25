@@ -1,0 +1,26 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:composite="http://java.sun.com/jsf/composite"
+    xmlns:c="http://java.sun.com/jsp/jstl/core">
+	
+	<composite:interface>
+		<composite:attribute name="value" />
+	</composite:interface>
+	
+	<composite:implementation>
+		<div class="ui-chkbox ui-widget">
+			<div class="ui-chkbox-box ui-widget ui-corner-all ui-state-default">
+				<c:if test="#{cc.attrs.value}">
+					<span class="ui-chkbox-icon ui-icon ui-icon-check"></span>
+				</c:if>
+				<c:if test="#{not cc.attrs.value}">
+					<span class="ui-chkbox-icon"></span>
+				</c:if>
+			</div>
+		</div>
+	</composite:implementation>
+	
+</html>

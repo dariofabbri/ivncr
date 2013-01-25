@@ -112,7 +112,7 @@
 				
 				<p:column rendered="#{not empty dettaglioClienteTestata.id}">							
 					
-					<p:fieldset legend="Contatto principale" toggleable="true" toggleSpeed="500"> 
+					<p:fieldset legend="Contatto principale" collapsed="true" toggleable="true" toggleSpeed="500"> 
 			
 						<p:panelGrid styleClass="form-panel">
 						
@@ -121,7 +121,7 @@
 									<h:outputText value="Nome:" />
 								</p:column>
 								<p:column>
-									<h:outputText value="#{dettaglioClienteTestata.nome}" style="font-style: italic;"/>
+									<h:outputText value="#{dettaglioClienteTestata.nome}" styleClass="info-label"/>
 								</p:column>
 							</p:row>
 						
@@ -130,7 +130,7 @@
 									<h:outputText value="Telefoni:" />
 								</p:column>
 								<p:column>
-									<h:outputText value="#{dettaglioClienteTestata.telefoni}"  style="font-style: italic;"/>
+									<h:outputText value="#{dettaglioClienteTestata.telefoni}" styleClass="info-label"/>
 								</p:column>
 							</p:row>
 						
@@ -139,7 +139,7 @@
 									<h:outputText value="Fax:" />
 								</p:column>
 								<p:column>
-									<h:outputText value="#{dettaglioClienteTestata.fax}"  style="font-style: italic;"/>
+									<h:outputText value="#{dettaglioClienteTestata.fax}" styleClass="info-label"/>
 								</p:column>
 							</p:row>
 						
@@ -148,7 +148,7 @@
 									<h:outputText value="Email:" />
 								</p:column>
 								<p:column>
-									<h:outputText value="#{dettaglioClienteTestata.email}"  style="font-style: italic;"/>
+									<h:outputText value="#{dettaglioClienteTestata.email}" styleClass="info-label"/>
 								</p:column>
 							</p:row>
 						
@@ -160,7 +160,7 @@
 				
 				<p:column rendered="#{not empty dettaglioClienteTestata.id}">
 					
-					<p:fieldset legend="Altre informazioni" toggleable="true" toggleSpeed="500"> 
+					<p:fieldset legend="Altre informazioni" collapsed="true" toggleable="true" toggleSpeed="500"> 
 			
 						<p:panelGrid styleClass="form-panel">
 							
@@ -169,7 +169,7 @@
 									<h:outputText value="Saldo contabile:" />
 								</p:column>
 								<p:column>
-									<h:outputText value="#{dettaglioClienteTestata.saldoContabile}" style="font-style: italic;"/>
+									<h:outputText value="#{dettaglioClienteTestata.saldoContabile}" styleClass="info-label"/>
 								</p:column>
 							</p:row>
 						
