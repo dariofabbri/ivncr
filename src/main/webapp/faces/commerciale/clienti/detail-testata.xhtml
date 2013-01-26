@@ -111,71 +111,87 @@
 				</p:column>
 				
 				<p:column rendered="#{not empty dettaglioClienteTestata.id}">							
-					
-					<p:fieldset legend="Contatto principale" collapsed="true" toggleable="true" toggleSpeed="500"> 
 			
-						<p:panelGrid styleClass="form-panel">
-						
-							<p:row>
-								<p:column>
-									<h:outputText value="Nome:" />
-								</p:column>
-								<p:column>
-									<h:outputText value="#{dettaglioClienteTestata.nome}" styleClass="info-label"/>
-								</p:column>
-							</p:row>
-						
-							<p:row>
-								<p:column>
-									<h:outputText value="Telefoni:" />
-								</p:column>
-								<p:column>
-									<h:outputText value="#{dettaglioClienteTestata.telefoni}" styleClass="info-label"/>
-								</p:column>
-							</p:row>
-						
-							<p:row>
-								<p:column>
-									<h:outputText value="Fax:" />
-								</p:column>
-								<p:column>
-									<h:outputText value="#{dettaglioClienteTestata.fax}" styleClass="info-label"/>
-								</p:column>
-							</p:row>
-						
-							<p:row>
-								<p:column>
-									<h:outputText value="Email:" />
-								</p:column>
-								<p:column>
-									<h:outputText value="#{dettaglioClienteTestata.email}" styleClass="info-label"/>
-								</p:column>
-							</p:row>
-						
-						</p:panelGrid>
-						
-					</p:fieldset>
+					<p:panelGrid styleClass="form-panel">
 					
-				</p:column>
-				
-				<p:column rendered="#{not empty dettaglioClienteTestata.id}">
+						<p:row>
+						
+							<p:column>
+								
+								<p:fieldset legend="Contatto principale" collapsed="true" toggleable="true" toggleSpeed="500"> 
+						
+									<p:panelGrid styleClass="form-panel">
+									
+										<p:row>
+											<p:column>
+												<h:outputText value="Nome:" />
+											</p:column>
+											<p:column>
+												<h:outputText value="#{dettaglioClienteTestata.nome}" styleClass="info-label"/>
+											</p:column>
+										</p:row>
+									
+										<p:row>
+											<p:column>
+												<h:outputText value="Telefoni:" />
+											</p:column>
+											<p:column>
+												<h:outputText value="#{dettaglioClienteTestata.telefoni}" styleClass="info-label"/>
+											</p:column>
+										</p:row>
+									
+										<p:row>
+											<p:column>
+												<h:outputText value="Fax:" />
+											</p:column>
+											<p:column>
+												<h:outputText value="#{dettaglioClienteTestata.fax}" styleClass="info-label"/>
+											</p:column>
+										</p:row>
+									
+										<p:row>
+											<p:column>
+												<h:outputText value="Email:" />
+											</p:column>
+											<p:column>
+												<h:outputText value="#{dettaglioClienteTestata.email}" styleClass="info-label"/>
+											</p:column>
+										</p:row>
+									
+									</p:panelGrid>
+									
+								</p:fieldset>
+								
+							</p:column>
+						
+						</p:row>
+						
+						<p:row>
+						
+							<p:column>
 					
-					<p:fieldset legend="Altre informazioni" collapsed="true" toggleable="true" toggleSpeed="500"> 
-			
-						<p:panelGrid styleClass="form-panel">
+								<p:fieldset legend="Altre informazioni" collapsed="true" toggleable="true" toggleSpeed="500"> 
+						
+									<p:panelGrid styleClass="form-panel">
+										
+										<p:row>
+											<p:column>
+												<h:outputText value="Saldo contabile:" />
+											</p:column>
+											<p:column>
+												<h:outputText value="#{dettaglioClienteTestata.saldoContabile}" styleClass="info-label"/>
+											</p:column>
+										</p:row>
+									
+									</p:panelGrid>
+									
+								</p:fieldset>
 							
-							<p:row>
-								<p:column>
-									<h:outputText value="Saldo contabile:" />
-								</p:column>
-								<p:column>
-									<h:outputText value="#{dettaglioClienteTestata.saldoContabile}" styleClass="info-label"/>
-								</p:column>
-							</p:row>
+							</p:column>
+							
+						</p:row>
 						
-						</p:panelGrid>
-						
-					</p:fieldset>
+					</p:panelGrid>
 					
 				</p:column>
 				
