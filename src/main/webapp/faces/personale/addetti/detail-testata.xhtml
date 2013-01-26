@@ -63,12 +63,12 @@
 					required="true" 
 					requiredMessage="Il campo è obbligatorio"
 					id="sesso" 
-					value="#{dettaglioClienteTestata.edited.codiceDivisa}"
+					value="#{dettaglioClienteTestata.codiceDivisa}"
 					effect="fade">
 					<f:selectItem itemLabel="Selezionare il sesso" itemValue="" />
-					<f:selectItems 
-						value="#{dettaglioClienteTestata.listDivisa}" var="item"
-						itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+					 <f:selectItems 
+								value="#{dettaglioClienteTestata.listGruppoCliente}" var="item"
+								itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
 				</p:selectOneMenu>			 		 
 				<p:watermark for="sesso" value="Selezionare il sesso" />  
 				<p:message for="sesso" showSummary="true" showDetail="false"/>
