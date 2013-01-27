@@ -5,231 +5,189 @@
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:readonly="http://java.sun.com/jsf/composite/components/readonly">
-			
-	<h:form>
-							
-		<p:messages globalOnly="false" showSummary="false" showDetail="true" closable="true"/>
 
-		<p:focus/>
-
-		<p:panelGrid styleClass="form-panel">
+	<p:panelGrid styleClass="form-panel">
+		
+		<p:row>
+		
+			<p:column>
+								
+				<p:panelGrid styleClass="form-panel">
+		
+					<p:row>
+						<p:column>		
+							<p:outputLabel for="telefono1" value="Telefono 1:" />
+						</p:column>
+						<p:column>
+							<p:inputText value="#{dettaglioClienteGenerale.telefono1}" id="telefono1" />
+							<p:watermark for="telefono1" value="Primo contatto telefonico del cliente" />  
+							<p:tooltip for="telefono1" showEffect="fade" value="Primo contatto telefonico del cliente" />
+						</p:column>
+					</p:row>
+					
+					<p:row>
+						<p:column>
+							<p:outputLabel for="telefono2" value="Telefono 2:" />
+						</p:column>
+						<p:column>
+							<p:inputText value="#{dettaglioClienteGenerale.telefono2}" id="telefono2" />
+							<p:watermark for="telefono2" value="Contatto telefonico alternativo del cliente" />  
+							<p:tooltip for="telefono2" showEffect="fade" value="Contatto telefonico alternativo del cliente" />
+						</p:column>
+					</p:row>
+		
+					<p:row>
+						<p:column>
+							<p:outputLabel for="cellulare" value="Cellulare:" />
+						</p:column>
+						<p:column>
+							<p:inputText value="#{dettaglioClienteGenerale.cellulare}" id="cellulare" />
+							<p:watermark for="cellulare" value="Contatto telefonico cellulare del cliente" />  
+							<p:tooltip for="cellulare" showEffect="fade" value="Contatto telefonico cellulare del cliente" />
+						</p:column>
+					</p:row>
+		
+					<p:row>
+						<p:column>
+							<p:outputLabel for="fax" value="Fax:" />
+						</p:column>
+						<p:column>
+							<p:inputText value="#{dettaglioClienteGenerale.fax}" id="fax" />
+							<p:watermark for="fax" value="Fax del cliente" />  
+							<p:tooltip for="fax" showEffect="fade" value="Fax del cliente" />
+						</p:column>
+					</p:row>
+		
+					<p:row>
+						<p:column>
+							<p:outputLabel for="email" value="E-mail:" />
+						</p:column>
+						<p:column>
+							<p:inputText value="#{dettaglioClienteGenerale.email}" id="email" />
+							<p:watermark for="email" value="Email del cliente" />  
+							<p:tooltip for="email" showEffect="fade" value="Email del cliente" />
+						</p:column>
+					</p:row>
+					
+				</p:panelGrid>
+				
+			</p:column>
 			
-			<p:row>
-			
-				<p:column>
-									
+			<p:column>
+	
+				<p:fieldset legend="Stato attivazione" collapsed="true" toggleable="true" toggleSpeed="500" style="width:500px;"> 
+		
 					<p:panelGrid styleClass="form-panel">
-			
+					
 						<p:row>
-							<p:column>		
-								<p:outputLabel for="telefono1" value="Telefono 1:" />
-							</p:column>
 							<p:column>
-								<p:inputText value="#{dettaglioClienteGenerale.telefono1}" id="telefono1" />
-								<p:watermark for="telefono1" value="Primo contatto telefonico del cliente" />  
-								<p:tooltip for="telefono1" showEffect="fade" value="Primo contatto telefonico del cliente" />
+								<h:outputText value="Attivo: " />
+							</p:column>
+							<p:column>  
+								<readonly:checkbox value="#{dettaglioClienteGenerale.attivo}" />
+							</p:column>	
+							<p:column>
+								<h:outputText value="dal:" />  
+							</p:column>	
+							<p:column>
+								<h:outputText value="#{dettaglioClienteGenerale.attivoDal}" styleClass="info-label">
+									<f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="#{appConfig.timeZone}" />
+								</h:outputText>
+			     			</p:column>
+			     			<p:column>
+						        <h:outputText value="al:" />
+						    </p:column>  
+			     			<p:column>
+								<h:outputText value="#{dettaglioClienteGenerale.attivoAl}" styleClass="info-label">
+									<f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="#{appConfig.timeZone}" />
+								</h:outputText>
+			     			</p:column>
+			     		</p:row>
+			     		<p:row>
+			     			<p:column>
+								<h:outputText value="Osservazioni: " />
+			     			</p:column>
+			     			<p:column colspan="5">
+								<h:outputText value="#{dettaglioClienteGenerale.attivoNote}" styleClass="info-label"/>
 							</p:column>
 						</p:row>
 						
 						<p:row>
-							<p:column>
-								<p:outputLabel for="telefono2" value="Telefono 2:" />
-							</p:column>
-							<p:column>
-								<p:inputText value="#{dettaglioClienteGenerale.telefono2}" id="telefono2" />
-								<p:watermark for="telefono2" value="Contatto telefonico alternativo del cliente" />  
-								<p:tooltip for="telefono2" showEffect="fade" value="Contatto telefonico alternativo del cliente" />
+							<p:column colspan="6">
+								<p:spacer height="40px;"/>
 							</p:column>
 						</p:row>
-			
+
 						<p:row>
 							<p:column>
-								<p:outputLabel for="cellulare" value="Cellulare:" />
+								<h:outputText value="Bloccato: " />
 							</p:column>
+							<p:column>  
+								<readonly:checkbox value="#{dettaglioClienteGenerale.bloccato}" />
+							</p:column>	
 							<p:column>
-								<p:inputText value="#{dettaglioClienteGenerale.cellulare}" id="cellulare" />
-								<p:watermark for="cellulare" value="Contatto telefonico cellulare del cliente" />  
-								<p:tooltip for="cellulare" showEffect="fade" value="Contatto telefonico cellulare del cliente" />
+								<h:outputText value="dal:" />  
+							</p:column>	
+							<p:column>
+								<h:outputText value="#{dettaglioClienteGenerale.bloccatoDal}" styleClass="info-label">
+									<f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="#{appConfig.timeZone}" />
+								</h:outputText>
+			     			</p:column>
+			     			<p:column>
+						        <h:outputText value="al:" />
+						    </p:column>  
+			     			<p:column>
+								<h:outputText value="#{dettaglioClienteGenerale.bloccatoAl}" styleClass="info-label">
+									<f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="#{appConfig.timeZone}" />
+								</h:outputText>
+			     			</p:column>
+			     		</p:row>
+			     		<p:row>
+			     			<p:column>
+								<h:outputText value="Osservazioni: " />
+			     			</p:column>
+			     			<p:column colspan="5">
+								<h:outputText value="#{dettaglioClienteGenerale.bloccatoNote}" styleClass="info-label"/>
 							</p:column>
 						</p:row>
-			
-						<p:row>
-							<p:column>
-								<p:outputLabel for="fax" value="Fax:" />
-							</p:column>
-							<p:column>
-								<p:inputText value="#{dettaglioClienteGenerale.fax}" id="fax" />
-								<p:watermark for="fax" value="Fax del cliente" />  
-								<p:tooltip for="fax" showEffect="fade" value="Fax del cliente" />
-							</p:column>
-						</p:row>
-			
-						<p:row>
-							<p:column>
-								<p:outputLabel for="email" value="E-mail:" />
-							</p:column>
-							<p:column>
-								<p:inputText value="#{dettaglioClienteGenerale.email}" id="email" />
-								<p:watermark for="email" value="Email del cliente" />  
-								<p:tooltip for="email" showEffect="fade" value="Email del cliente" />
-							</p:column>
-						</p:row>
-			
-						<p:row>
-							<p:column>
-								<p:outputLabel for="codiceTipoBusinessPartner" value="Tipo business partner:" />
-							</p:column>
-							<p:column>
-								<p:selectOneMenu
-									id="codiceTipoBusinessPartner" 
-									value="#{dettaglioClienteGenerale.codiceTipoBusinessPartner}"
-									effect="fade">
-									<f:selectItem itemLabel="Selezionare un tipo" itemValue="" />
-									<f:selectItems 
-										value="#{dettaglioClienteGenerale.listTipoBusinessPartner}" var="item"
-										itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
-								</p:selectOneMenu>
-								<p:tooltip for="codiceTipoBusinessPartner" showEffect="fade" value="Tipologia di business partner" />
+																		
+						<p:row>				
+							<p:column colspan="2" styleClass="form-footer">
+								<c:if test="#{dettaglioClienteGenerale.bloccato}">
+									<p:commandButton
+										id="toggleActivationButton"
+										value="Attiva"
+										actionListener="#{dettaglioClienteGenerale.doToggleActivation}"
+										update="@form"/>
+									<p:tooltip 
+										for="toggleActivationButton" 
+										value="Attiva il cliente precedentemente bloccato" 
+										showEffect="fade" 
+										hideEffect="fade"/>
+								</c:if>
+								<c:if test="#{dettaglioClienteGenerale.attivo}">
+									<p:commandButton
+										id="toggleActivationButton"
+										value="Blocca"
+										actionListener="#{dettaglioClienteGenerale.doToggleActivation}"
+										update="@form"/>
+									<p:tooltip 
+										for="toggleActivationButton" 
+										value="Blocca il cliente" 
+										showEffect="fade" 
+										hideEffect="fade"/>
+								</c:if>
 							</p:column>
 						</p:row>
-						
+									
 					</p:panelGrid>
 					
-				</p:column>
-				
-				<p:column>
+				</p:fieldset>
+			
+			</p:column>
+			
+		</p:row>
 		
-					<p:fieldset legend="Stato attivazione" collapsed="true" toggleable="true" toggleSpeed="500" style="width:500px;"> 
-			
-						<p:panelGrid styleClass="form-panel">
-						
-							<p:row>
-								<p:column>
-									<h:outputText value="Attivo: " />
-								</p:column>
-								<p:column>  
-									<readonly:checkbox value="#{dettaglioClienteGenerale.attivo}" />
-								</p:column>	
-								<p:column>
-									<h:outputText value="dal:" />  
-								</p:column>	
-								<p:column>
-									<h:outputText value="#{dettaglioClienteGenerale.attivoDal}" styleClass="info-label">
-										<f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="#{appConfig.timeZone}" />
-									</h:outputText>
-				     			</p:column>
-				     			<p:column>
-							        <h:outputText value="al:" />
-							    </p:column>  
-				     			<p:column>
-									<h:outputText value="#{dettaglioClienteGenerale.attivoAl}" styleClass="info-label">
-										<f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="#{appConfig.timeZone}" />
-									</h:outputText>
-				     			</p:column>
-				     		</p:row>
-				     		<p:row>
-				     			<p:column>
-									<h:outputText value="Osservazioni: " />
-				     			</p:column>
-				     			<p:column colspan="5">
-									<h:outputText value="#{dettaglioClienteGenerale.attivoNote}" styleClass="info-label"/>
-								</p:column>
-							</p:row>
-							
-							<p:row>
-								<p:column colspan="6">
-									<p:spacer height="40px;"/>
-								</p:column>
-							</p:row>
-	
-							<p:row>
-								<p:column>
-									<h:outputText value="Bloccato: " />
-								</p:column>
-								<p:column>  
-									<readonly:checkbox value="#{dettaglioClienteGenerale.bloccato}" />
-								</p:column>	
-								<p:column>
-									<h:outputText value="dal:" />  
-								</p:column>	
-								<p:column>
-									<h:outputText value="#{dettaglioClienteGenerale.bloccatoDal}" styleClass="info-label">
-										<f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="#{appConfig.timeZone}" />
-									</h:outputText>
-				     			</p:column>
-				     			<p:column>
-							        <h:outputText value="al:" />
-							    </p:column>  
-				     			<p:column>
-									<h:outputText value="#{dettaglioClienteGenerale.bloccatoAl}" styleClass="info-label">
-										<f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="#{appConfig.timeZone}" />
-									</h:outputText>
-				     			</p:column>
-				     		</p:row>
-				     		<p:row>
-				     			<p:column>
-									<h:outputText value="Osservazioni: " />
-				     			</p:column>
-				     			<p:column colspan="5">
-									<h:outputText value="#{dettaglioClienteGenerale.bloccatoNote}" styleClass="info-label"/>
-								</p:column>
-							</p:row>
-																			
-							<p:row>				
-								<p:column colspan="2" styleClass="form-footer">
-									<c:if test="#{dettaglioClienteGenerale.bloccato}">
-										<p:commandButton
-											id="toggleActivationButton"
-											value="Attiva"
-											actionListener="#{dettaglioClienteGenerale.doToggleActivation}"
-											update="@form"/>
-										<p:tooltip 
-											for="toggleActivationButton" 
-											value="Attiva il cliente precedentemente bloccato" 
-											showEffect="fade" 
-											hideEffect="fade"/>
-									</c:if>
-									<c:if test="#{dettaglioClienteGenerale.attivo}">
-										<p:commandButton
-											id="toggleActivationButton"
-											value="Blocca"
-											actionListener="#{dettaglioClienteGenerale.doToggleActivation}"
-											update="@form"/>
-										<p:tooltip 
-											for="toggleActivationButton" 
-											value="Blocca il cliente" 
-											showEffect="fade" 
-											hideEffect="fade"/>
-									</c:if>
-								</p:column>
-							</p:row>
-										
-						</p:panelGrid>
-						
-					</p:fieldset>
-				
-				</p:column>
-				
-			</p:row>
-									
-			<p:row>				
-				<p:column colspan="2" styleClass="form-footer">
-					<p:commandButton
-						id="saveButton"
-						value="Salva"
-						actionListener="#{dettaglioClienteGenerale.doSave}"
-						update="@form,:testataForm"
-						icon="ui-icon-star"/>
-					<p:tooltip 
-						for="saveButton" 
-						value="Salva i dati generali del cliente" 
-						showEffect="fade" 
-						hideEffect="fade"/>
-				</p:column>
-			</p:row>
-			
-		</p:panelGrid>	
-
-	</h:form>
+	</p:panelGrid>	
 
 </html>

@@ -7,77 +7,81 @@
 	<ui:composition template="/WEB-INF/templates/main.xhtml">
 	
 		<ui:define name="container">
+		
+			<h:form>
 	
-			<p:panel id="detailPanel" header="Cliente">
-			
-				<f:facet name="actions">
-					<p:button
-						styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default"
-						value="Indietro"
-						href="index.xhtml"
-						icon="ui-icon-arrowthick-1-w"/>
-				</f:facet>
-
-				<ui:include src="detail-testata.xhtml"/>			
-
-				<p:tabView effect="fade" effectDuration="normal" id="tabView" rendered="#{not empty gestioneClienti.edited.id}">
-
-					<p:tab id="generalTab" title="Generale">
-					
-						<ui:include src="detail-generale.xhtml"/>
+				<p:panel id="detailPanel" header="Cliente">
+				
+					<f:facet name="actions">
+						<p:button
+							styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default"
+							value="Indietro"
+							href="index.xhtml"
+							icon="ui-icon-arrowthick-1-w"/>
+					</f:facet>
+	
+					<ui:include src="detail-testata.xhtml"/>			
+	
+					<p:tabView effect="fade" effectDuration="normal" id="tabView" rendered="#{not empty gestioneClienti.edited.id}">
+	
+						<p:tab id="generalTab" title="Generale">
 						
-					</p:tab>
+							<ui:include src="detail-generale.xhtml"/>
+							
+						</p:tab>
+					
+	<!--					
+						<p:tab id="contattiTab" title="Contatti">
+	
+							<ui:include src="detail-contatti.xhtml"/>
+	
+						</p:tab>
+						
+						<p:tab id="indirizziAmministrativiTab" title="Indirizzi amministrativi">
+	
+							<ui:include src="detail-indirizzi-amministrativi.xhtml"/>
+	
+						</p:tab>					
+						
+						<p:tab id="obiettiviServizioTab" title="Obiettivi di servizio">
+	
+							<ui:include src="detail-obiettivi-servizio.xhtml"/>
+	
+						</p:tab>		
+						
+						<p:tab id="dettaglioFatturazione" title="Dettaglio di fatturazione">
+	
+							<ui:include src="detail-fatturazione.xhtml"/>
+	
+						</p:tab>				
+											
+						<p:tab id="contrattiTab" title="Contratti">
+	
+						</p:tab>
+						
+						<p:tab id="ordineDiServizioTab" title="Ordine di servizio">
+	
+						</p:tab>
+						
+						<p:tab id="note" title="Note">
+	
+							<ui:include src="detail-note.xhtml"/>
+	
+						</p:tab>
+					
+						-->
+					
+					</p:tabView>
+					
+				</p:panel>
 				
-<!--					
-					<p:tab id="contattiTab" title="Contatti">
-
-						<ui:include src="detail-contatti.xhtml"/>
-
-					</p:tab>
-					
-					<p:tab id="indirizziAmministrativiTab" title="Indirizzi amministrativi">
-
-						<ui:include src="detail-indirizzi-amministrativi.xhtml"/>
-
-					</p:tab>					
-					
-					<p:tab id="obiettiviServizioTab" title="Obiettivi di servizio">
-
-						<ui:include src="detail-obiettivi-servizio.xhtml"/>
-
-					</p:tab>		
-					
-					<p:tab id="dettaglioFatturazione" title="Dettaglio di fatturazione">
-
-						<ui:include src="detail-fatturazione.xhtml"/>
-
-					</p:tab>				
-										
-					<p:tab id="contrattiTab" title="Contratti">
-
-					</p:tab>
-					
-					<p:tab id="ordineDiServizioTab" title="Ordine di servizio">
-
-					</p:tab>
-					
-					<p:tab id="note" title="Note">
-
-						<ui:include src="detail-note.xhtml"/>
-
-					</p:tab>
+				<!--
+				<ui:include src="detail-contatti-create.xhtml"/>
 				
-					-->
-				
-				</p:tabView>
-				
-			</p:panel>
+				<ui:include src="detail-indirizzi-amministrativi-create.xhtml"/>
+				-->
 			
-			<!--
-			<ui:include src="detail-contatti-create.xhtml"/>
-			
-			<ui:include src="detail-indirizzi-amministrativi-create.xhtml"/>
-			-->
+			</h:form>
 			
 		</ui:define>
 	

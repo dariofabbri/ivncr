@@ -24,15 +24,27 @@ public interface ClienteService extends EntityService<Cliente> {
 			String partitaIva,
 			String codiceFiscale,
 			Integer codiceGruppoCliente,
-			Integer codiceDivisa);
+			Integer codiceDivisa,
+			Integer codiceTipoBusinessPartner,
+			String telefono1,
+			String telefono2,
+			String cellulare,
+			String fax,
+			String email);
 
-	Cliente updateTestata(
+	Cliente update(
 			Integer id,
 			String codice,
 			String ragioneSociale,
 			String partitaIva,
 			String codiceFiscale,
 			Integer codiceGruppoCliente,
-			Integer codiceDivisa);
+			Integer codiceDivisa,
+			Integer codiceTipoBusinessPartner,
+			String telefono1,
+			String telefono2,
+			String cellulare,
+			String fax,
+			String email);
 
 }

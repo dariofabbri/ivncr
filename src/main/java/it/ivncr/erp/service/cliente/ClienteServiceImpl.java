@@ -3,6 +3,7 @@ package it.ivncr.erp.service.cliente;
 import it.ivncr.erp.model.commerciale.Cliente;
 import it.ivncr.erp.model.commerciale.Divisa;
 import it.ivncr.erp.model.commerciale.GruppoCliente;
+import it.ivncr.erp.model.commerciale.TipoBusinessPartner;
 import it.ivncr.erp.service.AbstractService;
 import it.ivncr.erp.service.NotFoundException;
 import it.ivncr.erp.service.QueryResult;
@@ -117,7 +118,13 @@ public class ClienteServiceImpl extends AbstractService implements ClienteServic
 			String partitaIva,
 			String codiceFiscale,
 			Integer codiceGruppoCliente,
-			Integer codiceDivisa) {
+			Integer codiceDivisa,
+			Integer codiceTipoBusinessPartner,
+			String telefono1,
+			String telefono2,
+			String cellulare,
+			String fax,
+			String email) {
 
 		Date now = new Date();
 
@@ -125,6 +132,7 @@ public class ClienteServiceImpl extends AbstractService implements ClienteServic
 		//
 		GruppoCliente gruppoCliente = (GruppoCliente)session.get(GruppoCliente.class, codiceGruppoCliente);
 		Divisa divisa = (Divisa)session.get(Divisa.class, codiceDivisa);
+		TipoBusinessPartner tipoBusinessPartner = (TipoBusinessPartner)session.get(TipoBusinessPartner.class, codiceTipoBusinessPartner);
 
 		// Create the new entity.
 		//
@@ -138,6 +146,12 @@ public class ClienteServiceImpl extends AbstractService implements ClienteServic
 		cliente.setCodiceFiscale(codiceFiscale);
 		cliente.setGruppoCliente(gruppoCliente);
 		cliente.setDivisa(divisa);
+		cliente.setTipoBusinessPartner(tipoBusinessPartner);
+		cliente.setTelefono1(telefono1);
+		cliente.setTelefono2(telefono2);
+		cliente.setCellulare(cellulare);
+		cliente.setFax(fax);
+		cliente.setEmail(email);
 
 		cliente.setCreazione(now);
 		cliente.setUltimaModifica(now);
@@ -154,14 +168,20 @@ public class ClienteServiceImpl extends AbstractService implements ClienteServic
 	}
 
 	@Override
-	public Cliente updateTestata(
+	public Cliente update(
 			Integer id,
 			String codice,
 			String ragioneSociale,
 			String partitaIva,
 			String codiceFiscale,
 			Integer codiceGruppoCliente,
-			Integer codiceDivisa) {
+			Integer codiceDivisa,
+			Integer codiceTipoBusinessPartner,
+			String telefono1,
+			String telefono2,
+			String cellulare,
+			String fax,
+			String email) {
 
 		Cliente cliente = retrieve(id);
 		if(cliente == null) {
@@ -176,6 +196,7 @@ public class ClienteServiceImpl extends AbstractService implements ClienteServic
 		//
 		GruppoCliente gruppoCliente = (GruppoCliente)session.get(GruppoCliente.class, codiceGruppoCliente);
 		Divisa divisa = (Divisa)session.get(Divisa.class, codiceDivisa);
+		TipoBusinessPartner tipoBusinessPartner = (TipoBusinessPartner)session.get(TipoBusinessPartner.class, codiceTipoBusinessPartner);
 
 		// Set entity fields.
 		//
@@ -185,6 +206,12 @@ public class ClienteServiceImpl extends AbstractService implements ClienteServic
 		cliente.setCodiceFiscale(codiceFiscale);
 		cliente.setGruppoCliente(gruppoCliente);
 		cliente.setDivisa(divisa);
+		cliente.setTipoBusinessPartner(tipoBusinessPartner);
+		cliente.setTelefono1(telefono1);
+		cliente.setTelefono2(telefono2);
+		cliente.setCellulare(cellulare);
+		cliente.setFax(fax);
+		cliente.setEmail(email);
 
 		cliente.setUltimaModifica(now);
 

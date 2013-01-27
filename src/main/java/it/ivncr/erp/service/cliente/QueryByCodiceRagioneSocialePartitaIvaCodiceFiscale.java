@@ -7,16 +7,16 @@ import org.hibernate.Session;
 
 public class QueryByCodiceRagioneSocialePartitaIvaCodiceFiscale extends Query<Cliente> {
 
-	private String codice; 
+	private String codice;
 	private String ragioneSociale;
 	private String partitaIva;
 	private String codiceFiscale;
-	
+
 	public QueryByCodiceRagioneSocialePartitaIvaCodiceFiscale(Session session) {
-		
+
 		super(session);
 	}
-	
+
 	public String getCodice() {
 		return codice;
 	}
@@ -59,20 +59,20 @@ public class QueryByCodiceRagioneSocialePartitaIvaCodiceFiscale extends Query<Cl
 	@Override
 	protected String getCountHql() {
 
-		String hql = 
+		String hql =
 				"select count(*) " +
 				"from Cliente cli " +
 				"where 1 = 1 ";
-		
+
 		if(codice != null)
 			hql += "and upper(cli.codice) like :codice ";
-		
+
 		if(ragioneSociale != null)
 			hql += "and upper(cli.ragioneSociale) like :ragioneSociale ";
-		
+
 		if(partitaIva != null)
 			hql += "and upper(cli.partitaIva) like :partitaIva ";
-		
+
 		if(codiceFiscale != null)
 			hql += "and upper(cli.codiceFiscale) like :codiceFiscale ";
 
@@ -82,29 +82,29 @@ public class QueryByCodiceRagioneSocialePartitaIvaCodiceFiscale extends Query<Cl
 	@Override
 	protected String getQueryHql() {
 
-		String hql = 
+		String hql =
 				"from Cliente cli " +
 				"where 1 = 1 ";
-		
+
 		if(codice != null)
 			hql += "and upper(cli.codice) like :codice ";
-		
+
 		if(ragioneSociale != null)
 			hql += "and upper(cli.ragioneSociale) like :ragioneSociale ";
-		
+
 		if(partitaIva != null)
 			hql += "and upper(cli.partitaIva) like :partitaIva ";
-		
+
 		if(codiceFiscale != null)
 			hql += "and upper(cli.codiceFiscale) like :codiceFiscale ";
 
 		if(sortCriteria != null) {
 			hql += "order by cli." + sortCriteria + " ";
-			
+
 			if(sortDirection != null)
 				hql += sortDirection.toHql();
-		} 
-		
+		}
+
 		return hql;
 	}
 
@@ -120,10 +120,10 @@ public class QueryByCodiceRagioneSocialePartitaIvaCodiceFiscale extends Query<Cl
 
 			else if (param.equals("ragioneSociale"))
 				q.setParameter("ragioneSociale", "%" + ragioneSociale.toUpperCase() + "%");
-			
+
 			else if (param.equals("partitaIva"))
 				q.setParameter("partitaIva", "%" + partitaIva.toUpperCase() + "%");
-			
+
 			else if (param.equals("codiceFiscale"))
 				q.setParameter("codiceFiscale",  "%" + codiceFiscale.toUpperCase() + "%");
 		}
