@@ -19,7 +19,8 @@
 							<p:outputLabel for="telefono1" value="Telefono 1:" />
 						</p:column>
 						<p:column>
-							<p:inputText value="#{dettaglioClienteGenerale.telefono1}" id="telefono1" />
+							<p:inputText value="#{dettaglioClienteGenerale.telefono1}" id="telefono1"
+								validator="phoneValidator" validatorMessage="Il numero immesso come contatto telefonico principale non è valido"/>
 							<p:watermark for="telefono1" value="Primo contatto telefonico del cliente" />  
 							<p:tooltip for="telefono1" showEffect="fade" value="Primo contatto telefonico del cliente" />
 						</p:column>
@@ -30,8 +31,9 @@
 							<p:outputLabel for="telefono2" value="Telefono 2:" />
 						</p:column>
 						<p:column>
-							<p:inputText value="#{dettaglioClienteGenerale.telefono2}" id="telefono2" />
-							<p:watermark for="telefono2" value="Contatto telefonico alternativo del cliente" />  
+							<p:inputText value="#{dettaglioClienteGenerale.telefono2}" id="telefono2"
+								validator="phoneValidator" validatorMessage="Il numero immesso come contatto telefonico alternativo non è valido"/>
+							<p:watermark for="telefono2" value="Contatto telefonico alternativo del cliente"/>
 							<p:tooltip for="telefono2" showEffect="fade" value="Contatto telefonico alternativo del cliente" />
 						</p:column>
 					</p:row>
@@ -41,7 +43,8 @@
 							<p:outputLabel for="cellulare" value="Cellulare:" />
 						</p:column>
 						<p:column>
-							<p:inputText value="#{dettaglioClienteGenerale.cellulare}" id="cellulare" />
+							<p:inputText value="#{dettaglioClienteGenerale.cellulare}" id="cellulare"
+								validator="phoneValidator" validatorMessage="Il numero di cellulare inserito non è valido"/>
 							<p:watermark for="cellulare" value="Contatto telefonico cellulare del cliente" />  
 							<p:tooltip for="cellulare" showEffect="fade" value="Contatto telefonico cellulare del cliente" />
 						</p:column>
@@ -52,7 +55,8 @@
 							<p:outputLabel for="fax" value="Fax:" />
 						</p:column>
 						<p:column>
-							<p:inputText value="#{dettaglioClienteGenerale.fax}" id="fax" />
+							<p:inputText value="#{dettaglioClienteGenerale.fax}" id="fax"
+								validator="phoneValidator" validatorMessage="Il numero di fax inserito non è valido"/>
 							<p:watermark for="fax" value="Fax del cliente" />  
 							<p:tooltip for="fax" showEffect="fade" value="Fax del cliente" />
 						</p:column>
@@ -63,7 +67,8 @@
 							<p:outputLabel for="email" value="E-mail:" />
 						</p:column>
 						<p:column>
-							<p:inputText value="#{dettaglioClienteGenerale.email}" id="email" />
+							<p:inputText value="#{dettaglioClienteGenerale.email}" id="email"
+								validator="emailValidator" validatorMessage="L'indirizzo di posta elettronica inserito non è valido"/>
 							<p:watermark for="email" value="Email del cliente" />  
 							<p:tooltip for="email" showEffect="fade" value="Email del cliente" />
 						</p:column>
