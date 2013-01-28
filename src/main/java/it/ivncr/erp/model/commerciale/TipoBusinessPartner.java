@@ -13,6 +13,10 @@ import javax.persistence.Table;
 @Table(name = "com_tipo_business_partner")
 public class TipoBusinessPartner {
 
+	public static final Integer SOCIETA = 1;
+	public static final Integer PRIVATO = 2;
+	public static final Integer ENTE = 3;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "com_tipo_business_partner_id_seq")
 	@SequenceGenerator(name = "com_tipo_business_partner_id_seq", sequenceName = "com_tipo_business_partner_id_seq")

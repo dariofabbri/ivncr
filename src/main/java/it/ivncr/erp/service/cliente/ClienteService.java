@@ -34,7 +34,6 @@ public interface ClienteService extends EntityService<Cliente> {
 
 	Cliente update(
 			Integer id,
-			String codice,
 			String ragioneSociale,
 			String partitaIva,
 			String codiceFiscale,

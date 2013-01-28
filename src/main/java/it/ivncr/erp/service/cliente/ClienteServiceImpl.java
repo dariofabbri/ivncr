@@ -170,7 +170,6 @@ public class ClienteServiceImpl extends AbstractService implements ClienteServic
 	@Override
 	public Cliente update(
 			Integer id,
-			String codice,
 			String ragioneSociale,
 			String partitaIva,
 			String codiceFiscale,
@@ -200,7 +199,6 @@ public class ClienteServiceImpl extends AbstractService implements ClienteServic
 
 		// Set entity fields.
 		//
-		cliente.setCodice(codice);
 		cliente.setRagioneSociale(ragioneSociale);
 		cliente.setPartitaIva(partitaIva);
 		cliente.setCodiceFiscale(codiceFiscale);

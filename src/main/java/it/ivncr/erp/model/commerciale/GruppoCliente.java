@@ -12,6 +12,9 @@ import javax.persistence.Table;
 @Table(name = "com_gruppo_cliente")
 public class GruppoCliente {
 
+	public static final Integer GRANDE_UTENZA = 1;
+	public static final Integer PICCOLA_UTENZA = 2;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "com_gruppo_cliente_id_seq")
 	@SequenceGenerator(name = "com_gruppo_cliente_id_seq", sequenceName = "com_gruppo_cliente_id_seq")

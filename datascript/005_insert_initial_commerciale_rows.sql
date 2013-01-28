@@ -4,6 +4,7 @@ SELECT setval('com_gruppo_cliente_id_seq', (SELECT MAX(id) FROM com_gruppo_clien
 
 INSERT INTO com_tipo_business_partner (id, descrizione) VALUES (1, 'Società');
 INSERT INTO com_tipo_business_partner (id, descrizione) VALUES (2, 'Privato');
+INSERT INTO com_tipo_business_partner (id, descrizione) VALUES (3, 'Ente');
 SELECT setval('com_tipo_business_partner_id_seq', (SELECT MAX(id) FROM com_tipo_business_partner));
 
 INSERT INTO com_divisa (id, simbolo, iso_alpha, iso_num, descrizione) VALUES (1, '€', 'EUR', 978, 'Euro');

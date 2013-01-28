@@ -7,6 +7,7 @@ import it.ivncr.erp.model.commerciale.TipoBusinessPartner;
 import it.ivncr.erp.service.ServiceFactory;
 import it.ivncr.erp.service.cliente.ClienteService;
 import it.ivncr.erp.service.lut.LUTService;
+import it.ivncr.erp.util.ValidationUtil;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -153,7 +154,6 @@ public class DettaglioClienteGenerale implements Serializable {
 
 				cs.update(
 						id,
-						codice,
 						ragioneSociale,
 						partitaIva,
 						codiceFiscale,
@@ -214,20 +214,91 @@ public class DettaglioClienteGenerale implements Serializable {
 
 	private boolean formValidations() {
 
-		// At least one between codice fiscale and partita IVA must be specified.
-		//
-		if(StringUtils.isEmpty(codiceFiscale) && StringUtils.isEmpty(partitaIva)) {
-			FacesMessage message = new FacesMessage(
-					FacesMessage.SEVERITY_ERROR,
-					"Errore",
-					"E' necessario inserire almeno uno tra codice fiscale e partita IVA.");
-			FacesContext.getCurrentInstance().addMessage(null, message);
-			return false;
-		}
-
 		// Normalize fields.
 		//
 		codiceFiscale = codiceFiscale.toUpperCase();
+
+		// What goes into codice fiscale and partita IVA depends on the selection made
+		// on tipo business partner field.
+		//
+		if(codiceTipoBusinessPartner == TipoBusinessPartner.SOCIETA) {
+
+			// In this case Partita IVA is mandatory.
+			//
+			if(StringUtils.isEmpty(partitaIva)) {
+				FacesMessage message = new FacesMessage(
+						FacesMessage.SEVERITY_ERROR,
+						"Errore",
+						"Per una società la partita IVA è un campo obbligatorio.");
+				FacesContext.getCurrentInstance().addMessage("partitaIva", message);
+				return false;
+			}
+
+		} else if (codiceTipoBusinessPartner == TipoBusinessPartner.PRIVATO) {
+
+			// Codice fiscale is mandatory.
+			//
+			if(StringUtils.isEmpty(codiceFiscale)) {
+				FacesMessage message = new FacesMessage(
+						FacesMessage.SEVERITY_ERROR,
+						"Errore",
+						"Per un privato il campo codice fiscale è un campo obbligatorio.");
+				FacesContext.getCurrentInstance().addMessage("codiceFiscale", message);
+				return false;
+			}
+
+			// Codice cannot be a partita IVA code.
+			//
+			if(!ValidationUtil.isCodiceFiscale(codiceFiscale)) {
+				FacesMessage message = new FacesMessage(
+						FacesMessage.SEVERITY_ERROR,
+						"Errore",
+						"Per un privato è necessario introdurre il codice fiscale personale (alfanumerico).");
+				FacesContext.getCurrentInstance().addMessage("codiceFiscale", message);
+				return false;
+			}
+
+		} else if (codiceTipoBusinessPartner == TipoBusinessPartner.ENTE) {
+
+			// Codice fiscale is mandatory.
+			//
+			if(StringUtils.isEmpty(codiceFiscale)) {
+				FacesMessage message = new FacesMessage(
+						FacesMessage.SEVERITY_ERROR,
+						"Errore",
+						"Per un ente il campo codice fiscale è un campo obbligatorio.");
+				FacesContext.getCurrentInstance().addMessage("codiceFiscale", message);
+				return false;
+			}
+
+			// Codice fiscale must be represented by a partita IVA code.
+			//
+			if(!ValidationUtil.isPartitaIva(codiceFiscale)) {
+				FacesMessage message = new FacesMessage(
+						FacesMessage.SEVERITY_ERROR,
+						"Errore",
+						"Per un ente non è possibile specificare il codice fiscale personale (alfanumerico).");
+				FacesContext.getCurrentInstance().addMessage("codiceFiscale", message);
+				return false;
+			}
+
+			// The code must start with 8 or 9.
+			//
+			if(!codiceFiscale.startsWith("8") && !codiceFiscale.startsWith("9")) {
+				FacesMessage message = new FacesMessage(
+						FacesMessage.SEVERITY_ERROR,
+						"Errore",
+						"Per un ente il codice fiscale deve iniziare per 8 o per 9.");
+				FacesContext.getCurrentInstance().addMessage("codiceFiscale", message);
+				return false;
+			}
+
+		} else {
+
+			String msg = String.format("Unexpected value detected for codiceTipoBusinessPartner: %d", codiceTipoBusinessPartner);
+			logger.error(msg);
+			throw new RuntimeException(msg);
+		}
 
 		return true;
 	}
