@@ -24,6 +24,7 @@
         <property name="show_sql">true</property>
 
 		<!-- Entities mappings -->
+		<mapping class="it.ivncr.erp.model.accesso.AccountEmail" />
         <mapping class="it.ivncr.erp.model.accesso.Permesso" />
         <mapping class="it.ivncr.erp.model.accesso.Ruolo" />
         <mapping class="it.ivncr.erp.model.accesso.Utente" />

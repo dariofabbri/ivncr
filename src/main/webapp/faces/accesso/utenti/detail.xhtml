@@ -28,9 +28,15 @@
 						
 					</p:tab>
 				
-					<p:tab id="ruoliTab" title="Ruoli" disabled="#{empty dettaglioUtente.edited.id}">
+					<p:tab id="ruoliTab" title="Ruoli" disabled="#{empty dettaglioUtente.id}">
 
 						<ui:include src="detail-ruoli.xhtml"/>
+
+					</p:tab>
+				
+					<p:tab id="accountEmailTab" title="Account email" disabled="#{empty dettaglioUtente.id}">
+
+						<ui:include src="detail-account-email.xhtml"/>
 
 					</p:tab>
 				

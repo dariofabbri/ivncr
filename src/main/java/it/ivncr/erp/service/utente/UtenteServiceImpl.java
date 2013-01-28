@@ -1,5 +1,6 @@
 package it.ivncr.erp.service.utente;
 
+import it.ivncr.erp.model.accesso.AccountEmail;
 import it.ivncr.erp.model.accesso.Ruolo;
 import it.ivncr.erp.model.accesso.Utente;
 import it.ivncr.erp.service.AbstractService;
@@ -101,9 +102,24 @@ public class UtenteServiceImpl extends AbstractService implements UtenteService 
 
 		String hql =
 				"from Utente ute " +
-				"where ute.username = :username";
+				"where ute.username = :username ";
 		Query query = session.createQuery(hql);
 		query.setParameter("username", username);
+		Utente utente = (Utente)query.uniqueResult();
+		logger.debug("Utente found: " + utente);
+
+		return utente;
+	}
+
+	@Override
+	public Utente retrieveWithAccountEmail(Integer id) {
+
+		String hql =
+				"from Utente ute " +
+				"left join fetch ute.accountEmail aem " +
+				"where ute.id = :id ";
+		Query query = session.createQuery(hql);
+		query.setParameter("id", id);
 		Utente utente = (Utente)query.uniqueResult();
 		logger.debug("Utente found: " + utente);
 
@@ -179,6 +195,32 @@ public class UtenteServiceImpl extends AbstractService implements UtenteService 
 
 		session.update(utente);
 		logger.debug("Utente successfully updated.");
+
+		return utente;
+	}
+
+	@Override
+	public Utente updateAccountEmail(Integer id, String account, String password) {
+
+		Utente utente = retrieve(id);
+		if(utente == null) {
+			String message = String.format("It has not been possible to retrieve specified user: %d", id);
+			logger.info(message);
+			throw new NotFoundException(message);
+		}
+
+		AccountEmail accountEmail = utente.getAccountEmail();
+		if(accountEmail == null) {
+			accountEmail = new AccountEmail();
+		}
+
+		accountEmail.setAccount(account);
+		accountEmail.setPassword(password);
+		accountEmail.setUtente(utente);
+		session.saveOrUpdate(accountEmail);
+
+		utente.setAccountEmail(accountEmail);
+		session.update(utente);
 
 		return utente;
 	}

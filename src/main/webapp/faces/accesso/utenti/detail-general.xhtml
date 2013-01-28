@@ -29,7 +29,7 @@
 								<p:outputLabel for="username" value="Username:" />
 							</p:column>
 							<p:column>
-								<p:inputText value="#{dettaglioUtente.edited.username}" id="username"
+								<p:inputText value="#{dettaglioUtente.username}" id="username"
 									required="true" requiredMessage="Il campo username è obbligatorio"/>
 								<p:watermark for="username" value="Identificativo dell\'utente" />
 							</p:column>
@@ -40,7 +40,7 @@
 								<p:outputLabel for="nome" value="Nome:" />
 							</p:column>
 							<p:column>
-								<p:inputText value="#{dettaglioUtente.edited.nome}" id="nome"
+								<p:inputText value="#{dettaglioUtente.nome}" id="nome"
 									required="true" requiredMessage="Il campo nome è obbligatorio"/>
 								<p:watermark for="nome" value="Nome dell\'utente" />
 							</p:column>
@@ -51,7 +51,7 @@
 								<p:outputLabel for="cognome" value="Cognome:" />
 							</p:column>
 							<p:column>
-								<p:inputText value="#{dettaglioUtente.edited.cognome}" id="cognome"
+								<p:inputText value="#{dettaglioUtente.cognome}" id="cognome"
 									required="true" requiredMessage="Il campo cognome è obbligatorio"/>
 								<p:watermark for="cognome" value="Cognome dell\'utente" />
 							</p:column>
@@ -62,7 +62,7 @@
 								<p:outputLabel for="note" value="Note:" />
 							</p:column>
 							<p:column>
-								<p:inputTextarea value="#{dettaglioUtente.edited.note}" id="note"/>
+								<p:inputTextarea value="#{dettaglioUtente.note}" id="note"/>
 								<p:watermark for="note" value="Spazio per eventuali annotazioni" />  
 							</p:column>
 						</p:row>
@@ -73,7 +73,7 @@
 				
 				<p:column>
 				
-					<c:if test="#{not empty dettaglioUtente.edited.id}">
+					<c:if test="#{not empty dettaglioUtente.id}">
 
 						<p:panelGrid styleClass="form-panel">
 						
@@ -82,7 +82,7 @@
 									<p:outputLabel for="ultimoLogin" value="Ultimo login:" />
 								</p:column>
 								<p:column>
-									<p:inputText value="#{dettaglioUtente.edited.ultimoLogin}" id="ultimoLogin" disabled="true">
+									<p:inputText value="#{dettaglioUtente.ultimoLogin}" id="ultimoLogin" disabled="true">
 										<f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="#{appConfig.timeZone}" />
 									</p:inputText>
 								</p:column>
@@ -93,7 +93,7 @@
 									<p:outputLabel for="creazione" value="Creato il:" />
 								</p:column>
 								<p:column>
-									<p:inputText value="#{dettaglioUtente.edited.creazione}" id="creazione" disabled="true">
+									<p:inputText value="#{dettaglioUtente.creazione}" id="creazione" disabled="true">
 										<f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="#{appConfig.timeZone}" />
 									</p:inputText>
 								</p:column>
@@ -104,7 +104,7 @@
 									<p:outputLabel for="ultimaAttivazione" value="Ultima attivazione:" />
 								</p:column>
 								<p:column>
-									<p:inputText value="#{dettaglioUtente.edited.ultimaAttivazione}" id="ultimaAttivazione" disabled="true">
+									<p:inputText value="#{dettaglioUtente.ultimaAttivazione}" id="ultimaAttivazione" disabled="true">
 										<f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="#{appConfig.timeZone}" />
 									</p:inputText>
 								</p:column>
@@ -115,7 +115,7 @@
 									<p:outputLabel for="ultimaDisattivazione" value="Ultima disattivazione:" />
 								</p:column>
 								<p:column>
-									<p:inputText value="#{dettaglioUtente.edited.ultimaDisattivazione}" id="ultimaDisattivazione" disabled="true">
+									<p:inputText value="#{dettaglioUtente.ultimaDisattivazione}" id="ultimaDisattivazione" disabled="true">
 										<f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="#{appConfig.timeZone}" />
 									</p:inputText>
 								</p:column>
@@ -128,7 +128,7 @@
 								<p:column>
 									<p:selectBooleanCheckbox 
 										id="attivo" 
-										value="#{dettaglioUtente.edited.attivo}"
+										value="#{dettaglioUtente.attivo}"
 										disabled="true"/>
 								</p:column>
 							</p:row>
@@ -137,7 +137,7 @@
 	
 					</c:if>
 			
-					<c:if test="#{empty dettaglioUtente.edited.id}">
+					<c:if test="#{empty dettaglioUtente.id}">
 
 						<p:panelGrid styleClass="form-panel">
 						

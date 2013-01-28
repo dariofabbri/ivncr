@@ -3,12 +3,8 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
-							
-	<p:messages globalOnly="false" showSummary="false" showDetail="true" closable="true" autoUpdate="true"/>
-
-	<p:focus/>
 	
-	<p:panelGrid styleClass="form-panel" id="testataPanel">
+	<p:panelGrid styleClass="multi-col-layout" id="testataPanel">
 		
 		<p:row>
 			
@@ -27,6 +23,10 @@
 								disabled="#{not empty dettaglioClienteGenerale.codice}"/>
 							<p:watermark for="codice" value="Codice identificativo del cliente" />  
 							<p:tooltip for="codice" showEffect="fade" value="Il codice rappresenta univocamente il cliente" />
+							
+							<p:commandButton value="..."
+								disabled="#{not empty dettaglioClienteGenerale.codice}"/>
+								
 						</p:column>
 					</p:row>
 					

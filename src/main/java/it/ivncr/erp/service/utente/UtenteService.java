@@ -21,6 +21,7 @@ public interface UtenteService extends EntityService<Utente> {
 
 	Utente retrieve(Integer id);
 	Utente retrieveByUsername(String username);
+	Utente retrieveWithAccountEmail(Integer id);
 
 	void delete(Integer id);
 
@@ -37,6 +38,10 @@ public interface UtenteService extends EntityService<Utente> {
 			String nome,
 			String cognome,
 			String note);
+	Utente updateAccountEmail(
+			Integer id,
+			String account,
+			String password);
 
 	Utente changePassword(
 			Integer id,

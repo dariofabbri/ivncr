@@ -8,8 +8,10 @@ import it.ivncr.erp.service.ruolo.RuoloService;
 import it.ivncr.erp.service.utente.UtenteService;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -28,15 +30,51 @@ public class DettaglioUtente implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@ManagedProperty("#{gestioneUtenti.edited}")
-	private Utente edited;
+	@ManagedProperty("#{gestioneUtenti.edited.id}")
+	private Integer id;
+
+	private String username;
+	private String nome;
+	private String cognome;
+	private String note;
 
 	private String password;
 	private String confirmPassword;
 
+	private Date ultimoLogin;
+	private Date creazione;
+	private Date ultimaAttivazione;
+	private Date ultimaDisattivazione;
+	private Boolean attivo;
+
 	private List<Ruolo> ruoli;
 	private List<Ruolo> filtered;
 	private Ruolo[] selected;
+
+
+	@PostConstruct
+	public void init() {
+
+		// If we are editing an existing record, it is time to fetch
+		// it from the database and fill in the bean fields.
+		//
+		if(id != null) {
+
+			UtenteService us = ServiceFactory.createService("Utente");
+			Utente utente = us.retrieve(id);
+
+			username = utente.getUsername();
+			nome = utente.getNome();
+			cognome = utente.getCognome();
+			note = utente.getNote();
+
+			ultimoLogin = utente.getUltimoLogin();
+			creazione = utente.getCreazione();
+			ultimaAttivazione = utente.getUltimaAttivazione();
+			ultimaDisattivazione = utente.getUltimaDisattivazione();
+			attivo = utente.getAttivo();
+		}
+	}
 
 	public void onTabChange(TabChangeEvent event) {
 
@@ -47,7 +85,7 @@ public class DettaglioUtente implements Serializable {
 		//
 		if(event.getTab().getId().equals("ruoliTab")) {
 
-			loadList();
+			loadRuoliList();
 		}
 	}
 
@@ -60,7 +98,7 @@ public class DettaglioUtente implements Serializable {
 		try {
 			UtenteService us = ServiceFactory.createService("Utente");
 
-			if(edited.getId() == null) {
+			if(id == null) {
 
 				// Check if password matches confirmation field.
 				//
@@ -76,23 +114,24 @@ public class DettaglioUtente implements Serializable {
 					return;
 				}
 
-				edited = us.create(
-						edited.getUsername(),
+				Utente utente = us.create(
+						username,
 						password,
-						edited.getNome(),
-						edited.getCognome(),
-						edited.getNote());
+						nome,
+						cognome,
+						note);
+				id =  utente.getId();
 
 				logger.debug("Entity successfully created.");
 
 			} else {
 
-				edited = us.update(
-						edited.getId(),
-						edited.getUsername(),
-						edited.getNome(),
-						edited.getCognome(),
-						edited.getNote());
+				us.update(
+						id,
+						username,
+						nome,
+						cognome,
+						note);
 
 				logger.debug("Entity successfully updated.");
 			}
@@ -133,7 +172,7 @@ public class DettaglioUtente implements Serializable {
 		try {
 			UtenteService us = ServiceFactory.createService("Utente");
 			us.setRuoli(
-				edited.getId(),
+				id,
 				ids);
 
 			// Everything went fine.
@@ -156,7 +195,7 @@ public class DettaglioUtente implements Serializable {
 		}
 	}
 
-	private void loadList() {
+	private void loadRuoliList() {
 
 		logger.debug("Loading ruoli list.");
 		RuoloService rs = ServiceFactory.createService("Ruolo");
@@ -164,16 +203,48 @@ public class DettaglioUtente implements Serializable {
 		ruoli = result.getResults();
 
 		UtenteService us = ServiceFactory.createService("Utente");
-		List<Ruolo> list = us.listRuoli(edited.getId());
+		List<Ruolo> list = us.listRuoli(id);
 		selected = list.toArray(new Ruolo[0]);
 	}
 
-	public Utente getEdited() {
-		return edited;
+	public Integer getId() {
+		return id;
 	}
 
-	public void setEdited(Utente edited) {
-		this.edited = edited;
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public String getCognome() {
+		return cognome;
+	}
+
+	public void setCognome(String cognome) {
+		this.cognome = cognome;
+	}
+
+	public String getNote() {
+		return note;
+	}
+
+	public void setNote(String note) {
+		this.note = note;
 	}
 
 	public String getPassword() {
@@ -190,6 +261,46 @@ public class DettaglioUtente implements Serializable {
 
 	public void setConfirmPassword(String confirmPassword) {
 		this.confirmPassword = confirmPassword;
+	}
+
+	public Date getUltimoLogin() {
+		return ultimoLogin;
+	}
+
+	public void setUltimoLogin(Date ultimoLogin) {
+		this.ultimoLogin = ultimoLogin;
+	}
+
+	public Date getCreazione() {
+		return creazione;
+	}
+
+	public void setCreazione(Date creazione) {
+		this.creazione = creazione;
+	}
+
+	public Date getUltimaAttivazione() {
+		return ultimaAttivazione;
+	}
+
+	public void setUltimaAttivazione(Date ultimaAttivazione) {
+		this.ultimaAttivazione = ultimaAttivazione;
+	}
+
+	public Date getUltimaDisattivazione() {
+		return ultimaDisattivazione;
+	}
+
+	public void setUltimaDisattivazione(Date ultimaDisattivazione) {
+		this.ultimaDisattivazione = ultimaDisattivazione;
+	}
+
+	public Boolean getAttivo() {
+		return attivo;
+	}
+
+	public void setAttivo(Boolean attivo) {
+		this.attivo = attivo;
 	}
 
 	public List<Ruolo> getRuoli() {

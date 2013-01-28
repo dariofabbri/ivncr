@@ -21,7 +21,7 @@
         <property name="transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</property>
 
         <!-- SQL dialect -->
-        <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
+        <property name="dialect">org.hibernate.dialect.PostgreSQL82Dialect</property>
 
         <!-- Enable Hibernate's automatic session context management -->
         <property name="hibernate.current_session_context_class">thread</property>
@@ -33,6 +33,7 @@
         <property name="show_sql">true</property>
 
 		<!-- Entities mappings -->
+		<mapping class="it.ivncr.erp.model.accesso.AccountEmail" />
         <mapping class="it.ivncr.erp.model.accesso.Permesso" />
         <mapping class="it.ivncr.erp.model.accesso.Ruolo" />
         <mapping class="it.ivncr.erp.model.accesso.Utente" />

@@ -6,12 +6,14 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -24,40 +26,40 @@ public class Utente {
 	@SequenceGenerator(name = "acc_utente_id_seq", sequenceName = "acc_utente_id_seq")
 	@Column(name="id")
 	private Integer id;
-	
+
 	@Column(name="username")
 	private String username;
 
 	@Column(name="nome")
 	private String nome;
-	
+
 	@Column(name="cognome")
 	private String cognome;
-	
+
 	@Column(name="note")
 	private String note;
-	
+
 	@Column(name="digest")
 	private String digest;
-	
+
 	@Column(name="salt")
 	private String salt;
-	
+
 	@Column(name="iterazioni")
 	private Integer iterazioni;
-	
+
 	@Column(name="ultimo_login_ts")
 	private Date ultimoLogin;
-	
+
 	@Column(name="creazione_ts")
 	private Date creazione;
-	
+
 	@Column(name="ultima_attivazione_ts")
 	private Date ultimaAttivazione;
-	
+
 	@Column(name="ultima_disattivazione_ts")
 	private Date ultimaDisattivazione;
-	
+
 	@Column(name="attivo")
 	private Boolean attivo;
 
@@ -68,6 +70,9 @@ public class Utente {
 			inverseJoinColumns = { @JoinColumn(name="ruolo_id", referencedColumnName="id")}
 	)
 	private Set<Ruolo> ruoli;
+
+	@OneToOne(fetch=FetchType.LAZY, mappedBy="utente")
+	private AccountEmail accountEmail;
 
 	public Integer getId() {
 		return id;
@@ -179,5 +184,13 @@ public class Utente {
 
 	public void setRuoli(Set<Ruolo> ruoli) {
 		this.ruoli = ruoli;
+	}
+
+	public AccountEmail getAccountEmail() {
+		return accountEmail;
+	}
+
+	public void setAccountEmail(AccountEmail accountEmail) {
+		this.accountEmail = accountEmail;
 	}
 }

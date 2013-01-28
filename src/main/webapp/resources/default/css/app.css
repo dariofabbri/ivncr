@@ -53,13 +53,22 @@
 	padding-bottom: 1em;
 }
 
+.multi-col-layout tr {
+	border: none;
+}
+
+.multi-col-layout td {
+	border: none;
+	vertical-align: top;
+}
+
 .form-panel tr {
 	border: none;
 }
 
 .form-panel td {
 	border: none;
-	vertical-align: top;
+	vertical-align: middle;
 }
 
 .form-panel .ui-inputtext,

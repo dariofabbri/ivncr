@@ -20,6 +20,12 @@
 							icon="ui-icon-arrowthick-1-w"/>
 					</f:facet>
 	
+					<p:focus/>
+	
+					<p:messages globalOnly="false" showSummary="false" showDetail="true" severity="error" closable="true" autoUpdate="true"/>
+					
+					<p:growl globalOnly="false" showSummary="false" showDetail="true" life="3000" autoUpdate="true"/>
+	
 					<ui:include src="detail-testata.xhtml"/>			
 	
 					<p:tabView effect="fade" effectDuration="normal" id="tabView" rendered="#{not empty dettaglioClienteGenerale.id}">
