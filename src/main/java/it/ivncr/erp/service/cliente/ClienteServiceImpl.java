@@ -4,6 +4,7 @@ import it.ivncr.erp.model.commerciale.Cliente;
 import it.ivncr.erp.model.commerciale.Divisa;
 import it.ivncr.erp.model.commerciale.GruppoCliente;
 import it.ivncr.erp.model.commerciale.TipoBusinessPartner;
+import it.ivncr.erp.model.generale.Contatore;
 import it.ivncr.erp.service.AbstractService;
 import it.ivncr.erp.service.NotFoundException;
 import it.ivncr.erp.service.QueryResult;
@@ -11,6 +12,8 @@ import it.ivncr.erp.service.SortDirection;
 
 import java.util.Date;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.hibernate.Query;
 
@@ -217,5 +220,92 @@ public class ClienteServiceImpl extends AbstractService implements ClienteServic
 		logger.debug("Entity successfully updated.");
 
 		return cliente;
+	}
+
+	@Override
+	public String retrieveNextCodiceAppend() {
+
+		String hql =
+				"select max(cli.codice) from Cliente cli ";
+		Query query = session.createQuery(hql);
+		String lastCodice = (String)query.uniqueResult();
+
+		Integer max = null;
+		if(lastCodice == null) {
+			max = 1;
+		} else {
+			max = extractNumericPartFromCodice(lastCodice) + 1;
+		}
+
+		return makeCodiceFromNumeric(max);
+	}
+
+	@Override
+	public String[] retrieveNextCodice() {
+
+		String lastCodice = retrieveNextCodiceAppend();
+
+		// Retrieve pointer from counters table.
+		//
+		String hql =
+				"from Contatore con " +
+				"where codice = :codice ";
+		Query query = session.createQuery(hql);
+		query.setParameter("codice", "CODICE_CLIENTE");
+		Contatore contatore = (Contatore)query.uniqueResult();
+
+		// If no row has been found, just create a new one
+		// and initialize the pointer to 1.
+		//
+		if(contatore == null) {
+
+			contatore = new Contatore();
+			contatore.setCodice("CODICE_CLIENTE");
+			contatore.setDescrizione("Puntatore al punto di partenza per la ricerca del primo codice libero per la tabella dei clienti.");
+			contatore.setContatore(1);
+			session.save(contatore);
+		}
+
+		// Find first free code starting from pointer.
+		//
+		String codice = null;
+		while(true) {
+			codice = makeCodiceFromNumeric(contatore.getContatore());
+			if(retrieveByCodice(codice) == null)
+				break;
+
+			contatore.incrementContatore();
+		}
+
+		// Update pointer in counter table.
+		//
+		session.update(contatore);
+
+
+		// Prepare result object.
+		//
+		String[] result = new String[2];
+		result[0] = lastCodice;
+		result[1] = codice;
+
+		return result;
+	}
+
+	private Integer extractNumericPartFromCodice(String lastCodice) {
+
+		Pattern pattern = Pattern.compile("^C(\\d{6})$");
+		Matcher m = pattern.matcher(lastCodice);
+		if(!m.matches()) {
+			String msg = String.format("Unexpected codice [%s] found while looking for last one.", lastCodice);
+			logger.error(msg);
+			throw new RuntimeException(msg);
+		}
+
+		return Integer.parseInt(m.group(1));
+	}
+
+	private String makeCodiceFromNumeric(Integer numeric) {
+
+		return String.format("C%06d", numeric);
 	}
 }

@@ -46,4 +46,6 @@ public interface ClienteService extends EntityService<Cliente> {
 			String fax,
 			String email);
 
+	String retrieveNextCodiceAppend();
+	String[] retrieveNextCodice();
 }

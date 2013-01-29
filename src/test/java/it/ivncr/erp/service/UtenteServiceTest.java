@@ -7,7 +7,7 @@ import it.ivncr.erp.service.utente.UtenteService;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class UserServiceTest extends BaseServiceTest {
+public class UtenteServiceTest extends BaseServiceTest {
 	
 	@Test
 	public void testCreate() {

@@ -34,6 +34,8 @@
         <mapping class="it.ivncr.erp.model.commerciale.GruppoCliente" />
         <mapping class="it.ivncr.erp.model.commerciale.TipoBusinessPartner" />
 		
+		<mapping class="it.ivncr.erp.model.generale.Contatore" />
+		
     </session-factory>
 
 </hibernate-configuration>
