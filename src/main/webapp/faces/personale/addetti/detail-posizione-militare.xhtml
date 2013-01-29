@@ -1,0 +1,87 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:readonly="http://java.sun.com/jsf/composite/components/readonly">
+	
+	<h:form>
+	
+		<p:panelGrid styleClass="multi-col-layout">
+		
+			<p:row>
+		
+				<p:column>
+								
+					<p:panelGrid styleClass="form-panel">
+				
+						<p:row>
+							<p:column>
+								<p:outputLabel for="posizionemilitare" value="Posizione militare:" />
+							</p:column>
+							<p:column>
+								<p:selectOneMenu
+									required="true" 
+									requiredMessage="Il campo è obbligatorio"
+									id="posizionemilitare" 
+									value="#{dettaglioClienteTestata.codiceDivisa}"
+									effect="fade">
+									<f:selectItem itemLabel="Selezionare la posizione militare" itemValue="" />
+									<f:selectItems 
+											value="#{dettaglioClienteTestata.listGruppoCliente}" var="item"
+											itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+								</p:selectOneMenu>			 		 
+								<p:tooltip for="posizionemilitare" showEffect="fade" value="posizione militare" />
+							</p:column>
+						</p:row>	
+						
+						<p:row>
+							<p:column>		
+								<p:outputLabel for="presso" value="Presso:" />
+							</p:column>
+							<p:column>
+								<p:inputText value="#{dettaglioClienteGenerale.telefono1}" id="presso"/>
+								<p:watermark for="presso" value="Servizio militare svolto presso" />  
+								<p:tooltip for="presso" showEffect="fade" value="Dove è stato svolto il servizio militare" />
+							</p:column>
+						</p:row>
+						
+						<p:row>
+							<p:column>		
+								<p:outputLabel for="grado" value="Grado:" />
+							</p:column>
+							<p:column>
+								<p:inputText value="#{dettaglioClienteGenerale.telefono1}" id="grado"/>
+								<p:watermark for="grado" value="grado al momento del congedo" />  
+								<p:tooltip for="grado" showEffect="fade" value="Il grado conseguito durante il servizio militare" />
+							</p:column>
+						</p:row>
+						
+						<p:row>
+							<p:column>						
+								<p:outputLabel value="Data congedo:" />
+							</p:column>							
+							<p:column>								
+								<h:outputText value="21 Maggio 2001"/>					
+							</p:column>					
+						</p:row>
+						
+						<p:row>
+							<p:column>
+								<p:outputLabel value="Note:" />
+							</p:column>
+							<p:column>
+								<p:inputTextarea rows="6" cols="33" />
+							</p:column>									
+						</p:row>	
+					</p:panelGrid>
+				
+				</p:column>
+		
+			</p:row>
+			
+	
+		</p:panelGrid>
+	</h:form>
+</html>

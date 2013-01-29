@@ -1,0 +1,71 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog 
+		header="Nuovo " 
+		widgetVar="createArmamentoDialog" 
+		modal="true"
+		showEffect="fade" 
+		hideEffect="fade"> 
+
+		<h:form id="createArmamentoForm">
+		
+			<p:messages globalOnly="true" showDetail="true" closable="true"/>
+		
+			<h:panelGrid columns="4" cellpadding="5">
+				
+				<p:outputLabel for="marcaarma" value="Marca Arma:" />
+				<p:inputText value="#{dettaglioClientiContatti.tipoContatto}" id="marcaarma"
+					style="width: 250px;"/>
+				<p:watermark for="marcaarma" value="Marca Arma" />  
+				<p:message for="marcaarma" showSummary="true" showDetail="false"/>
+
+				<p:outputLabel for="modelloarma" value="Modello:" />
+				<p:inputText value="#{dettaglioClientiContatti.titolo}" id="modelloarma"
+					style="width: 250px;"/>
+				<p:watermark for="modelloarma" value="Modello Arma" />  
+				<p:message for="modelloarma" showSummary="true" showDetail="false"/>
+
+				<p:outputLabel for="matricolaarma" value="Matricola: " />
+				<p:inputText value="#{dettaglioClientiContatti.nome}" id="matricolaarma"
+					style="width: 250px;"/>
+				<p:watermark for="matricolaarma" value="Matricola Arma" />  
+				<p:message for="matricolaarma" showSummary="true" showDetail="false"/>
+
+				<p:outputLabel for="dataacquisto" value="Data acquisto:" />
+				<p:inputText value="#{dettaglioClientiContatti.telefono1}" id="dataacquisto"
+					style="width: 250px;"/>
+				<p:watermark for="dataacquisto" value="Data acquisto arma" />  
+				<p:message for="dataacquisto" showSummary="true" showDetail="false"/>
+				
+				<p:outputLabel for="datavendita" value="Data vendita arma:" />
+				<p:inputText value="#{dettaglioClientiContatti.telefono1}" id="datavendita"
+					style="width: 250px;"/>
+				<p:watermark for="datavendita" value="Data vendita" />  
+				<p:message for="datavendita" showSummary="true" showDetail="false"/>
+				
+				<p:outputLabel for="datadenuncia" value="Data furto o smarrimento arma:" />
+				<p:inputText value="#{dettaglioClientiContatti.telefono1}" id="datadenuncia"
+					style="width: 250px;"/>
+				<p:watermark for="datadenuncia" value="Data" />  
+				<p:message for="datadenuncia" showSummary="true" showDetail="false"/>
+				
+				<f:facet name="footer">
+					<p:commandButton value="Salva"
+						actionListener="#{dettaglioClientiContatti.doCreate}" 
+						oncomplete="if(args.ok) { createArmamentoDialog.hide(); }"/>
+
+					<p:commandButton value="Annulla"
+						oncomplete="createArmamentoDialog.hide();" />
+				</f:facet>
+				
+			</h:panelGrid>
+			
+		</h:form>
+
+	</p:dialog>
+
+</html>
