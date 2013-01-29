@@ -20,16 +20,17 @@
 							<p:inputText value="#{dettaglioClienteGenerale.codice}" id="codice"
 								required="true" requiredMessage="Il campo codice è obbligatorio"
 								validator="codiceClienteValidator" validatorMessage="Il codice cliente non rispetta la struttura ammessa (Cnnnnnn dove n è una cifra tra 0 e 9)"
-								disabled="#{not empty dettaglioClienteGenerale.codice}"/>
+								disabled="#{not empty dettaglioClienteGenerale.id}"/>
 							<p:watermark for="codice" value="Codice identificativo del cliente" />  
 							<p:tooltip for="codice" showEffect="fade" value="Il codice rappresenta univocamente il cliente" />
 							
 							<p:commandButton 
 								value="..."
 								process="@this"
-								update="codice"
-								actionListener="#{dettaglioClienteCodice.generate}"
-								disabled="#{not empty dettaglioClienteGenerale.codice}"/>
+								update=":selectCodiceDialogForm"
+								actionListener="#{dettaglioClienteGenerale.generateCodice}"
+								oncomplete="selectCodiceDialog.show();"
+								disabled="#{not empty dettaglioClienteGenerale.id}"/>
 								
 						</p:column>
 					</p:row>

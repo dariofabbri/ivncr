@@ -1,0 +1,61 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog
+		header="Seleziona codice cliente" 
+		widgetVar="selectCodiceDialog" 
+		modal="true"
+		showEffect="fade" 
+		hideEffect="fade"> 
+
+		<h:form id="selectCodiceDialogForm">
+			
+			<p:panelGrid styleClass="form-panel">
+							
+				<p:row>
+					<p:column colspan="2" styleClass="form-header">
+						<h:outputText value="Il sistema ha generato i seguenti codici in automatico. Per selezionarne uno premere il pulsante relativo."/>
+					</p:column>
+				</p:row>
+				
+				<p:row>
+					<p:column>
+						<h:outputText value="Primo codice disponibile:"/>
+					</p:column>
+					<p:column>
+						<p:commandButton value="#{dettaglioClienteGenerale.firstCodice}"
+							actionListener="#{dettaglioClienteGenerale.doSelectFirstCodice}" 
+							update=":detailForm:codice" 
+							oncomplete="selectCodiceDialog.hide();"/>
+					</p:column>
+				</p:row>  
+				
+				<p:row>
+					<p:column>
+						<h:outputText value="Primo codice disponibile in coda:"/>
+					</p:column>
+					<p:column>
+						<p:commandButton value="#{dettaglioClienteGenerale.lastCodice}"
+							actionListener="#{dettaglioClienteGenerale.doSelectLastCodice}" 
+							update=":detailForm:codice" 
+							oncomplete="selectCodiceDialog.hide();"/>
+					</p:column>
+				</p:row>  
+
+				<p:row>
+					<p:column colspan="2" styleClass="form-footer">
+						<p:commandButton value="Annulla"
+							oncomplete="selectCodiceDialog.hide();" />
+					</p:column>
+				</p:row>
+				
+			</p:panelGrid>
+			
+		</h:form>
+
+	</p:dialog>
+
+</html>

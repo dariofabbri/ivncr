@@ -67,6 +67,9 @@ public class DettaglioClienteGenerale implements Serializable {
 	private Date bloccatoAl;
 	private String bloccatoNote;
 
+	private String firstCodice;
+	private String lastCodice;
+
 	private List<GruppoCliente> listGruppoCliente;
 	private List<Divisa> listDivisa;
 	private List<TipoBusinessPartner> listTipoBusinessPartner;
@@ -134,6 +137,32 @@ public class DettaglioClienteGenerale implements Serializable {
 		contattoPrincipaleFax = "06.72356723";
 		contattoPrincipaleEmail = "mail@gmail.com";
 	}
+
+
+	public void generateCodice() {
+
+		// Create cliente service that will be used to query for codice.
+		//
+		ClienteService cs = ServiceFactory.createService("Cliente");
+		String[] codici = cs.retrieveNextCodice();
+		logger.debug(String.format("Found a pair of codes: [%s, %s]", codici[0], codici[1]));
+
+		lastCodice = codici[0];
+		firstCodice = codici[1];
+	}
+
+
+	public void doSelectFirstCodice() {
+
+		codice = firstCodice;
+	}
+
+
+	public void doSelectLastCodice() {
+
+		codice = lastCodice;
+	}
+
 
 	public void doSave() {
 
@@ -534,5 +563,21 @@ public class DettaglioClienteGenerale implements Serializable {
 	public void setListTipoBusinessPartner(
 			List<TipoBusinessPartner> listTipoBusinessPartner) {
 		this.listTipoBusinessPartner = listTipoBusinessPartner;
+	}
+
+	public String getFirstCodice() {
+		return firstCodice;
+	}
+
+	public void setFirstCodice(String firstCodice) {
+		this.firstCodice = firstCodice;
+	}
+
+	public String getLastCodice() {
+		return lastCodice;
+	}
+
+	public void setLastCodice(String lastCodice) {
+		this.lastCodice = lastCodice;
 	}
 }

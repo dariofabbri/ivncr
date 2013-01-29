@@ -8,7 +8,7 @@
 	
 		<ui:define name="container">
 		
-			<h:form>
+			<h:form id="detailForm">
 	
 				<p:panel id="detailPanel" header="Cliente">
 				
@@ -80,14 +80,16 @@
 					</p:tabView>
 					
 				</p:panel>
-				
-				<!--
-				<ui:include src="detail-contatti-create.xhtml"/>
-				
-				<ui:include src="detail-indirizzi-amministrativi-create.xhtml"/>
-				-->
 			
 			</h:form>
+
+			<ui:include src="detail-select-codice.xhtml"/>
+			
+			<!--
+			<ui:include src="detail-contatti-create.xhtml"/>
+			
+			<ui:include src="detail-indirizzi-amministrativi-create.xhtml"/>
+			-->
 			
 		</ui:define>
 	
