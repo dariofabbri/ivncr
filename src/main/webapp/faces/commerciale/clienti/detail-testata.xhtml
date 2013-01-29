@@ -24,7 +24,11 @@
 							<p:watermark for="codice" value="Codice identificativo del cliente" />  
 							<p:tooltip for="codice" showEffect="fade" value="Il codice rappresenta univocamente il cliente" />
 							
-							<p:commandButton value="..."
+							<p:commandButton 
+								value="..."
+								process="@this"
+								update="codice"
+								actionListener="#{dettaglioClienteCodice.generate}"
 								disabled="#{not empty dettaglioClienteGenerale.codice}"/>
 								
 						</p:column>

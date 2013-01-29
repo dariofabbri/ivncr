@@ -142,7 +142,7 @@ public class DettaglioClienteGenerale implements Serializable {
 		if(!formValidations())
 			return;
 
-		// User service to persist data.
+		// Create cliente service to persist data.
 		//
 		ClienteService cs = ServiceFactory.createService("Cliente");
 
