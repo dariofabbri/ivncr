@@ -2,8 +2,8 @@ package it.ivncr.erp.service.utente;
 
 import it.ivncr.erp.model.accesso.AccountEmail;
 import it.ivncr.erp.model.accesso.Ruolo;
-import it.ivncr.erp.model.accesso.RuoloAzienda;
 import it.ivncr.erp.model.accesso.Utente;
+import it.ivncr.erp.model.accesso.UtenteAzienda;
 import it.ivncr.erp.model.generale.Azienda;
 import it.ivncr.erp.service.AbstractService;
 import it.ivncr.erp.service.AlreadyPresentException;
@@ -450,6 +450,33 @@ public class UtenteServiceImpl extends AbstractService implements UtenteService 
 		session.flush();
 	}
 
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Azienda> listAziende(Integer id) {
+
+		Utente utente = retrieve(id);
+		if (utente == null) {
+			String message = String.format(
+					"It has not been possible to retrieve specified user: %d",
+					id);
+			logger.info(message);
+			throw new NotFoundException(message);
+		}
+
+		String hql =
+				"select distinct uaz.azienda from UtenteAzienda uaz " +
+				"left join uaz.utente ute " +
+				"where ute.id = :id ";
+		Query query = session.createQuery(hql);
+		query.setParameter("id", id);
+		List<Azienda> list = query.list();
+
+		logger.debug("Found azienda list: " + list);
+		return list;
+	}
+
+
 	@Override
 	public Azienda retrieveDefaultAzienda(Integer id) {
 
@@ -465,21 +492,21 @@ public class UtenteServiceImpl extends AbstractService implements UtenteService 
 		// Iterate on configured records and look for default azienda.
 		//
 		Azienda found = null;
-		for(RuoloAzienda azienda : utente.getAziende()) {
-			
+		for(UtenteAzienda azienda : utente.getAziende()) {
+
 			if(found == null) {
 				found = azienda.getAzienda();
 			}
-			
+
 			if(azienda.getPreferita() != null && azienda.getPreferita()) {
 				found = azienda.getAzienda();
 				break;
 			}
 		}
-		
+
 		return found;
 	}
-	
+
 	private String generateSalt() {
 
 		SecureRandomNumberGenerator srng = new SecureRandomNumberGenerator();

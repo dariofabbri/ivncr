@@ -34,6 +34,12 @@
 
 					</p:tab>
 				
+					<p:tab id="aziendeTab" title="Aziende" disabled="#{empty dettaglioUtente.id}">
+
+						<ui:include src="detail-aziende.xhtml"/>
+
+					</p:tab>
+				
 					<p:tab id="accountEmailTab" title="Account email" disabled="#{empty dettaglioUtente.id}">
 
 						<ui:include src="detail-account-email.xhtml"/>

@@ -7,19 +7,39 @@
 	
 	<h:form>
 	
+		<p:growl id="menubarGrowl" globalOnly="false" showSummary="false" showDetail="true" life="3000"/>
+		
 		<p:menubar model="#{menuBar.menuModel}">
 	        
 	        <f:facet name="options">
 	        
 	        	<h:panelGrid columns="2">
 	        	
-					<p:inplace id="selectableInplace" label="--Selezionata--" effectSpeed="fast" >  
-						<p:selectOneMenu>  
-							<f:selectItem itemLabel="IVNCR" itemValue="IVNCR" />  
-							<f:selectItem itemLabel="Azienda #2" itemValue="Azienda #2" />  
-							<f:selectItem itemLabel="Azienda #3" itemValue="Azienda #3" />  
-						</p:selectOneMenu>  
-					</p:inplace>	        		
+					<p:inplace 
+						id="selectableInplaceAzienda" 
+						label="#{loginInfo.azienda.codice}"
+						style="font-weight: bold; font-size: 1.3em;"
+						effectSpeed="fast" >
+						  
+						<p:selectOneMenu
+							id="codiceGruppoCliente" 
+							value="#{loginInfo.codiceAzienda}"
+							effect="fade"
+							style="width: 150px;">
+							
+							<p:ajax 
+								process="@this" 
+								update="selectableInplaceAzienda, menubarGrowl"
+								listener="#{loginInfo.doSelectAzienda}"/>
+							
+							<f:selectItems 
+									value="#{loginInfo.listAziende}" var="item"
+									itemLabel="#{item.codice}" itemValue="#{item.id}" />
+
+						</p:selectOneMenu>		        		
+						  
+					</p:inplace>
+
 
 					<p:commandButton 
 						value="Logout" 

@@ -12,8 +12,8 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "acc_utente_azienda")
-@IdClass(RuoloAziendaId.class)
-public class RuoloAzienda {
+@IdClass(UtenteAziendaId.class)
+public class UtenteAzienda {
 
 	@Id
 	@Column(name="utente_id", updatable=false, insertable=false)

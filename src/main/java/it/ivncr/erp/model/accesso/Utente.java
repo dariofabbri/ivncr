@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -72,7 +73,8 @@ public class Utente {
 	private Set<Ruolo> ruoli;
 
 	@OneToMany(mappedBy="utente")
-	private Set<RuoloAzienda> aziende;
+	@OrderBy
+	private Set<UtenteAzienda> aziende;
 
 	@OneToOne(fetch=FetchType.LAZY, mappedBy="utente")
 	private AccountEmail accountEmail;
@@ -197,11 +199,11 @@ public class Utente {
 		this.accountEmail = accountEmail;
 	}
 
-	public Set<RuoloAzienda> getAziende() {
+	public Set<UtenteAzienda> getAziende() {
 		return aziende;
 	}
 
-	public void setAziende(Set<RuoloAzienda> aziende) {
+	public void setAziende(Set<UtenteAzienda> aziende) {
 		this.aziende = aziende;
 	}
 }

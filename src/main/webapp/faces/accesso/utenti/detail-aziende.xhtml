@@ -1,0 +1,75 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+					
+	<h:form>
+							
+		<p:messages globalOnly="false" showSummary="false" showDetail="true" closable="true"/>
+
+		<p:focus/>
+		
+		<p:panelGrid styleClass="form-panel">
+			
+			<p:row>
+				<p:column colspan="3" styleClass="form-header">
+					<h:outputText value="Il pannello permette di selezionare le aziende sulle quali potrà operare l'utente."/>
+				</p:column>
+			</p:row>
+
+			<ui:repeat var="azienda" value="dettaglioUtenteAziende.listAziende">
+			
+				<p:row>
+					<p:column>
+						<p:
+					</p:column>
+					
+					<p:column>
+						<p:outputLabel for="account" value="Account:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioUtenteAccountEmail.account}" id="account"
+							required="true" requiredMessage="Il campo account è obbligatorio"/>
+						<p:watermark for="account" value="Account per l\'accesso al server di posta elettronica" />
+					</p:column>
+				</p:row>
+			
+			</ui:repeat>			
+			
+			<p:row>
+				<p:column>
+					<p:outputLabel for="account" value="Account:" />
+				</p:column>
+				<p:column>
+					<p:inputText value="#{dettaglioUtenteAccountEmail.account}" id="account"
+						required="true" requiredMessage="Il campo account è obbligatorio"/>
+					<p:watermark for="account" value="Account per l\'accesso al server di posta elettronica" />
+				</p:column>
+			</p:row>
+						
+			<p:row>
+				<p:column>
+					<p:outputLabel for="password" value="Password:" />
+				</p:column>
+				<p:column>
+					<p:inputText value="#{dettaglioUtenteAccountEmail.password}" id="password"
+						required="true" requiredMessage="Il campo password è obbligatorio"/>
+					<p:watermark for="password" value="Password per l\'accesso al server di posta elettronica" />
+				</p:column>
+			</p:row>
+			
+			<p:row>
+				<p:column colspan="2" styleClass="form-footer">
+					<p:commandButton value="Salva"
+						actionListener="#{dettaglioUtenteAccountEmail.doSave}"
+						update="@form"/>
+				</p:column>
+			</p:row>
+		
+		</p:panelGrid>
+				
+	</h:form>
+
+</html>

@@ -5,7 +5,9 @@ CREATE TABLE gen_azienda
 	descrizione VARCHAR(4000)
 );
 
-INSERT INTO gen_azienda(codice, descrizione) VALUES ('IVNCR', 'Istituto di Vigilanza Nuova Città di Roma');
+INSERT INTO gen_azienda(codice, descrizione) VALUES ('CRM', 'Città di Roma Metronotte');
+INSERT INTO gen_azienda(codice, descrizione) VALUES ('IVNCR', 'Nuova Città di Roma');
+INSERT INTO gen_azienda(codice, descrizione) VALUES ('MSC', 'Metroservice');
 
 
 CREATE TABLE acc_utente_azienda
@@ -29,5 +31,5 @@ ALTER TABLE gen_contatore ALTER COLUMN azienda_id SET NOT NULL;
 ALTER TABLE gen_contatore ADD CONSTRAINT gen_contatore_unique_azienda_id_codice UNIQUE(azienda_id, codice);
 
 INSERT INTO acc_utente_azienda (utente_id, azienda_id, preferita)
-  SELECT ute.id, (SELECT id FROM gen_azienda WHERE codice= 'IVNCR'), null 
-    FROM acc_utente ute;
+  SELECT ute.id, azi.id, null 
+    FROM acc_utente ute, gen_azienda azi;

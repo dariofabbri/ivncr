@@ -5,7 +5,7 @@ import java.io.Serializable;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-public class RuoloAziendaId implements Serializable {
+public class UtenteAziendaId implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -33,7 +33,7 @@ public class RuoloAziendaId implements Serializable {
 			return false;
 		}
 
-		RuoloAziendaId rhs = (RuoloAziendaId) object;
+		UtenteAziendaId rhs = (UtenteAziendaId) object;
 
 		return new EqualsBuilder()
 				.appendSuper(super.equals(object))

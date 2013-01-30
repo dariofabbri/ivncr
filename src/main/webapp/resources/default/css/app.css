@@ -21,7 +21,11 @@
 	float: left;
 	margin-top: 0px;
 }
-	
+
+.ui-menu {
+	padding: 0 0 0 0;	
+}
+
 .ui-menu .ui-menuitem-text {
 	font-size: 1.2em !important;
 }
@@ -73,7 +77,8 @@
 
 .form-panel .ui-inputtext,
 .form-panel .ui-inputtextarea,
-.form-panel .ui-password
+.form-panel .ui-password,
+.form-panel .ui-selectonemenu
 {
 	width: 300px;
 }
