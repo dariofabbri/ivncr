@@ -1,8 +1,6 @@
 package it.ivncr.erp.model.accesso;
 
 
-import it.ivncr.erp.model.generale.Azienda;
-
 import java.util.Date;
 import java.util.Set;
 
@@ -73,13 +71,8 @@ public class Utente {
 	)
 	private Set<Ruolo> ruoli;
 
-	@OneToMany
-	@JoinTable(
-			name="acc_utente_azienda",
-			joinColumns = { @JoinColumn(name="utente_id", referencedColumnName="id")},
-			inverseJoinColumns = { @JoinColumn(name="azienda_id", referencedColumnName="id")}
-	)
-	private Set<Azienda> aziende;
+	@OneToMany(mappedBy="utente")
+	private Set<RuoloAzienda> aziende;
 
 	@OneToOne(fetch=FetchType.LAZY, mappedBy="utente")
 	private AccountEmail accountEmail;
@@ -204,11 +197,11 @@ public class Utente {
 		this.accountEmail = accountEmail;
 	}
 
-	public Set<Azienda> getAziende() {
+	public Set<RuoloAzienda> getAziende() {
 		return aziende;
 	}
 
-	public void setAziende(Set<Azienda> aziende) {
+	public void setAziende(Set<RuoloAzienda> aziende) {
 		this.aziende = aziende;
 	}
 }

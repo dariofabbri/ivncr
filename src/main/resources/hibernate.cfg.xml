@@ -27,6 +27,7 @@
 		<mapping class="it.ivncr.erp.model.accesso.AccountEmail" />
         <mapping class="it.ivncr.erp.model.accesso.Permesso" />
         <mapping class="it.ivncr.erp.model.accesso.Ruolo" />
+        <mapping class="it.ivncr.erp.model.accesso.RuoloAzienda" />
         <mapping class="it.ivncr.erp.model.accesso.Utente" />
         
         <mapping class="it.ivncr.erp.model.commerciale.Cliente" />

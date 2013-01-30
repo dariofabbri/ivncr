@@ -9,12 +9,26 @@
 	
 		<p:menubar model="#{menuBar.menuModel}">
 	        
-	        <f:facet name="options">  
-	            <p:commandButton 
-	            	value="Logout" 
-	            	icon="ui-icon-extlink" 
-	            	action="#{loginInfo.doLogoff}" />  
-	        </f:facet>  
+	        <f:facet name="options">
+	        
+	        	<h:panelGrid columns="2">
+	        	
+					<p:inplace id="selectableInplace" label="--Selezionata--" effectSpeed="fast" >  
+						<p:selectOneMenu>  
+							<f:selectItem itemLabel="IVNCR" itemValue="IVNCR" />  
+							<f:selectItem itemLabel="Azienda #2" itemValue="Azienda #2" />  
+							<f:selectItem itemLabel="Azienda #3" itemValue="Azienda #3" />  
+						</p:selectOneMenu>  
+					</p:inplace>	        		
+
+					<p:commandButton 
+						value="Logout" 
+						icon="ui-icon-extlink"
+						action="#{loginInfo.doLogoff}" />
+	        	
+	        	</h:panelGrid>
+								
+			</f:facet>  
 
 	    </p:menubar>
 	

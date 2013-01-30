@@ -1,6 +1,7 @@
 package it.ivncr.erp.jsf.managedbean.accesso.session;
 
 import it.ivncr.erp.model.accesso.Utente;
+import it.ivncr.erp.model.generale.Azienda;
 import it.ivncr.erp.service.ServiceFactory;
 import it.ivncr.erp.service.utente.UtenteService;
 
@@ -30,6 +31,7 @@ public class LoginInfo implements Serializable {
 	private String password;
 	
 	private Utente utente;
+	private Azienda azienda;
 
 	public String cleanLoginInfo() {
 		
@@ -94,6 +96,16 @@ public class LoginInfo implements Serializable {
  		//
  		UtenteService us = ServiceFactory.createService("Utente");
  		this.utente = us.updateLastLogonTimestamp(utente.getId());
+ 		
+ 		// Choose currently selected azienda by looking for a default one
+ 		// or picking the first available .
+ 		//
+ 		this.azienda = us.retrieveDefaultAzienda(utente.getId());
+ 		if(azienda == null) {
+ 			logger.warn("The logged on user has no associated azienda entities.");
+ 		} else {
+ 			logger.debug(String.format("Selected the azienda with id %d: %s", azienda.getId(), azienda.getCodice()));
+ 		}
 
         return "/index?faces-redirect=true";
 	}
@@ -127,5 +139,13 @@ public class LoginInfo implements Serializable {
 
 	public void setUtente(Utente utente) {
 		this.utente = utente;
+	}
+
+	public Azienda getAzienda() {
+		return azienda;
+	}
+
+	public void setAzienda(Azienda azienda) {
+		this.azienda = azienda;
 	}
 }

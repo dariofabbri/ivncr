@@ -2,6 +2,7 @@ package it.ivncr.erp.service.utente;
 
 import it.ivncr.erp.model.accesso.Ruolo;
 import it.ivncr.erp.model.accesso.Utente;
+import it.ivncr.erp.model.generale.Azienda;
 import it.ivncr.erp.service.EntityService;
 import it.ivncr.erp.service.QueryResult;
 
@@ -60,4 +61,6 @@ public interface UtenteService extends EntityService<Utente> {
 	void deleteRuolo(Integer utenteId, Integer ruoloId);
 
 	void setRuoli(Integer utenteId, Integer[] ruoliId);
+
+	Azienda retrieveDefaultAzienda(Integer id);
 }

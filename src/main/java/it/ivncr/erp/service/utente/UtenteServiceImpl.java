@@ -2,7 +2,9 @@ package it.ivncr.erp.service.utente;
 
 import it.ivncr.erp.model.accesso.AccountEmail;
 import it.ivncr.erp.model.accesso.Ruolo;
+import it.ivncr.erp.model.accesso.RuoloAzienda;
 import it.ivncr.erp.model.accesso.Utente;
+import it.ivncr.erp.model.generale.Azienda;
 import it.ivncr.erp.service.AbstractService;
 import it.ivncr.erp.service.AlreadyPresentException;
 import it.ivncr.erp.service.NotFoundException;
@@ -448,6 +450,36 @@ public class UtenteServiceImpl extends AbstractService implements UtenteService 
 		session.flush();
 	}
 
+	@Override
+	public Azienda retrieveDefaultAzienda(Integer id) {
+
+		Utente utente = retrieve(id);
+		if (utente == null) {
+			String message = String.format(
+					"It has not been possible to retrieve specified user: %d",
+					id);
+			logger.info(message);
+			throw new NotFoundException(message);
+		}
+
+		// Iterate on configured records and look for default azienda.
+		//
+		Azienda found = null;
+		for(RuoloAzienda azienda : utente.getAziende()) {
+			
+			if(found == null) {
+				found = azienda.getAzienda();
+			}
+			
+			if(azienda.getPreferita() != null && azienda.getPreferita()) {
+				found = azienda.getAzienda();
+				break;
+			}
+		}
+		
+		return found;
+	}
+	
 	private String generateSalt() {
 
 		SecureRandomNumberGenerator srng = new SecureRandomNumberGenerator();

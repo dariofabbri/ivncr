@@ -2,6 +2,7 @@ package it.ivncr.erp.service;
 
 import it.ivncr.erp.model.accesso.Ruolo;
 import it.ivncr.erp.model.accesso.Utente;
+import it.ivncr.erp.model.generale.Azienda;
 import it.ivncr.erp.service.utente.UtenteService;
 
 import org.junit.Assert;
@@ -24,7 +25,7 @@ public class UtenteServiceTest extends BaseServiceTest {
 		System.out.println(utente.getId());
 
 		Ruolo ruolo = us.addRuolo(utente.getId(), 1);
-        Assert.assertNotNull(ruolo);
+        Assert.assertNotNull(ruolo);      
 	}
 	
 	@Test
@@ -38,5 +39,19 @@ public class UtenteServiceTest extends BaseServiceTest {
 		System.out.println(utente.getId());
 		
 		us.delete(utente.getId());
+	}
+	
+	@Test
+	public void testRetrieveDefaultAzienda() {
+		
+		UtenteService us = ServiceFactory.createService("Utente");
+		
+		Utente utente = us.retrieveByUsername("gino");
+		Assert.assertNotNull(utente);
+		
+		Azienda azienda = us.retrieveDefaultAzienda(utente.getId());
+		Assert.assertNotNull(azienda);
+		
+		System.out.println(azienda);
 	}
 }
