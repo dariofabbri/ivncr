@@ -1,5 +1,7 @@
 package it.ivncr.erp.model.commerciale;
 
+import it.ivncr.erp.model.generale.Azienda;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -26,6 +28,10 @@ public class Cliente {
 
 	@Column(name="codice")
 	private String codice;
+
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="azienda_id")
+	private Azienda azienda;
 
 	@Column(name="ragione_sociale")
 	private String ragioneSociale;
@@ -112,6 +118,14 @@ public class Cliente {
 		this.codice = codice;
 	}
 
+	public Azienda getAzienda() {
+		return azienda;
+	}
+
+	public void setAzienda(Azienda azienda) {
+		this.azienda = azienda;
+	}
+
 	public String getRagioneSociale() {
 		return ragioneSociale;
 	}
@@ -192,7 +206,7 @@ public class Cliente {
 		this.email = email;
 	}
 
-	public Boolean isAttivo() {
+	public Boolean getAttivo() {
 		return attivo;
 	}
 
@@ -224,7 +238,7 @@ public class Cliente {
 		this.attivoNote = attivoNote;
 	}
 
-	public Boolean isBloccato() {
+	public Boolean getBloccato() {
 		return bloccato;
 	}
 

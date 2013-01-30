@@ -114,12 +114,12 @@ public class DettaglioClienteGenerale implements Serializable {
 			fax = cliente.getFax();
 			email = cliente.getEmail();
 
-			attivo = cliente.isAttivo();
+			attivo = cliente.getAttivo();
 			attivoDal = cliente.getAttivoDal();
 			attivoAl = cliente.getAttivoAl();
 			attivoNote = cliente.getAttivoNote();
 
-			bloccato = cliente.isBloccato();
+			bloccato = cliente.getBloccato();
 			bloccatoDal = cliente.getBloccatoDal();
 			bloccatoAl = cliente.getBloccatoAl();
 			bloccatoNote = cliente.getBloccatoNote();

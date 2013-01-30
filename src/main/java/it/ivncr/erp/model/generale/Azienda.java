@@ -3,22 +3,19 @@ package it.ivncr.erp.model.generale;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "gen_contatore")
-public class Contatore {
+@Table(name = "gen_azienda")
+public class Azienda {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "gen_contatore_id_seq")
-	@SequenceGenerator(name = "gen_contatore_id_seq", sequenceName = "gen_contatore_id_seq")
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "gen_azienda_id_seq")
+	@SequenceGenerator(name = "gen_azienda_id_seq", sequenceName = "gen_azienda_id_seq")
 	@Column(name="id")
 	private Integer id;
 
@@ -27,13 +24,6 @@ public class Contatore {
 
 	@Column(name="descrizione")
 	private String descrizione;
-
-	@Column(name="contatore")
-	private Integer contatore;
-
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="azienda_id")
-	private Azienda azienda;
 
 	public Integer getId() {
 		return id;
@@ -57,25 +47,5 @@ public class Contatore {
 
 	public void setDescrizione(String descrizione) {
 		this.descrizione = descrizione;
-	}
-
-	public Integer getContatore() {
-		return contatore;
-	}
-
-	public void setContatore(Integer contatore) {
-		this.contatore = contatore;
-	}
-
-	public void incrementContatore() {
-		++contatore;
-	}
-
-	public Azienda getAzienda() {
-		return azienda;
-	}
-
-	public void setAzienda(Azienda azienda) {
-		this.azienda = azienda;
 	}
 }
