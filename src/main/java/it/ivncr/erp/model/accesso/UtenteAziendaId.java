@@ -1,31 +1,34 @@
 package it.ivncr.erp.model.accesso;
 
+import it.ivncr.erp.model.generale.Azienda;
+
 import java.io.Serializable;
+
+import javax.persistence.Embeddable;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+@Embeddable
 public class UtenteAziendaId implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private Integer idUtente;
-	private Integer idAzienda;
-
-	public UtenteAziendaId() {
-	}
-
-	public UtenteAziendaId(Integer idUtente, Integer idAzienda) {
-
-		this.idUtente = idUtente;
-		this.idAzienda = idAzienda;
-	}
-
+	@ManyToOne
+	@JoinColumn(name="utente_id")
+	private Utente utente;
+	
+	@ManyToOne
+	@JoinColumn(name="azienda_id")
+	private Azienda azienda;
+	
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder(11, 23)
-				.append(idUtente)
-				.append(idAzienda)
+				.append(utente.getId())
+				.append(azienda.getId())
 				.toHashCode();
 	}
 
@@ -48,24 +51,24 @@ public class UtenteAziendaId implements Serializable {
 
 		return new EqualsBuilder()
 				.appendSuper(super.equals(object))
-				.append(idUtente, rhs.idUtente)
-				.append(idAzienda, rhs.idAzienda)
+				.append(utente.getId(), rhs.utente.getId())
+				.append(azienda.getId(), rhs.azienda.getId())
 				.isEquals();
 	}
 
-	public Integer getIdUtente() {
-		return idUtente;
+	public Utente getUtente() {
+		return utente;
 	}
 
-	public void setIdUtente(Integer idUtente) {
-		this.idUtente = idUtente;
+	public void setUtente(Utente utente) {
+		this.utente = utente;
 	}
 
-	public Integer getIdAzienda() {
-		return idAzienda;
+	public Azienda getAzienda() {
+		return azienda;
 	}
 
-	public void setIdAzienda(Integer idAzienda) {
-		this.idAzienda = idAzienda;
+	public void setAzienda(Azienda azienda) {
+		this.azienda = azienda;
 	}
 }

@@ -4,6 +4,7 @@ import it.ivncr.erp.model.generale.Azienda;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
@@ -16,40 +17,38 @@ import javax.persistence.Table;
 public class UtenteAzienda {
 
 	@Id
-	@Column(name="utente_id", updatable=false, insertable=false)
-	private Integer idUtente;
-
+	@Column(name="utente_id", insertable=false, updatable=false)
+	private Integer utenteId;
+	
 	@Id
-	@Column(name="azienda_id", updatable=false, insertable=false)
-	private Integer idAzienda;
+	@Column(name="azienda_id", insertable=false, updatable=false)
+	private Integer aziendaId;
 
-	@Column(name = "preferita")
+	@Column(name="preferita")
 	private Boolean preferita;
-
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="utente_id", referencedColumnName="id")
+	Utente utente;
+	
 	@ManyToOne
-	@Id
-	@JoinColumn(name = "utente_id", referencedColumnName = "id")
-	private Utente utente;
+	@JoinColumn(name="azienda_id", referencedColumnName="id")
+	Azienda azienda;
 
-	@ManyToOne
-	@Id
-	@JoinColumn(name = "azienda_id", referencedColumnName = "id")
-	private Azienda azienda;
-
-	public Integer getIdUtente() {
-		return idUtente;
+	public Integer getUtenteId() {
+		return utenteId;
 	}
 
-	public void setIdUtente(Integer idUtente) {
-		this.idUtente = idUtente;
+	public void setUtenteId(Integer utenteId) {
+		this.utenteId = utenteId;
 	}
 
-	public Integer getIdAzienda() {
-		return idAzienda;
+	public Integer getAziendaId() {
+		return aziendaId;
 	}
 
-	public void setIdAzienda(Integer idAzienda) {
-		this.idAzienda = idAzienda;
+	public void setAziendaId(Integer aziendaId) {
+		this.aziendaId = aziendaId;
 	}
 
 	public Boolean getPreferita() {

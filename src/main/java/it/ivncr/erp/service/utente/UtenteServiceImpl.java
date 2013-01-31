@@ -521,6 +521,9 @@ public class UtenteServiceImpl extends AbstractService implements UtenteService 
 
 		// Remove all aziende.
 		//
+		for(UtenteAzienda ua : utente.getAziende()) {
+			session.delete(ua);
+		}
 		utente.getAziende().clear();
 
 		// Iterate on passed array, retrieve selected rows
@@ -538,8 +541,6 @@ public class UtenteServiceImpl extends AbstractService implements UtenteService 
 			}
 
 			UtenteAzienda ua = new UtenteAzienda();
-			ua.setIdUtente(utenteId);
-			ua.setIdAzienda(aziendaId);
 			ua.setUtente(utente);
 			ua.setAzienda(azienda);
 			session.save(ua);
@@ -549,7 +550,6 @@ public class UtenteServiceImpl extends AbstractService implements UtenteService 
 		}
 
 		session.update(utente);
-		session.flush();
 	}
 
 

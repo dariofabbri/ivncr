@@ -3,7 +3,10 @@ package it.ivncr.erp.service;
 import it.ivncr.erp.model.accesso.Ruolo;
 import it.ivncr.erp.model.accesso.Utente;
 import it.ivncr.erp.model.generale.Azienda;
+import it.ivncr.erp.service.lut.LUTService;
 import it.ivncr.erp.service.utente.UtenteService;
+
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -25,7 +28,15 @@ public class UtenteServiceTest extends BaseServiceTest {
 		System.out.println(utente.getId());
 
 		Ruolo ruolo = us.addRuolo(utente.getId(), 1);
-        Assert.assertNotNull(ruolo);      
+        Assert.assertNotNull(ruolo);
+        
+        LUTService ls = ServiceFactory.createService("LUT");
+        List<Azienda> list = ls.listItems("Azienda");
+        Integer[] aziendeId = new Integer[list.size()];
+        for(int i = 0; i < list.size(); ++i) {
+        	aziendeId[i] = list.get(i).getId();
+        }
+        us.setAziende(utente.getId(), aziendeId);
 	}
 	
 	@Test

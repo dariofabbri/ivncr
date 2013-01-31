@@ -72,7 +72,7 @@ public class Utente {
 	)
 	private Set<Ruolo> ruoli;
 
-	@OneToMany(mappedBy="utente")
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="utente")
 	@OrderBy
 	private Set<UtenteAzienda> aziende;
 
