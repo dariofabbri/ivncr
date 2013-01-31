@@ -65,4 +65,6 @@ public interface UtenteService extends EntityService<Utente> {
 	List<Azienda> listAziende(Integer id);
 
 	Azienda retrieveDefaultAzienda(Integer id);
+
+	void setAziende(Integer utenteId, Integer[] aziendeId);
 }

@@ -1,11 +1,17 @@
 package it.ivncr.erp.model.generale;
 
 
+import it.ivncr.erp.model.accesso.UtenteAzienda;
+
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -24,6 +30,10 @@ public class Azienda {
 
 	@Column(name="descrizione")
 	private String descrizione;
+
+	@OneToMany(mappedBy="azienda")
+	@OrderBy
+	private Set<UtenteAzienda> utenti;
 
 	public Integer getId() {
 		return id;
@@ -47,5 +57,13 @@ public class Azienda {
 
 	public void setDescrizione(String descrizione) {
 		this.descrizione = descrizione;
+	}
+
+	public Set<UtenteAzienda> getUtenti() {
+		return utenti;
+	}
+
+	public void setUtenti(Set<UtenteAzienda> utenti) {
+		this.utenti = utenti;
 	}
 }

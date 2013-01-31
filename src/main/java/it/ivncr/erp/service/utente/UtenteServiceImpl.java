@@ -429,7 +429,7 @@ public class UtenteServiceImpl extends AbstractService implements UtenteService 
 		//
 		utente.getRuoli().clear();
 
-		// Iterate on passed array, retrieve selected roes
+		// Iterate on passed array, retrieve selected rows
 		// and add them back to the current user.
 		//
 		for(Integer ruoloId : ruoliId) {
@@ -506,6 +506,52 @@ public class UtenteServiceImpl extends AbstractService implements UtenteService 
 
 		return found;
 	}
+
+	@Override
+	public void setAziende(Integer utenteId, Integer[] aziendeId) {
+
+		Utente utente = retrieve(utenteId);
+		if (utente == null) {
+			String message = String.format(
+					"It has not been possible to retrieve specified user: %d",
+					utenteId);
+			logger.info(message);
+			throw new NotFoundException(message);
+		}
+
+		// Remove all aziende.
+		//
+		utente.getAziende().clear();
+
+		// Iterate on passed array, retrieve selected rows
+		// and add them back to the current user.
+		//
+		for(Integer aziendaId : aziendeId) {
+
+			Azienda azienda = (Azienda) session.get(Azienda.class, aziendaId);
+			if (azienda == null) {
+				String message = String.format(
+						"It has not been possible to retrieve specified azienda: %d",
+						aziendaId);
+				logger.info(message);
+				throw new NotFoundException(message);
+			}
+
+			UtenteAzienda ua = new UtenteAzienda();
+			ua.setIdUtente(utenteId);
+			ua.setIdAzienda(aziendaId);
+			ua.setUtente(utente);
+			ua.setAzienda(azienda);
+			session.save(ua);
+
+			utente.getAziende().add(ua);
+			azienda.getUtenti().add(ua);
+		}
+
+		session.update(utente);
+		session.flush();
+	}
+
 
 	private String generateSalt() {
 

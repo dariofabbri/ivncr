@@ -30,6 +30,9 @@ public class DettaglioUtente implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	@ManagedProperty("#{gestioneUtenti}")
+	private GestioneUtenti mainBean;
+
 	@ManagedProperty("#{gestioneUtenti.edited.id}")
 	private Integer id;
 
@@ -78,14 +81,21 @@ public class DettaglioUtente implements Serializable {
 
 	public void onTabChange(TabChangeEvent event) {
 
-		logger.debug("Selected tab changed.");
-
 		// If ruoli tab has been selected it is necessary to initialize
 		// the ruoli list in the bean.
 		//
 		if(event.getTab().getId().equals("ruoliTab")) {
 
-			loadRuoliList();
+			logger.debug("Selected tab changed to ruoli.");
+
+			logger.debug("Loading ruoli list.");
+			RuoloService rs = ServiceFactory.createService("Ruolo");
+			QueryResult<Ruolo> result = rs.list(null, null, null, null);
+			ruoli = result.getResults();
+
+			UtenteService us = ServiceFactory.createService("Utente");
+			List<Ruolo> list = us.listRuoli(id);
+			selected = list.toArray(new Ruolo[0]);
 		}
 	}
 
@@ -120,6 +130,8 @@ public class DettaglioUtente implements Serializable {
 						nome,
 						cognome,
 						note);
+
+				mainBean.setEdited(utente);
 				id =  utente.getId();
 
 				logger.debug("Entity successfully created.");
@@ -195,16 +207,12 @@ public class DettaglioUtente implements Serializable {
 		}
 	}
 
-	private void loadRuoliList() {
+	public GestioneUtenti getMainBean() {
+		return mainBean;
+	}
 
-		logger.debug("Loading ruoli list.");
-		RuoloService rs = ServiceFactory.createService("Ruolo");
-		QueryResult<Ruolo> result = rs.list(null, null, null, null);
-		ruoli = result.getResults();
-
-		UtenteService us = ServiceFactory.createService("Utente");
-		List<Ruolo> list = us.listRuoli(id);
-		selected = list.toArray(new Ruolo[0]);
+	public void setMainBean(GestioneUtenti mainBean) {
+		this.mainBean = mainBean;
 	}
 
 	public Integer getId() {

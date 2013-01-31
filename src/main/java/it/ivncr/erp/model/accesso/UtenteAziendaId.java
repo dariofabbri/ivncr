@@ -12,6 +12,16 @@ public class UtenteAziendaId implements Serializable {
 	private Integer idUtente;
 	private Integer idAzienda;
 
+	public UtenteAziendaId() {
+	}
+
+	public UtenteAziendaId(Integer idUtente, Integer idAzienda) {
+
+		this.idUtente = idUtente;
+		this.idAzienda = idAzienda;
+	}
+
+	@Override
 	public int hashCode() {
 		return new HashCodeBuilder(11, 23)
 				.append(idUtente)
@@ -19,8 +29,9 @@ public class UtenteAziendaId implements Serializable {
 				.toHashCode();
 	}
 
+	@Override
 	public boolean equals(Object object) {
-		
+
 		if (object == null) {
 			return false;
 		}

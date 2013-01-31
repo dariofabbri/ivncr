@@ -6,8 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 @Entity
@@ -27,11 +27,13 @@ public class UtenteAzienda {
 	private Boolean preferita;
 
 	@ManyToOne
-	@PrimaryKeyJoinColumn(name = "utente_id", referencedColumnName = "id")
+	@Id
+	@JoinColumn(name = "utente_id", referencedColumnName = "id")
 	private Utente utente;
 
 	@ManyToOne
-	@PrimaryKeyJoinColumn(name = "azienda_id", referencedColumnName = "id")
+	@Id
+	@JoinColumn(name = "azienda_id", referencedColumnName = "id")
 	private Azienda azienda;
 
 	public Integer getIdUtente() {

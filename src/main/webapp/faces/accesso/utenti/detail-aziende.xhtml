@@ -2,74 +2,59 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:p="http://primefaces.org/ui">
 					
 	<h:form>
-							
-		<p:messages globalOnly="false" showSummary="false" showDetail="true" closable="true"/>
+	
+		<p:growl 
+			id="growl" 
+			showSummary="false" 
+			showDetail="true" 
+			life="3000"	/>
+								
+		<p:outputPanel id="buttons" style="display: block; margin-top: 2em; margin-bottom: 2em;">
 
-		<p:focus/>
-		
-		<p:panelGrid styleClass="form-panel">
-			
-			<p:row>
-				<p:column colspan="3" styleClass="form-header">
-					<h:outputText value="Il pannello permette di selezionare le aziende sulle quali potrà operare l'utente."/>
-				</p:column>
-			</p:row>
+			<p:commandButton 
+				value="Aggiorna aziende"
+				actionListener="#{dettaglioUtenteAziende.doUpdateAziende}"
+				update="growl"
+				icon="ui-icon-disk" />
 
-			<ui:repeat var="azienda" value="dettaglioUtenteAziende.listAziende">
+		</p:outputPanel>
+	
+		<p:dataTable
+			id="aziendeTable" 
+			var="azienda" 
+			value="#{dettaglioUtenteAziende.aziende}"
+			widgetVar="aziendeTable"
+			emptyMessage="Nessun record trovato"
+			filteredValue="#{dettaglioUtenteAziende.filtered}"
+			rowKey="#{azienda.id}"
+			selection="#{dettaglioUtenteAziende.selected}"
+			paginator="false">
+						        		
+			<f:facet name="header">
+		    	Lista delle aziende disponibili
+		    </f:facet>
+
+			<p:column selectionMode="multiple"/>
 			
-				<p:row>
-					<p:column>
-						<p:
-					</p:column>
-					
-					<p:column>
-						<p:outputLabel for="account" value="Account:" />
-					</p:column>
-					<p:column>
-						<p:inputText value="#{dettaglioUtenteAccountEmail.account}" id="account"
-							required="true" requiredMessage="Il campo account è obbligatorio"/>
-						<p:watermark for="account" value="Account per l\'accesso al server di posta elettronica" />
-					</p:column>
-				</p:row>
+			<p:column headerText="Codice" 
+				filterBy="#{azienda.codice}"
+				filterMatchMode="contains"
+				sortBy="#{azienda.codice}">
+				<h:outputText value="#{azienda.codice}" />
+			</p:column>
+
+			<p:column headerText="Descrizione" 
+				filterBy="#{azienda.descrizione}"
+				filterMatchMode="contains"
+				sortBy="#{azienda.descrizione}">
+				<h:outputText value="#{azienda.descrizione}" />
+			</p:column>
 			
-			</ui:repeat>			
-			
-			<p:row>
-				<p:column>
-					<p:outputLabel for="account" value="Account:" />
-				</p:column>
-				<p:column>
-					<p:inputText value="#{dettaglioUtenteAccountEmail.account}" id="account"
-						required="true" requiredMessage="Il campo account è obbligatorio"/>
-					<p:watermark for="account" value="Account per l\'accesso al server di posta elettronica" />
-				</p:column>
-			</p:row>
-						
-			<p:row>
-				<p:column>
-					<p:outputLabel for="password" value="Password:" />
-				</p:column>
-				<p:column>
-					<p:inputText value="#{dettaglioUtenteAccountEmail.password}" id="password"
-						required="true" requiredMessage="Il campo password è obbligatorio"/>
-					<p:watermark for="password" value="Password per l\'accesso al server di posta elettronica" />
-				</p:column>
-			</p:row>
-			
-			<p:row>
-				<p:column colspan="2" styleClass="form-footer">
-					<p:commandButton value="Salva"
-						actionListener="#{dettaglioUtenteAccountEmail.doSave}"
-						update="@form"/>
-				</p:column>
-			</p:row>
-		
-		</p:panelGrid>
-				
-	</h:form>
+		</p:dataTable>
+
+	</h:form>				
 
 </html>
