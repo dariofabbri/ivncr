@@ -508,7 +508,7 @@ public class UtenteServiceImpl extends AbstractService implements UtenteService 
 	}
 
 	@Override
-	public void setAziende(Integer utenteId, Integer[] aziendeId) {
+	public void setAziende(Integer utenteId, Integer[] aziendeId, Integer preferita) {
 
 		Utente utente = retrieve(utenteId);
 		if (utente == null) {
@@ -543,6 +543,9 @@ public class UtenteServiceImpl extends AbstractService implements UtenteService 
 			UtenteAzienda ua = new UtenteAzienda();
 			ua.setUtente(utente);
 			ua.setAzienda(azienda);
+			if(aziendaId.equals(preferita)) {
+				ua.setPreferita(true);
+			}
 			session.save(ua);
 
 			utente.getAziende().add(ua);

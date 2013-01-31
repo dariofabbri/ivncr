@@ -20,8 +20,14 @@
 				update="growl"
 				icon="ui-icon-disk" />
 
+			<p:commandButton 
+				value="Annulla default"
+				actionListener="#{dettaglioUtenteAziende.doResetDefault}"
+				update="aziendeTable"
+				icon="ui-icon-cancel" />
+				
 		</p:outputPanel>
-	
+
 		<p:dataTable
 			id="aziendeTable" 
 			var="azienda" 
@@ -33,20 +39,37 @@
 			rowIndexVar="rowIndex"
 			selection="#{dettaglioUtenteAziende.selected}"
 			paginator="false">
-						        		
+			
+			<p:ajax event="rowSelectCheckbox" 
+				update="@this" 
+				listener="#{dettaglioUtenteAziende.onRowSelectCheckbox}"/>
+			
+			<p:ajax event="rowUnselectCheckbox" 
+				update="@this" 
+				listener="#{dettaglioUtenteAziende.onRowSelectCheckbox}"/>
+			
+			<p:ajax event="toggleSelect" 
+				update="@this" 
+				listener="#{dettaglioUtenteAziende.onRowSelectCheckbox}"/>
+					        		
 			<f:facet name="header">
 		    	Lista delle aziende disponibili
-		    </f:facet>
-
-			<p:column selectionMode="multiple"/>
-			
-			<p:column>
-				<p:selectOneRadio id="customRadio" layout="custom">
+		
+				<p:selectOneRadio id="customRadio"
+					value="#{dettaglioUtenteAziende.codiceAziendaPreferita}" 
+					layout="custom">
 					<f:selectItems 
 						value="#{dettaglioUtenteAziende.aziende}" var="item"
 						itemLabel="#{item.codice}" itemValue="#{item.id}" />
 				</p:selectOneRadio>  
-				<p:radioButton id="myRadioButton" for="customRadio" itemIndex="#{rowIndex}"/>
+		    </f:facet>
+
+			<p:column selectionMode="multiple"/>
+			
+			<p:column headerText="Default">
+				<p:radioButton for="customRadio" 
+					itemIndex="#{rowIndex}" 
+					disabled="#{dettaglioUtenteAziende.disabled[rowIndex]}"/>
             </p:column>
             
 			<p:column headerText="Codice" 

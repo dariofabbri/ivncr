@@ -32,6 +32,8 @@ public class DettaglioUtenteAziende implements Serializable {
 	private List<Azienda> aziende;
 	private List<Azienda> filtered;
 	private Azienda[] selected;
+	private boolean[] disabled;
+	private Integer codiceAziendaPreferita;
 
 
 	public void onTabChange(TabChangeEvent event) {
@@ -59,6 +61,42 @@ public class DettaglioUtenteAziende implements Serializable {
 			UtenteService us = ServiceFactory.createService("Utente");
 			List<Azienda> list = us.listAziende(id);
 			selected = list.toArray(new Azienda[0]);
+
+			codiceAziendaPreferita = us.retrieveDefaultAzienda(id).getId();
+
+			updateDisabledForDefaultSelection();
+		}
+	}
+
+
+	public void onRowSelectCheckbox() {
+
+		updateDisabledForDefaultSelection();
+	}
+
+
+	public void doResetDefault() {
+
+		codiceAziendaPreferita = null;
+	}
+
+
+	private void updateDisabledForDefaultSelection() {
+
+		disabled = new boolean[aziende.size()];
+		for(int i = 0; i < disabled.length; ++i) {
+
+			disabled[i] = true;
+			Azienda a1 = aziende.get(i);
+
+			for(int j = 0; j < selected.length; ++j) {
+				Azienda a2 = selected[j];
+
+				if(a1.getId().equals(a2.getId())) {
+					disabled[i] = false;
+					break;
+				}
+			}
 		}
 	}
 
@@ -80,7 +118,8 @@ public class DettaglioUtenteAziende implements Serializable {
 			UtenteService us = ServiceFactory.createService("Utente");
 			us.setAziende(
 				id,
-				ids);
+				ids,
+				codiceAziendaPreferita);
 
 			// Everything went fine.
 			//
@@ -133,5 +172,21 @@ public class DettaglioUtenteAziende implements Serializable {
 
 	public void setSelected(Azienda[] selected) {
 		this.selected = selected;
+	}
+
+	public Integer getCodiceAziendaPreferita() {
+		return codiceAziendaPreferita;
+	}
+
+	public void setCodiceAziendaPreferita(Integer codiceAziendaPreferita) {
+		this.codiceAziendaPreferita = codiceAziendaPreferita;
+	}
+
+	public boolean[] getDisabled() {
+		return disabled;
+	}
+
+	public void setDisabled(boolean[] disabled) {
+		this.disabled = disabled;
 	}
 }
