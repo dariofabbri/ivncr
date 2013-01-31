@@ -30,6 +30,7 @@
 			emptyMessage="Nessun record trovato"
 			filteredValue="#{dettaglioUtenteAziende.filtered}"
 			rowKey="#{azienda.id}"
+			rowIndexVar="rowIndex"
 			selection="#{dettaglioUtenteAziende.selected}"
 			paginator="false">
 						        		
@@ -39,6 +40,15 @@
 
 			<p:column selectionMode="multiple"/>
 			
+			<p:column>
+				<p:selectOneRadio id="customRadio" layout="custom">
+					<f:selectItems 
+						value="#{dettaglioUtenteAziende.aziende}" var="item"
+						itemLabel="#{item.codice}" itemValue="#{item.id}" />
+				</p:selectOneRadio>  
+				<p:radioButton id="myRadioButton" for="customRadio" itemIndex="#{rowIndex}"/>
+            </p:column>
+            
 			<p:column headerText="Codice" 
 				filterBy="#{azienda.codice}"
 				filterMatchMode="contains"
