@@ -478,7 +478,7 @@ public class UtenteServiceImpl extends AbstractService implements UtenteService 
 
 
 	@Override
-	public Azienda retrieveDefaultAzienda(Integer id) {
+	public Azienda retrieveDefaultAzienda(Integer id, boolean firstIfNotFound) {
 
 		Utente utente = retrieve(id);
 		if (utente == null) {
@@ -494,7 +494,7 @@ public class UtenteServiceImpl extends AbstractService implements UtenteService 
 		Azienda found = null;
 		for(UtenteAzienda azienda : utente.getAziende()) {
 
-			if(found == null) {
+			if(found == null && firstIfNotFound) {
 				found = azienda.getAzienda();
 			}
 

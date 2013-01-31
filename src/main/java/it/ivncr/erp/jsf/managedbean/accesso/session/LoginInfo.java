@@ -108,7 +108,7 @@ public class LoginInfo implements Serializable {
  		// Choose currently selected azienda by looking for a default one
  		// or picking the first available .
  		//
- 		this.azienda = us.retrieveDefaultAzienda(utente.getId());
+ 		this.azienda = us.retrieveDefaultAzienda(utente.getId(), true);
  		if(azienda == null) {
  			logger.warn("The logged on user has no associated azienda entities.");
  		} else {

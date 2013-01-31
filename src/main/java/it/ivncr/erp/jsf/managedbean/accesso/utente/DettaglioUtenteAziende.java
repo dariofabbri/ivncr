@@ -62,7 +62,8 @@ public class DettaglioUtenteAziende implements Serializable {
 			List<Azienda> list = us.listAziende(id);
 			selected = list.toArray(new Azienda[0]);
 
-			codiceAziendaPreferita = us.retrieveDefaultAzienda(id).getId();
+			Azienda preferita = us.retrieveDefaultAzienda(id, false);
+			codiceAziendaPreferita = preferita != null ? preferita.getId() : null;
 
 			updateDisabledForDefaultSelection();
 		}
