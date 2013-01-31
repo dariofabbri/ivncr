@@ -98,6 +98,18 @@ public class DettaglioUtenteAziende implements Serializable {
 				}
 			}
 		}
+
+		// Check if the current default is on a disabled radio.
+		//
+		for(int i = 0; i < aziende.size(); ++i) {
+
+			Azienda azienda = aziende.get(i);
+
+			if(disabled[i] && azienda.getId().equals(codiceAziendaPreferita)) {
+				codiceAziendaPreferita = null;
+				break;
+			}
+		}
 	}
 
 

@@ -40,6 +40,14 @@
 			selection="#{dettaglioUtenteAziende.selected}"
 			paginator="false">
 			
+			<p:ajax event="rowSelect" 
+				update="@this" 
+				listener="#{dettaglioUtenteAziende.onRowSelectCheckbox}"/>
+			
+			<p:ajax event="rowUnselect" 
+				update="@this" 
+				listener="#{dettaglioUtenteAziende.onRowSelectCheckbox}"/>
+			
 			<p:ajax event="rowSelectCheckbox" 
 				update="@this" 
 				listener="#{dettaglioUtenteAziende.onRowSelectCheckbox}"/>
