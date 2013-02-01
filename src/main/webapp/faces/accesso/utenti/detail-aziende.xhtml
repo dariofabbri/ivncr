@@ -4,7 +4,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 					
-	<h:form>
+	<h:form id="detailAziendeForm">
 	
 		<p:growl 
 			id="growl" 
@@ -20,10 +20,12 @@
 				update="growl"
 				icon="ui-icon-disk" />
 
-			<p:commandButton 
+			<p:commandButton
+				id="resetDefaultButton"
 				value="Annulla default"
 				actionListener="#{dettaglioUtenteAziende.doResetDefault}"
-				update="aziendeTable"
+				update="@this,aziendeTable"
+				disabled="#{empty dettaglioUtenteAziende.codiceAziendaPreferita}"
 				icon="ui-icon-cancel" />
 				
 		</p:outputPanel>
@@ -66,9 +68,13 @@
 				<p:selectOneRadio id="customRadio"
 					value="#{dettaglioUtenteAziende.codiceAziendaPreferita}" 
 					layout="custom">
+					
 					<f:selectItems 
 						value="#{dettaglioUtenteAziende.aziende}" var="item"
 						itemLabel="#{item.codice}" itemValue="#{item.id}" />
+						
+					<p:ajax event="change" process="@this" update=":tabView:detailAziendeForm:resetDefaultButton"/>
+					 
 				</p:selectOneRadio>  
 		    </f:facet>
 

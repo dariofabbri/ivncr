@@ -1,15 +1,11 @@
 package it.ivncr.erp.jsf.managedbean.accesso.utente;
 
-import it.ivncr.erp.model.accesso.Ruolo;
 import it.ivncr.erp.model.accesso.Utente;
-import it.ivncr.erp.service.QueryResult;
 import it.ivncr.erp.service.ServiceFactory;
-import it.ivncr.erp.service.ruolo.RuoloService;
 import it.ivncr.erp.service.utente.UtenteService;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -18,7 +14,6 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
-import org.primefaces.event.TabChangeEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,10 +45,6 @@ public class DettaglioUtente implements Serializable {
 	private Date ultimaDisattivazione;
 	private Boolean attivo;
 
-	private List<Ruolo> ruoli;
-	private List<Ruolo> filtered;
-	private Ruolo[] selected;
-
 
 	@PostConstruct
 	public void init() {
@@ -76,26 +67,6 @@ public class DettaglioUtente implements Serializable {
 			ultimaAttivazione = utente.getUltimaAttivazione();
 			ultimaDisattivazione = utente.getUltimaDisattivazione();
 			attivo = utente.getAttivo();
-		}
-	}
-
-	public void onTabChange(TabChangeEvent event) {
-
-		// If ruoli tab has been selected it is necessary to initialize
-		// the ruoli list in the bean.
-		//
-		if(event.getTab().getId().equals("ruoliTab")) {
-
-			logger.debug("Selected tab changed to ruoli.");
-
-			logger.debug("Loading ruoli list.");
-			RuoloService rs = ServiceFactory.createService("Ruolo");
-			QueryResult<Ruolo> result = rs.list(null, null, null, null);
-			ruoli = result.getResults();
-
-			UtenteService us = ServiceFactory.createService("Utente");
-			List<Ruolo> list = us.listRuoli(id);
-			selected = list.toArray(new Ruolo[0]);
 		}
 	}
 
@@ -164,45 +135,6 @@ public class DettaglioUtente implements Serializable {
 					FacesMessage.SEVERITY_ERROR,
 					"Errore di sistema",
 					"Si è verificato un errore in fase di salvataggio del record.");
-			FacesContext.getCurrentInstance().addMessage(null, message);
-		}
-	}
-
-	public void doUpdateRuoli() {
-
-		logger.debug("Entering doUpdateRuoli() method.");
-
-		// Get selected ids.
-		//
-		Integer[] ids = new Integer[selected.length];
-		for(int i = 0; i < selected.length; ++i) {
-			ids[i] = selected[i].getId();
-		}
-
-		// Set the roles.
-		//
-		try {
-			UtenteService us = ServiceFactory.createService("Utente");
-			us.setRuoli(
-				id,
-				ids);
-
-			// Everything went fine.
-			//
-			FacesMessage message = new FacesMessage(
-					FacesMessage.SEVERITY_INFO,
-					"Successo",
-					"Il salvataggio dei dati si è concluso con successo.");
-			FacesContext.getCurrentInstance().addMessage(null, message);
-
-		} catch(Exception e) {
-
-			logger.warn("Exception caught while updating entity.", e);
-
-			FacesMessage message = new FacesMessage(
-					FacesMessage.SEVERITY_ERROR,
-					"Errore di sistema",
-					"Si è verificato un errore in fase di aggiornamento dei record.");
 			FacesContext.getCurrentInstance().addMessage(null, message);
 		}
 	}
@@ -309,29 +241,5 @@ public class DettaglioUtente implements Serializable {
 
 	public void setAttivo(Boolean attivo) {
 		this.attivo = attivo;
-	}
-
-	public List<Ruolo> getRuoli() {
-		return ruoli;
-	}
-
-	public void setRuoli(List<Ruolo> ruoli) {
-		this.ruoli = ruoli;
-	}
-
-	public List<Ruolo> getFiltered() {
-		return filtered;
-	}
-
-	public void setFiltered(List<Ruolo> filtered) {
-		this.filtered = filtered;
-	}
-
-	public Ruolo[] getSelected() {
-		return selected;
-	}
-
-	public void setSelected(Ruolo[] selected) {
-		this.selected = selected;
 	}
 }

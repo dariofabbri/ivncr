@@ -16,7 +16,7 @@
 
 			<p:commandButton 
 				value="Aggiorna ruoli"
-				actionListener="#{dettaglioUtente.doUpdateRuoli}"
+				actionListener="#{dettaglioUtenteRuoli.doUpdateRuoli}"
 				update="growl"
 				icon="ui-icon-disk" />
 
@@ -25,12 +25,12 @@
 		<p:dataTable
 			id="ruoliTable" 
 			var="ruolo" 
-			value="#{dettaglioUtente.ruoli}"
+			value="#{dettaglioUtenteRuoli.ruoli}"
 			widgetVar="ruoliTable"
 			emptyMessage="Nessun record trovato"
-			filteredValue="#{dettaglioUtente.filtered}"
+			filteredValue="#{dettaglioUtenteRuoli.filtered}"
 			rowKey="#{ruolo.id}"
-			selection="#{dettaglioUtente.selected}"
+			selection="#{dettaglioUtenteRuoli.selected}"
 			paginator="true"
 			paginatorPosition="bottom"
 			rows="10"
