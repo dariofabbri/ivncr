@@ -7,6 +7,7 @@ import it.ivncr.erp.service.QueryResult;
 public interface ClienteService extends EntityService<Cliente> {
 
 	QueryResult<Cliente> list(
+			Integer codiceAzienda,
 			String codice,
 			String ragioneSociale,
 			String partitaIva,
@@ -16,9 +17,10 @@ public interface ClienteService extends EntityService<Cliente> {
 
 	Cliente retrieve(Integer id);
 	Cliente retrieveDeep(Integer id);
-	Cliente retrieveByCodice(String codice);
+	Cliente retrieveByCodice(Integer codiceAzienda, String codice);
 
 	Cliente create(
+			Integer codiceAzienda,
 			String codice,
 			String ragioneSociale,
 			String partitaIva,
@@ -46,6 +48,6 @@ public interface ClienteService extends EntityService<Cliente> {
 			String fax,
 			String email);
 
-	String retrieveNextCodiceAppend();
-	String[] retrieveNextCodice();
+	String retrieveNextCodiceAppend(Integer codiceAzienda);
+	String[] retrieveNextCodice(Integer codiceAzienda);
 }

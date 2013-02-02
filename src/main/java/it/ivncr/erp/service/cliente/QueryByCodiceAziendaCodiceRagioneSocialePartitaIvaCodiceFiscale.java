@@ -5,16 +5,25 @@ import it.ivncr.erp.service.Query;
 
 import org.hibernate.Session;
 
-public class QueryByCodiceRagioneSocialePartitaIvaCodiceFiscale extends Query<Cliente> {
+public class QueryByCodiceAziendaCodiceRagioneSocialePartitaIvaCodiceFiscale extends Query<Cliente> {
 
+	private Integer codiceAzienda;
 	private String codice;
 	private String ragioneSociale;
 	private String partitaIva;
 	private String codiceFiscale;
 
-	public QueryByCodiceRagioneSocialePartitaIvaCodiceFiscale(Session session) {
+	public QueryByCodiceAziendaCodiceRagioneSocialePartitaIvaCodiceFiscale(Session session) {
 
 		super(session);
+	}
+
+	public Integer getCodiceAzienda() {
+		return codiceAzienda;
+	}
+
+	public void setCodiceAzienda(Integer codiceAzienda) {
+		this.codiceAzienda = codiceAzienda;
 	}
 
 	public String getCodice() {
@@ -53,6 +62,10 @@ public class QueryByCodiceRagioneSocialePartitaIvaCodiceFiscale extends Query<Cl
 	@Override
 	protected boolean checkQueryArguments() {
 
+		if(codiceAzienda == null) {
+			logger.error("Argument codiceAzienda cannot be null.");
+			return false;
+		}
 		return true;
 	}
 
@@ -62,7 +75,7 @@ public class QueryByCodiceRagioneSocialePartitaIvaCodiceFiscale extends Query<Cl
 		String hql =
 				"select count(*) " +
 				"from Cliente cli " +
-				"where 1 = 1 ";
+				"where cli.azienda.id = :codiceAzienda ";
 
 		if(codice != null)
 			hql += "and upper(cli.codice) like :codice ";
@@ -84,7 +97,7 @@ public class QueryByCodiceRagioneSocialePartitaIvaCodiceFiscale extends Query<Cl
 
 		String hql =
 				"from Cliente cli " +
-				"where 1 = 1 ";
+				"where cli.azienda.id = :codiceAzienda ";
 
 		if(codice != null)
 			hql += "and upper(cli.codice) like :codice ";
@@ -115,7 +128,10 @@ public class QueryByCodiceRagioneSocialePartitaIvaCodiceFiscale extends Query<Cl
 		for (int i = 0; i < named_params.length; ++i) {
 			String param = named_params[i];
 
-			if (param.equals("codice"))
+			if (param.equals("codiceAzienda"))
+				q.setParameter("codiceAzienda", codiceAzienda);
+
+			else if (param.equals("codice"))
 				q.setParameter("codice", "%" + codice.toUpperCase() + "%");
 
 			else if (param.equals("ragioneSociale"))

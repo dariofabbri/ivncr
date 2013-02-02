@@ -4,6 +4,7 @@ import it.ivncr.erp.model.accesso.Utente;
 import it.ivncr.erp.model.generale.Azienda;
 import it.ivncr.erp.service.ServiceFactory;
 import it.ivncr.erp.service.utente.UtenteService;
+import it.ivncr.erp.util.FacesUtil;
 
 import java.io.Serializable;
 import java.util.List;
@@ -146,6 +147,8 @@ public class LoginInfo implements Serializable {
     				"Nessuna azienda selezionata");
 		}
 		FacesContext.getCurrentInstance().addMessage(null, message);
+
+		FacesUtil.redirectToHome(true);
 	}
 
 	private void reset() {

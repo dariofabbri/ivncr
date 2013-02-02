@@ -4,6 +4,7 @@ import it.ivncr.erp.model.commerciale.Cliente;
 import it.ivncr.erp.model.commerciale.Divisa;
 import it.ivncr.erp.model.commerciale.GruppoCliente;
 import it.ivncr.erp.model.commerciale.TipoBusinessPartner;
+import it.ivncr.erp.model.generale.Azienda;
 import it.ivncr.erp.model.generale.Contatore;
 import it.ivncr.erp.service.AbstractService;
 import it.ivncr.erp.service.NotFoundException;
@@ -27,13 +28,19 @@ public class ClienteServiceImpl extends AbstractService implements ClienteServic
 			SortDirection sortDirection,
 			Map<String, String> filters) {
 
-		QueryByCodiceRagioneSocialePartitaIvaCodiceFiscale q = new QueryByCodiceRagioneSocialePartitaIvaCodiceFiscale(session);
+		QueryByCodiceAziendaCodiceRagioneSocialePartitaIvaCodiceFiscale q =
+				new QueryByCodiceAziendaCodiceRagioneSocialePartitaIvaCodiceFiscale(session);
+
+		Integer codiceAzienda = null;
+		if(filters.get("codiceAzienda") != null)
+			codiceAzienda = Integer.decode(filters.get("codiceAzienda"));
 
 		String codice = filters.get("codice");
 		String ragioneSociale = filters.get("ragioneSociale");
 		String partitaIva = filters.get("partitaIva");
 		String codiceFiscale = filters.get("codiceFiscale");
 
+		q.setCodiceAzienda(codiceAzienda);
 		q.setCodice(codice);
 		q.setRagioneSociale(ragioneSociale);
 		q.setPartitaIva(partitaIva);
@@ -52,6 +59,7 @@ public class ClienteServiceImpl extends AbstractService implements ClienteServic
 
 	@Override
 	public QueryResult<Cliente> list(
+			Integer codiceAzienda,
 			String codice,
 			String ragioneSociale,
 			String partitaIva,
@@ -59,7 +67,8 @@ public class ClienteServiceImpl extends AbstractService implements ClienteServic
 			Integer offset,
 			Integer limit) {
 
-		QueryByCodiceRagioneSocialePartitaIvaCodiceFiscale q = new QueryByCodiceRagioneSocialePartitaIvaCodiceFiscale(session);
+		QueryByCodiceAziendaCodiceRagioneSocialePartitaIvaCodiceFiscale q =
+				new QueryByCodiceAziendaCodiceRagioneSocialePartitaIvaCodiceFiscale(session);
 
 		q.setCodice(codice);
 		q.setRagioneSociale(ragioneSociale);
@@ -101,12 +110,14 @@ public class ClienteServiceImpl extends AbstractService implements ClienteServic
 	}
 
 	@Override
-	public Cliente retrieveByCodice(String codice) {
+	public Cliente retrieveByCodice(Integer codiceAzienda, String codice) {
 
 		String hql =
 				"from Cliente cli " +
-				"where cli.codice = :codice ";
+				"where cli.azienda.id = :codiceAzienda " +
+				"and cli.codice = :codice ";
 		Query query = session.createQuery(hql);
+		query.setParameter("codiceAzienda", codiceAzienda);
 		query.setParameter("codice", codice);
 		Cliente cliente = (Cliente)query.uniqueResult();
 		logger.debug("Cliente found: " + cliente);
@@ -116,6 +127,7 @@ public class ClienteServiceImpl extends AbstractService implements ClienteServic
 
 	@Override
 	public Cliente create(
+			Integer codiceAzienda,
 			String codice,
 			String ragioneSociale,
 			String partitaIva,
@@ -133,6 +145,7 @@ public class ClienteServiceImpl extends AbstractService implements ClienteServic
 
 		// Fetch referred entities.
 		//
+		Azienda azienda = (Azienda)session.get(Azienda.class, codiceAzienda);
 		GruppoCliente gruppoCliente = (GruppoCliente)session.get(GruppoCliente.class, codiceGruppoCliente);
 		Divisa divisa = (Divisa)session.get(Divisa.class, codiceDivisa);
 		TipoBusinessPartner tipoBusinessPartner = (TipoBusinessPartner)session.get(TipoBusinessPartner.class, codiceTipoBusinessPartner);
@@ -143,6 +156,7 @@ public class ClienteServiceImpl extends AbstractService implements ClienteServic
 
 		// Set entity fields.
 		//
+		cliente.setAzienda(azienda);
 		cliente.setCodice(codice);
 		cliente.setRagioneSociale(ragioneSociale);
 		cliente.setPartitaIva(partitaIva);
@@ -223,11 +237,14 @@ public class ClienteServiceImpl extends AbstractService implements ClienteServic
 	}
 
 	@Override
-	public String retrieveNextCodiceAppend() {
+	public String retrieveNextCodiceAppend(Integer codiceAzienda) {
 
 		String hql =
-				"select max(cli.codice) from Cliente cli ";
+				"select max(cli.codice) " +
+				"from Cliente cli " +
+				"where cli.azienda.id = :codiceAzienda ";
 		Query query = session.createQuery(hql);
+		query.setParameter("codiceAzienda", codiceAzienda);
 		String lastCodice = (String)query.uniqueResult();
 
 		Integer max = null;
@@ -241,17 +258,19 @@ public class ClienteServiceImpl extends AbstractService implements ClienteServic
 	}
 
 	@Override
-	public String[] retrieveNextCodice() {
+	public String[] retrieveNextCodice(Integer codiceAzienda) {
 
-		String lastCodice = retrieveNextCodiceAppend();
+		String lastCodice = retrieveNextCodiceAppend(codiceAzienda);
 
 		// Retrieve pointer from counters table.
 		//
 		String hql =
 				"from Contatore con " +
-				"where codice = :codice ";
+				"where codice = :codice " +
+				"and con.azienda.id = :codiceAzienda ";
 		Query query = session.createQuery(hql);
 		query.setParameter("codice", "CODICE_CLIENTE");
+		query.setParameter("codiceAzienda", codiceAzienda);
 		Contatore contatore = (Contatore)query.uniqueResult();
 
 		// If no row has been found, just create a new one
@@ -259,7 +278,12 @@ public class ClienteServiceImpl extends AbstractService implements ClienteServic
 		//
 		if(contatore == null) {
 
+			// Fetch azienda using specified code.
+			//
+			Azienda azienda = (Azienda)session.get(Azienda.class, codiceAzienda);
+
 			contatore = new Contatore();
+			contatore.setAzienda(azienda);
 			contatore.setCodice("CODICE_CLIENTE");
 			contatore.setDescrizione("Puntatore al punto di partenza per la ricerca del primo codice libero per la tabella dei clienti.");
 			contatore.setContatore(1);
@@ -271,7 +295,7 @@ public class ClienteServiceImpl extends AbstractService implements ClienteServic
 		String codice = null;
 		while(true) {
 			codice = makeCodiceFromNumeric(contatore.getContatore());
-			if(retrieveByCodice(codice) == null)
+			if(retrieveByCodice(codiceAzienda, codice) == null)
 				break;
 
 			contatore.incrementContatore();

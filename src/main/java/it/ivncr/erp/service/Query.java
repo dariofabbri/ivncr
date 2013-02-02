@@ -3,8 +3,12 @@ package it.ivncr.erp.service;
 import org.hibernate.ScrollMode;
 import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class Query<T> {
+
+	protected static final Logger logger = LoggerFactory.getLogger(Query.class);
 
 	private Integer offset;
 	private Integer limit;
@@ -19,13 +23,13 @@ public abstract class Query<T> {
 
 		offset = 0;
 		limit = 10;
-		
+
 		sortCriteria = "id";
 		sortDirection = SortDirection.Ascending;
 	}
 
 	public ScrollableResults scroll() {
-		
+
 		// Check query arguments.
 		//
 		if (!checkQueryArguments())
@@ -34,16 +38,16 @@ public abstract class Query<T> {
 		// Get query HQL from concrete class implementation.
 		//
 		String queryHql = getQueryHql();
-		
+
 		// Create Hibernate query and set query limits.
 		//
 		org.hibernate.Query q = session.createQuery(queryHql);
 		setQueryLimits(q);
-		
+
 		// Set query arguments using concrete class implementation.
 		//
 		setQueryArguments(q);
-		
+
 		// Return results.
 		//
 		return q.scroll(ScrollMode.FORWARD_ONLY);
@@ -51,7 +55,7 @@ public abstract class Query<T> {
 
 	@SuppressWarnings("unchecked")
 	public QueryResult<T> query() {
-		
+
 		// Check query arguments.
 		//
 		if (!checkQueryArguments())
@@ -63,7 +67,7 @@ public abstract class Query<T> {
 		QueryResult<T> result = new QueryResult<T>();
 		result.setLimit(limit);
 		result.setOffset(offset);
-		
+
 		// Hibernate query object.
 		//
 		org.hibernate.Query q;
@@ -105,14 +109,14 @@ public abstract class Query<T> {
 		setQueryLimits(q);
 		setQueryArguments(q);
 		result.setResults(q.list());
-		
+
 		// Return the results.
 		//
 		return result;
 	}
 
 	private void setQueryLimits(org.hibernate.Query q) {
-		
+
 		if(offset != null && offset >= 0)
 			q.setFirstResult(offset);
 

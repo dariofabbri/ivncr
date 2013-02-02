@@ -30,6 +30,7 @@ UPDATE gen_contatore SET azienda_id = (SELECT id FROM gen_azienda WHERE codice =
 ALTER TABLE gen_contatore ALTER COLUMN azienda_id SET NOT NULL;
 ALTER TABLE gen_contatore ADD CONSTRAINT gen_contatore_unique_azienda_id_codice UNIQUE(azienda_id, codice);
 
+
 INSERT INTO acc_utente_azienda (utente_id, azienda_id, preferita)
   SELECT ute.id, azi.id, null 
     FROM acc_utente ute, gen_azienda azi;

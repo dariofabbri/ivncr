@@ -1,5 +1,6 @@
 package it.ivncr.erp.jsf.managedbean.commerciale.gestioneclienti;
 
+import it.ivncr.erp.jsf.managedbean.accesso.session.LoginInfo;
 import it.ivncr.erp.model.commerciale.Cliente;
 import it.ivncr.erp.model.commerciale.Divisa;
 import it.ivncr.erp.model.commerciale.GruppoCliente;
@@ -32,6 +33,9 @@ public class DettaglioClienteGenerale implements Serializable {
 	private static final Logger logger = LoggerFactory.getLogger(DettaglioClienteGenerale.class);
 
 	private static final long serialVersionUID = 1L;
+
+	@ManagedProperty("#{loginInfo}")
+    private LoginInfo loginInfo;
 
 	@ManagedProperty("#{gestioneClienti.edited.id}")
 	private Integer id;
@@ -144,7 +148,7 @@ public class DettaglioClienteGenerale implements Serializable {
 		// Create cliente service that will be used to query for codice.
 		//
 		ClienteService cs = ServiceFactory.createService("Cliente");
-		String[] codici = cs.retrieveNextCodice();
+		String[] codici = cs.retrieveNextCodice(loginInfo.getCodiceAzienda());
 		logger.debug(String.format("Found a pair of codes: [%s, %s]", codici[0], codici[1]));
 
 		lastCodice = codici[0];
@@ -203,6 +207,7 @@ public class DettaglioClienteGenerale implements Serializable {
 			else {
 
 				Cliente cliente = cs.create(
+						loginInfo.getCodiceAzienda(),
 						codice,
 						ragioneSociale,
 						partitaIva,
@@ -330,6 +335,14 @@ public class DettaglioClienteGenerale implements Serializable {
 		}
 
 		return true;
+	}
+
+	public LoginInfo getLoginInfo() {
+		return loginInfo;
+	}
+
+	public void setLoginInfo(LoginInfo loginInfo) {
+		this.loginInfo = loginInfo;
 	}
 
 	public Integer getId() {

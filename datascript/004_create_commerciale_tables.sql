@@ -22,7 +22,7 @@ CREATE TABLE com_tipo_business_partner
 CREATE TABLE com_cliente
 (
 	id SERIAL NOT NULL PRIMARY KEY,
-	codice VARCHAR(255) NOT NULL UNIQUE,
+	codice VARCHAR(255) NOT NULL,
 	ragione_sociale VARCHAR(1024) NOT NULL,
 	partita_iva VARCHAR(50),
 	codice_fiscale VARCHAR(50),

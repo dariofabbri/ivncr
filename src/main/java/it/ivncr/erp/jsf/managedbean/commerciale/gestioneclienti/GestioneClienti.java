@@ -1,5 +1,6 @@
 package it.ivncr.erp.jsf.managedbean.commerciale.gestioneclienti;
 
+import it.ivncr.erp.jsf.managedbean.accesso.session.LoginInfo;
 import it.ivncr.erp.model.commerciale.Cliente;
 import it.ivncr.erp.service.QueryResult;
 import it.ivncr.erp.service.ServiceFactory;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 
 import org.primefaces.model.LazyDataModel;
@@ -25,6 +27,9 @@ public class GestioneClienti implements Serializable {
 	private static final Logger logger = LoggerFactory.getLogger(GestioneClienti.class);
 
 	private static final long serialVersionUID = 1L;
+
+	@ManagedProperty("#{loginInfo}")
+    private LoginInfo loginInfo;
 
 	private LazyDataModel<Cliente> model;
 	private Cliente selected;
@@ -46,6 +51,10 @@ public class GestioneClienti implements Serializable {
 					Map<String, String> filters) {
 
 				logger.debug("Fetching data model.");
+
+				// Inject codice azienda argument in applied filters map.
+				//
+				filters.put("codiceAzienda", Integer.toString(loginInfo.getCodiceAzienda()));
 
 				ClienteService cs = ServiceFactory.createService("Cliente");
 				QueryResult<Cliente> result = cs.list(
@@ -95,6 +104,14 @@ public class GestioneClienti implements Serializable {
 
 		logger.debug("Moving to detail page for record update.");
 		return "detail?faces-redirect=true";
+	}
+
+	public LoginInfo getLoginInfo() {
+		return loginInfo;
+	}
+
+	public void setLoginInfo(LoginInfo loginInfo) {
+		this.loginInfo = loginInfo;
 	}
 
 	public LazyDataModel<Cliente> getModel() {
