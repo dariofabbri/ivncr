@@ -230,6 +230,7 @@
 					value="Salva"
 					actionListener="#{dettaglioClienteGenerale.doSave}"
 					update="@form"
+					oncomplete="if(args.conflict) { conflictManagementDialogWidget.show(); }"
 					icon="ui-icon-star"/>
 				<p:tooltip 
 					for="saveButton" 
@@ -242,4 +243,57 @@
 
 	</p:panelGrid>
 
+	
+	<p:dialog 
+		id="conflictManagementDialog"
+		header="Conflitto individuato" 
+		widgetVar="conflictManagementDialogWidget" 
+		modal="true"
+		showEffect="fade" 
+		hideEffect="fade">
+					
+		<p:panelGrid styleClass="form-panel">
+						
+			<p:row>
+				<p:column styleClass="form-header">
+					<h:outputText value="
+						Sono stati individuati seguenti clienti 
+						già definiti per l'azienda corrente ed aventi 
+						partita IVA o codice fiscale in conflitto con il record salvato. 
+						E' possibile annullare per modificare i dati inseriti oppure procedere
+						forzando il salvataggio con i valori immessi."/>
+				</p:column>
+			</p:row>
+
+			<p:row>
+				<p:column>	
+					<p:dataList 
+						value="#{dettaglioClienteGenerale.conflicting}" 
+						var="cliente"
+						itemType="disc">
+						  
+						#{cliente.ragioneSociale}, C.F.: #{cliente.codiceFiscale}, P.IVA #{cliente.partitaIva}
+						
+					</p:dataList>
+				</p:column>
+			</p:row>
+			
+			<p:row>
+				<p:column styleClass="form-footer">
+				
+					<p:commandButton value="Annulla"
+						oncomplete="conflictManagementDialogWidget.hide();" />
+						
+					<p:commandButton value="Forza"
+						actionListener="#{dettaglioClienteGenerale.doSaveForce}"
+						update="@form" 
+						oncomplete="conflictManagementDialogWidget.hide();"/>
+						
+				</p:column>
+			</p:row>
+			
+		</p:panelGrid>
+
+	</p:dialog>
+	
 </html>

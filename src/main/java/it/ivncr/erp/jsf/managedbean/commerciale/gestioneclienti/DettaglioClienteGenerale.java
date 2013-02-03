@@ -23,6 +23,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import org.apache.commons.lang3.StringUtils;
+import org.primefaces.context.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -77,6 +78,8 @@ public class DettaglioClienteGenerale implements Serializable {
 	private List<GruppoCliente> listGruppoCliente;
 	private List<Divisa> listDivisa;
 	private List<TipoBusinessPartner> listTipoBusinessPartner;
+
+	private List<Cliente> conflicting;
 
 
 	@PostConstruct
@@ -168,12 +171,72 @@ public class DettaglioClienteGenerale implements Serializable {
 	}
 
 
+	public void doSaveForce() {
+
+		// Apply form-level validations (should already have been checked,
+		// but just in case).
+		//
+		if(!formValidations())
+			return;
+
+		// Persist data.
+		//
+		persistClienteData();
+	}
+
+
 	public void doSave() {
 
 		// Apply form-level validations.
 		//
 		if(!formValidations())
 			return;
+
+		// Before saving it is necessary to check if there is a conflict
+		// with a different record in terms of cf or piva.
+		//
+		if(checkPivaCfConflicts()) {
+
+			logger.debug("Conflicts detected.");
+
+			// Signal to open modal dialog.
+			//
+			RequestContext.getCurrentInstance().addCallbackParam("conflict", true);
+			return;
+		}
+
+		// Persist data.
+		//
+		persistClienteData();
+
+		// Signal to caller that everything went fine.
+		//
+		RequestContext.getCurrentInstance().addCallbackParam("conflict", false);
+	}
+
+
+	private boolean checkPivaCfConflicts() {
+
+		// Create cliente service to check for conflicts.
+		//
+		ClienteService cs = ServiceFactory.createService("Cliente");
+
+		// Retrieve the list of records having the same cf or the same piva
+		// in the currently selected azienda. If the record is being updated
+		// the check must be performed excluding the current one.
+		//
+		conflicting = cs.listConflicts(
+					loginInfo.getCodiceAzienda(),
+					id,
+					partitaIva,
+					codiceFiscale);
+		logger.debug(String.format("Found %d conflicting records.", conflicting.size()));
+
+		return conflicting.size() > 0;
+	}
+
+
+	private void persistClienteData() {
 
 		// Create cliente service to persist data.
 		//
@@ -245,6 +308,7 @@ public class DettaglioClienteGenerale implements Serializable {
 			FacesContext.getCurrentInstance().addMessage(null, message);
 		}
 	}
+
 
 	private boolean formValidations() {
 
@@ -592,5 +656,13 @@ public class DettaglioClienteGenerale implements Serializable {
 
 	public void setLastCodice(String lastCodice) {
 		this.lastCodice = lastCodice;
+	}
+
+	public List<Cliente> getConflicting() {
+		return conflicting;
+	}
+
+	public void setConflicting(List<Cliente> conflicting) {
+		this.conflicting = conflicting;
 	}
 }

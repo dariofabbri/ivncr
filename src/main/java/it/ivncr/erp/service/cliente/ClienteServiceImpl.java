@@ -12,6 +12,7 @@ import it.ivncr.erp.service.QueryResult;
 import it.ivncr.erp.service.SortDirection;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -266,7 +267,7 @@ public class ClienteServiceImpl extends AbstractService implements ClienteServic
 		//
 		String hql =
 				"from Contatore con " +
-				"where codice = :codice " +
+				"where con.codice = :codice " +
 				"and con.azienda.id = :codiceAzienda ";
 		Query query = session.createQuery(hql);
 		query.setParameter("codice", "CODICE_CLIENTE");
@@ -314,6 +315,57 @@ public class ClienteServiceImpl extends AbstractService implements ClienteServic
 
 		return result;
 	}
+
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Cliente> listConflicts(
+			Integer codiceAzienda,
+			Integer id,
+			String partitaIva,
+			String codiceFiscale) {
+
+		String hql =
+				"from Cliente cli " +
+				"where cli.azienda.id = :codiceAzienda ";
+
+		// If an id is specified, the search must be performed
+		// excluding the current record.
+		//
+		if(id != null) {
+			hql += "and cli.id <> :id ";
+		}
+
+		if(partitaIva != null && codiceFiscale != null) {
+			hql += "and (cli.partitaIva = :partitaIva or cli.codiceFiscale = :codiceFiscale) ";
+		} else if(partitaIva != null) {
+			hql += "and cli.partitaIva = :partitaIva ";
+		} else if(codiceFiscale != null) {
+			hql += "and cli.codiceFiscale = :codiceFiscale ";
+		} else {
+			String msg = "Unexpected arguments: at least one between partitaIva and codiceFiscale must be not null.";
+			logger.error(msg);
+			throw new RuntimeException(msg);
+		}
+
+		Query query = session.createQuery(hql);
+		query.setParameter("codiceAzienda", codiceAzienda);
+		if(id != null) {
+			query.setParameter("id", id);
+		}
+		if(partitaIva != null && codiceFiscale != null) {
+			query.setParameter("partitaIva", partitaIva);
+			query.setParameter("codiceFiscale", codiceFiscale);
+		} else if(partitaIva != null) {
+			query.setParameter("partitaIva", partitaIva);
+		} else if(codiceFiscale != null) {
+			query.setParameter("codiceFiscale", codiceFiscale);
+		}
+
+		List<Cliente> result = query.list();
+		return result;
+	}
+
 
 	private Integer extractNumericPartFromCodice(String lastCodice) {
 

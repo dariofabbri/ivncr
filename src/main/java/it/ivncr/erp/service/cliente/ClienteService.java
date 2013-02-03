@@ -4,6 +4,8 @@ import it.ivncr.erp.model.commerciale.Cliente;
 import it.ivncr.erp.service.EntityService;
 import it.ivncr.erp.service.QueryResult;
 
+import java.util.List;
+
 public interface ClienteService extends EntityService<Cliente> {
 
 	QueryResult<Cliente> list(
@@ -50,4 +52,10 @@ public interface ClienteService extends EntityService<Cliente> {
 
 	String retrieveNextCodiceAppend(Integer codiceAzienda);
 	String[] retrieveNextCodice(Integer codiceAzienda);
+
+	List<Cliente> listConflicts(
+			Integer codiceAzienda,
+			Integer id,
+			String partitaIva,
+			String codiceFiscale);
 }
