@@ -12,6 +12,7 @@ import it.ivncr.erp.util.ValidationUtil;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -22,6 +23,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.context.RequestContext;
 import org.slf4j.Logger;
@@ -220,6 +222,24 @@ public class DettaglioClienteGenerale implements Serializable {
 		// Create cliente service to check for conflicts.
 		//
 		ClienteService cs = ServiceFactory.createService("Cliente");
+
+		// If the record is being updated, and piva and cf have not been
+		// modified, this means that those values have already been forced and
+		// another confirmation is not required.
+		//
+		if(id != null) {
+
+			Cliente cliente = cs.retrieve(id);
+
+			if(
+					ObjectUtils.equals(cliente.getCodiceFiscale(), codiceFiscale) &&
+					ObjectUtils.equals(cliente.getPartitaIva(), partitaIva)) {
+
+				conflicting = new ArrayList<Cliente>();
+				return false;
+			}
+		}
+
 
 		// Retrieve the list of records having the same cf or the same piva
 		// in the currently selected azienda. If the record is being updated
