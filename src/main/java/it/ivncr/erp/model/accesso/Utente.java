@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
@@ -63,6 +64,10 @@ public class Utente {
 
 	@Column(name="attivo")
 	private Boolean attivo;
+
+	@Lob
+	@Column(name="foto")
+	private byte[] foto;
 
 	@OneToMany
 	@JoinTable(
@@ -181,6 +186,14 @@ public class Utente {
 
 	public void setAttivo(Boolean attivo) {
 		this.attivo = attivo;
+	}
+
+	public byte[] getFoto() {
+		return foto;
+	}
+
+	public void setFoto(byte[] foto) {
+		this.foto = foto;
 	}
 
 	public Set<Ruolo> getRuoli() {

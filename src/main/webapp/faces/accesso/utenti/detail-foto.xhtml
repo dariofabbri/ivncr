@@ -1,0 +1,55 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+					
+	<h:form>
+							
+		<p:messages globalOnly="false" showSummary="false" showDetail="true" closable="true"/>
+
+		<p:focus/>
+		
+		<p:panelGrid styleClass="form-panel">
+			
+			<p:row>
+				<p:column styleClass="form-header">
+					<h:outputText value="Il pannello permette di associare una fotografia all'utente selezionato."/>
+				</p:column>
+			</p:row>
+						
+			<p:row>
+				<p:column>
+					<p:graphicImage id="currentImage" value="#{dettaglioUtenteFoto.current}"/>
+				</p:column>
+			</p:row>
+			
+			<p:row>
+				<p:column>
+					<p:photoCam 
+						widgetVar="photoCam"
+						listener="#{dettaglioUtenteFoto.onCapture}"
+						update="currentImage" />
+				</p:column>
+			</p:row>
+			
+			<p:row>
+				<p:column>
+			        <p:commandButton type="button" value="Cattura" onclick="photoCam.capture()"/>  
+				</p:column>
+			</p:row>
+			
+			<p:row>
+				<p:column styleClass="form-footer">
+					<p:commandButton value="Salva"
+						actionListener="#{dettaglioUtenteFoto.doSave}"
+						update="@form"/>
+				</p:column>
+			</p:row>
+		
+		</p:panelGrid>
+				
+	</h:form>
+
+</html>

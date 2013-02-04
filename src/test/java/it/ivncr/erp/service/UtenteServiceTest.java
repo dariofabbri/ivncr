@@ -6,7 +6,9 @@ import it.ivncr.erp.model.generale.Azienda;
 import it.ivncr.erp.service.lut.LUTService;
 import it.ivncr.erp.service.utente.UtenteService;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -64,5 +66,26 @@ public class UtenteServiceTest extends BaseServiceTest {
 		Assert.assertNotNull(azienda);
 
 		System.out.println(azienda);
+	}
+
+	@Test
+	public void testSetFoto() {
+
+		UtenteService us = ServiceFactory.createService("Utente");
+
+		Utente utente = us.retrieveByUsername("gino");
+		Assert.assertNotNull(utente);
+
+		us.setFoto(utente.getId(), null);
+		utente = us.retrieveByUsername("gino");
+		Assert.assertNull(utente.getFoto());
+
+		byte[] picture = new byte[1024 * 1024];
+		Random random = new Random();
+		random.nextBytes(picture);
+
+		us.setFoto(utente.getId(), picture);
+		utente = us.retrieveByUsername("gino");
+		Assert.assertTrue(Arrays.equals(picture, utente.getFoto()));
 	}
 }

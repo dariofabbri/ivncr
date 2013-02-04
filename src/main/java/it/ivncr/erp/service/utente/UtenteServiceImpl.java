@@ -555,6 +555,23 @@ public class UtenteServiceImpl extends AbstractService implements UtenteService 
 		session.update(utente);
 	}
 
+	@Override
+	public void setFoto(Integer id, byte[] foto) {
+
+		Utente utente = retrieve(id);
+		if (utente == null) {
+			String message = String.format(
+					"It has not been possible to retrieve specified user: %d",
+					id);
+			logger.info(message);
+			throw new NotFoundException(message);
+		}
+
+		utente.setFoto(foto);
+		session.update(utente);
+		logger.debug(String.format("Picture successfully uploaded for specified user: %s", id));
+	}
+
 
 	private String generateSalt() {
 
