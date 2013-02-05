@@ -5,13 +5,13 @@
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:p="http://primefaces.org/ui">
 					
-	<h:form>
+	<h:form enctype="multipart/form-data">
 							
 		<p:messages globalOnly="false" showSummary="false" showDetail="true" closable="true"/>
 
 		<p:focus/>
 		
-		<p:panelGrid styleClass="form-panel">
+		<p:panelGrid styleClass="multi-col-layout">
 			
 			<p:row>
 				<p:column styleClass="form-header">
@@ -20,32 +20,92 @@
 			</p:row>
 						
 			<p:row>
+
 				<p:column>
-					<p:graphicImage id="currentImage" value="#{dettaglioUtenteFoto.current}"/>
+					<p:fieldset legend="Foto corrente">
+													
+						<p:panelGrid styleClass="form-panel">
+		
+							<p:row>
+								<p:column>
+									<c:if test="#{empty dettaglioUtenteFoto.current}">
+										<p:graphicImage name="img/image-not-present.jpg" library="default"/>
+									</c:if>
+									<c:if test="#{not empty dettaglioUtenteFoto.current}">
+										<p:graphicImage value="#{dettaglioUtenteFoto.current}"/>
+									</c:if>
+								</p:column>
+							</p:row>
+							
+							<p:row>
+								<p:column>
+									<p:commandButton value="Elimina foto"
+										actionListener="#{dettaglioUtenteFoto.doClean}"
+										disabled="#{empty dettaglioUtenteFoto.current}"
+										update="@form"/>
+								</p:column>
+							</p:row>
+							
+						</p:panelGrid>
+							
+					</p:fieldset>
 				</p:column>
-			</p:row>
-			
-			<p:row>
+
 				<p:column>
-					<p:photoCam 
-						widgetVar="photoCam"
-						listener="#{dettaglioUtenteFoto.onCapture}"
-						update="currentImage" />
+					<p:fieldset legend="Camera" collapsed="true" toggleable="true">
+													
+						<p:panelGrid styleClass="form-panel">
+		
+							<p:row>
+								<p:column>			
+									<p:photoCam 
+										widgetVar="photoCam"
+										listener="#{dettaglioUtenteFoto.onCapture}"
+										update="@form" />
+								</p:column>
+							</p:row>
+							
+							<p:row>
+								<p:column>
+							        <p:commandButton 
+							        	type="button" 
+							        	value="Scatta" 
+							        	onclick="photoCam.capture()"/>
+								</p:column>
+							</p:row>
+							
+						</p:panelGrid>
+						
+					</p:fieldset>
 				</p:column>
-			</p:row>
-			
-			<p:row>
+
 				<p:column>
-			        <p:commandButton type="button" value="Cattura" onclick="photoCam.capture()"/>  
+					<p:fieldset legend="Da file" collapsed="true" toggleable="true">
+													
+						<p:panelGrid styleClass="form-panel">
+		
+							<p:row>
+								<p:column>			
+									<p:fileUpload 
+										fileUploadListener="#{dettaglioUtenteFoto.onFileUpload}"  
+										mode="advanced"
+										update="@form"  
+										sizeLimit="500000"
+										label="Seleziona"
+										uploadLabel="Carica"
+										cancelLabel="Annulla"
+										invalidFileMessage="Tipo di file selezionato non valido"
+										invalidSizeMessage="Il file eccede le dimensioni massime ammesse"
+										allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/>  
+  								</p:column>
+							</p:row>
+							
+						</p:panelGrid>
+						
+					</p:fieldset>
 				</p:column>
-			</p:row>
-			
-			<p:row>
-				<p:column styleClass="form-footer">
-					<p:commandButton value="Salva"
-						actionListener="#{dettaglioUtenteFoto.doSave}"
-						update="@form"/>
-				</p:column>
+				
+				
 			</p:row>
 		
 		</p:panelGrid>

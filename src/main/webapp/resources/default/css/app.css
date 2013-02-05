@@ -42,7 +42,8 @@
 	font-weight: normal;
 }
 
-.form-panel .form-header {
+.form-panel .form-header,
+.multi-col-layout .form-header {
 	
 	font-style: italic;
 	padding-top: 1em;

@@ -14,6 +14,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 
 import org.primefaces.event.CaptureEvent;
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.slf4j.Logger;
@@ -53,6 +54,15 @@ public class DettaglioUtenteFoto implements Serializable {
 		}
 	}
 
+	public void doClean() {
+
+		UtenteService us = ServiceFactory.createService("Utente");
+		us.setFoto(id, null);
+		logger.debug("Picture successfully uploaded.");
+
+		current = null;
+	}
+
 	public void onCapture(CaptureEvent event) {
 
 		byte[] captured = event.getData();
@@ -63,6 +73,18 @@ public class DettaglioUtenteFoto implements Serializable {
 
 		String mime = ImageUtil.getMimeType(captured);
 		current = new DefaultStreamedContent(new ByteArrayInputStream(captured), mime);
+	}
+
+	public void onFileUpload(FileUploadEvent event) {
+
+		byte[] uploaded = event.getFile().getContents();
+
+		UtenteService us = ServiceFactory.createService("Utente");
+		us.setFoto(id, uploaded);
+		logger.debug("Picture successfully uploaded.");
+
+		String mime = ImageUtil.getMimeType(uploaded);
+		current = new DefaultStreamedContent(new ByteArrayInputStream(uploaded), mime);
 	}
 
 	public Integer getId() {
