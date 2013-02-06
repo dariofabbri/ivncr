@@ -9,6 +9,7 @@ import it.ivncr.erp.model.generale.Contatore;
 import it.ivncr.erp.service.AbstractService;
 import it.ivncr.erp.service.NotFoundException;
 import it.ivncr.erp.service.QueryResult;
+import it.ivncr.erp.service.ServiceException;
 import it.ivncr.erp.service.SortDirection;
 
 import java.util.Date;
@@ -364,6 +365,74 @@ public class ClienteServiceImpl extends AbstractService implements ClienteServic
 
 		List<Cliente> result = query.list();
 		return result;
+	}
+
+
+	@Override
+	public Cliente deactivate(Integer id, String note) {
+
+		Cliente cliente = retrieve(id);
+		if(cliente == null) {
+			String message = String.format("It has not been possible to retrieve specified entity: %d", id);
+			logger.info(message);
+			throw new NotFoundException(message);
+		}
+
+		// Check if the record has already been deactivated.
+		//
+		if(cliente.getBloccato()) {
+			String message = String.format("The record for cliente entity with id %d is already deactivated.", id);
+			logger.info(message);
+			throw new ServiceException(message);
+		}
+
+		// Update the record.
+		//
+		Date now = new Date();
+		cliente.setBloccato(true);
+		cliente.setBloccatoDal(now);
+		cliente.setBloccatoAl(null);
+		cliente.setBloccatoNote(note);
+		cliente.setAttivo(false);
+		cliente.setAttivoAl(now);
+		cliente.setUltimaModifica(now);
+		session.update(cliente);
+
+		return cliente;
+	}
+
+
+	@Override
+	public Cliente activate(Integer id, String note) {
+
+		Cliente cliente = retrieve(id);
+		if(cliente == null) {
+			String message = String.format("It has not been possible to retrieve specified entity: %d", id);
+			logger.info(message);
+			throw new NotFoundException(message);
+		}
+
+		// Check if the record has already been activated.
+		//
+		if(cliente.getAttivo()) {
+			String message = String.format("The record for cliente entity with id %d is already activated.", id);
+			logger.info(message);
+			throw new ServiceException(message);
+		}
+
+		// Update the record.
+		//
+		Date now = new Date();
+		cliente.setAttivo(true);
+		cliente.setAttivoDal(now);
+		cliente.setAttivoAl(null);
+		cliente.setAttivoNote(note);
+		cliente.setBloccato(false);
+		cliente.setBloccatoAl(now);
+		cliente.setUltimaModifica(now);
+		session.update(cliente);
+
+		return cliente;
 	}
 
 

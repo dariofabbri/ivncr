@@ -58,4 +58,8 @@ public interface ClienteService extends EntityService<Cliente> {
 			Integer id,
 			String partitaIva,
 			String codiceFiscale);
+
+	Cliente deactivate(Integer id, String note);
+
+	Cliente activate(Integer id, String note);
 }

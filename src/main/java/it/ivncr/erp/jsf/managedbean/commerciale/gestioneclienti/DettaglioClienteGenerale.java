@@ -83,6 +83,7 @@ public class DettaglioClienteGenerale implements Serializable {
 
 	private List<Cliente> conflicting;
 
+	private String note;
 
 	@PostConstruct
 	public void init() {
@@ -210,10 +211,43 @@ public class DettaglioClienteGenerale implements Serializable {
 		// Persist data.
 		//
 		persistClienteData();
+		logger.debug("Record successfully persisted.");
 
 		// Signal to caller that everything went fine.
 		//
 		RequestContext.getCurrentInstance().addCallbackParam("conflict", false);
+	}
+
+
+	public void doToggleActivation() {
+
+		// Retrieve cliente service.
+		//
+		ClienteService cs = ServiceFactory.createService("Cliente");
+
+		// Toggle activation.
+		//
+		Cliente cliente = null;
+		if(attivo) {
+			cliente = cs.deactivate(id, note);
+		} else {
+			cliente = cs.activate(id, note);
+		}
+
+		// Update form fields.
+		//
+		attivo = cliente.getAttivo();
+		attivoDal = cliente.getAttivoDal();
+		attivoAl = cliente.getAttivoAl();
+		attivoNote = cliente.getAttivoNote();
+		bloccato = cliente.getBloccato();
+		bloccatoDal = cliente.getBloccatoDal();
+		bloccatoAl = cliente.getBloccatoAl();
+		bloccatoNote = cliente.getBloccatoNote();
+
+		// Signal to caller that everything went fine.
+		//
+		RequestContext.getCurrentInstance().addCallbackParam("ok", true);
 	}
 
 
@@ -684,5 +718,13 @@ public class DettaglioClienteGenerale implements Serializable {
 
 	public void setConflicting(List<Cliente> conflicting) {
 		this.conflicting = conflicting;
+	}
+
+	public String getNote() {
+		return note;
+	}
+
+	public void setNote(String note) {
+		this.note = note;
 	}
 }
