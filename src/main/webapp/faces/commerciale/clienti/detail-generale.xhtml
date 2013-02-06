@@ -6,7 +6,7 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:readonly="http://java.sun.com/jsf/composite/components/readonly">
 
-	<p:panelGrid styleClass="multi-col-layout">
+	<p:panelGrid id="generalePanel" styleClass="multi-col-layout">
 		
 		<p:row>
 		
@@ -81,13 +81,12 @@
 			<p:column>
 	
 				<p:fieldset 
-					id="statoAttivazioneFieldset" 
 					legend="Stato attivazione" 
 					collapsed="true" toggleable="true" 
 					toggleSpeed="500" 
-					style="width:500px;"> 
+					style="width: 500px;"> 
 		
-					<p:panelGrid styleClass="form-panel">
+					<p:panelGrid id="statoAttivazionePanel" styleClass="form-panel">
 					
 						<p:row>
 							<p:column>
@@ -168,7 +167,7 @@
 										id="toggleActivationButton"
 										value="Attiva"
 										process="@none"
-										oncomplete="activateDialog.show()"/>
+										oncomplete="activateDialogWidget.show()"/>
 									<p:tooltip 
 										for="toggleActivationButton" 
 										value="Attiva il cliente precedentemente bloccato" 
@@ -180,7 +179,7 @@
 										id="toggleActivationButton"
 										value="Blocca"
 										process="@none"
-										oncomplete="deactivateDialog.show()"/>
+										oncomplete="activateDialogWidget.show()"/>
 									<p:tooltip 
 										for="toggleActivationButton" 
 										value="Blocca il cliente" 
@@ -201,23 +200,32 @@
 	</p:panelGrid>
 	
 		
-	<p:dialog 
-		header="Attivazione cliente" 
-		widgetVar="activateDialog" 
+	<p:dialog
+		id="activateDialog"
+		header="#{dettaglioClienteGenerale.attivo ? 'Blocco cliente' : 'Attivazione cliente'}" 
+		widgetVar="activateDialogWidget" 
 		modal="true"
 		showEffect="fade" 
 		hideEffect="fade"> 
 				
 		<p:messages id="activateDialogMessages" globalOnly="false" showSummary="false" showDetail="true" closable="true"/>
 		
-		<p:panelGrid styleClass="form-panel">
+		<p:panelGrid id="activateDialogPanel" styleClass="form-panel">
 			
 			<p:row>
 				<p:column styleClass="form-header">
-					<h:outputText value="
-						Il pannello permette di attivare il cliente selezionato. 
-						Di seguito è necessario introdurre una breve annotazione 
-						per procedere con l'operazione."/>
+					<c:if test="#{dettaglioClienteGenerale.attivo}">
+						<h:outputText value="
+							Il pannello permette di bloccare il cliente selezionato. 
+							Di seguito è necessario introdurre una breve annotazione 
+							per procedere con l'operazione."/>					
+					</c:if>
+					<c:if test="#{dettaglioClienteGenerale.bloccato}">
+						<h:outputText value="
+							Il pannello permette di attivare il cliente selezionato. 
+							Di seguito è necessario introdurre una breve annotazione 
+							per procedere con l'operazione."/>
+					</c:if>
 				</p:column>
 			</p:row>
 			
@@ -233,58 +241,13 @@
 			
 			<p:row>
 				<p:column styleClass="form-footer">
-					<p:commandButton value="Attiva"
+					<p:commandButton value="#{dettaglioClienteGenerale.attivo ? 'Blocca' : 'Attiva'}"
 						actionListener="#{dettaglioClienteGenerale.doToggleActivation}"
-						update="activateDialogMessages,statoAttivazioneFieldset"
-						oncomplete="if(args.ok) { activateDialog.hide(); }"/>
+						process="activateDialog"
+						update="activateDialogPanel,activateDialogMessages,statoAttivazionePanel"
+						oncomplete="if(args.ok) { activateDialogWidget.hide(); }"/>
 					<p:commandButton value="Annulla"
-						oncomplete="activateDialog.hide();" />
-				</p:column>
-			</p:row>
-		
-		</p:panelGrid>
-		
-	</p:dialog>
-	
-		
-	<p:dialog 
-		header="Blocco cliente" 
-		widgetVar="deactivateDialog" 
-		modal="true"
-		showEffect="fade" 
-		hideEffect="fade"> 
-				
-		<p:messages id="deactivateDialogMessages" globalOnly="false" showSummary="false" showDetail="true" closable="true"/>
-		
-		<p:panelGrid styleClass="form-panel">
-			
-			<p:row>
-				<p:column styleClass="form-header">
-					<h:outputText value="
-						Il pannello permette di bloccare il cliente selezionato. 
-						Di seguito è necessario introdurre una breve annotazione 
-						per procedere con l'operazione."/>
-				</p:column>
-			</p:row>	
-			
-			<p:row>
-				<p:column>
-					<p:inputTextarea
-						value="#{dettaglioClienteGenerale.note}"
-						rows="7"
-						required="true"
-						requiredMessage="E' necessario introdurre un'annotazione" />
-				</p:column>
-			</p:row>	
-			
-			<p:row>
-				<p:column styleClass="form-footer">
-					<p:commandButton value="Blocca"
-						actionListener="#{dettaglioClienteGenerale.doToggleActivation}"
-						update="deactivateDialogMessages,statoAttivazioneFieldset"
-						oncomplete="if(args.ok) { deactivateDialog.hide(); }"/>
-					<p:commandButton value="Annulla"
-						oncomplete="deactivateDialog.hide();" />
+						oncomplete="activateDialogWidget.hide();" />
 				</p:column>
 			</p:row>
 		
