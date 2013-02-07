@@ -2,6 +2,7 @@ package it.ivncr.erp.jsf.managedbean.commerciale.gestioneclienti;
 
 
 import it.ivncr.erp.model.commerciale.Contatto;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,14 +20,14 @@ import org.slf4j.LoggerFactory;
 @ManagedBean
 @SessionScoped
 public class DettaglioClientiContatti implements Serializable {
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(DettaglioClientiContatti.class);
 
 	private static final long serialVersionUID = 1L;
 
 	private LazyDataModel<Contatto> model;
 	private Contatto selected;
-	
+
 	private String tipoContatto;
 	private String titolo;
 	private String nome;
@@ -35,18 +36,18 @@ public class DettaglioClientiContatti implements Serializable {
 	private String cellulare;
 	private String fax;
 	private String email;
-	
-	
+
+
 	public DettaglioClientiContatti(){
 		model = new LazyDataModel<Contatto>() {
 
 			private static final long serialVersionUID = 1L;
 			@Override
 			public List<Contatto> load(
-					int first, 
-					int pageSize, 
+					int first,
+					int pageSize,
 					String sortField,
-					SortOrder sortOrder, 
+					SortOrder sortOrder,
 					Map<String, String> filters) {
 				logger.debug("Fetching data model.");
 
@@ -54,37 +55,37 @@ public class DettaglioClientiContatti implements Serializable {
 
 				Contatto contatto = new Contatto();
 				contatto.setId(1);
-				contatto.setCodice("C001");
-				contatto.setRagioneSociale("Ambasciata degli Stati Uniti");
+				contatto.setNome("Mario Rossi");
+				contatto.setTelefono1("0612345678");
 				list.add(contatto);
-				
+
 				contatto = new Contatto();
 				contatto.setId(2);
-				contatto.setCodice("C003");
-				contatto.setRagioneSociale("Banca Di Italia");
+				contatto.setNome("Giulio Cesare");
+				contatto.setTelefono1("06126723782");
 				list.add(contatto);
-				
+
 				this.setRowCount(list.size());
 
 				return list;
 			}
-			
+
 			@Override
 			public Object getRowKey(Contatto contatto) {
-				
+
 				return contatto == null ? null : contatto.getId();
 			}
 
 			@Override
 			public Contatto getRowData(String rowKey) {
-				
+
 				return null;
 			}
 		};
 	}
-	
+
 	public String startCreate() {
-		
+
 		logger.debug("Moving to detail page for new record creation.");
 		return "detail?faces-redirect=true";
 	}
@@ -106,8 +107,8 @@ public class DettaglioClientiContatti implements Serializable {
 		this.selected = selected;
 	}
 
-	
-	
+
+
 	public String getTipoContatto() {
 		return tipoContatto;
 	}

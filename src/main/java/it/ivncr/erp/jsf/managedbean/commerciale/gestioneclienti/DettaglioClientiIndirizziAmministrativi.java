@@ -2,6 +2,7 @@ package it.ivncr.erp.jsf.managedbean.commerciale.gestioneclienti;
 
 
 import it.ivncr.erp.model.commerciale.Contatto;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,14 +20,14 @@ import org.slf4j.LoggerFactory;
 @ManagedBean
 @SessionScoped
 public class DettaglioClientiIndirizziAmministrativi implements Serializable {
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(DettaglioClientiIndirizziAmministrativi.class);
 
 	private static final long serialVersionUID = 1L;
 
 	private LazyDataModel<Contatto> model;
 	private Contatto selected;
-	
+
 	private String tipoIndirizzo;
 	private String destinatario1;
 	private String destinatario2;
@@ -38,56 +39,44 @@ public class DettaglioClientiIndirizziAmministrativi implements Serializable {
 	private String cap;
 	private String provincia;
 	private String paese;
-	
-	
+
+
 	public DettaglioClientiIndirizziAmministrativi(){
 		model = new LazyDataModel<Contatto>() {
 
 			private static final long serialVersionUID = 1L;
 			@Override
 			public List<Contatto> load(
-					int first, 
-					int pageSize, 
+					int first,
+					int pageSize,
 					String sortField,
-					SortOrder sortOrder, 
+					SortOrder sortOrder,
 					Map<String, String> filters) {
 				logger.debug("Fetching data model.");
 
 				List<Contatto> list = new ArrayList<Contatto>();
 
-				Contatto contatto = new Contatto();
-				contatto.setId(1);
-				contatto.setCodice("C001");
-				contatto.setRagioneSociale("Ambasciata degli Stati Uniti");
-				list.add(contatto);
-				
-				contatto = new Contatto();
-				contatto.setId(2);
-				contatto.setCodice("C003");
-				contatto.setRagioneSociale("Banca Di Italia");
-				list.add(contatto);
-				
 				this.setRowCount(list.size());
 
 				return list;
 			}
-			
+
 			@Override
 			public Object getRowKey(Contatto contatto) {
-				
+
 				return contatto == null ? null : contatto.getId();
 			}
 
 			@Override
 			public Contatto getRowData(String rowKey) {
-				
+
 				return null;
 			}
 		};
 	}
-	
+
 	public String startCreate() {
-		
+
 		logger.debug("Moving to detail page for new record creation.");
 		return "detail?faces-redirect=true";
 	}
@@ -164,7 +153,7 @@ public class DettaglioClientiIndirizziAmministrativi implements Serializable {
 	public void setEdificio(String edificio) {
 		this.edificio = edificio;
 	}
-	
+
 	public String getLocalita() {
 		return localita;
 	}

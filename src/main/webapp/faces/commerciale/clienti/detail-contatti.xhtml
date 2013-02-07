@@ -70,14 +70,34 @@
 	    	Lista dei contatti
 	    </f:facet>
 
-		<p:column headerText="Codice" sortBy="#{contatto.codice}"
-			filterBy="#{contatto.codice}">
-			<h:outputText value="#{contatto.codice}" />
+		<p:column headerText="Nome" sortBy="#{contatto.nome}"
+			filterBy="#{contatto.nome}">
+			<h:outputText value="#{contatto.nome}" />
 		</p:column>
 
-		<p:column headerText="Ragione sociale" sortBy="#{contatto.ragioneSociale}"
-			filterBy="#{contatto.ragioneSociale}">
-			<h:outputText value="#{contatto.ragioneSociale}" />
+		<p:column headerText="Telefono 1" sortBy="#{contatto.telefono1}"
+			filterBy="#{contatto.telefono1}">
+			<h:outputText value="#{contatto.telefono1}" />
+		</p:column>
+
+		<p:column headerText="Telefono 2" sortBy="#{contatto.telefono2}"
+			filterBy="#{contatto.telefono2}">
+			<h:outputText value="#{contatto.telefono2}" />
+		</p:column>
+
+		<p:column headerText="Cellulare" sortBy="#{contatto.cellulare}"
+			filterBy="#{contatto.cellulare}">
+			<h:outputText value="#{contatto.cellulare}" />
+		</p:column>
+
+		<p:column headerText="Fax" sortBy="#{contatto.fax}"
+			filterBy="#{contatto.fax}">
+			<h:outputText value="#{contatto.fax}" />
+		</p:column>
+
+		<p:column headerText="Email" sortBy="#{contatto.email}"
+			filterBy="#{contatto.email}">
+			<h:outputText value="#{contatto.email}" />
 		</p:column>
 
 	</p:dataTable>
