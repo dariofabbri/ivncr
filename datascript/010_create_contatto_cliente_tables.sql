@@ -13,6 +13,7 @@ CREATE TABLE com_contatto
 (
 	id serial NOT NULL PRIMARY KEY,
   tipo_contatto_id INTEGER NOT NULL REFERENCES com_tipo_contatto(id),
+  cliente_id INTEGER NOT NULL REFERENCES com_cliente(id),
 	titolo VARCHAR(50),
   nome VARCHAR(255) NOT NULL,
   telefono1 VARCHAR(255),

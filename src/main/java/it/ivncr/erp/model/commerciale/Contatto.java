@@ -21,6 +21,10 @@ public class Contatto {
 	@Column(name="id")
 	private Integer id;
 
+    @ManyToOne
+    @JoinColumn(name="cliente_id")
+    private Cliente cliente;
+
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="tipo_contatto_id")
 	private TipoContatto tipoContatto;
@@ -52,6 +56,14 @@ public class Contatto {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
 	}
 
 	public TipoContatto getTipoContatto() {

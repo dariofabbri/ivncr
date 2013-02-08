@@ -72,6 +72,7 @@ public class ClienteServiceImpl extends AbstractService implements ClienteServic
 		QueryByCodiceAziendaCodiceRagioneSocialePartitaIvaCodiceFiscale q =
 				new QueryByCodiceAziendaCodiceRagioneSocialePartitaIvaCodiceFiscale(session);
 
+		q.setCodiceAzienda(codiceAzienda);
 		q.setCodice(codice);
 		q.setRagioneSociale(ragioneSociale);
 		q.setPartitaIva(partitaIva);
