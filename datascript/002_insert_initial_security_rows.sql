@@ -1,4 +1,4 @@
-﻿INSERT INTO acc_utente (
+INSERT INTO acc_utente (
 	  username,
 	  nome,
 	  cognome,

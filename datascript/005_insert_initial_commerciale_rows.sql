@@ -1,5 +1,6 @@
-﻿INSERT INTO com_gruppo_cliente (id, descrizione) VALUES (1, 'Grande utenza');
+INSERT INTO com_gruppo_cliente (id, descrizione) VALUES (1, 'Grande utenza');
 INSERT INTO com_gruppo_cliente (id, descrizione) VALUES (2, 'Piccola utenza');
+INSERT INTO com_gruppo_cliente (id, descrizione) VALUES (3, 'Media utenza');
 SELECT setval('com_gruppo_cliente_id_seq', (SELECT MAX(id) FROM com_gruppo_cliente));
 
 INSERT INTO com_tipo_business_partner (id, descrizione) VALUES (1, 'Società');

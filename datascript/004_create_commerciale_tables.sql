@@ -1,4 +1,4 @@
-﻿CREATE TABLE com_gruppo_cliente
+CREATE TABLE com_gruppo_cliente
 (
 	id SERIAL NOT NULL PRIMARY KEY,
 	descrizione VARCHAR(255) NOT NULL
