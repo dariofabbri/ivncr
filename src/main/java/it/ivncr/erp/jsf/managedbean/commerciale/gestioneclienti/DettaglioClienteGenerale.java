@@ -164,12 +164,14 @@ public class DettaglioClienteGenerale implements Serializable {
 
 	public void doSelectFirstCodice() {
 
+		logger.debug(String.format("First codice chosen: %s", firstCodice));
 		codice = firstCodice;
 	}
 
 
 	public void doSelectLastCodice() {
 
+		logger.debug(String.format("Last codice chosen: %s", lastCodice));
 		codice = lastCodice;
 	}
 
@@ -216,6 +218,13 @@ public class DettaglioClienteGenerale implements Serializable {
 		// Signal to caller that everything went fine.
 		//
 		RequestContext.getCurrentInstance().addCallbackParam("conflict", false);
+	}
+
+
+	public void prepareActivation() {
+
+		logger.debug("Inside prepareActivation method.");
+		note = null;
 	}
 
 
@@ -298,11 +307,13 @@ public class DettaglioClienteGenerale implements Serializable {
 
 		try {
 
+			Cliente cliente = null;
+
 			// If the user already exists, just update the record.
 			//
 			if(id != null) {
 
-				cs.update(
+				cliente = cs.update(
 						id,
 						ragioneSociale,
 						partitaIva,
@@ -323,7 +334,7 @@ public class DettaglioClienteGenerale implements Serializable {
 			//
 			else {
 
-				Cliente cliente = cs.create(
+				cliente = cs.create(
 						loginInfo.getCodiceAzienda(),
 						codice,
 						ragioneSociale,
@@ -342,6 +353,18 @@ public class DettaglioClienteGenerale implements Serializable {
 				logger.debug("Entity successfully created.");
 
 			}
+
+			// Update form fields.
+			//
+			attivo = cliente.getAttivo();
+			attivoDal = cliente.getAttivoDal();
+			attivoAl = cliente.getAttivoAl();
+			attivoNote = cliente.getAttivoNote();
+
+			bloccato = cliente.getBloccato();
+			bloccatoDal = cliente.getBloccatoDal();
+			bloccatoAl = cliente.getBloccatoAl();
+			bloccatoNote = cliente.getBloccatoNote();
 
 			// Everything went fine.
 			//

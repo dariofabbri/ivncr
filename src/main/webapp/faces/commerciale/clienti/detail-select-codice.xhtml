@@ -5,56 +5,56 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<p:dialog
+		id="selectCodiceDialog"
 		header="Selezione codice cliente" 
-		widgetVar="selectCodiceDialog" 
+		widgetVar="selectCodiceDialogWidget" 
 		modal="true"
 		showEffect="fade" 
 		hideEffect="fade"> 
-
-		<h:form id="selectCodiceDialogForm">
 			
-			<p:panelGrid styleClass="form-panel">
-							
-				<p:row>
-					<p:column colspan="2" styleClass="form-header">
-						<h:outputText value="Il sistema ha generato i seguenti codici in automatico. Per selezionarne uno premere il pulsante relativo."/>
-					</p:column>
-				</p:row>
-				
-				<p:row>
-					<p:column>
-						<h:outputText value="Primo codice disponibile:"/>
-					</p:column>
-					<p:column>
-						<p:commandButton value="#{dettaglioClienteGenerale.firstCodice}"
-							actionListener="#{dettaglioClienteGenerale.doSelectFirstCodice}" 
-							update=":detailForm:codice" 
-							oncomplete="selectCodiceDialog.hide();"/>
-					</p:column>
-				</p:row>  
-				
-				<p:row>
-					<p:column>
-						<h:outputText value="Primo codice disponibile in coda:"/>
-					</p:column>
-					<p:column>
-						<p:commandButton value="#{dettaglioClienteGenerale.lastCodice}"
-							actionListener="#{dettaglioClienteGenerale.doSelectLastCodice}" 
-							update=":detailForm:codice" 
-							oncomplete="selectCodiceDialog.hide();"/>
-					</p:column>
-				</p:row>  
-
-				<p:row>
-					<p:column colspan="2" styleClass="form-footer">
-						<p:commandButton value="Annulla"
-							oncomplete="selectCodiceDialog.hide();" />
-					</p:column>
-				</p:row>
-				
-			</p:panelGrid>
+		<p:panelGrid styleClass="form-panel">
+						
+			<p:row>
+				<p:column colspan="2" styleClass="form-header">
+					<h:outputText value="Il sistema ha generato i seguenti codici in automatico. Per selezionarne uno premere il pulsante relativo."/>
+				</p:column>
+			</p:row>
 			
-		</h:form>
+			<p:row>
+				<p:column>
+					<h:outputText value="Primo codice disponibile:"/>
+				</p:column>
+				<p:column>
+					<p:commandButton value="#{dettaglioClienteGenerale.firstCodice}"
+						actionListener="#{dettaglioClienteGenerale.doSelectFirstCodice}"
+						process="@this" 
+						update=":detailForm:codice" 
+						oncomplete="selectCodiceDialogWidget.hide();"/>
+				</p:column>
+			</p:row>  
+			
+			<p:row>
+				<p:column>
+					<h:outputText value="Primo codice disponibile in coda:"/>
+				</p:column>
+				<p:column>
+					<p:commandButton value="#{dettaglioClienteGenerale.lastCodice}"
+						actionListener="#{dettaglioClienteGenerale.doSelectLastCodice}" 
+						process="@this" 
+						update=":detailForm:codice" 
+						oncomplete="selectCodiceDialogWidget.hide();"/>
+				</p:column>
+			</p:row>  
+
+			<p:row>
+				<p:column colspan="2" styleClass="form-footer">
+					<p:commandButton value="Annulla"
+						type="button"
+						oncomplete="selectCodiceDialogWidget.hide();" />
+				</p:column>
+			</p:row>
+			
+		</p:panelGrid>
 
 	</p:dialog>
 
