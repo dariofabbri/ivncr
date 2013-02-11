@@ -15,70 +15,128 @@
 			hideEffect="fade"> 
 		
 			<p:messages globalOnly="true" showDetail="true" closable="true"/>
+	
+			<p:panelGrid styleClass="form-panel">
+
+				<p:row>
+					<p:column>
+						<p:outputLabel for="codiceTipoContatto" value="Tipo contatto:" />
+					</p:column>
+					<p:column>
+						<p:selectOneMenu
+							required="true" 
+							requiredMessage="Il campo tipo contatto è obbligatorio"
+							id="codiceTipoContatto" 
+							value="#{dettaglioClienteContatti.codiceTipoContatto}"
+							effect="fade">
+							<f:selectItem itemLabel="Selezionare un tipo" itemValue="" />
+							<f:selectItems 
+								value="#{dettaglioClienteContatti.listTipoContatto}" var="item"
+								itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+						</p:selectOneMenu>	
+						<p:tooltip for="codiceTipoContatto" showEffect="fade" value="Tipo contatto" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="titolo" value="Titolo:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioClienteContatti.titolo}" id="titolo"/>
+						<p:watermark for="titolo" value="Titolo da premettere al nome del contatto" />  
+						<p:tooltip for="titolo" showEffect="fade" value="Titolo del contatto" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="nome" value="Nome:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioClienteContatti.nome}" id="nome"
+							required="true" requiredMessage="Il campo nome è obbligatorio"/>
+						<p:watermark for="nome" value="Nome e cognome del contatto" />  
+						<p:tooltip for="nome" showEffect="fade" value="Nome e cognome del contatto" />
+					</p:column>
+				</p:row>
 		
-			<h:panelGrid columns="4" cellpadding="5">
-	
-				<p:outputLabel for="tipoContatto" value="Tipo contatto:" />
-				<p:inputText value="#{dettaglioClientiContatti.tipoContatto}" id="tipoContatto"
-					style="width: 250px;"/>
-				<p:watermark for="tipoContatto" value="Tipologia del contatto" />  
-				<p:message for="tipoContatto" showSummary="true" showDetail="false"/>
-	
-				<p:outputLabel for="titolo" value="Titolo:" />
-				<p:inputText value="#{dettaglioClientiContatti.titolo}" id="titolo"
-					style="width: 250px;"/>
-				<p:watermark for="titolo" value="Titolo del contatto" />  
-				<p:message for="titolo" showSummary="true" showDetail="false"/>
-	
-				<p:outputLabel for="nome" value="Nome:" />
-				<p:inputText value="#{dettaglioClientiContatti.nome}" id="nome"
-					required="true" requiredMessage="Il campo è obbligatorio"
-					style="width: 250px;"/>
-				<p:watermark for="nome" value="Nome del contatto" />  
-				<p:message for="nome" showSummary="true" showDetail="false"/>
-	
-				<p:outputLabel for="telefono1" value="Telefono 1:" />
-				<p:inputText value="#{dettaglioClientiContatti.telefono1}" id="telefono1"
-					style="width: 250px;"/>
-				<p:watermark for="telefono1" value="Numero di telefono principale del contatto" />  
-				<p:message for="telefono1" showSummary="true" showDetail="false"/>
-	
-				<p:outputLabel for="telefono2" value="Telefono 2:" />
-				<p:inputText value="#{dettaglioClientiContatti.telefono2}" id="telefono2"
-					style="width: 250px;"/>
-				<p:watermark for="telefono2" value="Numero di telefono secondario del contatto" />  
-				<p:message for="telefono2" showSummary="true" showDetail="false"/>
-	
-				<p:outputLabel for="cellulare" value="Cellulare:" />
-				<p:inputText value="#{dettaglioClientiContatti.cellulare}" id="cellulare"
-					style="width: 250px;"/>
-				<p:watermark for="cellulare" value="Numero di telefono cellulare del contatto" />  
-				<p:message for="cellulare" showSummary="true" showDetail="false"/>
-	
-				<p:outputLabel for="fax" value="Fax:" />
-				<p:inputText value="#{dettaglioClientiContatti.fax}" id="fax"
-					style="width: 250px;"/>
-				<p:watermark for="fax" value="Numero di fax del contatto" />  
-				<p:message for="fax" showSummary="true" showDetail="false"/>
-	
-				<p:outputLabel for="email" value="Email:" />
-				<p:inputText value="#{dettaglioClientiContatti.email}" id="email"
-					style="width: 250px;"/>
-				<p:watermark for="email" value="Indirizzo email del contatto" />  
-				<p:message for="email" showSummary="true" showDetail="false"/>
-	
-	
-				<f:facet name="footer">
-					<p:commandButton value="Crea"
-						actionListener="#{dettaglioClientiContatti.doCreate}" 
-						update="@form" 
-						oncomplete="if(args.ok) { createContattoDialogWidget.hide(); }"/>
-	
-					<p:commandButton value="Annulla"
-						oncomplete="createContattoDialogWidget.hide();" />
-				</f:facet>
+				<p:row>
+					<p:column>		
+						<p:outputLabel for="telefono1" value="Telefono 1:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioClienteContatti.telefono1}" id="telefono1"
+							validator="phoneValidator" validatorMessage="Il numero immesso come contatto telefonico principale non è valido"/>
+						<p:watermark for="telefono1" value="Primo riferimento telefonico del contatto" />  
+						<p:tooltip for="telefono1" showEffect="fade" value="Primo riferimento telefonico del contatto" />
+					</p:column>
+				</p:row>
 				
-			</h:panelGrid>
+				<p:row>
+					<p:column>
+						<p:outputLabel for="telefono2" value="Telefono 2:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioClienteContatti.telefono2}" id="telefono2"
+							validator="phoneValidator" validatorMessage="Il numero immesso come contatto telefonico alternativo non è valido"/>
+						<p:watermark for="telefono2" value="Riferimento telefonico alternativo del contatto"/>
+						<p:tooltip for="telefono2" showEffect="fade" value="Riferimento telefonico alternativo del contatto" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>
+						<p:outputLabel for="cellulare" value="Cellulare:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioClienteContatti.cellulare}" id="cellulare"
+							validator="phoneValidator" validatorMessage="Il numero di cellulare inserito non è valido"/>
+						<p:watermark for="cellulare" value="Riferimento telefonico cellulare del contatto" />  
+						<p:tooltip for="cellulare" showEffect="fade" value="Riferimento telefonico cellulare del contatto" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>
+						<p:outputLabel for="fax" value="Fax:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioClienteContatti.fax}" id="fax"
+							validator="phoneValidator" validatorMessage="Il numero di fax inserito non è valido"/>
+						<p:watermark for="fax" value="Numero di fax del contatto" />  
+						<p:tooltip for="fax" showEffect="fade" value="Numero di fax del contatto" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>
+						<p:outputLabel for="email" value="E-mail:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioClienteContatti.email}" id="email"
+							validator="emailValidator" validatorMessage="L'indirizzo di posta elettronica inserito non è valido"/>
+						<p:watermark for="email" value="Email del contatto" />  
+						<p:tooltip for="email" showEffect="fade" value="Email del contatto" />
+					</p:column>
+				</p:row>
+			
+				<p:row>
+					<p:column colspan="2" styleClass="form-footer">
+
+						<p:commandButton value="Crea"
+							actionListener="#{dettaglioClienteContatti.doCreate}"
+							process="createContattoView" 
+							update=":detailForm:tabView:contattiTab" 
+							oncomplete="if(args.ok) { createContattoDialogWidget.hide(); }"/>
+		
+						<p:commandButton value="Annulla"
+							oncomplete="createContattoDialogWidget.hide();" />
+
+					</p:column>
+				</p:row>
+									
+			</p:panelGrid>
 	
 		</p:dialog>
 		

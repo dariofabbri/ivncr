@@ -14,7 +14,7 @@
 			icon="ui-icon-star"/>
 		<p:tooltip 
 			for="createButton" 
-			value="Crea un nuovo ruolo" 
+			value="Crea un nuovo contatto" 
 			showEffect="fade" 
 			hideEffect="fade"/>
 
@@ -22,12 +22,12 @@
 			id="deleteButton"
 			value="Elimina"
 			type="button"
-			disabled="#{gestioneRuoli.selected == null}"
+			disabled="#{dettaglioClienteContatti.selected == null}"
 			onclick="deleteContattoDialogWidget.show();"
 			icon="ui-icon-trash" />
 		<p:tooltip 
 			for="deleteButton" 
-			value="Elimina il ruolo selezionato" 
+			value="Elimina il contatto selezionato" 
 			showEffect="fade" 
 			hideEffect="fade"/>
 
@@ -35,19 +35,19 @@
 			id="updateButton" 
 			value="Modifica"
 			type="button"
-			disabled="#{gestioneRuoli.selected == null}"
-			action="#{gestioneRuoli.startUpdate}"
+			disabled="#{dettaglioClienteContatti.selected == null}"
+			action="#{dettaglioClienteContatti.startUpdate}"
 			icon="ui-icon-pencil" />
 		<p:tooltip 
 			for="updateButton" 
-			value="Modifica il ruolo selezionato" 
+			value="Modifica il contatto selezionato" 
 			showEffect="fade" 
 			hideEffect="fade"/>
 
 	</p:outputPanel>
 									
 	<p:dataTable var="contatto" 
-		value="#{dettaglioClientiContatti.model}"
+		value="#{dettaglioClienteContatti.model}"
 		paginator="true" 
 		paginatorPosition="bottom" rows="10"
 		paginatorTemplate="{CurrentPageReport} {RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
@@ -56,15 +56,16 @@
 		pageLinks="10"
 		emptyMessage="Nessun record trovato" 
 		selectionMode="single"
-		selection="#{dettaglioClientiContatti.selected}" 
+		selection="#{dettaglioClienteContatti.selected}" 
 		id="contattiTable" 
 		lazy="true">
 
 		<!--
-		<p:ajax event="rowSelect" update=":form:buttons,:updateForm"/>
-
-		<p:ajax event="rowUnselect" update=":form:buttons,:updateForm"/>
+		<p:ajax event="rowSelect" update="buttons,:updateForm"/>
+		<p:ajax event="rowUnselect" update="buttons,:updateForm"/>
 		-->
+		<p:ajax event="rowSelect" process="@this" update=":detailForm:tabView:buttons"/>
+		<p:ajax event="rowUnselect" process="@this" update=":detailForm:tabView:buttons"/>
       		
 		<f:facet name="header">
 	    	Lista dei contatti
@@ -103,5 +104,5 @@
 	</p:dataTable>
 
 	<ui:include src="detail-contatti-create.xhtml"/>
-
+	
 </html>

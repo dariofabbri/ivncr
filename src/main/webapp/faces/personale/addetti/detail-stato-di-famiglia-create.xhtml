@@ -18,43 +18,43 @@
 			<h:panelGrid columns="4" cellpadding="5">
 				
 				<p:outputLabel for="statocivile" value="Stato civile:" />
-				<p:inputText value="#{dettaglioClientiContatti.tipoContatto}" id="statocivile"
+				<p:inputText value="#{dettaglioClienteContatti.tipoContatto}" id="statocivile"
 					style="width: 250px;"/>
 				<p:watermark for="statocivile" value="Stato" />  
 				<p:message for="statocivile" showSummary="true" showDetail="false"/>
 
 				<p:outputLabel for="parentela" value="Parentela:" />
-				<p:inputText value="#{dettaglioClientiContatti.titolo}" id="parentela"
+				<p:inputText value="#{dettaglioClienteContatti.titolo}" id="parentela"
 					style="width: 250px;"/>
 				<p:watermark for="parentela" value="Grado di parentela" />  
 				<p:message for="parentela" showSummary="true" showDetail="false"/>
 
 				<p:outputLabel for="datadinascita" value="Data di nascita:" />
-				<p:inputText value="#{dettaglioClientiContatti.nome}" id="datadinascita"
+				<p:inputText value="#{dettaglioClienteContatti.nome}" id="datadinascita"
 					style="width: 250px;"/>
 				<p:watermark for="datadinascita" value="Data di nascita" />  
 				<p:message for="datadinascita" showSummary="true" showDetail="false"/>
 
 				<p:outputLabel for="cognome" value="Cognome:" />
-				<p:inputText value="#{dettaglioClientiContatti.telefono1}" id="cognome"
+				<p:inputText value="#{dettaglioClienteContatti.telefono1}" id="cognome"
 					style="width: 250px;"/>
 				<p:watermark for="cognome" value="Cognome" />  
 				<p:message for="cognome" showSummary="true" showDetail="false"/>
 				
 				<p:outputLabel for="nome" value="Nome:" />
-				<p:inputText value="#{dettaglioClientiContatti.telefono1}" id="nome"
+				<p:inputText value="#{dettaglioClienteContatti.telefono1}" id="nome"
 					style="width: 250px;"/>
 				<p:watermark for="nome" value="Nome" />  
 				<p:message for="nome" showSummary="true" showDetail="false"/>
 				
 				<p:outputLabel for="dal" value="Dal:" />
-				<p:inputText value="#{dettaglioClientiContatti.telefono1}" id="dal"
+				<p:inputText value="#{dettaglioClienteContatti.telefono1}" id="dal"
 					style="width: 250px;"/>
 				<p:watermark for="dal" value="24 maggio 1980" />  
 				<p:message for="dal" showSummary="true" showDetail="false"/>
 				
 				<p:outputLabel for="al" value="Al:" />
-				<p:inputText value="#{dettaglioClientiContatti.telefono1}" id="al"
+				<p:inputText value="#{dettaglioClienteContatti.telefono1}" id="al"
 					style="width: 250px;"/>
 				<p:watermark for="al" value="" />  
 				<p:message for="al" showSummary="true" showDetail="false"/>
@@ -62,7 +62,7 @@
 				
 				<f:facet name="footer">
 					<p:commandButton value="Salva"
-						actionListener="#{dettaglioClientiContatti.doCreate}" 
+						actionListener="#{dettaglioClienteContatti.doCreate}" 
 						oncomplete="if(args.ok) {createStatoDiFamigliaDialog.hide(); }"/>
 
 					<p:commandButton value="Annulla"

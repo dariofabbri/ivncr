@@ -1,0 +1,5 @@
+In order to avoid submitted empty fields serialized to the database as 
+empty strings (instead of nulls) it is necessary to start Tomcat VM with 
+the following parameter:
+
+-Dorg.apache.el.parser.COERCE_TO_ZERO=false

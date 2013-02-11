@@ -18,38 +18,38 @@
 			<h:panelGrid columns="4" cellpadding="5">
 				
 				<p:outputLabel for="titolostudio" value="Titolo di studio:" />
-				<p:inputText value="#{dettaglioClientiContatti.tipoContatto}" id="titolostudio"
+				<p:inputText value="#{dettaglioClienteContatti.tipoContatto}" id="titolostudio"
 					style="width: 250px;"/>
 				<p:watermark for="titolostudio" value="Tipologia del titolo" />  
 				<p:message for="titolostudio" showSummary="true" showDetail="false"/>
 
 				<p:outputLabel for="specificastudio" value="Specifica:" />
-				<p:inputText value="#{dettaglioClientiContatti.titolo}" id="specificastudio"
+				<p:inputText value="#{dettaglioClienteContatti.titolo}" id="specificastudio"
 					style="width: 250px;"/>
 				<p:watermark for="specificastudio" value="Specifica del titolo di studio" />  
 				<p:message for="specificastudio" showSummary="true" showDetail="false"/>
 
 				<p:outputLabel for="votostudio" value="Voto:" />
-				<p:inputText value="#{dettaglioClientiContatti.nome}" id="votostudio"
+				<p:inputText value="#{dettaglioClienteContatti.nome}" id="votostudio"
 					style="width: 250px;"/>
 				<p:watermark for="votostudio" value="Voto conseguito" />  
 				<p:message for="votostudio" showSummary="true" showDetail="false"/>
 
 				<p:outputLabel for="dataconseguimento" value="Data conseguimento:" />
-				<p:inputText value="#{dettaglioClientiContatti.telefono1}" id="dataconseguimento"
+				<p:inputText value="#{dettaglioClienteContatti.telefono1}" id="dataconseguimento"
 					style="width: 250px;"/>
 				<p:watermark for="dataconseguimento" value="Data conseguimento titolo" />  
 				<p:message for="dataconseguimento" showSummary="true" showDetail="false"/>
 				
 				<p:outputLabel for="presso" value="Presso:" />
-				<p:inputText value="#{dettaglioClientiContatti.telefono1}" id="presso"
+				<p:inputText value="#{dettaglioClienteContatti.telefono1}" id="presso"
 					style="width: 250px;"/>
 				<p:watermark for="presso" value="Conseguito presso" />  
 				<p:message for="presso" showSummary="true" showDetail="false"/>
 				
 				<f:facet name="footer">
 					<p:commandButton value="Salva"
-						actionListener="#{dettaglioClientiContatti.doCreate}" 
+						actionListener="#{dettaglioClienteContatti.doCreate}" 
 						oncomplete="if(args.ok) { createStudiDialog.hide(); }"/>
 
 					<p:commandButton value="Annulla"
