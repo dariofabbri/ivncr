@@ -1,6 +1,7 @@
 package it.ivncr.erp.jsf.managedbean.commerciale.gestioneclienti;
 
 
+import it.ivncr.erp.jsf.RobustLazyDataModel;
 import it.ivncr.erp.model.commerciale.Contatto;
 
 import java.io.Serializable;
@@ -45,7 +46,7 @@ public class DettaglioClientiObiettiviServizio implements Serializable {
 
 
 	public DettaglioClientiObiettiviServizio(){
-		model = new LazyDataModel<Contatto>() {
+		model = new RobustLazyDataModel<Contatto>() {
 
 			private static final long serialVersionUID = 1L;
 			@Override

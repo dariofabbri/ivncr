@@ -1,5 +1,6 @@
 package it.ivncr.erp.jsf.managedbean.accesso.ruolo;
 
+import it.ivncr.erp.jsf.RobustLazyDataModel;
 import it.ivncr.erp.model.accesso.Ruolo;
 import it.ivncr.erp.service.QueryResult;
 import it.ivncr.erp.service.ServiceFactory;
@@ -34,7 +35,7 @@ public class GestioneRuoli implements Serializable {
 	
 	public GestioneRuoli() {
 		
-		model = new LazyDataModel<Ruolo>() {
+		model = new RobustLazyDataModel<Ruolo>() {
 
 			private static final long serialVersionUID = 1L;
 

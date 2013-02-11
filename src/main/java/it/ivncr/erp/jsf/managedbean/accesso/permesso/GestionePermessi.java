@@ -1,5 +1,6 @@
 package it.ivncr.erp.jsf.managedbean.accesso.permesso;
 
+import it.ivncr.erp.jsf.RobustLazyDataModel;
 import it.ivncr.erp.model.accesso.Permesso;
 import it.ivncr.erp.service.QueryResult;
 import it.ivncr.erp.service.ServiceFactory;
@@ -37,7 +38,7 @@ public class GestionePermessi implements Serializable {
 
 	public GestionePermessi() {
 
-		model = new LazyDataModel<Permesso>() {
+		model = new RobustLazyDataModel<Permesso>() {
 
 			private static final long serialVersionUID = 1L;
 

@@ -1,6 +1,7 @@
 package it.ivncr.erp.jsf.managedbean.commerciale.gestioneclienti;
 
 
+import it.ivncr.erp.jsf.RobustLazyDataModel;
 import it.ivncr.erp.model.commerciale.Contatto;
 import it.ivncr.erp.model.commerciale.TipoContatto;
 import it.ivncr.erp.service.QueryResult;
@@ -35,8 +36,8 @@ public class DettaglioClienteContatti implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@ManagedProperty("#{gestioneClienti.edited.id}")
-	private Integer id;
+	@ManagedProperty("#{dettaglioClienteGenerale}")
+	private DettaglioClienteGenerale dettaglioClienteGenerale;
 
 	private LazyDataModel<Contatto> model;
 	private Contatto selected;
@@ -55,7 +56,7 @@ public class DettaglioClienteContatti implements Serializable {
 
 	public DettaglioClienteContatti(){
 
-		model = new LazyDataModel<Contatto>() {
+		model = new RobustLazyDataModel<Contatto>() {
 
 			private static final long serialVersionUID = 1L;
 			@Override
@@ -68,9 +69,13 @@ public class DettaglioClienteContatti implements Serializable {
 
 				logger.debug("Fetching data model.");
 
+				if(dettaglioClienteGenerale.getId() == null) {
+					return null;
+				}
+				
 				// Inject codice cliente argument in applied filters map.
 				//
-				filters.put("codiceCliente", Integer.toString(id));
+				filters.put("codiceCliente", Integer.toString(dettaglioClienteGenerale.getId()));
 
 				ContattoService cs = ServiceFactory.createService("Contatto");
 				QueryResult<Contatto> result = cs.list(
@@ -137,7 +142,7 @@ public class DettaglioClienteContatti implements Serializable {
 		try {
 			ContattoService cs = ServiceFactory.createService("Contatto");
 			cs.create(
-					id,
+					dettaglioClienteGenerale.getId(),
 					codiceTipoContatto,
 					titolo,
 					nome,
@@ -158,7 +163,7 @@ public class DettaglioClienteContatti implements Serializable {
 			FacesMessage message = new FacesMessage(
 					FacesMessage.SEVERITY_INFO,
 					"Record creato",
-					"La creazione del nuovo permesso si è conclusa con successo.");
+					"La creazione del nuovo contatto si è conclusa con successo.");
 			FacesContext.getCurrentInstance().addMessage(null, message);
 
 			// Signal to modal dialog that everything went fine.
@@ -177,12 +182,13 @@ public class DettaglioClienteContatti implements Serializable {
 		}
 	}
 
-	public Integer getId() {
-		return id;
+	public DettaglioClienteGenerale getDettaglioClienteGenerale() {
+		return dettaglioClienteGenerale;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
+	public void setDettaglioClienteGenerale(
+			DettaglioClienteGenerale dettaglioClienteGenerale) {
+		this.dettaglioClienteGenerale = dettaglioClienteGenerale;
 	}
 
 	public LazyDataModel<Contatto> getModel() {

@@ -14,7 +14,7 @@
 			showEffect="fade" 
 			hideEffect="fade"> 
 		
-			<p:messages globalOnly="true" showDetail="true" closable="true"/>
+			<p:messages globalOnly="false" showSummary="false" showDetail="true" severity="error" closable="true"/>
 	
 			<p:panelGrid styleClass="form-panel">
 
@@ -127,7 +127,7 @@
 						<p:commandButton value="Crea"
 							actionListener="#{dettaglioClienteContatti.doCreate}"
 							process="createContattoView" 
-							update=":detailForm:tabView:contattiTab" 
+							update=":detailForm:tabView:contattiTab,:detailForm:growl" 
 							oncomplete="if(args.ok) { createContattoDialogWidget.hide(); }"/>
 		
 						<p:commandButton value="Annulla"

@@ -1,5 +1,6 @@
 package it.ivncr.erp.jsf.managedbean.commerciale.gestioneclienti;
 
+import it.ivncr.erp.jsf.RobustLazyDataModel;
 import it.ivncr.erp.jsf.managedbean.accesso.session.LoginInfo;
 import it.ivncr.erp.model.commerciale.Cliente;
 import it.ivncr.erp.service.QueryResult;
@@ -38,7 +39,7 @@ public class GestioneClienti implements Serializable {
 
 	public GestioneClienti() {
 
-		model = new LazyDataModel<Cliente>() {
+		model = new RobustLazyDataModel<Cliente>() {
 
 			private static final long serialVersionUID = 1L;
 

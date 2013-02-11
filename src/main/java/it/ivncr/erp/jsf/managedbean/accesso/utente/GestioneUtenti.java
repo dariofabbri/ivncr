@@ -1,5 +1,6 @@
 package it.ivncr.erp.jsf.managedbean.accesso.utente;
 
+import it.ivncr.erp.jsf.RobustLazyDataModel;
 import it.ivncr.erp.model.accesso.Utente;
 import it.ivncr.erp.service.QueryResult;
 import it.ivncr.erp.service.ServiceFactory;
@@ -38,7 +39,7 @@ public class GestioneUtenti implements Serializable {
 
 	public GestioneUtenti() {
 
-		model = new LazyDataModel<Utente>() {
+		model = new RobustLazyDataModel<Utente>() {
 
 			private static final long serialVersionUID = 1L;
 
