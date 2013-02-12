@@ -42,7 +42,7 @@
 				actionListener="#{dettaglioClienteContatti.startUpdate}"
 				process="@this"
 				update=":detailForm:tabView:detailContattoView:detailContattoDialog"
-				oncomplete="detailContattoDialogWidget.show()"
+				oncomplete="detailContattoDialogWidget.show();"
 				icon="ui-icon-pencil" />
 			<p:tooltip 
 				for="updateButton" 
@@ -64,7 +64,7 @@
 			pageLinks="10"
 			emptyMessage="Nessun record trovato" 
 			selectionMode="single"
-			selection="#{dettaglioClienteContatti.selected}" 
+			selection="#{dettaglioClienteContatti.selected}"
 			lazy="true">
 	
 			<p:ajax event="rowSelect" process="@this" update=":detailForm:tabView:listContattiView:buttons"/>
@@ -108,6 +108,7 @@
 
 	</f:subview>
 
+
 	<f:subview id="detailContattoView">
 		
 		<p:dialog
@@ -117,11 +118,13 @@
 			modal="true"
 			showEffect="fade" 
 			hideEffect="fade"> 
-				
-			<p:messages globalOnly="false" showSummary="false" showDetail="true" severity="error" closable="true"/>
+
+			<p:messages id="messages" globalOnly="false" showSummary="false" showDetail="true" severity="error" closable="true"/>
 	
 			<p:panelGrid styleClass="form-panel">
 
+				<p:focus/>
+				
 				<p:row>
 					<p:column>
 						<p:outputLabel for="codiceTipoContatto" value="Tipo contatto:" />
@@ -231,11 +234,12 @@
 						<p:commandButton value="Salva"
 							actionListener="#{dettaglioClienteContatti.doSave}"
 							process="detailContattoDialog"
-							update=":detailForm:tabView:listContattiView:contattiTable,:detailForm:tabView:listContattiView:buttons,:detailForm:growl" 
+							update=":detailForm:tabView:listContattiView:contattiTable,:detailForm:tabView:listContattiView:buttons,:detailForm:tabView:detailContattoView:messages,:detailForm:growl" 
 							oncomplete="if(args.ok) { detailContattoDialogWidget.hide(); }"/>
 		
 						<p:commandButton value="Annulla"
-							oncomplete="detailContattoDialogWidget.hide();" />
+							type="button"
+							onclick="detailContattoDialogWidget.hide();" />
 
 					</p:column>
 				</p:row>
@@ -246,4 +250,47 @@
 		
 	</f:subview>
 	
+	
+	<f:subview id="deleteContattoView">
+		
+		<p:dialog
+			id="deleteContattoDialog" 
+			header="Eliminazione contatto" 
+			widgetVar="deleteContattoDialogWidget" 
+			modal="true"
+			showEffect="fade" 
+			hideEffect="fade"> 
+				
+			<p:messages id="messages" globalOnly="false" showSummary="false" showDetail="true" severity="error" closable="true"/>
+			
+			<p:panelGrid styleClass="form-panel">
+				
+				<p:row>
+					<p:column>		
+						<h:outputText value="Si conferma l'eliminazione del contatto selezionato?"/>
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column styleClass="form-footer">		
+
+						<p:commandButton value="Elimina"
+							actionListener="#{dettaglioClienteContatti.doDelete}"
+							process="@this"
+							update=":detailForm:tabView:listContattiView:contattiTable,:detailForm:tabView:listContattiView:buttons,:detailForm:tabView:deleteContattoView:messages,:detailForm:growl" 
+							oncomplete="if(args.ok) { deleteContattoDialogWidget.hide(); }"/>
+		
+						<p:commandButton value="Annulla"
+							type="button"
+							onclick="deleteContattoDialogWidget.hide();" />
+							
+					</p:column>
+				</p:row>
+				
+			</p:panelGrid>
+			
+		</p:dialog>
+		
+	</f:subview>
+		
 </html>

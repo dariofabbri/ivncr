@@ -41,4 +41,6 @@ public interface ContattoService extends EntityService<Contatto> {
 			String cellulare,
 			String fax,
 			String email);
+	
+	void delete(Integer id);
 }

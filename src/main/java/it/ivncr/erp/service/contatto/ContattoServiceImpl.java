@@ -191,4 +191,18 @@ public class ContattoServiceImpl extends AbstractService implements ContattoServ
 
 		return contatto;
 	}
+	
+
+	@Override
+	public void delete(Integer id) {
+		
+		Contatto contatto = retrieve(id);
+		if(contatto == null) {
+			String message = String.format("It has not been possible to retrieve specified contatto: %d", id);
+			logger.info(message);
+			throw new NotFoundException(message);
+		}
+		
+		session.delete(contatto);
+	}
 }

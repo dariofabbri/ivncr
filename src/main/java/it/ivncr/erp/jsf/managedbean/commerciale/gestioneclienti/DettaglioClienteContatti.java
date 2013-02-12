@@ -55,7 +55,7 @@ public class DettaglioClienteContatti implements Serializable {
 	private List<TipoContatto> listTipoContatto;
 
 
-	public DettaglioClienteContatti(){
+	public DettaglioClienteContatti() {
 
 		model = new RobustLazyDataModel<Contatto>() {
 
@@ -120,6 +120,8 @@ public class DettaglioClienteContatti implements Serializable {
 
 	private void clean() {
 
+		logger.debug("Cleaning form state.");
+		
 		id = null;
 		codiceTipoContatto = null;
 		titolo = null;
@@ -133,11 +135,15 @@ public class DettaglioClienteContatti implements Serializable {
 
 	public void startCreate() {
 
+		logger.debug("Entering startCreate method.");
+		
 		clean();
 	}
 
 	public void startUpdate() {
-
+		
+		logger.debug("Entering startUpdate method.");
+		
 		if(selected == null) {
 			String msg = "Unexpected null value detected for selected row.";
 			logger.error(msg);
@@ -222,6 +228,48 @@ public class DettaglioClienteContatti implements Serializable {
 		}
 	}
 
+	
+	public void doDelete() {
+		
+		if(selected == null || selected.getId() == null) {
+			String msg = "Unexpected null id detected.";
+			logger.error(msg);
+			throw new RuntimeException(msg);
+		}
+		
+		// Delete the entity.
+		//
+		try {
+			ContattoService cs = ServiceFactory.createService("Contatto");
+			cs.delete(selected.getId());
+			
+			logger.debug("Entity successfully deleted.");
+
+			// Add a message.
+			//
+			FacesMessage message = new FacesMessage(
+					FacesMessage.SEVERITY_INFO,
+					"Record eliminato",
+					"L'eliminazione del contatto si è conclusa con successo.");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+
+			// Signal to modal dialog that everything went fine.
+			//
+			RequestContext.getCurrentInstance().addCallbackParam("ok", true);
+
+		} catch(Exception e) {
+
+			logger.warn("Exception caught while deleting entity.", e);
+
+			FacesMessage message = new FacesMessage(
+					FacesMessage.SEVERITY_ERROR,
+					"Errore di sistema",
+					"Si è verificato un errore in fase di eliminazione del record.");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+		}
+	}
+
+	
 	public DettaglioClienteGenerale getDettaglioClienteGenerale() {
 		return dettaglioClienteGenerale;
 	}
