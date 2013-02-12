@@ -3,106 +3,247 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
+
+	<f:subview id="listContattiView">
 	
-	<p:outputPanel id="buttons" style="display: block; margin-top: 2em; margin-bottom: 2em;">
+		<p:outputPanel id="buttons" style="display: block; margin-top: 2em; margin-bottom: 2em;">
+	
+			<p:commandButton
+				id="createButton"
+				value="Crea"
+				actionListener="#{dettaglioClienteContatti.startCreate}"
+				process="@this"
+				update=":detailForm:tabView:detailContattoView:detailContattoDialog"
+				oncomplete="detailContattoDialogWidget.show();"
+				icon="ui-icon-star"/>
+			<p:tooltip 
+				for="createButton" 
+				value="Crea un nuovo contatto" 
+				showEffect="fade" 
+				hideEffect="fade"/>
+	
+			<p:commandButton
+				id="deleteButton"
+				value="Elimina"
+				type="button"
+				disabled="#{dettaglioClienteContatti.selected == null}"
+				onclick="deleteContattoDialogWidget.show();"
+				icon="ui-icon-trash" />
+			<p:tooltip 
+				for="deleteButton" 
+				value="Elimina il contatto selezionato" 
+				showEffect="fade" 
+				hideEffect="fade"/>
+	
+			<p:commandButton
+				id="updateButton" 
+				value="Modifica"
+				disabled="#{dettaglioClienteContatti.selected == null}"
+				actionListener="#{dettaglioClienteContatti.startUpdate}"
+				process="@this"
+				update=":detailForm:tabView:detailContattoView:detailContattoDialog"
+				oncomplete="detailContattoDialogWidget.show()"
+				icon="ui-icon-pencil" />
+			<p:tooltip 
+				for="updateButton" 
+				value="Modifica il contatto selezionato" 
+				showEffect="fade" 
+				hideEffect="fade"/>
+	
+		</p:outputPanel>
+										
+		<p:dataTable 
+			id="contattiTable" 
+			var="contatto" 
+			value="#{dettaglioClienteContatti.model}"
+			paginator="true" 
+			paginatorPosition="bottom" rows="10"
+			paginatorTemplate="{CurrentPageReport} {RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+			currentPageReportTemplate="Trovati {totalRecords} record - Pagina {currentPage} di {totalPages}"
+			rowsPerPageTemplate="5,10,50" 
+			pageLinks="10"
+			emptyMessage="Nessun record trovato" 
+			selectionMode="single"
+			selection="#{dettaglioClienteContatti.selected}" 
+			lazy="true">
+	
+			<p:ajax event="rowSelect" process="@this" update=":detailForm:tabView:listContattiView:buttons"/>
+			<p:ajax event="rowUnselect" process="@this" update=":detailForm:tabView:listContattiView:buttons"/>
+	      		
+			<f:facet name="header">
+		    	Lista dei contatti
+		    </f:facet>
+	
+			<p:column headerText="Nome" sortBy="#{contatto.nome}"
+				filterBy="#{contatto.nome}">
+				<h:outputText value="#{contatto.nome}" />
+			</p:column>
+	
+			<p:column headerText="Telefono 1" sortBy="#{contatto.telefono1}"
+				filterBy="#{contatto.telefono1}">
+				<h:outputText value="#{contatto.telefono1}" />
+			</p:column>
+	
+			<p:column headerText="Telefono 2" sortBy="#{contatto.telefono2}"
+				filterBy="#{contatto.telefono2}">
+				<h:outputText value="#{contatto.telefono2}" />
+			</p:column>
+	
+			<p:column headerText="Cellulare" sortBy="#{contatto.cellulare}"
+				filterBy="#{contatto.cellulare}">
+				<h:outputText value="#{contatto.cellulare}" />
+			</p:column>
+	
+			<p:column headerText="Fax" sortBy="#{contatto.fax}"
+				filterBy="#{contatto.fax}">
+				<h:outputText value="#{contatto.fax}" />
+			</p:column>
+	
+			<p:column headerText="Email" sortBy="#{contatto.email}"
+				filterBy="#{contatto.email}">
+				<h:outputText value="#{contatto.email}" />
+			</p:column>
+	
+		</p:dataTable>
 
-		<p:commandButton
-			id="createButton"
-			value="Crea"
-			type="button"
-			onclick="createContattoDialogWidget.show();"
-			icon="ui-icon-star"/>
-		<p:tooltip 
-			for="createButton" 
-			value="Crea un nuovo contatto" 
+	</f:subview>
+
+	<f:subview id="detailContattoView">
+		
+		<p:dialog
+			id="detailContattoDialog"
+			header="Dettagli del contatto" 
+			widgetVar="detailContattoDialogWidget" 
+			modal="true"
 			showEffect="fade" 
-			hideEffect="fade"/>
+			hideEffect="fade"> 
+				
+			<p:messages globalOnly="false" showSummary="false" showDetail="true" severity="error" closable="true"/>
+	
+			<p:panelGrid styleClass="form-panel">
 
-		<p:commandButton
-			id="deleteButton"
-			value="Elimina"
-			type="button"
-			disabled="#{dettaglioClienteContatti.selected == null}"
-			onclick="deleteContattoDialogWidget.show();"
-			icon="ui-icon-trash" />
-		<p:tooltip 
-			for="deleteButton" 
-			value="Elimina il contatto selezionato" 
-			showEffect="fade" 
-			hideEffect="fade"/>
+				<p:row>
+					<p:column>
+						<p:outputLabel for="codiceTipoContatto" value="Tipo contatto:" />
+					</p:column>
+					<p:column>
+						<p:selectOneMenu
+							required="true" 
+							requiredMessage="Il campo tipo contatto è obbligatorio"
+							id="codiceTipoContatto" 
+							value="#{dettaglioClienteContatti.codiceTipoContatto}"
+							effect="fade">
+							<f:selectItem itemLabel="Selezionare un tipo" itemValue="" />
+							<f:selectItems 
+								value="#{dettaglioClienteContatti.listTipoContatto}" var="item"
+								itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+						</p:selectOneMenu>	
+						<p:tooltip for="codiceTipoContatto" showEffect="fade" value="Tipo contatto" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="titolo" value="Titolo:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioClienteContatti.titolo}" id="titolo"/>
+						<p:watermark for="titolo" value="Titolo da premettere al nome del contatto" />  
+						<p:tooltip for="titolo" showEffect="fade" value="Titolo del contatto" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="nome" value="Nome:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioClienteContatti.nome}" id="nome"
+							required="true" requiredMessage="Il campo nome è obbligatorio"/>
+						<p:watermark for="nome" value="Nome e cognome del contatto" />  
+						<p:tooltip for="nome" showEffect="fade" value="Nome e cognome del contatto" />
+					</p:column>
+				</p:row>
+		
+				<p:row>
+					<p:column>		
+						<p:outputLabel for="telefono1" value="Telefono 1:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioClienteContatti.telefono1}" id="telefono1"
+							validator="phoneValidator" validatorMessage="Il numero immesso come contatto telefonico principale non è valido"/>
+						<p:watermark for="telefono1" value="Primo riferimento telefonico del contatto" />  
+						<p:tooltip for="telefono1" showEffect="fade" value="Primo riferimento telefonico del contatto" />
+					</p:column>
+				</p:row>
+				
+				<p:row>
+					<p:column>
+						<p:outputLabel for="telefono2" value="Telefono 2:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioClienteContatti.telefono2}" id="telefono2"
+							validator="phoneValidator" validatorMessage="Il numero immesso come contatto telefonico alternativo non è valido"/>
+						<p:watermark for="telefono2" value="Riferimento telefonico alternativo del contatto"/>
+						<p:tooltip for="telefono2" showEffect="fade" value="Riferimento telefonico alternativo del contatto" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>
+						<p:outputLabel for="cellulare" value="Cellulare:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioClienteContatti.cellulare}" id="cellulare"
+							validator="phoneValidator" validatorMessage="Il numero di cellulare inserito non è valido"/>
+						<p:watermark for="cellulare" value="Riferimento telefonico cellulare del contatto" />  
+						<p:tooltip for="cellulare" showEffect="fade" value="Riferimento telefonico cellulare del contatto" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>
+						<p:outputLabel for="fax" value="Fax:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioClienteContatti.fax}" id="fax"
+							validator="phoneValidator" validatorMessage="Il numero di fax inserito non è valido"/>
+						<p:watermark for="fax" value="Numero di fax del contatto" />  
+						<p:tooltip for="fax" showEffect="fade" value="Numero di fax del contatto" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>
+						<p:outputLabel for="email" value="E-mail:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioClienteContatti.email}" id="email"
+							validator="emailValidator" validatorMessage="L'indirizzo di posta elettronica inserito non è valido"/>
+						<p:watermark for="email" value="Email del contatto" />  
+						<p:tooltip for="email" showEffect="fade" value="Email del contatto" />
+					</p:column>
+				</p:row>
+			
+				<p:row>
+					<p:column colspan="2" styleClass="form-footer">
 
-		<p:commandButton
-			id="updateButton" 
-			value="Modifica"
-			type="button"
-			disabled="#{dettaglioClienteContatti.selected == null}"
-			action="#{dettaglioClienteContatti.startUpdate}"
-			icon="ui-icon-pencil" />
-		<p:tooltip 
-			for="updateButton" 
-			value="Modifica il contatto selezionato" 
-			showEffect="fade" 
-			hideEffect="fade"/>
+						<p:commandButton value="Salva"
+							actionListener="#{dettaglioClienteContatti.doSave}"
+							process="detailContattoDialog"
+							update=":detailForm:tabView:listContattiView:contattiTable,:detailForm:tabView:listContattiView:buttons,:detailForm:growl" 
+							oncomplete="if(args.ok) { detailContattoDialogWidget.hide(); }"/>
+		
+						<p:commandButton value="Annulla"
+							oncomplete="detailContattoDialogWidget.hide();" />
 
-	</p:outputPanel>
+					</p:column>
+				</p:row>
 									
-	<p:dataTable var="contatto" 
-		value="#{dettaglioClienteContatti.model}"
-		paginator="true" 
-		paginatorPosition="bottom" rows="10"
-		paginatorTemplate="{CurrentPageReport} {RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
-		currentPageReportTemplate="Trovati {totalRecords} record - Pagina {currentPage} di {totalPages}"
-		rowsPerPageTemplate="5,10,50" 
-		pageLinks="10"
-		emptyMessage="Nessun record trovato" 
-		selectionMode="single"
-		selection="#{dettaglioClienteContatti.selected}" 
-		id="contattiTable" 
-		lazy="true">
-
-		<!--
-		<p:ajax event="rowSelect" update="buttons,:updateForm"/>
-		<p:ajax event="rowUnselect" update="buttons,:updateForm"/>
-		-->
-		<p:ajax event="rowSelect" process="@this" update=":detailForm:tabView:buttons"/>
-		<p:ajax event="rowUnselect" process="@this" update=":detailForm:tabView:buttons"/>
-      		
-		<f:facet name="header">
-	    	Lista dei contatti
-	    </f:facet>
-
-		<p:column headerText="Nome" sortBy="#{contatto.nome}"
-			filterBy="#{contatto.nome}">
-			<h:outputText value="#{contatto.nome}" />
-		</p:column>
-
-		<p:column headerText="Telefono 1" sortBy="#{contatto.telefono1}"
-			filterBy="#{contatto.telefono1}">
-			<h:outputText value="#{contatto.telefono1}" />
-		</p:column>
-
-		<p:column headerText="Telefono 2" sortBy="#{contatto.telefono2}"
-			filterBy="#{contatto.telefono2}">
-			<h:outputText value="#{contatto.telefono2}" />
-		</p:column>
-
-		<p:column headerText="Cellulare" sortBy="#{contatto.cellulare}"
-			filterBy="#{contatto.cellulare}">
-			<h:outputText value="#{contatto.cellulare}" />
-		</p:column>
-
-		<p:column headerText="Fax" sortBy="#{contatto.fax}"
-			filterBy="#{contatto.fax}">
-			<h:outputText value="#{contatto.fax}" />
-		</p:column>
-
-		<p:column headerText="Email" sortBy="#{contatto.email}"
-			filterBy="#{contatto.email}">
-			<h:outputText value="#{contatto.email}" />
-		</p:column>
-
-	</p:dataTable>
-
-	<ui:include src="detail-contatti-create.xhtml"/>
+			</p:panelGrid>
+					
+		</p:dialog>
+		
+	</f:subview>
 	
 </html>

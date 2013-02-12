@@ -18,6 +18,7 @@ public interface ContattoService extends EntityService<Contatto> {
 			Integer limit);
 
 	Contatto retrieve(Integer id);
+	Contatto retrieveDeep(Integer id);
 
 	Contatto create(
 			Integer codiceCliente,

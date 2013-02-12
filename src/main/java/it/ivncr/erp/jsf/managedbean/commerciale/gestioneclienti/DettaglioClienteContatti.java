@@ -42,6 +42,7 @@ public class DettaglioClienteContatti implements Serializable {
 	private LazyDataModel<Contatto> model;
 	private Contatto selected;
 
+	private Integer id;
 	private Integer codiceTipoContatto;
 	private String titolo;
 	private String nome;
@@ -72,7 +73,7 @@ public class DettaglioClienteContatti implements Serializable {
 				if(dettaglioClienteGenerale.getId() == null) {
 					return null;
 				}
-				
+
 				// Inject codice cliente argument in applied filters map.
 				//
 				filters.put("codiceCliente", Integer.toString(dettaglioClienteGenerale.getId()));
@@ -100,7 +101,7 @@ public class DettaglioClienteContatti implements Serializable {
 			public Contatto getRowData(String rowKey) {
 
 				ContattoService cs = ServiceFactory.createService("Contatto");
-				Contatto contatto = cs.retrieve(Integer.decode(rowKey));
+				Contatto contatto = cs.retrieveDeep(Integer.decode(rowKey));
 				return contatto;
 			}
 		};
@@ -119,6 +120,7 @@ public class DettaglioClienteContatti implements Serializable {
 
 	private void clean() {
 
+		id = null;
 		codiceTipoContatto = null;
 		titolo = null;
 		nome = null;
@@ -129,42 +131,80 @@ public class DettaglioClienteContatti implements Serializable {
 		email = null;
 	}
 
-	public String startCreate() {
+	public void startCreate() {
 
-		logger.debug("Moving to detail page for new record creation.");
-		return "detail?faces-redirect=true";
+		clean();
 	}
 
-	public void doCreate() {
+	public void startUpdate() {
 
-		// Create the new entity.
+		if(selected == null) {
+			String msg = "Unexpected null value detected for selected row.";
+			logger.error(msg);
+			throw new RuntimeException(msg);
+		}
+
+		id = selected.getId();
+		codiceTipoContatto = selected.getTipoContatto() != null ? selected.getTipoContatto().getId() : null;
+		titolo = selected.getTitolo();
+		nome = selected.getNome();
+		telefono1 = selected.getTelefono1();
+		telefono2 = selected.getTelefono2();
+		cellulare = selected.getCellulare();
+		fax = selected.getFax();
+		email = selected.getEmail();
+	}
+
+	public void doSave() {
+
+		// Save the entity.
 		//
 		try {
 			ContattoService cs = ServiceFactory.createService("Contatto");
-			cs.create(
-					dettaglioClienteGenerale.getId(),
-					codiceTipoContatto,
-					titolo,
-					nome,
-					telefono1,
-					telefono2,
-					cellulare,
-					fax,
-					email);
-			logger.debug("Entity successfully created.");
 
-			// Clean up form state (to avoid already having populated fields on a
-			// subsequent creation).
-			//
-			clean();
+			if(id == null) {
+				cs.create(
+						dettaglioClienteGenerale.getId(),
+						codiceTipoContatto,
+						titolo,
+						nome,
+						telefono1,
+						telefono2,
+						cellulare,
+						fax,
+						email);
+				logger.debug("Entity successfully created.");
 
-			// Add a message.
-			//
-			FacesMessage message = new FacesMessage(
-					FacesMessage.SEVERITY_INFO,
-					"Record creato",
-					"La creazione del nuovo contatto si è conclusa con successo.");
-			FacesContext.getCurrentInstance().addMessage(null, message);
+				// Add a message.
+				//
+				FacesMessage message = new FacesMessage(
+						FacesMessage.SEVERITY_INFO,
+						"Record creato",
+						"La creazione del nuovo contatto si è conclusa con successo.");
+				FacesContext.getCurrentInstance().addMessage(null, message);
+
+			} else {
+
+				cs.update(
+						id,
+						codiceTipoContatto,
+						titolo,
+						nome,
+						telefono1,
+						telefono2,
+						cellulare,
+						fax,
+						email);
+				logger.debug("Entity successfully updated.");
+
+				// Add a message.
+				//
+				FacesMessage message = new FacesMessage(
+						FacesMessage.SEVERITY_INFO,
+						"Record creato",
+						"La modifica del contatto si è conclusa con successo.");
+				FacesContext.getCurrentInstance().addMessage(null, message);
+			}
 
 			// Signal to modal dialog that everything went fine.
 			//
@@ -172,12 +212,12 @@ public class DettaglioClienteContatti implements Serializable {
 
 		} catch(Exception e) {
 
-			logger.warn("Exception caught while creating entity.", e);
+			logger.warn("Exception caught while saving entity.", e);
 
 			FacesMessage message = new FacesMessage(
 					FacesMessage.SEVERITY_ERROR,
 					"Errore di sistema",
-					"Si è verificato un errore in fase di creazione del record.");
+					"Si è verificato un errore in fase di salvataggio del record.");
 			FacesContext.getCurrentInstance().addMessage(null, message);
 		}
 	}
@@ -205,6 +245,14 @@ public class DettaglioClienteContatti implements Serializable {
 
 	public void setSelected(Contatto selected) {
 		this.selected = selected;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public Integer getCodiceTipoContatto() {

@@ -10,6 +10,8 @@ import it.ivncr.erp.service.SortDirection;
 
 import java.util.Map;
 
+import org.hibernate.Query;
+
 public class ContattoServiceImpl extends AbstractService implements ContattoService {
 
 	@Override
@@ -88,6 +90,21 @@ public class ContattoServiceImpl extends AbstractService implements ContattoServ
 	public Contatto retrieve(Integer id) {
 
 		Contatto contatto = (Contatto)session.get(Contatto.class, id);
+		logger.debug("Contatto found: " + contatto);
+
+		return contatto;
+	}
+
+	@Override
+	public Contatto retrieveDeep(Integer id) {
+
+		String hql =
+				"from Contatto con " +
+				"left join fetch con.tipoContatto tco " +
+				"where con.id = :id ";
+		Query query = session.createQuery(hql);
+		query.setParameter("id", id);
+		Contatto contatto = (Contatto)query.uniqueResult();
 		logger.debug("Contatto found: " + contatto);
 
 		return contatto;
