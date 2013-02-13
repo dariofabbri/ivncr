@@ -57,7 +57,7 @@ public class DettaglioClienteIndirizzi implements Serializable {
 	private String paese;
 
 	private List<TipoIndirizzo> listTipoIndirizzo;
-	private List<String> sigle;
+	private List<Provincia> listProvincia;
 
 
 	public DettaglioClienteIndirizzi() {
@@ -123,11 +123,7 @@ public class DettaglioClienteIndirizzi implements Serializable {
 		
 		// Load province LUT and extract short codes.
 		//
-		List<Provincia> list = lutService.listItems("Provincia");
-		sigle = new ArrayList<String>();
-		for(Provincia provincia : list) {
-			sigle.add(provincia.getSigla());
-		}
+		listProvincia = lutService.listItems("Provincia");
 		
 		logger.debug("Initialization performed.");
 	}
@@ -292,15 +288,15 @@ public class DettaglioClienteIndirizzi implements Serializable {
 	}
 	
 	
-	public List<String> completeProvincia(String query) {
+	public List<Provincia> completeProvincia(String query) {
 		
 		String q = query.toUpperCase();
 		
-		List<String> result = new ArrayList<String>();
+		List<Provincia> result = new ArrayList<Provincia>();
 		
-		for(String sigla : sigle) {
-			if(sigla.contains(q)) {
-				result.add(sigla);
+		for(Provincia provincia : listProvincia) {
+			if(provincia.getSigla().contains(q)) {
+				result.add(provincia);
 			}
 		}
 		

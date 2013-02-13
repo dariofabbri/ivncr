@@ -228,7 +228,23 @@
 						<p:autoComplete id="provincia"
 							value="#{dettaglioClienteIndirizzi.provincia}"
 							completeMethod="#{dettaglioClienteIndirizzi.completeProvincia}"
-							forceSelection="true" />
+							forceSelection="true" 
+							var="provincia"
+							itemLabel="#{provincia.sigla}"
+							itemValue="#{provincia.sigla}">
+							<f:facet name="itemtip">
+								<h:panelGrid columns="2">
+									<h:outputText value="Sigla:"/>
+									<h:outputText value="#{provincia.sigla}"/>
+
+									<h:outputText value="Descrizione:"/>
+									<h:outputText value="#{provincia.descrizione}"/>
+
+									<h:outputText value="Regione:"/>
+									<h:outputText value="#{provincia.regione}"/>
+								</h:panelGrid>
+							</f:facet>
+						</p:autoComplete>
 						<p:watermark for="provincia" value="Provincia" />  
 						<p:tooltip for="provincia" showEffect="fade" value="Provincia" />
 					</p:column>
