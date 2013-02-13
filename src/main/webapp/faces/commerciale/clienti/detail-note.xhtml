@@ -3,22 +3,30 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
+
+	<f:subview id="noteView">
+ 	
+		<p:panelGrid styleClass="form-panel">
+
+			<p:focus for="note"/>
 			
-		<h:form id="form">  
-  
-   			 <p:editor id="editor" value="#{note.value}" width="800"/>  
-  
-   				 <h:panelGrid columns="2" style="margin-top:10px">  
-        			<p:commandButton id="submitButton" value="Salva" update="display" oncomplete="dlg.show()"  
-                                     icon="ui-icon-disk" />  
-        			<p:commandButton id="clearButton" type="button" value="Annulla" onclick="editor.clear()"  
-                                     icon="ui-icon-close" />  
-    			</h:panelGrid>  
-  
-   				 <p:dialog header="Content" widgetVar="dlg" showEffect="fade" hideEffect="fade" modal="true">  
-       				 <h:outputText id="display" value="#{note.value}" escape="false" />  
-   				 </p:dialog>  
-  
-		</h:form>  
+			<p:row>
+				<p:column>
+  					<p:editor id="note" value="#{dettaglioClienteNote.note}" width="800"/>
+  				</p:column>
+  			</p:row>  
+  						
+			<p:row>
+				<p:column styleClass="form-footer">
+					<p:commandButton value="Salva"
+						actionListener="#{dettaglioClienteNote.doSave}"
+						process="noteView"
+						update=":detailForm:growl"/> 
+				</p:column>
+			</p:row>
+			
+		</p:panelGrid>
+
+	</f:subview>
 
 </html>

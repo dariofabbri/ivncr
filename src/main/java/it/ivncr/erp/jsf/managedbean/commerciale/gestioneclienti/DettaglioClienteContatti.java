@@ -115,7 +115,8 @@ public class DettaglioClienteContatti implements Serializable {
 		// Load tipo contatto LUT.
 		//
 		listTipoContatto = lutService.listItems("TipoContatto");
-		System.out.println("Initialization performed.");
+		
+		logger.debug("Initialization performed.");
 	}
 
 	private void clean() {

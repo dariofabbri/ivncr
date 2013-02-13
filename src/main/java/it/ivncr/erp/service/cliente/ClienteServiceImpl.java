@@ -437,6 +437,27 @@ public class ClienteServiceImpl extends AbstractService implements ClienteServic
 	}
 
 
+	@Override
+	public Cliente setNote(Integer id, String note) {
+
+		Cliente cliente = retrieve(id);
+		if(cliente == null) {
+			String message = String.format("It has not been possible to retrieve specified entity: %d", id);
+			logger.info(message);
+			throw new NotFoundException(message);
+		}
+
+		// Update the record.
+		//
+		Date now = new Date();
+		cliente.setNote(note);
+		cliente.setUltimaModifica(now);
+		session.update(cliente);
+
+		return cliente;
+	}
+
+
 	private Integer extractNumericPartFromCodice(String lastCodice) {
 
 		Pattern pattern = Pattern.compile("^C(\\d{6})$");

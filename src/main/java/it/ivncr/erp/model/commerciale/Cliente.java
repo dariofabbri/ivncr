@@ -101,6 +101,10 @@ public class Cliente {
 
 	@Column(name="ultima_modifica_ts")
 	private Date ultimaModifica;
+	
+	@Column(name="note")
+	private String note;
+	
 
 	public Integer getId() {
 		return id;
@@ -300,5 +304,13 @@ public class Cliente {
 
 	public void setUltimaModifica(Date ultimaModifica) {
 		this.ultimaModifica = ultimaModifica;
+	}
+
+	public String getNote() {
+		return note;
+	}
+
+	public void setNote(String note) {
+		this.note = note;
 	}
 }

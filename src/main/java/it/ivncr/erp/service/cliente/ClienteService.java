@@ -62,4 +62,6 @@ public interface ClienteService extends EntityService<Cliente> {
 	Cliente deactivate(Integer id, String note);
 
 	Cliente activate(Integer id, String note);
+	
+	Cliente setNote(Integer id, String note);
 }

@@ -117,7 +117,8 @@ public class DettaglioClienteIndirizzi implements Serializable {
 		// Load tipo indirizzo LUT.
 		//
 		listTipoIndirizzo = lutService.listItems("TipoIndirizzo");
-		System.out.println("Initialization performed.");
+		
+		logger.debug("Initialization performed.");
 	}
 
 	private void clean() {
