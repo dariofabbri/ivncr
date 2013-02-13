@@ -2,12 +2,12 @@ package it.ivncr.erp.jsf.managedbean.commerciale.gestioneclienti;
 
 
 import it.ivncr.erp.jsf.RobustLazyDataModel;
-import it.ivncr.erp.model.commerciale.Contatto;
-import it.ivncr.erp.model.commerciale.TipoContatto;
+import it.ivncr.erp.model.commerciale.Indirizzo;
+import it.ivncr.erp.model.commerciale.TipoIndirizzo;
 import it.ivncr.erp.service.QueryResult;
 import it.ivncr.erp.service.ServiceFactory;
 import it.ivncr.erp.service.SortDirection;
-import it.ivncr.erp.service.contatto.ContattoService;
+import it.ivncr.erp.service.indirizzo.IndirizzoService;
 import it.ivncr.erp.service.lut.LUTService;
 
 import java.io.Serializable;
@@ -30,38 +30,40 @@ import org.slf4j.LoggerFactory;
 
 @ManagedBean
 @ViewScoped
-public class DettaglioClienteContatti implements Serializable {
+public class DettaglioClienteIndirizzi implements Serializable {
 
-	private static final Logger logger = LoggerFactory.getLogger(DettaglioClienteContatti.class);
+	private static final Logger logger = LoggerFactory.getLogger(DettaglioClienteIndirizzi.class);
 
 	private static final long serialVersionUID = 1L;
 
 	@ManagedProperty("#{dettaglioClienteGenerale}")
 	private DettaglioClienteGenerale dettaglioClienteGenerale;
 
-	private LazyDataModel<Contatto> model;
-	private Contatto selected;
+	private LazyDataModel<Indirizzo> model;
+	private Indirizzo selected;
 
 	private Integer id;
-	private Integer codiceTipoContatto;
-	private String titolo;
-	private String nome;
-	private String telefono1;
-	private String telefono2;
-	private String cellulare;
-	private String fax;
-	private String email;
+	private Integer codiceTipoIndirizzo;
+	private String destinatario1;
+	private String destinatario2;
+	private String toponimo;
+	private String indirizzo;
+	private String civico;
+	private String localita;
+	private String cap;
+	private String provincia;
+	private String paese;
 
-	private List<TipoContatto> listTipoContatto;
+	private List<TipoIndirizzo> listTipoIndirizzo;
 
 
-	public DettaglioClienteContatti() {
+	public DettaglioClienteIndirizzi() {
 
-		model = new RobustLazyDataModel<Contatto>() {
+		model = new RobustLazyDataModel<Indirizzo>() {
 
 			private static final long serialVersionUID = 1L;
 			@Override
-			public List<Contatto> load(
+			public List<Indirizzo> load(
 					int first,
 					int pageSize,
 					String sortField,
@@ -78,8 +80,8 @@ public class DettaglioClienteContatti implements Serializable {
 				//
 				filters.put("codiceCliente", Integer.toString(dettaglioClienteGenerale.getId()));
 
-				ContattoService cs = ServiceFactory.createService("Contatto");
-				QueryResult<Contatto> result = cs.list(
+				IndirizzoService is = ServiceFactory.createService("Indirizzo");
+				QueryResult<Indirizzo> result = is.list(
 						first,
 						pageSize,
 						sortField,
@@ -92,17 +94,17 @@ public class DettaglioClienteContatti implements Serializable {
 			}
 
 			@Override
-			public Object getRowKey(Contatto contatto) {
+			public Object getRowKey(Indirizzo indirizzo) {
 
-				return contatto == null ? null : contatto.getId();
+				return indirizzo == null ? null : indirizzo.getId();
 			}
 
 			@Override
-			public Contatto getRowData(String rowKey) {
+			public Indirizzo getRowData(String rowKey) {
 
-				ContattoService cs = ServiceFactory.createService("Contatto");
-				Contatto contatto = cs.retrieveDeep(Integer.decode(rowKey));
-				return contatto;
+				IndirizzoService is = ServiceFactory.createService("Indirizzo");
+				Indirizzo indirizzo = is.retrieveDeep(Integer.decode(rowKey));
+				return indirizzo;
 			}
 		};
 	}
@@ -112,9 +114,9 @@ public class DettaglioClienteContatti implements Serializable {
 
 		LUTService lutService = ServiceFactory.createService("LUT");
 
-		// Load tipo contatto LUT.
+		// Load tipo indirizzo LUT.
 		//
-		listTipoContatto = lutService.listItems("TipoContatto");
+		listTipoIndirizzo = lutService.listItems("TipoIndirizzo");
 		System.out.println("Initialization performed.");
 	}
 
@@ -123,14 +125,16 @@ public class DettaglioClienteContatti implements Serializable {
 		logger.debug("Cleaning form state.");
 
 		id = null;
-		codiceTipoContatto = null;
-		titolo = null;
-		nome = null;
-		telefono1 = null;
-		telefono2 = null;
-		cellulare = null;
-		fax = null;
-		email = null;
+		codiceTipoIndirizzo = null;
+		destinatario1 = null;
+		destinatario2 = null;
+		toponimo = null;
+		indirizzo = null;
+		civico = null;
+		localita = null;
+		cap = null;
+		provincia = null;
+		paese = null;
 	}
 
 	public void startCreate() {
@@ -151,14 +155,16 @@ public class DettaglioClienteContatti implements Serializable {
 		}
 
 		id = selected.getId();
-		codiceTipoContatto = selected.getTipoContatto() != null ? selected.getTipoContatto().getId() : null;
-		titolo = selected.getTitolo();
-		nome = selected.getNome();
-		telefono1 = selected.getTelefono1();
-		telefono2 = selected.getTelefono2();
-		cellulare = selected.getCellulare();
-		fax = selected.getFax();
-		email = selected.getEmail();
+		codiceTipoIndirizzo = selected.getTipoIndirizzo() != null ? selected.getTipoIndirizzo().getId() : null;
+		destinatario1 = selected.getDestinatario1();
+		destinatario2 = selected.getDestinatario2();
+		toponimo = selected.getToponimo();
+		indirizzo = selected.getIndirizzo();
+		civico = selected.getCivico();
+		localita = selected.getLocalita();
+		cap = selected.getCap();
+		provincia = selected.getProvincia();
+		paese = selected.getPaese();
 	}
 
 	public void doSave() {
@@ -166,19 +172,21 @@ public class DettaglioClienteContatti implements Serializable {
 		// Save the entity.
 		//
 		try {
-			ContattoService cs = ServiceFactory.createService("Contatto");
+			IndirizzoService is = ServiceFactory.createService("Indirizzo");
 
 			if(id == null) {
-				cs.create(
+				is.create(
 						dettaglioClienteGenerale.getId(),
-						codiceTipoContatto,
-						titolo,
-						nome,
-						telefono1,
-						telefono2,
-						cellulare,
-						fax,
-						email);
+						codiceTipoIndirizzo,
+						destinatario1,
+						destinatario2,
+						toponimo,
+						indirizzo,
+						civico,
+						localita,
+						cap,
+						provincia,
+						paese);
 				logger.debug("Entity successfully created.");
 
 				// Add a message.
@@ -186,21 +194,23 @@ public class DettaglioClienteContatti implements Serializable {
 				FacesMessage message = new FacesMessage(
 						FacesMessage.SEVERITY_INFO,
 						"Record creato",
-						"La creazione del nuovo contatto si è conclusa con successo.");
+						"La creazione del nuovo indirizzo si è conclusa con successo.");
 				FacesContext.getCurrentInstance().addMessage(null, message);
 
 			} else {
 
-				cs.update(
+				is.update(
 						id,
-						codiceTipoContatto,
-						titolo,
-						nome,
-						telefono1,
-						telefono2,
-						cellulare,
-						fax,
-						email);
+						codiceTipoIndirizzo,
+						destinatario1,
+						destinatario2,
+						toponimo,
+						indirizzo,
+						civico,
+						localita,
+						cap,
+						provincia,
+						paese);
 				logger.debug("Entity successfully updated.");
 
 				// Add a message.
@@ -208,7 +218,7 @@ public class DettaglioClienteContatti implements Serializable {
 				FacesMessage message = new FacesMessage(
 						FacesMessage.SEVERITY_INFO,
 						"Record aggiornato",
-						"La modifica del contatto si è conclusa con successo.");
+						"La modifica dell'indirizzo si è conclusa con successo.");
 				FacesContext.getCurrentInstance().addMessage(null, message);
 			}
 
@@ -240,8 +250,8 @@ public class DettaglioClienteContatti implements Serializable {
 		// Delete the entity.
 		//
 		try {
-			ContattoService cs = ServiceFactory.createService("Contatto");
-			cs.delete(selected.getId());
+			IndirizzoService is = ServiceFactory.createService("Indirizzo");
+			is.delete(selected.getId());
 
 			logger.debug("Entity successfully deleted.");
 
@@ -250,7 +260,7 @@ public class DettaglioClienteContatti implements Serializable {
 			FacesMessage message = new FacesMessage(
 					FacesMessage.SEVERITY_INFO,
 					"Record eliminato",
-					"L'eliminazione del contatto si è conclusa con successo.");
+					"L'eliminazione dell'indirizzo si è conclusa con successo.");
 			FacesContext.getCurrentInstance().addMessage(null, message);
 
 			// Signal to modal dialog that everything went fine.
@@ -279,19 +289,19 @@ public class DettaglioClienteContatti implements Serializable {
 		this.dettaglioClienteGenerale = dettaglioClienteGenerale;
 	}
 
-	public LazyDataModel<Contatto> getModel() {
+	public LazyDataModel<Indirizzo> getModel() {
 		return model;
 	}
 
-	public void setModel(LazyDataModel<Contatto> model) {
+	public void setModel(LazyDataModel<Indirizzo> model) {
 		this.model = model;
 	}
 
-	public Contatto getSelected() {
+	public Indirizzo getSelected() {
 		return selected;
 	}
 
-	public void setSelected(Contatto selected) {
+	public void setSelected(Indirizzo selected) {
 		this.selected = selected;
 	}
 
@@ -303,75 +313,91 @@ public class DettaglioClienteContatti implements Serializable {
 		this.id = id;
 	}
 
-	public Integer getCodiceTipoContatto() {
-		return codiceTipoContatto;
+	public Integer getCodiceTipoIndirizzo() {
+		return codiceTipoIndirizzo;
 	}
 
-	public void setCodiceTipoContatto(Integer codiceTipoContatto) {
-		this.codiceTipoContatto = codiceTipoContatto;
+	public void setCodiceTipoIndirizzo(Integer codiceTipoIndirizzo) {
+		this.codiceTipoIndirizzo = codiceTipoIndirizzo;
 	}
 
-	public String getTitolo() {
-		return titolo;
+	public String getDestinatario1() {
+		return destinatario1;
 	}
 
-	public void setTitolo(String titolo) {
-		this.titolo = titolo;
+	public void setDestinatario1(String destinatario1) {
+		this.destinatario1 = destinatario1;
 	}
 
-	public String getNome() {
-		return nome;
+	public String getDestinatario2() {
+		return destinatario2;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setDestinatario2(String destinatario2) {
+		this.destinatario2 = destinatario2;
 	}
 
-	public String getTelefono1() {
-		return telefono1;
+	public String getToponimo() {
+		return toponimo;
 	}
 
-	public void setTelefono1(String telefono1) {
-		this.telefono1 = telefono1;
+	public void setToponimo(String toponimo) {
+		this.toponimo = toponimo;
 	}
 
-	public String getTelefono2() {
-		return telefono2;
+	public String getIndirizzo() {
+		return indirizzo;
 	}
 
-	public void setTelefono2(String telefono2) {
-		this.telefono2 = telefono2;
+	public void setIndirizzo(String indirizzo) {
+		this.indirizzo = indirizzo;
 	}
 
-	public String getCellulare() {
-		return cellulare;
+	public String getCivico() {
+		return civico;
 	}
 
-	public void setCellulare(String cellulare) {
-		this.cellulare = cellulare;
+	public void setCivico(String civico) {
+		this.civico = civico;
 	}
 
-	public String getFax() {
-		return fax;
+	public String getLocalita() {
+		return localita;
 	}
 
-	public void setFax(String fax) {
-		this.fax = fax;
+	public void setLocalita(String localita) {
+		this.localita = localita;
 	}
 
-	public String getEmail() {
-		return email;
+	public String getCap() {
+		return cap;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setCap(String cap) {
+		this.cap = cap;
 	}
 
-	public List<TipoContatto> getListTipoContatto() {
-		return listTipoContatto;
+	public String getProvincia() {
+		return provincia;
 	}
 
-	public void setListTipoContatto(List<TipoContatto> listTipoContatto) {
-		this.listTipoContatto = listTipoContatto;
+	public void setProvincia(String provincia) {
+		this.provincia = provincia;
+	}
+
+	public String getPaese() {
+		return paese;
+	}
+
+	public void setPaese(String paese) {
+		this.paese = paese;
+	}
+
+	public List<TipoIndirizzo> getListTipoIndirizzo() {
+		return listTipoIndirizzo;
+	}
+
+	public void setListTipoIndirizzo(List<TipoIndirizzo> listTipoIndirizzo) {
+		this.listTipoIndirizzo = listTipoIndirizzo;
 	}
 }

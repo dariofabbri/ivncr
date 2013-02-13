@@ -11,6 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.apache.commons.lang3.StringUtils;
+
 @Entity
 @Table(name = "com_indirizzo")
 public class Indirizzo {
@@ -55,6 +57,16 @@ public class Indirizzo {
 
 	@Column(name="paese")
 	private String paese;
+
+
+	public String getIndirizzoComposto() {
+
+		return String.format("%s %s %s",
+				StringUtils.stripToEmpty(toponimo),
+				StringUtils.stripToEmpty(indirizzo),
+				StringUtils.stripToEmpty(civico)).trim();
+	}
+
 
 	public Integer getId() {
 		return id;

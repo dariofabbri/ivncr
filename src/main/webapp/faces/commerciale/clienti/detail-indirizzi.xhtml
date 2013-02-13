@@ -1,0 +1,310 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<f:subview id="listIndirizziView">
+	
+		<p:outputPanel id="buttons" style="display: block; margin-top: 2em; margin-bottom: 2em;">
+	
+			<p:commandButton
+				id="createButton"
+				value="Crea"
+				actionListener="#{dettaglioClienteIndirizzi.startCreate}"
+				process="@this"
+				update=":detailForm:tabView:detailIndirizzoView:detailIndirizzoDialog"
+				oncomplete="detailIndirizzoDialogWidget.show();"
+				icon="ui-icon-star"/>
+			<p:tooltip 
+				for="createButton" 
+				value="Crea un nuovo indirizzo" 
+				showEffect="fade" 
+				hideEffect="fade"/>
+	
+			<p:commandButton
+				id="deleteButton"
+				value="Elimina"
+				type="button"
+				disabled="#{dettaglioClienteIndirizzi.selected == null}"
+				onclick="deleteIndirizzoDialogWidget.show();"
+				icon="ui-icon-trash" />
+			<p:tooltip 
+				for="deleteButton" 
+				value="Elimina l'indirizzo selezionato" 
+				showEffect="fade" 
+				hideEffect="fade"/>
+	
+			<p:commandButton
+				id="updateButton" 
+				value="Modifica"
+				disabled="#{dettaglioClienteIndirizzi.selected == null}"
+				actionListener="#{dettaglioClienteIndirizzi.startUpdate}"
+				process="@this"
+				update=":detailForm:tabView:detailIndirizzoView:detailIndirizzoDialog"
+				oncomplete="detailIndirizzoDialogWidget.show();"
+				icon="ui-icon-pencil" />
+			<p:tooltip 
+				for="updateButton" 
+				value="Modifica l'indirizzo selezionato" 
+				showEffect="fade" 
+				hideEffect="fade"/>
+	
+		</p:outputPanel>
+										
+		<p:dataTable 
+			id="indirizziTable" 
+			var="indirizzo" 
+			value="#{dettaglioClienteIndirizzi.model}"
+			paginator="true" 
+			paginatorPosition="bottom" rows="10"
+			paginatorTemplate="{CurrentPageReport} {RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+			currentPageReportTemplate="Trovati {totalRecords} record - Pagina {currentPage} di {totalPages}"
+			rowsPerPageTemplate="5,10,50" 
+			pageLinks="10"
+			emptyMessage="Nessun record trovato" 
+			selectionMode="single"
+			selection="#{dettaglioClienteIndirizzi.selected}"
+			lazy="true">
+	
+			<p:ajax event="rowSelect" process="@this" update=":detailForm:tabView:listIndirizziView:buttons"/>
+			<p:ajax event="rowUnselect" process="@this" update=":detailForm:tabView:listIndirizziView:buttons"/>
+	      		
+			<f:facet name="header">
+		    	Lista degli indirizzi amministrativi
+		    </f:facet>
+	
+			<p:column headerText="Destinatario" sortBy="#{indirizzo.destinatario1}"
+				filterBy="#{indirizzo.destinatario1}">
+				<h:outputText value="#{indirizzo.destinatario1}" />
+			</p:column>
+	
+			<p:column headerText="Destinatario (2)" sortBy="#{indirizzo.destinatario2}"
+				filterBy="#{indirizzo.destinatario2}">
+				<h:outputText value="#{indirizzo.destinatario2}" />
+			</p:column>
+	
+			<p:column headerText="Indirizzo" sortBy="#{indirizzo.indirizzo}"
+				filterBy="#{indirizzo.indirizzo}">
+				<h:outputText value="#{indirizzo.indirizzoComposto}" />
+			</p:column>
+	
+			<p:column headerText="Localita" sortBy="#{indirizzo.localita}"
+				filterBy="#{indirizzo.localita}">
+				<h:outputText value="#{indirizzo.localita}" />
+			</p:column>
+	
+			<p:column headerText="CAP" sortBy="#{indirizzo.cap}"
+				filterBy="#{indirizzo.cap}">
+				<h:outputText value="#{indirizzo.cap}" />
+			</p:column>
+	
+			<p:column headerText="Provincia" sortBy="#{indirizzo.provincia}"
+				filterBy="#{indirizzo.provincia}">
+				<h:outputText value="#{indirizzo.provincia}" />
+			</p:column>
+		
+			<p:column headerText="Paese" sortBy="#{indirizzo.paese}"
+				filterBy="#{indirizzo.paese}">
+				<h:outputText value="#{indirizzo.paese}" />
+			</p:column>
+	
+		</p:dataTable>
+
+	</f:subview>
+
+
+	<f:subview id="detailIndirizzoView">
+		
+		<p:dialog
+			id="detailIndirizzoDialog"
+			header="Dettagli dell'indirizzo" 
+			widgetVar="detailIndirizzoDialogWidget" 
+			modal="true"
+			showEffect="fade" 
+			hideEffect="fade"> 
+
+			<p:messages id="messages" globalOnly="false" showSummary="false" showDetail="true" severity="error" closable="true"/>
+	
+			<p:panelGrid styleClass="form-panel">
+
+				<p:focus/>
+				
+				<p:row>
+					<p:column>
+						<p:outputLabel for="codiceTipoIndirizzo" value="Tipo indirizzo:" />
+					</p:column>
+					<p:column>
+						<p:selectOneMenu
+							required="true" 
+							requiredMessage="Il campo tipo indirizzo è obbligatorio"
+							id="codiceTipoIndirizzo" 
+							value="#{dettaglioClienteIndirizzi.codiceTipoIndirizzo}"
+							effect="fade">
+							<f:selectItem itemLabel="Selezionare un tipo" itemValue="" />
+							<f:selectItems 
+								value="#{dettaglioClienteIndirizzi.listTipoIndirizzo}" var="item"
+								itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+						</p:selectOneMenu>	
+						<p:tooltip for="codiceTipoIndirizzo" showEffect="fade" value="Tipo indirizzo" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="destinatario1" value="Destinatario:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioClienteIndirizzi.destinatario1}" id="destinatario1"
+							required="true" requiredMessage="Il campo destinatario è obbligatorio"/>
+						<p:watermark for="destinatario1" value="Prima riga di intestazione" />  
+						<p:tooltip for="destinatario1" showEffect="fade" value="Prima riga di intestazione" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="destinatario2" value="Destinatario (2):" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioClienteIndirizzi.destinatario2}" id="destinatario2"/>
+						<p:watermark for="destinatario2" value="Seconda riga di intestazione" />  
+						<p:tooltip for="destinatario2" showEffect="fade" value="Seconda riga di intestazione" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="indirizzo" value="Indirizzo:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioClienteIndirizzi.toponimo}" id="toponimo"
+							required="true" requiredMessage="Il toponimo nel campo indirizzo è obbligatorio"
+							style="width: 70px;"/>
+						<p:watermark for="toponimo" value="Toponimo" />  
+						<p:tooltip for="toponimo" showEffect="fade" value="Toponimo dell'indirizzo (via, piazza, ecc...)" />
+
+						<p:inputText value="#{dettaglioClienteIndirizzi.indirizzo}" id="indirizzo"
+							required="true" requiredMessage="L'indirizzo è obbligatorio"
+							style="width: 160px;"/>
+						<p:watermark for="indirizzo" value="Indirizzo" />  
+						<p:tooltip for="indirizzo" showEffect="fade" value="Indirizzo" />
+
+						<p:inputText value="#{dettaglioClienteIndirizzi.civico}" id="civico"
+							required="true" requiredMessage="Il numero civico nel campo indirizzo è obbligatorio"
+							style="width: 70px;"/>
+						<p:watermark for="civico" value="Numero civico" />  
+						<p:tooltip for="civico" showEffect="fade" value="Numero civico dell'indirizzo" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="localita" value="Località:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioClienteIndirizzi.localita}" id="localita"/>
+						<p:watermark for="localita" value="Località" />  
+						<p:tooltip for="localita" showEffect="fade" value="Località" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="cap" value="CAP:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioClienteIndirizzi.cap}" id="cap"/>
+						<p:watermark for="cap" value="CAP" />  
+						<p:tooltip for="cap" showEffect="fade" value="Codice di Avviamento Postale" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="provincia" value="Provincia:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioClienteIndirizzi.provincia}" id="provincia"/>
+						<p:watermark for="provincia" value="Provincia" />  
+						<p:tooltip for="provincia" showEffect="fade" value="Provincia" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="paese" value="Paese:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioClienteIndirizzi.paese}" id="paese"/>
+						<p:watermark for="paese" value="Paese" />  
+						<p:tooltip for="paese" showEffect="fade" value="Paese" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column colspan="2" styleClass="form-footer">
+
+						<p:commandButton value="Salva"
+							actionListener="#{dettaglioClienteIndirizzi.doSave}"
+							process="detailIndirizzoDialog"
+							update=":detailForm:tabView:listIndirizziView:indirizziTable,:detailForm:tabView:listIndirizziView:buttons,:detailForm:tabView:detailIndirizzoView:messages,:detailForm:growl" 
+							oncomplete="if(args.ok) { detailIndirizzoDialogWidget.hide(); }"/>
+		
+						<p:commandButton value="Annulla"
+							type="button"
+							onclick="detailIndirizzoDialogWidget.hide();" />
+
+					</p:column>
+				</p:row>
+									
+			</p:panelGrid>
+					
+		</p:dialog>
+		
+	</f:subview>
+	
+	
+	<f:subview id="deleteIndirizzoView">
+		
+		<p:dialog
+			id="deleteIndirizzoDialog" 
+			header="Eliminazione indirizzo" 
+			widgetVar="deleteIndirizzoDialogWidget" 
+			modal="true"
+			showEffect="fade" 
+			hideEffect="fade"> 
+				
+			<p:messages id="messages" globalOnly="false" showSummary="false" showDetail="true" severity="error" closable="true"/>
+			
+			<p:panelGrid styleClass="form-panel">
+				
+				<p:row>
+					<p:column>		
+						<h:outputText value="Si conferma l'eliminazione dell'indirizzo selezionato?"/>
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column styleClass="form-footer">		
+
+						<p:commandButton value="Elimina"
+							actionListener="#{dettaglioClienteIndirizzi.doDelete}"
+							process="@this"
+							update=":detailForm:tabView:listIndirizziView:indirizziTable,:detailForm:tabView:listIndirizziView:buttons,:detailForm:tabView:deleteIndirizzoView:messages,:detailForm:growl" 
+							oncomplete="if(args.ok) { deleteIndirizzoDialogWidget.hide(); }"/>
+		
+						<p:commandButton value="Annulla"
+							type="button"
+							onclick="deleteIndirizzoDialogWidget.hide();" />
+							
+					</p:column>
+				</p:row>
+				
+			</p:panelGrid>
+			
+		</p:dialog>
+		
+	</f:subview>
+		
+</html>
