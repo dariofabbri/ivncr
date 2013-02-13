@@ -79,7 +79,8 @@
 .form-panel .ui-inputtext,
 .form-panel .ui-inputtextarea,
 .form-panel .ui-password,
-.form-panel .ui-selectonemenu
+.form-panel .ui-selectonemenu,
+.form-panel .ui-autocomplete
 {
 	width: 300px;
 }

@@ -180,7 +180,7 @@
 					<p:column>
 						<p:inputText value="#{dettaglioClienteIndirizzi.toponimo}" id="toponimo"
 							required="true" requiredMessage="Il toponimo nel campo indirizzo è obbligatorio"
-							style="width: 70px;"/>
+							style="width: 60px;"/>
 						<p:watermark for="toponimo" value="Toponimo" />  
 						<p:tooltip for="toponimo" showEffect="fade" value="Toponimo dell'indirizzo (via, piazza, ecc...)" />
 
@@ -192,8 +192,8 @@
 
 						<p:inputText value="#{dettaglioClienteIndirizzi.civico}" id="civico"
 							required="true" requiredMessage="Il numero civico nel campo indirizzo è obbligatorio"
-							style="width: 70px;"/>
-						<p:watermark for="civico" value="Numero civico" />  
+							style="width: 60px;"/>
+						<p:watermark for="civico" value="Civico" />  
 						<p:tooltip for="civico" showEffect="fade" value="Numero civico dell'indirizzo" />
 					</p:column>
 				</p:row>
@@ -225,7 +225,10 @@
 						<p:outputLabel for="provincia" value="Provincia:" />
 					</p:column>
 					<p:column>
-						<p:inputText value="#{dettaglioClienteIndirizzi.provincia}" id="provincia"/>
+						<p:autoComplete id="provincia"
+							value="#{dettaglioClienteIndirizzi.provincia}"
+							completeMethod="#{dettaglioClienteIndirizzi.completeProvincia}"
+							forceSelection="true" />
 						<p:watermark for="provincia" value="Provincia" />  
 						<p:tooltip for="provincia" showEffect="fade" value="Provincia" />
 					</p:column>

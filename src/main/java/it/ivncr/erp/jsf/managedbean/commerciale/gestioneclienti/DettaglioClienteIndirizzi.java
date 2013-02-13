@@ -4,6 +4,7 @@ package it.ivncr.erp.jsf.managedbean.commerciale.gestioneclienti;
 import it.ivncr.erp.jsf.RobustLazyDataModel;
 import it.ivncr.erp.model.commerciale.Indirizzo;
 import it.ivncr.erp.model.commerciale.TipoIndirizzo;
+import it.ivncr.erp.model.generale.Provincia;
 import it.ivncr.erp.service.QueryResult;
 import it.ivncr.erp.service.ServiceFactory;
 import it.ivncr.erp.service.SortDirection;
@@ -11,6 +12,7 @@ import it.ivncr.erp.service.indirizzo.IndirizzoService;
 import it.ivncr.erp.service.lut.LUTService;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -55,6 +57,7 @@ public class DettaglioClienteIndirizzi implements Serializable {
 	private String paese;
 
 	private List<TipoIndirizzo> listTipoIndirizzo;
+	private List<String> sigle;
 
 
 	public DettaglioClienteIndirizzi() {
@@ -117,6 +120,14 @@ public class DettaglioClienteIndirizzi implements Serializable {
 		// Load tipo indirizzo LUT.
 		//
 		listTipoIndirizzo = lutService.listItems("TipoIndirizzo");
+		
+		// Load province LUT and extract short codes.
+		//
+		List<Provincia> list = lutService.listItems("Provincia");
+		sigle = new ArrayList<String>();
+		for(Provincia provincia : list) {
+			sigle.add(provincia.getSigla());
+		}
 		
 		logger.debug("Initialization performed.");
 	}
@@ -278,6 +289,22 @@ public class DettaglioClienteIndirizzi implements Serializable {
 					"Si è verificato un errore in fase di eliminazione del record.");
 			FacesContext.getCurrentInstance().addMessage(null, message);
 		}
+	}
+	
+	
+	public List<String> completeProvincia(String query) {
+		
+		String q = query.toUpperCase();
+		
+		List<String> result = new ArrayList<String>();
+		
+		for(String sigla : sigle) {
+			if(sigla.contains(q)) {
+				result.add(sigla);
+			}
+		}
+		
+		return result;
 	}
 
 
