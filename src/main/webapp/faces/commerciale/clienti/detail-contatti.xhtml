@@ -121,7 +121,7 @@
 
 			<p:messages id="messages" globalOnly="false" showSummary="false" showDetail="true" severity="error" closable="true"/>
 	
-			<p:panelGrid styleClass="form-panel">
+			<p:panelGrid id="wrapper" styleClass="form-panel">
 
 				<p:focus/>
 				
@@ -234,7 +234,7 @@
 						<p:commandButton value="Salva"
 							actionListener="#{dettaglioClienteContatti.doSave}"
 							process="detailContattoDialog"
-							update=":detailForm:tabView:listContattiView:contattiTable,:detailForm:tabView:listContattiView:buttons,:detailForm:tabView:detailContattoView:messages,:detailForm:growl" 
+							update=":detailForm:tabView:listContattiView:contattiTable,:detailForm:tabView:listContattiView:buttons,:detailForm:tabView:detailContattoView:messages,:detailForm:tabView:detailContattoView:wrapper,:detailForm:growl" 
 							oncomplete="if(args.ok) { detailContattoDialogWidget.hide(); }"/>
 		
 						<p:commandButton value="Annulla"

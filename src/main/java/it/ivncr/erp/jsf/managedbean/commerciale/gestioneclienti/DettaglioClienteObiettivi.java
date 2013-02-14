@@ -19,7 +19,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.context.RequestContext;
@@ -30,10 +30,10 @@ import org.slf4j.LoggerFactory;
 
 
 @ManagedBean
-@SessionScoped
-public class DettaglioClientiObiettivi implements Serializable {
+@ViewScoped
+public class DettaglioClienteObiettivi implements Serializable {
 
-	private static final Logger logger = LoggerFactory.getLogger(DettaglioClientiObiettivi.class);
+	private static final Logger logger = LoggerFactory.getLogger(DettaglioClienteObiettivi.class);
 
 	private static final long serialVersionUID = 1L;
 
@@ -61,7 +61,7 @@ public class DettaglioClientiObiettivi implements Serializable {
 	private List<Provincia> listProvincia;
 
 
-	public DettaglioClientiObiettivi() {
+	public DettaglioClienteObiettivi() {
 		model = new RobustLazyDataModel<ObiettivoServizio>() {
 
 			private static final long serialVersionUID = 1L;

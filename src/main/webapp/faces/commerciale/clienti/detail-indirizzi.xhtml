@@ -126,7 +126,7 @@
 
 			<p:messages id="messages" globalOnly="false" showSummary="false" showDetail="true" severity="error" closable="true"/>
 	
-			<p:panelGrid styleClass="form-panel">
+			<p:panelGrid id="wrapper" styleClass="form-panel">
 
 				<p:focus for="codiceTipoIndirizzo"/>
 				
@@ -267,7 +267,7 @@
 						<p:commandButton value="Salva"
 							actionListener="#{dettaglioClienteIndirizzi.doSave}"
 							process="detailIndirizzoDialog"
-							update=":detailForm:tabView:listIndirizziView:indirizziTable,:detailForm:tabView:listIndirizziView:buttons,:detailForm:tabView:detailIndirizzoView:messages,:detailForm:growl" 
+							update=":detailForm:tabView:listIndirizziView:indirizziTable,:detailForm:tabView:listIndirizziView:buttons,:detailForm:tabView:detailIndirizzoView:messages,:detailForm:tabView:detailIndirizzoView:wrapper,:detailForm:growl" 
 							oncomplete="if(args.ok) { detailIndirizzoDialogWidget.hide(); }"/>
 		
 						<p:commandButton value="Annulla"

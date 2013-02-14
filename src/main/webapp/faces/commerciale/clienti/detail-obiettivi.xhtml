@@ -1,0 +1,368 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<f:subview id="listObiettiviView">
+	
+		<p:outputPanel id="buttons" style="display: block; margin-top: 2em; margin-bottom: 2em;">
+	
+			<p:commandButton
+				id="createButton"
+				value="Crea"
+				actionListener="#{dettaglioClienteObiettivi.startCreate}"
+				process="@this"
+				update=":detailForm:tabView:detailObiettivoView:detailObiettivoDialog"
+				oncomplete="detailObiettivoDialogWidget.show();"
+				icon="ui-icon-star"/>
+			<p:tooltip 
+				for="createButton" 
+				value="Crea un nuovo obiettivo di servizio" 
+				showEffect="fade" 
+				hideEffect="fade"/>
+	
+			<p:commandButton
+				id="deleteButton"
+				value="Elimina"
+				type="button"
+				disabled="#{dettaglioClienteObiettivi.selected == null}"
+				onclick="deleteObiettivoDialogWidget.show();"
+				icon="ui-icon-trash" />
+			<p:tooltip 
+				for="deleteButton" 
+				value="Elimina l'obiettivo di servizio selezionato" 
+				showEffect="fade" 
+				hideEffect="fade"/>
+	
+			<p:commandButton
+				id="updateButton" 
+				value="Modifica"
+				disabled="#{dettaglioClienteObiettivi.selected == null}"
+				actionListener="#{dettaglioClienteObiettivi.startUpdate}"
+				process="@this"
+				update=":detailForm:tabView:detailObiettivoView:detailObiettivoDialog"
+				oncomplete="detailObiettivoDialogWidget.show();"
+				icon="ui-icon-pencil" />
+			<p:tooltip 
+				for="updateButton" 
+				value="Modifica l'obiettivo di servizio selezionato" 
+				showEffect="fade" 
+				hideEffect="fade"/>
+	
+		</p:outputPanel>
+										
+		<p:dataTable 
+			id="obiettiviTable" 
+			var="obiettivo" 
+			value="#{dettaglioClienteObiettivi.model}"
+			paginator="true" 
+			paginatorPosition="bottom" rows="10"
+			paginatorTemplate="{CurrentPageReport} {RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+			currentPageReportTemplate="Trovati {totalRecords} record - Pagina {currentPage} di {totalPages}"
+			rowsPerPageTemplate="5,10,50" 
+			pageLinks="10"
+			emptyMessage="Nessun record trovato" 
+			selectionMode="single"
+			selection="#{dettaglioClienteObiettivi.selected}"
+			lazy="true">
+	
+			<p:ajax event="rowSelect" process="@this" update=":detailForm:tabView:listObiettiviView:buttons"/>
+			<p:ajax event="rowUnselect" process="@this" update=":detailForm:tabView:listObiettiviView:buttons"/>
+	      		
+			<f:facet name="header">
+		    	Lista degli obiettivi di servizio
+		    </f:facet>
+	
+			<p:column headerText="Alias" sortBy="#{obiettivo.alias}"
+				filterBy="#{obiettivo.alias}">
+				<h:outputText value="#{obiettivo.alias}" />
+			</p:column>
+	
+			<p:column headerText="Indirizzo" sortBy="#{obiettivo.indirizzo}"
+				filterBy="#{obiettivo.indirizzo}">
+				<h:outputText value="#{obiettivo.indirizzoComposto}" />
+			</p:column>
+	
+			<p:column headerText="Edificio" sortBy="#{obiettivo.edificio}"
+				filterBy="#{obiettivo.edificio}">
+				<h:outputText value="#{obiettivo.edificio}" />
+			</p:column>
+	
+			<p:column headerText="Scala" sortBy="#{obiettivo.scala}"
+				filterBy="#{obiettivo.scala}">
+				<h:outputText value="#{obiettivo.scala}" />
+			</p:column>
+		
+			<p:column headerText="Piano" sortBy="#{obiettivo.piano}"
+				filterBy="#{obiettivo.piano}">
+				<h:outputText value="#{obiettivo.piano}" />
+			</p:column>
+		
+			<p:column headerText="Interno" sortBy="#{obiettivo.interno}"
+				filterBy="#{obiettivo.interno}">
+				<h:outputText value="#{obiettivo.interno}" />
+			</p:column>
+	
+			<p:column headerText="Localita" sortBy="#{obiettivo.localita}"
+				filterBy="#{obiettivo.localita}">
+				<h:outputText value="#{obiettivo.localita}" />
+			</p:column>
+	
+			<p:column headerText="CAP" sortBy="#{obiettivo.cap}"
+				filterBy="#{obiettivo.cap}">
+				<h:outputText value="#{obiettivo.cap}" />
+			</p:column>
+	
+			<p:column headerText="Provincia" sortBy="#{obiettivo.provincia}"
+				filterBy="#{obiettivo.provincia}">
+				<h:outputText value="#{obiettivo.provincia}" />
+			</p:column>
+		
+			<p:column headerText="Paese" sortBy="#{obiettivo.paese}"
+				filterBy="#{obiettivo.paese}">
+				<h:outputText value="#{obiettivo.paese}" />
+			</p:column>
+	
+		</p:dataTable>
+
+	</f:subview>
+
+
+	<f:subview id="detailObiettivoView">
+		
+		<p:dialog
+			id="detailObiettivoDialog"
+			header="Dettagli dell'obiettivo di servizio" 
+			widgetVar="detailObiettivoDialogWidget" 
+			modal="true"
+			showEffect="fade" 
+			hideEffect="fade"> 
+
+			<p:messages id="messages" globalOnly="false" showSummary="false" showDetail="true" severity="error" closable="true"/>
+	
+			<p:panelGrid id="wrapper" styleClass="form-panel">
+
+				<p:focus for="alias"/>
+	
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="alias" value="Alias:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioClienteObiettivi.alias}" id="alias"
+							required="true" requiredMessage="Il campo alias è obbligatorio"/>
+						<p:watermark for="alias" value="Identificativo dell\'obiettivo di servizio" />  
+						<p:tooltip for="alias" showEffect="fade" value="Identificativo dell'obiettivo di servizio" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="indirizzo" value="Indirizzo:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioClienteObiettivi.toponimo}" id="toponimo"
+							required="true" requiredMessage="Il toponimo nel campo indirizzo è obbligatorio"
+							style="width: 60px;"/>
+						<p:watermark for="toponimo" value="Toponimo" />  
+						<p:tooltip for="toponimo" showEffect="fade" value="Toponimo dell'indirizzo (via, piazza, ecc...)" />
+
+						<p:inputText value="#{dettaglioClienteObiettivi.indirizzo}" id="indirizzo"
+							required="true" requiredMessage="L'indirizzo è obbligatorio"
+							style="width: 160px;"/>
+						<p:watermark for="indirizzo" value="Indirizzo" />  
+						<p:tooltip for="indirizzo" showEffect="fade" value="Indirizzo" />
+
+						<p:inputText value="#{dettaglioClienteObiettivi.civico}" id="civico"
+							required="true" requiredMessage="Il numero civico nel campo indirizzo è obbligatorio"
+							style="width: 60px;"/>
+						<p:watermark for="civico" value="Civico" />  
+						<p:tooltip for="civico" showEffect="fade" value="Numero civico dell'indirizzo" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="edificio" value="Edificio:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioClienteObiettivi.edificio}" id="edificio"/>
+						<p:watermark for="edificio" value="Edificio" />  
+						<p:tooltip for="edificio" showEffect="fade" value="Edificio" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="scala" value="Scala:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioClienteObiettivi.scala}" id="scala"/>
+						<p:watermark for="scala" value="Scala" />  
+						<p:tooltip for="scala" showEffect="fade" value="Scala" />
+					</p:column>
+				</p:row>
+		
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="piano" value="Piano:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioClienteObiettivi.piano}" id="piano"/>
+						<p:watermark for="piano" value="Piano" />  
+						<p:tooltip for="piano" showEffect="fade" value="Piano" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="interno" value="Interno:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioClienteObiettivi.interno}" id="interno"/>
+						<p:watermark for="interno" value="Interno" />  
+						<p:tooltip for="interno" showEffect="fade" value="Interno" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="localita" value="Località:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioClienteObiettivi.localita}" id="localita"/>
+						<p:watermark for="localita" value="Località" />  
+						<p:tooltip for="localita" showEffect="fade" value="Località" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="cap" value="CAP:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioClienteObiettivi.cap}" id="cap"/>
+						<p:watermark for="cap" value="CAP" />  
+						<p:tooltip for="cap" showEffect="fade" value="Codice di Avviamento Postale" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="provincia" value="Provincia:" />
+					</p:column>
+					<p:column>
+						<p:autoComplete id="provincia"
+							value="#{dettaglioClienteObiettivi.provincia}"
+							completeMethod="#{dettaglioClienteObiettivi.completeProvincia}"
+							forceSelection="true" 
+							var="p"
+							itemLabel="#{p.sigla}"
+							itemValue="#{p.sigla}">
+							<f:facet name="itemtip">
+								<h:panelGrid columns="2">
+									<h:outputText value="Sigla:"/>
+									<h:outputText value="#{p.sigla}"/>
+
+									<h:outputText value="Descrizione:"/>
+									<h:outputText value="#{p.descrizione}"/>
+
+									<h:outputText value="Regione:"/>
+									<h:outputText value="#{p.regione}"/>
+								</h:panelGrid>
+							</f:facet>
+						</p:autoComplete>
+						<p:watermark for="provincia" value="Provincia" />  
+						<p:tooltip for="provincia" showEffect="fade" value="Provincia" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="paese" value="Paese:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioClienteObiettivi.paese}" id="paese"/>
+						<p:watermark for="paese" value="Paese" />  
+						<p:tooltip for="paese" showEffect="fade" value="Paese" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="note" value="Note:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioClienteObiettivi.note}" id="note"/>
+						<p:watermark for="note" value="Note" />  
+						<p:tooltip for="note" showEffect="fade" value="Note" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column colspan="2" styleClass="form-footer">
+
+						<p:commandButton value="Salva"
+							actionListener="#{dettaglioClienteObiettivi.doSave}"
+							process="detailObiettivoDialog"
+							update=":detailForm:tabView:listObiettiviView:obiettiviTable,:detailForm:tabView:listObiettiviView:buttons,:detailForm:tabView:detailObiettivoView:messages,:detailForm:tabView:detailObiettivoView:wrapper,:detailForm:growl" 
+							oncomplete="if(args.ok) { detailObiettivoDialogWidget.hide(); }"/>
+		
+						<p:commandButton value="Annulla"
+							type="button"
+							onclick="detailObiettivoDialogWidget.hide();" />
+
+					</p:column>
+				</p:row>
+									
+			</p:panelGrid>
+					
+		</p:dialog>
+		
+	</f:subview>
+	
+	
+	<f:subview id="deleteObiettivoView">
+		
+		<p:dialog
+			id="deleteObiettivoDialog" 
+			header="Eliminazione obiettivo di servizio" 
+			widgetVar="deleteObiettivoDialogWidget" 
+			modal="true"
+			showEffect="fade" 
+			hideEffect="fade"> 
+				
+			<p:messages id="messages" globalOnly="false" showSummary="false" showDetail="true" severity="error" closable="true"/>
+			
+			<p:panelGrid styleClass="form-panel">
+				
+				<p:row>
+					<p:column>		
+						<h:outputText value="Si conferma l'eliminazione dell'obiettivo di servizio selezionato?"/>
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column styleClass="form-footer">		
+
+						<p:commandButton value="Elimina"
+							actionListener="#{dettaglioClienteObiettivi.doDelete}"
+							process="@this"
+							update=":detailForm:tabView:listObiettiviView:obiettiviTable,:detailForm:tabView:listObiettiviView:buttons,:detailForm:tabView:deleteObiettivoView:messages,:detailForm:growl" 
+							oncomplete="if(args.ok) { deleteObiettivoDialogWidget.hide(); }"/>
+		
+						<p:commandButton value="Annulla"
+							type="button"
+							onclick="deleteObiettivoDialogWidget.hide();" />
+							
+					</p:column>
+				</p:row>
+				
+			</p:panelGrid>
+			
+		</p:dialog>
+		
+	</f:subview>
+		
+</html>
