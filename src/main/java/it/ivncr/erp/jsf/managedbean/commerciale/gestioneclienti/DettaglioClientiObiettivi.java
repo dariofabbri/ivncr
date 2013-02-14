@@ -2,14 +2,13 @@ package it.ivncr.erp.jsf.managedbean.commerciale.gestioneclienti;
 
 
 import it.ivncr.erp.jsf.RobustLazyDataModel;
-import it.ivncr.erp.model.commerciale.Indirizzo;
-import it.ivncr.erp.model.commerciale.TipoIndirizzo;
+import it.ivncr.erp.model.commerciale.ObiettivoServizio;
 import it.ivncr.erp.model.generale.Provincia;
 import it.ivncr.erp.service.QueryResult;
 import it.ivncr.erp.service.ServiceFactory;
 import it.ivncr.erp.service.SortDirection;
-import it.ivncr.erp.service.indirizzo.IndirizzoService;
 import it.ivncr.erp.service.lut.LUTService;
+import it.ivncr.erp.service.obiettivoservizio.ObiettivoServizioService;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -20,7 +19,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.context.RequestContext;
@@ -31,43 +30,44 @@ import org.slf4j.LoggerFactory;
 
 
 @ManagedBean
-@ViewScoped
-public class DettaglioClienteIndirizzi implements Serializable {
+@SessionScoped
+public class DettaglioClientiObiettivi implements Serializable {
 
-	private static final Logger logger = LoggerFactory.getLogger(DettaglioClienteIndirizzi.class);
+	private static final Logger logger = LoggerFactory.getLogger(DettaglioClientiObiettivi.class);
 
 	private static final long serialVersionUID = 1L;
 
 	@ManagedProperty("#{dettaglioClienteGenerale}")
 	private DettaglioClienteGenerale dettaglioClienteGenerale;
 
-	private LazyDataModel<Indirizzo> model;
-	private Indirizzo selected;
+	private LazyDataModel<ObiettivoServizio> model;
+	private ObiettivoServizio selected;
 
 	private Integer id;
-	private Integer codiceTipoIndirizzo;
-	private String destinatario1;
-	private String destinatario2;
+	private String alias;
 	private String toponimo;
 	private String indirizzo;
 	private String civico;
+	private String edificio;
+	private String scala;
+	private String piano;
+	private String interno;
 	private String localita;
 	private String cap;
 	private String provincia;
 	private String paese;
+	private String note;
 
-	private List<TipoIndirizzo> listTipoIndirizzo;
 	private List<Provincia> listProvincia;
 
 
-	public DettaglioClienteIndirizzi() {
-
-		model = new RobustLazyDataModel<Indirizzo>() {
+	public DettaglioClientiObiettivi() {
+		model = new RobustLazyDataModel<ObiettivoServizio>() {
 
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public List<Indirizzo> load(
+			public List<ObiettivoServizio> load(
 					int first,
 					int pageSize,
 					String sortField,
@@ -84,8 +84,8 @@ public class DettaglioClienteIndirizzi implements Serializable {
 				//
 				filters.put("codiceCliente", Integer.toString(dettaglioClienteGenerale.getId()));
 
-				IndirizzoService is = ServiceFactory.createService("Indirizzo");
-				QueryResult<Indirizzo> result = is.list(
+				ObiettivoServizioService oss = ServiceFactory.createService("ObiettivoServizio");
+				QueryResult<ObiettivoServizio> result = oss.list(
 						first,
 						pageSize,
 						sortField,
@@ -98,29 +98,26 @@ public class DettaglioClienteIndirizzi implements Serializable {
 			}
 
 			@Override
-			public Object getRowKey(Indirizzo indirizzo) {
+			public Object getRowKey(ObiettivoServizio obiettivoServizio) {
 
-				return indirizzo == null ? null : indirizzo.getId();
+				return obiettivoServizio == null ? null : obiettivoServizio.getId();
 			}
 
 			@Override
-			public Indirizzo getRowData(String rowKey) {
+			public ObiettivoServizio getRowData(String rowKey) {
 
-				IndirizzoService is = ServiceFactory.createService("Indirizzo");
-				Indirizzo indirizzo = is.retrieveDeep(Integer.decode(rowKey));
-				return indirizzo;
+				ObiettivoServizioService oss = ServiceFactory.createService("ObiettivoServizio");
+				ObiettivoServizio obiettivoServizio = oss.retrieve(Integer.decode(rowKey));
+				return obiettivoServizio;
 			}
 		};
 	}
+
 
 	@PostConstruct
 	public void init() {
 
 		LUTService lutService = ServiceFactory.createService("LUT");
-
-		// Load tipo indirizzo LUT.
-		//
-		listTipoIndirizzo = lutService.listItems("TipoIndirizzo");
 
 		// Load province LUT and extract short codes.
 		//
@@ -129,21 +126,25 @@ public class DettaglioClienteIndirizzi implements Serializable {
 		logger.debug("Initialization performed.");
 	}
 
+
 	private void clean() {
 
 		logger.debug("Cleaning form state.");
 
 		id = null;
-		codiceTipoIndirizzo = null;
-		destinatario1 = null;
-		destinatario2 = null;
+		alias = null;
 		toponimo = null;
 		indirizzo = null;
 		civico = null;
+		edificio = null;
+		scala = null;
+		piano = null;
+		interno = null;
 		localita = null;
 		cap = null;
 		provincia = null;
 		paese = null;
+		note = null;
 	}
 
 	public void startCreate() {
@@ -164,38 +165,45 @@ public class DettaglioClienteIndirizzi implements Serializable {
 		}
 
 		id = selected.getId();
-		codiceTipoIndirizzo = selected.getTipoIndirizzo() != null ? selected.getTipoIndirizzo().getId() : null;
-		destinatario1 = selected.getDestinatario1();
-		destinatario2 = selected.getDestinatario2();
+		alias = selected.getAlias();
 		toponimo = selected.getToponimo();
 		indirizzo = selected.getIndirizzo();
 		civico = selected.getCivico();
+		edificio = selected.getEdificio();
+		scala = selected.getScala();
+		piano = selected.getPiano();
+		interno = selected.getInterno();
 		localita = selected.getLocalita();
 		cap = selected.getCap();
 		provincia = selected.getProvincia();
 		paese = selected.getPaese();
+		note = selected.getNote();
 	}
+
 
 	public void doSave() {
 
 		// Save the entity.
 		//
 		try {
-			IndirizzoService is = ServiceFactory.createService("Indirizzo");
+			ObiettivoServizioService oss = ServiceFactory.createService("ObiettivoServizio");
 
 			if(id == null) {
-				is.create(
+				oss.create(
 						dettaglioClienteGenerale.getId(),
-						codiceTipoIndirizzo,
-						destinatario1,
-						destinatario2,
+						alias,
 						toponimo,
 						indirizzo,
 						civico,
+						edificio,
+						scala,
+						piano,
+						interno,
 						localita,
 						cap,
 						provincia,
-						paese);
+						paese,
+						note);
 				logger.debug("Entity successfully created.");
 
 				// Add a message.
@@ -203,23 +211,26 @@ public class DettaglioClienteIndirizzi implements Serializable {
 				FacesMessage message = new FacesMessage(
 						FacesMessage.SEVERITY_INFO,
 						"Record creato",
-						"La creazione del nuovo indirizzo si è conclusa con successo.");
+						"La creazione del nuovo obiettivo di servizio si è conclusa con successo.");
 				FacesContext.getCurrentInstance().addMessage(null, message);
 
 			} else {
 
-				is.update(
+				oss.update(
 						id,
-						codiceTipoIndirizzo,
-						destinatario1,
-						destinatario2,
+						alias,
 						toponimo,
 						indirizzo,
 						civico,
+						edificio,
+						scala,
+						piano,
+						interno,
 						localita,
 						cap,
 						provincia,
-						paese);
+						paese,
+						note);
 				logger.debug("Entity successfully updated.");
 
 				// Add a message.
@@ -227,7 +238,7 @@ public class DettaglioClienteIndirizzi implements Serializable {
 				FacesMessage message = new FacesMessage(
 						FacesMessage.SEVERITY_INFO,
 						"Record aggiornato",
-						"La modifica dell'indirizzo si è conclusa con successo.");
+						"La modifica dell'obiettivo di servizio si è conclusa con successo.");
 				FacesContext.getCurrentInstance().addMessage(null, message);
 			}
 
@@ -259,8 +270,8 @@ public class DettaglioClienteIndirizzi implements Serializable {
 		// Delete the entity.
 		//
 		try {
-			IndirizzoService is = ServiceFactory.createService("Indirizzo");
-			is.delete(selected.getId());
+			ObiettivoServizioService oss = ServiceFactory.createService("ObiettivoServizio");
+			oss.delete(selected.getId());
 
 			logger.debug("Entity successfully deleted.");
 
@@ -269,7 +280,7 @@ public class DettaglioClienteIndirizzi implements Serializable {
 			FacesMessage message = new FacesMessage(
 					FacesMessage.SEVERITY_INFO,
 					"Record eliminato",
-					"L'eliminazione dell'indirizzo si è conclusa con successo.");
+					"L'eliminazione dell'obiettivo di servizio si è conclusa con successo.");
 			FacesContext.getCurrentInstance().addMessage(null, message);
 
 			// Signal to modal dialog that everything went fine.
@@ -288,7 +299,6 @@ public class DettaglioClienteIndirizzi implements Serializable {
 		}
 	}
 
-
 	public List<Provincia> completeProvincia(String query) {
 
 		String q = query.toUpperCase();
@@ -304,7 +314,6 @@ public class DettaglioClienteIndirizzi implements Serializable {
 		return result;
 	}
 
-
 	public DettaglioClienteGenerale getDettaglioClienteGenerale() {
 		return dettaglioClienteGenerale;
 	}
@@ -314,19 +323,19 @@ public class DettaglioClienteIndirizzi implements Serializable {
 		this.dettaglioClienteGenerale = dettaglioClienteGenerale;
 	}
 
-	public LazyDataModel<Indirizzo> getModel() {
+	public LazyDataModel<ObiettivoServizio> getModel() {
 		return model;
 	}
 
-	public void setModel(LazyDataModel<Indirizzo> model) {
+	public void setModel(LazyDataModel<ObiettivoServizio> model) {
 		this.model = model;
 	}
 
-	public Indirizzo getSelected() {
+	public ObiettivoServizio getSelected() {
 		return selected;
 	}
 
-	public void setSelected(Indirizzo selected) {
+	public void setSelected(ObiettivoServizio selected) {
 		this.selected = selected;
 	}
 
@@ -338,28 +347,12 @@ public class DettaglioClienteIndirizzi implements Serializable {
 		this.id = id;
 	}
 
-	public Integer getCodiceTipoIndirizzo() {
-		return codiceTipoIndirizzo;
+	public String getAlias() {
+		return alias;
 	}
 
-	public void setCodiceTipoIndirizzo(Integer codiceTipoIndirizzo) {
-		this.codiceTipoIndirizzo = codiceTipoIndirizzo;
-	}
-
-	public String getDestinatario1() {
-		return destinatario1;
-	}
-
-	public void setDestinatario1(String destinatario1) {
-		this.destinatario1 = destinatario1;
-	}
-
-	public String getDestinatario2() {
-		return destinatario2;
-	}
-
-	public void setDestinatario2(String destinatario2) {
-		this.destinatario2 = destinatario2;
+	public void setAlias(String alias) {
+		this.alias = alias;
 	}
 
 	public String getToponimo() {
@@ -384,6 +377,38 @@ public class DettaglioClienteIndirizzi implements Serializable {
 
 	public void setCivico(String civico) {
 		this.civico = civico;
+	}
+
+	public String getEdificio() {
+		return edificio;
+	}
+
+	public void setEdificio(String edificio) {
+		this.edificio = edificio;
+	}
+
+	public String getScala() {
+		return scala;
+	}
+
+	public void setScala(String scala) {
+		this.scala = scala;
+	}
+
+	public String getPiano() {
+		return piano;
+	}
+
+	public void setPiano(String piano) {
+		this.piano = piano;
+	}
+
+	public String getInterno() {
+		return interno;
+	}
+
+	public void setInterno(String interno) {
+		this.interno = interno;
 	}
 
 	public String getLocalita() {
@@ -418,11 +443,19 @@ public class DettaglioClienteIndirizzi implements Serializable {
 		this.paese = paese;
 	}
 
-	public List<TipoIndirizzo> getListTipoIndirizzo() {
-		return listTipoIndirizzo;
+	public String getNote() {
+		return note;
 	}
 
-	public void setListTipoIndirizzo(List<TipoIndirizzo> listTipoIndirizzo) {
-		this.listTipoIndirizzo = listTipoIndirizzo;
+	public void setNote(String note) {
+		this.note = note;
+	}
+
+	public List<Provincia> getListProvincia() {
+		return listProvincia;
+	}
+
+	public void setListProvincia(List<Provincia> listProvincia) {
+		this.listProvincia = listProvincia;
 	}
 }

@@ -157,7 +157,7 @@ public class QueryByCodiceClienteDestinatario1Destinatario2IndirizzoLocalitaCapP
 			hql += "and upper(ind.paese) like :paese ";
 
 		if(sortCriteria != null) {
-			hql += "order by con." + sortCriteria + " ";
+			hql += "order by ind." + sortCriteria + " ";
 
 			if(sortDirection != null)
 				hql += sortDirection.toHql();
