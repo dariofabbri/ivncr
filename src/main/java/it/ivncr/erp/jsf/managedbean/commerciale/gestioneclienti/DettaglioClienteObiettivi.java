@@ -54,7 +54,7 @@ public class DettaglioClienteObiettivi implements Serializable {
 	private String interno;
 	private String localita;
 	private String cap;
-	private String provincia;
+	private Provincia provincia;
 	private String paese;
 	private String note;
 
@@ -164,6 +164,9 @@ public class DettaglioClienteObiettivi implements Serializable {
 			throw new RuntimeException(msg);
 		}
 
+		Provincia provinciaEntity = new Provincia();
+		provinciaEntity.setSigla(selected.getProvincia());
+		
 		id = selected.getId();
 		alias = selected.getAlias();
 		toponimo = selected.getToponimo();
@@ -175,7 +178,7 @@ public class DettaglioClienteObiettivi implements Serializable {
 		interno = selected.getInterno();
 		localita = selected.getLocalita();
 		cap = selected.getCap();
-		provincia = selected.getProvincia();
+		provincia = provinciaEntity;
 		paese = selected.getPaese();
 		note = selected.getNote();
 	}
@@ -201,7 +204,7 @@ public class DettaglioClienteObiettivi implements Serializable {
 						interno,
 						localita,
 						cap,
-						provincia,
+						provincia.getSigla(),
 						paese,
 						note);
 				logger.debug("Entity successfully created.");
@@ -228,7 +231,7 @@ public class DettaglioClienteObiettivi implements Serializable {
 						interno,
 						localita,
 						cap,
-						provincia,
+						provincia.getSigla(),
 						paese,
 						note);
 				logger.debug("Entity successfully updated.");
@@ -427,11 +430,11 @@ public class DettaglioClienteObiettivi implements Serializable {
 		this.cap = cap;
 	}
 
-	public String getProvincia() {
+	public Provincia getProvincia() {
 		return provincia;
 	}
 
-	public void setProvincia(String provincia) {
+	public void setProvincia(Provincia provincia) {
 		this.provincia = provincia;
 	}
 

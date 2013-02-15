@@ -53,7 +53,7 @@ public class DettaglioClienteIndirizzi implements Serializable {
 	private String civico;
 	private String localita;
 	private String cap;
-	private String provincia;
+	private Provincia provincia;
 	private String paese;
 
 	private List<TipoIndirizzo> listTipoIndirizzo;
@@ -163,6 +163,9 @@ public class DettaglioClienteIndirizzi implements Serializable {
 			throw new RuntimeException(msg);
 		}
 
+		Provincia provinciaEntity = new Provincia();
+		provinciaEntity.setSigla(selected.getProvincia());
+
 		id = selected.getId();
 		codiceTipoIndirizzo = selected.getTipoIndirizzo() != null ? selected.getTipoIndirizzo().getId() : null;
 		destinatario1 = selected.getDestinatario1();
@@ -172,7 +175,7 @@ public class DettaglioClienteIndirizzi implements Serializable {
 		civico = selected.getCivico();
 		localita = selected.getLocalita();
 		cap = selected.getCap();
-		provincia = selected.getProvincia();
+		provincia = provinciaEntity;
 		paese = selected.getPaese();
 	}
 
@@ -194,7 +197,7 @@ public class DettaglioClienteIndirizzi implements Serializable {
 						civico,
 						localita,
 						cap,
-						provincia,
+						provincia.getSigla(),
 						paese);
 				logger.debug("Entity successfully created.");
 
@@ -218,7 +221,7 @@ public class DettaglioClienteIndirizzi implements Serializable {
 						civico,
 						localita,
 						cap,
-						provincia,
+						provincia.getSigla(),
 						paese);
 				logger.debug("Entity successfully updated.");
 
@@ -402,11 +405,11 @@ public class DettaglioClienteIndirizzi implements Serializable {
 		this.cap = cap;
 	}
 
-	public String getProvincia() {
+	public Provincia getProvincia() {
 		return provincia;
 	}
 
-	public void setProvincia(String provincia) {
+	public void setProvincia(Provincia provincia) {
 		this.provincia = provincia;
 	}
 

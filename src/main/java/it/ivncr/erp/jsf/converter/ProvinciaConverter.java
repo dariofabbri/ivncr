@@ -26,6 +26,10 @@ public class ProvinciaConverter implements Converter {
 	@Override
 	public String getAsString(FacesContext context, UIComponent component, Object object) {
 
+		if(object instanceof String) {
+			return (String)object;
+		}
+		
 		Provincia provincia = (Provincia)object;
 		return provincia.getSigla();
 	}

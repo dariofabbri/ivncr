@@ -231,7 +231,8 @@
 							forceSelection="true" 
 							var="p"
 							itemLabel="#{p.sigla}"
-							itemValue="#{p.sigla}">
+							itemValue="#{p.sigla}"
+							converter="provinciaConverter">
 							<f:facet name="itemtip">
 								<h:panelGrid columns="2">
 									<h:outputText value="Sigla:"/>
