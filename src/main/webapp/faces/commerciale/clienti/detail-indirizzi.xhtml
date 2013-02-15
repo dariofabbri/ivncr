@@ -229,19 +229,19 @@
 							value="#{dettaglioClienteIndirizzi.provincia}"
 							completeMethod="#{dettaglioClienteIndirizzi.completeProvincia}"
 							forceSelection="true" 
-							var="provincia"
-							itemLabel="#{provincia.sigla}"
-							itemValue="#{provincia.sigla}">
+							var="p"
+							itemLabel="#{p.sigla}"
+							itemValue="#{p.sigla}">
 							<f:facet name="itemtip">
 								<h:panelGrid columns="2">
 									<h:outputText value="Sigla:"/>
-									<h:outputText value="#{provincia.sigla}"/>
+									<h:outputText value="#{p.sigla}"/>
 
 									<h:outputText value="Descrizione:"/>
-									<h:outputText value="#{provincia.descrizione}"/>
+									<h:outputText value="#{p.descrizione}"/>
 
 									<h:outputText value="Regione:"/>
-									<h:outputText value="#{provincia.regione}"/>
+									<h:outputText value="#{p.regione}"/>
 								</h:panelGrid>
 							</f:facet>
 						</p:autoComplete>
