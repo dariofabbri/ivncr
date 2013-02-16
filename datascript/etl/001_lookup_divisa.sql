@@ -1,4 +1,4 @@
-﻿CREATE TABLE etl.lut_divisa
+CREATE TABLE etl.lut_divisa
 (
 	id SERIAL NOT NULL PRIMARY KEY,
 	azienda_id INTEGER NOT NULL,

@@ -10,3 +10,7 @@ psql -U ivncr -f 007_add_counters_table.sql ivncr
 psql -U ivncr -f 008_create_multi_azienda_tables.sql ivncr
 psql -U ivncr -f 009_add_user_picture_column.sql ivncr
 psql -U ivncr -f 010_create_contatto_cliente_tables.sql ivncr
+psql -U ivncr -f 011_create_indirizzi_cliente_tables.sql ivncr
+psql -U ivncr -f 012_add_cliente_note_column.sql ivncr
+psql -U ivncr -f 013_create_provincia_table.sql ivncr
+psql -U ivncr -f 014_create_obiettivi_cliente_tables.sql ivncr

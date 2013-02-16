@@ -1,4 +1,4 @@
-﻿CREATE TABLE etl.lut_gruppo_cliente
+CREATE TABLE etl.lut_gruppo_cliente
 (
 	id SERIAL NOT NULL PRIMARY KEY,
 	azienda_id INTEGER NOT NULL,
