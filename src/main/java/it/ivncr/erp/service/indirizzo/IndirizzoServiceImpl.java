@@ -22,15 +22,14 @@ public class IndirizzoServiceImpl extends AbstractService implements IndirizzoSe
 			SortDirection sortDirection,
 			Map<String, String> filters) {
 
-		QueryByCodiceClienteDestinatario1Destinatario2IndirizzoLocalitaCapProvinciaPaese q =
-				new QueryByCodiceClienteDestinatario1Destinatario2IndirizzoLocalitaCapProvinciaPaese(session);
+		QueryByCodiceClienteDestinatarioIndirizzoLocalitaCapProvinciaPaese q =
+				new QueryByCodiceClienteDestinatarioIndirizzoLocalitaCapProvinciaPaese(session);
 
 		Integer codiceCliente = null;
 		if(filters.get("codiceCliente") != null)
 			codiceCliente = Integer.decode(filters.get("codiceCliente"));
 
-		String destinatario1 = filters.get("destinatario1");
-		String destinatario2 = filters.get("destinatario2");
+		String destinatario = filters.get("destinatario");
 		String indirizzo = filters.get("indirizzo");
 		String localita = filters.get("localita");
 		String cap = filters.get("cap");
@@ -38,8 +37,7 @@ public class IndirizzoServiceImpl extends AbstractService implements IndirizzoSe
 		String paese = filters.get("paese");
 
 		q.setCodiceCliente(codiceCliente);
-		q.setDestinatario1(destinatario1);
-		q.setDestinatario2(destinatario2);
+		q.setDestinatario(destinatario);
 		q.setIndirizzo(indirizzo);
 		q.setLocalita(localita);
 		q.setCap(cap);
@@ -76,6 +74,37 @@ public class IndirizzoServiceImpl extends AbstractService implements IndirizzoSe
 		q.setCodiceCliente(codiceCliente);
 		q.setDestinatario1(destinatario1);
 		q.setDestinatario2(destinatario2);
+		q.setIndirizzo(indirizzo);
+		q.setLocalita(localita);
+		q.setCap(cap);
+		q.setProvincia(provincia);
+		q.setPaese(paese);
+		q.setOffset(offset);
+		q.setLimit(limit);
+
+		QueryResult<Indirizzo> result = q.query();
+		logger.debug("Query returned: " + result);
+
+		return result;
+	}
+
+	@Override
+	public QueryResult<Indirizzo> list(
+			Integer codiceCliente,
+			String destinatario,
+			String indirizzo,
+			String localita,
+			String cap,
+			String provincia,
+			String paese,
+			Integer offset,
+			Integer limit) {
+
+		QueryByCodiceClienteDestinatarioIndirizzoLocalitaCapProvinciaPaese q =
+				new QueryByCodiceClienteDestinatarioIndirizzoLocalitaCapProvinciaPaese(session);
+
+		q.setCodiceCliente(codiceCliente);
+		q.setDestinatario(destinatario);
 		q.setIndirizzo(indirizzo);
 		q.setLocalita(localita);
 		q.setCap(cap);

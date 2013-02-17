@@ -67,6 +67,13 @@ public class Indirizzo {
 				StringUtils.stripToEmpty(civico)).trim();
 	}
 
+	public String getDestinatarioComposto() {
+
+		return String.format("%s %s",
+				StringUtils.stripToEmpty(destinatario1),
+				StringUtils.stripToEmpty(destinatario2)).trim();
+	}
+
 
 	public Integer getId() {
 		return id;

@@ -74,14 +74,9 @@
 		    	Lista degli indirizzi amministrativi
 		    </f:facet>
 	
-			<p:column headerText="Destinatario" sortBy="#{indirizzo.destinatario1}"
-				filterBy="#{indirizzo.destinatario1}">
-				<h:outputText value="#{indirizzo.destinatario1}" />
-			</p:column>
-	
-			<p:column headerText="Destinatario (2)" sortBy="#{indirizzo.destinatario2}"
-				filterBy="#{indirizzo.destinatario2}">
-				<h:outputText value="#{indirizzo.destinatario2}" />
+			<p:column headerText="Destinatario" sortBy="#{indirizzo.destinatario}"
+				filterBy="#{indirizzo.destinatario}">
+				<h:outputText value="#{indirizzo.destinatarioComposto}" />
 			</p:column>
 	
 			<p:column headerText="Indirizzo" sortBy="#{indirizzo.indirizzo}"

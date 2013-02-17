@@ -115,7 +115,7 @@ public class DettaglioClienteContatti implements Serializable {
 		// Load tipo contatto LUT.
 		//
 		listTipoContatto = lutService.listItems("TipoContatto");
-		
+
 		logger.debug("Initialization performed.");
 	}
 
@@ -150,6 +150,12 @@ public class DettaglioClienteContatti implements Serializable {
 			logger.error(msg);
 			throw new RuntimeException(msg);
 		}
+
+		// Reloading the entity is required to be sure that the value has not changed since it was
+		// read in the data table list of values.
+		//
+		ContattoService cs = ServiceFactory.createService("Contatto");
+		selected = cs.retrieveDeep(selected.getId());
 
 		id = selected.getId();
 		codiceTipoContatto = selected.getTipoContatto() != null ? selected.getTipoContatto().getId() : null;

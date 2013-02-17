@@ -18,6 +18,17 @@ public interface IndirizzoService extends EntityService<Indirizzo> {
 			Integer offset,
 			Integer limit);
 
+	QueryResult<Indirizzo> list(
+			Integer codiceCliente,
+			String destinatario,
+			String indirizzo,
+			String localita,
+			String cap,
+			String provincia,
+			String paese,
+			Integer offset,
+			Integer limit);
+
 	Indirizzo retrieve(Integer id);
 	Indirizzo retrieveDeep(Integer id);
 

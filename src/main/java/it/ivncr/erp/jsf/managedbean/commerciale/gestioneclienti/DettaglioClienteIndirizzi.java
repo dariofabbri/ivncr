@@ -163,6 +163,12 @@ public class DettaglioClienteIndirizzi implements Serializable {
 			throw new RuntimeException(msg);
 		}
 
+		// Reloading the entity is required to be sure that the value has not changed since it was
+		// read in the data table list of values.
+		//
+		IndirizzoService is = ServiceFactory.createService("Indirizzo");
+		selected = is.retrieveDeep(selected.getId());
+
 		Provincia provinciaEntity = new Provincia();
 		provinciaEntity.setSigla(selected.getProvincia());
 
@@ -197,7 +203,7 @@ public class DettaglioClienteIndirizzi implements Serializable {
 						civico,
 						localita,
 						cap,
-						provincia.getSigla(),
+						provincia != null ? provincia.getSigla() : null,
 						paese);
 				logger.debug("Entity successfully created.");
 
@@ -221,7 +227,7 @@ public class DettaglioClienteIndirizzi implements Serializable {
 						civico,
 						localita,
 						cap,
-						provincia.getSigla(),
+						provincia != null ? provincia.getSigla() : null,
 						paese);
 				logger.debug("Entity successfully updated.");
 

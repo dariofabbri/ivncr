@@ -164,9 +164,15 @@ public class DettaglioClienteObiettivi implements Serializable {
 			throw new RuntimeException(msg);
 		}
 
+		// Reloading the entity is required to be sure that the value has not changed since it was
+		// read in the data table list of values.
+		//
+		ObiettivoServizioService oss = ServiceFactory.createService("ObiettivoServizio");
+		selected = oss.retrieve(selected.getId());
+
 		Provincia provinciaEntity = new Provincia();
 		provinciaEntity.setSigla(selected.getProvincia());
-		
+
 		id = selected.getId();
 		alias = selected.getAlias();
 		toponimo = selected.getToponimo();
