@@ -54,6 +54,12 @@ public class DettaglioClienteContatti implements Serializable {
 
 	private List<TipoContatto> listTipoContatto;
 
+	
+	// Used for default selection.
+	//
+	private List<Contatto> currentListContent;
+	private Integer codiceContattoPreferito;
+	
 
 	public DettaglioClienteContatti() {
 
@@ -88,6 +94,7 @@ public class DettaglioClienteContatti implements Serializable {
 
 				this.setRowCount(result.getRecords());
 
+				currentListContent = result.getResults();
 				return result.getResults();
 			}
 
@@ -118,7 +125,7 @@ public class DettaglioClienteContatti implements Serializable {
 
 		logger.debug("Initialization performed.");
 	}
-
+	
 	private void clean() {
 
 		logger.debug("Cleaning form state.");
@@ -380,5 +387,21 @@ public class DettaglioClienteContatti implements Serializable {
 
 	public void setListTipoContatto(List<TipoContatto> listTipoContatto) {
 		this.listTipoContatto = listTipoContatto;
+	}
+
+	public List<Contatto> getCurrentListContent() {
+		return currentListContent;
+	}
+
+	public void setCurrentListContent(List<Contatto> currentListContent) {
+		this.currentListContent = currentListContent;
+	}
+
+	public Integer getCodiceContattoPreferito() {
+		return codiceContattoPreferito;
+	}
+
+	public void setCodiceContattoPreferito(Integer codiceContattoPreferito) {
+		this.codiceContattoPreferito = codiceContattoPreferito;
 	}
 }

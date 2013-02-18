@@ -50,6 +50,9 @@ public class Contatto {
 	@Column(name="email")
 	private String email;
 
+	@Column(name="preferito")
+	private Boolean preferito;
+
 	public Integer getId() {
 		return id;
 	}
@@ -128,5 +131,13 @@ public class Contatto {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public Boolean getPreferito() {
+		return preferito;
+	}
+
+	public void setPreferito(Boolean preferito) {
+		this.preferito = preferito;
 	}
 }
