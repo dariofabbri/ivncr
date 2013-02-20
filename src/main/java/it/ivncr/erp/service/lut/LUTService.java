@@ -17,4 +17,6 @@ public interface LUTService extends Service {
 	<T> List<T> listItems(String lut, String orderColumn);
 
 	<T> List<T> listItems(String lut, String orderColumn, String filterColumn, Object filterValue);
+
+	<T> List<T> listItemsSingleColumn(String lut, String column);
 }

@@ -51,6 +51,7 @@
 		
 		<mapping class="it.ivncr.erp.model.generale.Azienda" />
 		<mapping class="it.ivncr.erp.model.generale.Contatore" />
+		<mapping class="it.ivncr.erp.model.generale.Paese" />
 		<mapping class="it.ivncr.erp.model.generale.Provincia" />
 
     </session-factory>

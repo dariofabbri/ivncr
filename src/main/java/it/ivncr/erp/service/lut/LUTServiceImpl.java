@@ -99,4 +99,18 @@ public class LUTServiceImpl extends AbstractService implements LUTService {
 
 		return list;
 	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T> List<T> listItemsSingleColumn(String lut, String column) {
+
+		String hql =
+				"select lut." + column + " from " + lut + " lut ";
+
+		Query query = session.createQuery(hql);
+		List<T> list = query.list();
+		logger.debug("Items found: " + list);
+
+		return list;
+	}
 }
