@@ -4,6 +4,8 @@ import it.ivncr.erp.model.commerciale.Contatto;
 import it.ivncr.erp.service.EntityService;
 import it.ivncr.erp.service.QueryResult;
 
+import java.util.List;
+
 public interface ContattoService extends EntityService<Contatto> {
 
 	QueryResult<Contatto> list(
@@ -41,6 +43,8 @@ public interface ContattoService extends EntityService<Contatto> {
 			String cellulare,
 			String fax,
 			String email);
-	
+
 	void delete(Integer id);
+
+	List<String> listDistinctTitolo();
 }

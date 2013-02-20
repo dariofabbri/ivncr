@@ -11,6 +11,7 @@ import it.ivncr.erp.service.contatto.ContattoService;
 import it.ivncr.erp.service.lut.LUTService;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -53,13 +54,14 @@ public class DettaglioClienteContatti implements Serializable {
 	private String email;
 
 	private List<TipoContatto> listTipoContatto;
+	private List<String> listTitoli;
 
-	
+
 	// Used for default selection.
 	//
 	private List<Contatto> currentListContent;
 	private Integer codiceContattoPreferito;
-	
+
 
 	public DettaglioClienteContatti() {
 
@@ -123,9 +125,13 @@ public class DettaglioClienteContatti implements Serializable {
 		//
 		listTipoContatto = lutService.listItems("TipoContatto");
 
+
+		ContattoService cs = ServiceFactory.createService("Contatto");
+		listTitoli = cs.listDistinctTitolo();
+
 		logger.debug("Initialization performed.");
 	}
-	
+
 	private void clean() {
 
 		logger.debug("Cleaning form state.");
@@ -283,6 +289,24 @@ public class DettaglioClienteContatti implements Serializable {
 		}
 	}
 
+	public List<String> completeTitolo(String query) {
+
+		String q = query.toUpperCase();
+
+		List<String> result = new ArrayList<String>();
+
+		for(String s : listTitoli) {
+			if(s == null) {
+				continue;
+			}
+
+			if(s.toUpperCase().contains(q)) {
+				result.add(s);
+			}
+		}
+
+		return result;
+	}
 
 	public DettaglioClienteGenerale getDettaglioClienteGenerale() {
 		return dettaglioClienteGenerale;

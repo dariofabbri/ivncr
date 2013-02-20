@@ -165,7 +165,10 @@
 						<p:outputLabel for="titolo" value="Titolo:" />
 					</p:column>
 					<p:column>
-						<p:inputText value="#{dettaglioClienteContatti.titolo}" id="titolo"/>
+						<p:autoComplete 
+							id="titolo" 
+							value="#{dettaglioClienteContatti.titolo}" 
+							completeMethod="#{dettaglioClienteContatti.completeTitolo}"/>
 						<p:watermark for="titolo" value="Titolo da premettere al nome del contatto" />  
 						<p:tooltip for="titolo" showEffect="fade" value="Titolo del contatto" />
 					</p:column>
