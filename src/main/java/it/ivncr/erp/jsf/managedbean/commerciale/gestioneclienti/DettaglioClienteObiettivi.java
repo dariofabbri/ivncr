@@ -59,6 +59,7 @@ public class DettaglioClienteObiettivi implements Serializable {
 	private String note;
 
 	private List<Provincia> listProvincia;
+	private List<String> listPaese;
 
 
 	public DettaglioClienteObiettivi() {
@@ -122,6 +123,10 @@ public class DettaglioClienteObiettivi implements Serializable {
 		// Load province LUT and extract short codes.
 		//
 		listProvincia = lutService.listItems("Provincia");
+
+		// Load paese LUT.
+		//
+		listPaese = lutService.listItemsSingleColumn("Paese", "descrizione");
 
 		logger.debug("Initialization performed.");
 	}
@@ -308,6 +313,7 @@ public class DettaglioClienteObiettivi implements Serializable {
 		}
 	}
 
+
 	public List<Provincia> completeProvincia(String query) {
 
 		String q = query.toUpperCase();
@@ -322,6 +328,23 @@ public class DettaglioClienteObiettivi implements Serializable {
 
 		return result;
 	}
+
+
+	public List<String> completePaese(String query) {
+
+		String q = query.toUpperCase();
+
+		List<String> result = new ArrayList<String>();
+
+		for(String s : listPaese) {
+			if(s.toUpperCase().contains(q)) {
+				result.add(s);
+			}
+		}
+
+		return result;
+	}
+
 
 	public DettaglioClienteGenerale getDettaglioClienteGenerale() {
 		return dettaglioClienteGenerale;

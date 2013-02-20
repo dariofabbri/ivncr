@@ -284,7 +284,11 @@
 						<p:outputLabel for="paese" value="Paese:" />
 					</p:column>
 					<p:column>
-						<p:inputText value="#{dettaglioClienteObiettivi.paese}" id="paese"/>
+						<p:autoComplete
+							id="paese"
+							value="#{dettaglioClienteObiettivi.paese}"
+							completeMethod="#{dettaglioClienteObiettivi.completePaese}"
+							forceSelection="true"/>
 						<p:watermark for="paese" value="Paese" />  
 						<p:tooltip for="paese" showEffect="fade" value="Paese" />
 					</p:column>
