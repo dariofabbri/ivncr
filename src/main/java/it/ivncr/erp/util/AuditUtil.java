@@ -29,8 +29,8 @@ public class AuditUtil {
 		}
 		MDC.put("logonUser", logonUser);
 
-		MDC.put("beforeStatus", before.toString());
-		MDC.put("afterStatus", after.toString());
+		MDC.put("beforeStatus", before != null ? before.toString() : null);
+		MDC.put("afterStatus", after != null ? after.toString() : null);
 
 		logger.info("");
 	}

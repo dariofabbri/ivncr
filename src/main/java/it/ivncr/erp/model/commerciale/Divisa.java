@@ -1,5 +1,7 @@
 package it.ivncr.erp.model.commerciale;
 
+import it.ivncr.erp.model.BaseEntity;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,7 +13,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "com_divisa")
-public class Divisa {
+public class Divisa extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "com_divisa_id_seq")

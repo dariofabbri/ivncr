@@ -1,5 +1,6 @@
 package it.ivncr.erp.model.commerciale;
 
+import it.ivncr.erp.model.BaseEntity;
 import it.ivncr.erp.model.generale.Azienda;
 
 import java.math.BigDecimal;
@@ -18,7 +19,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "com_cliente")
-public class Cliente {
+public class Cliente extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "com_cliente_id_seq")
@@ -101,10 +102,9 @@ public class Cliente {
 
 	@Column(name="ultima_modifica_ts")
 	private Date ultimaModifica;
-	
+
 	@Column(name="note")
 	private String note;
-	
 
 	public Integer getId() {
 		return id;
