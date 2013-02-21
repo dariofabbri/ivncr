@@ -11,6 +11,7 @@ import it.ivncr.erp.service.NotFoundException;
 import it.ivncr.erp.service.QueryResult;
 import it.ivncr.erp.service.ServiceException;
 import it.ivncr.erp.service.SortDirection;
+import it.ivncr.erp.util.AuditUtil;
 
 import java.util.Date;
 import java.util.List;
@@ -183,6 +184,10 @@ public class ClienteServiceImpl extends AbstractService implements ClienteServic
 		//
 		session.save(cliente);
 		logger.debug("Cliente successfully created.");
+
+		// Audit call for the create operation.
+		//
+		AuditUtil.log(null, cliente);
 
 		return cliente;
 	}

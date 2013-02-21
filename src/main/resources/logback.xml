@@ -2,17 +2,28 @@
 
 <configuration>
 
-  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-    <encoder>
-      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36}.%method - %msg%n</pattern>
-    </encoder>
-  </appender>
-  
-  <logger name="org.dozer" level="info" />
-  <logger name="org.hibernate" level="info" />
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36}.%method - %msg%n</pattern>
+		</encoder>
+	</appender>
 
-  <root level="debug">
-    <appender-ref ref="STDOUT" />
-  </root>
-  
+	<appender name="AUDIT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] [%X{logonUser}] [%X{serviceClass}.%X{serviceMethod}:%X{serviceLineNumber}] FROM [%X{beforeStatus}] TO [%X{afterStatus}]</pattern>
+		</encoder>
+	</appender>
+
+	<logger name="org.dozer" level="info" />
+	<logger name="org.hibernate" level="info" />
+
+	
+	<logger name="audit" level="info" additivity="false">
+		<appender-ref ref="AUDIT" />
+	</logger>
+
+	<root level="debug">
+		<appender-ref ref="STDOUT" />
+	</root>
+
 </configuration>
