@@ -11,6 +11,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 @Entity
 @Table(name = "com_contatto")
 public class Contatto {
@@ -52,6 +55,24 @@ public class Contatto {
 
 	@Column(name="preferito")
 	private Boolean preferito;
+
+	
+	public String toString() {
+		
+		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+			.append("id", id)
+			.append("cliente", cliente, false)
+			.append("tipoContatto", tipoContatto, false)
+			.append("titolo", titolo)
+			.append("nome", nome)
+			.append("telefono1", telefono1)
+			.append("telefono2", telefono2)
+			.append("cellulare", cellulare)
+			.append("fax", fax)
+			.append("email", email)
+			.append("preferito", preferito)
+			.toString();
+	}
 
 	public Integer getId() {
 		return id;

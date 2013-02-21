@@ -12,6 +12,8 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
 @Table(name = "com_indirizzo")
@@ -57,6 +59,25 @@ public class Indirizzo {
 
 	@Column(name="paese")
 	private String paese;
+
+	
+	public String toString() {
+		
+		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+			.append("id", id)
+			.append("cliente", cliente, false)
+			.append("tipoIndirizzo", tipoIndirizzo, false)
+			.append("destinatario1", destinatario1)
+			.append("destinatario2", destinatario2)
+			.append("toponimo", toponimo)
+			.append("indirizzo", indirizzo)
+			.append("civico", civico)
+			.append("localita", localita)
+			.append("cap", cap)
+			.append("provincia", provincia)
+			.append("paese", paese)
+			.toString();
+	}
 
 
 	public String getIndirizzoComposto() {

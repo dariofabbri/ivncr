@@ -8,6 +8,9 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 
 @Entity
 @Table(name = "gen_paese")
@@ -31,6 +34,19 @@ public class Paese {
 	@Column(name="descrizione")
 	private String descrizione;
 
+	
+	public String toString() {
+		
+		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+			.append("id", id)
+			.append("alpha2", alpha2)
+			.append("alpha3", alpha3)
+			.append("numeric", numeric)
+			.append("descrizione", descrizione)
+			.toString();
+	}
+
+	
 	public Integer getId() {
 		return id;
 	}

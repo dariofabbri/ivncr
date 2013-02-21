@@ -16,6 +16,9 @@ import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 @Entity
 @Table(name = "gen_azienda")
 public class Azienda {
@@ -35,6 +38,18 @@ public class Azienda {
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="azienda")
 	@OrderBy
 	private Set<UtenteAzienda> utenti;
+
+	
+	public String toString() {
+		
+		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+			.append("id", id)
+			.append("codice", codice)
+			.append("descrizione", descrizione)
+			.append("utenti", utenti, false)
+			.toString();
+	}
+	
 
 	public Integer getId() {
 		return id;

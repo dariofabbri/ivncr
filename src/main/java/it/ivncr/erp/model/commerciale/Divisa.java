@@ -1,7 +1,5 @@
 package it.ivncr.erp.model.commerciale;
 
-import it.ivncr.erp.model.BaseEntity;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,10 +8,13 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 
 @Entity
 @Table(name = "com_divisa")
-public class Divisa extends BaseEntity {
+public class Divisa {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "com_divisa_id_seq")
@@ -32,6 +33,18 @@ public class Divisa extends BaseEntity {
 
 	@Column(name="descrizione")
 	private String descrizione;
+
+	
+	public String toString() {
+		
+		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+			.append("id", id)
+			.append("simbolo", simbolo)
+			.append("isoAlphaCode", isoAlphaCode)
+			.append("isoNumericCode", isoNumericCode)
+			.append("descrizione", descrizione)
+			.toString();
+	}
 
 	public Integer getId() {
 		return id;

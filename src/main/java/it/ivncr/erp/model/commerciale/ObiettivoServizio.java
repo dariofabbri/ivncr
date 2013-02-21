@@ -11,6 +11,8 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
 @Table(name = "com_obiettivo_servizio")
@@ -64,6 +66,28 @@ public class ObiettivoServizio {
 
 	@Column(name="note")
 	private String note;
+
+	
+	public String toString() {
+		
+		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+			.append("id", id)
+			.append("cliente", cliente, false)
+			.append("alias", alias)
+			.append("toponimo", toponimo)
+			.append("indirizzo", indirizzo)
+			.append("civico", civico)
+			.append("edificio", edificio)
+			.append("scala", scala)
+			.append("piano", piano)
+			.append("interno", interno)
+			.append("localita", localita)
+			.append("cap", cap)
+			.append("provincia", provincia)
+			.append("paese", paese)
+			.append("note", note)
+			.toString();
+	}
 
 
 	public String getIndirizzoComposto() {

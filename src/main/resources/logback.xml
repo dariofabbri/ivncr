@@ -10,7 +10,7 @@
 
 	<appender name="AUDIT" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
-			<pattern>%d{HH:mm:ss.SSS} [%thread] [%X{logonUser}] [%X{serviceClass}.%X{serviceMethod}:%X{serviceLineNumber}] FROM [%X{beforeStatus}] TO [%X{afterStatus}]</pattern>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] [%X{logonUser}] [%X{serviceClass}.%X{serviceMethod}:%X{serviceLineNumber}] FROM [%X{beforeStatus}] TO [%X{afterStatus}]%n</pattern>
 		</encoder>
 	</appender>
 

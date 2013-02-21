@@ -14,6 +14,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 @Entity
 @Table(name = "acc_ruolo")
 public class Ruolo {
@@ -46,6 +49,19 @@ public class Ruolo {
 	)
 	private Set<Utente> utenti;
 
+	
+	public String toString() {
+		
+		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+			.append("id", id)
+			.append("nome", nome)
+			.append("descrizione", descrizione)
+			.append("permessi", permessi, false)
+			.append("utenti", utenti, false)
+			.toString();
+	}
+
+	
 	public Integer getId() {
 		return id;
 	}

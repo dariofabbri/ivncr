@@ -19,6 +19,9 @@ import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 @Entity
 @Table(name = "acc_utente")
 public class Utente {
@@ -84,6 +87,31 @@ public class Utente {
 	@OneToOne(fetch=FetchType.LAZY, mappedBy="utente")
 	private AccountEmail accountEmail;
 
+	
+	public String toString() {
+		
+		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+			.append("id", id)
+			.append("username", username)
+			.append("nome", nome)
+			.append("cognome", cognome)
+			.append("note", note)
+			.append("digest", digest)
+			.append("salt", salt)
+			.append("iterazioni", iterazioni)
+			.append("ultimoLogin", ultimoLogin)
+			.append("creazione", creazione)
+			.append("ultimaAttivazione", ultimaAttivazione)
+			.append("ultimaDisattivazione", ultimaDisattivazione)
+			.append("attivo", attivo)
+			.append("foto", foto, false)
+			.append("ruoli", ruoli, false)
+			.append("aziende", aziende, false)
+			.append("accountEmail", accountEmail, false)
+			.toString();
+	}
+
+	
 	public Integer getId() {
 		return id;
 	}

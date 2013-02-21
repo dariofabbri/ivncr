@@ -1,6 +1,5 @@
 package it.ivncr.erp.model.commerciale;
 
-import it.ivncr.erp.model.BaseEntity;
 import it.ivncr.erp.model.generale.Azienda;
 
 import java.math.BigDecimal;
@@ -17,9 +16,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 @Entity
 @Table(name = "com_cliente")
-public class Cliente extends BaseEntity {
+public class Cliente {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "com_cliente_id_seq")
@@ -106,6 +108,40 @@ public class Cliente extends BaseEntity {
 	@Column(name="note")
 	private String note;
 
+	
+	public String toString() {
+		
+		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+			.append("id", id)
+			.append("codice", codice)
+			.append("azienda", azienda)
+			.append("ragioneSociale", ragioneSociale)
+			.append("partitaIva", partitaIva)
+			.append("codiceFiscale", codiceFiscale)
+			.append("gruppoCliente", gruppoCliente, false)
+			.append("divisa", divisa, false)
+			.append("telefono1", telefono1)
+			.append("telefono2", telefono2)
+			.append("cellulare", cellulare)
+			.append("fax", fax)
+			.append("email", email)
+			.append("attivo", attivo)
+			.append("attivoDal", attivoDal)
+			.append("attivoAl", attivoAl)
+			.append("attivoNote", attivoNote)
+			.append("bloccato", bloccato)
+			.append("bloccatoDal", bloccatoDal)
+			.append("bloccatoAl", bloccatoAl)
+			.append("bloccatoNote", bloccatoNote)
+			.append("tipoBusinessPartner", tipoBusinessPartner, false)
+			.append("saldoContabile", saldoContabile)
+			.append("creazione", creazione)
+			.append("ultimaModifica", ultimaModifica)
+			.append("note", note)
+			.toString();
+	}
+
+	
 	public Integer getId() {
 		return id;
 	}

@@ -11,6 +11,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 @Entity
 @Table(name = "acc_utente_azienda")
 @IdClass(UtenteAziendaId.class)
@@ -35,6 +38,16 @@ public class UtenteAzienda {
 	@JoinColumn(name="azienda_id", referencedColumnName="id")
 	Azienda azienda;
 
+	
+	public String toString() {
+		
+		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+			.append("utente", utente)
+			.append("azienda", azienda)
+			.toString();
+	}
+
+	
 	public Integer getUtenteId() {
 		return utenteId;
 	}

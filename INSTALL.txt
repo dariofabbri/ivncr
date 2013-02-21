@@ -3,3 +3,8 @@ empty strings (instead of nulls) it is necessary to start Tomcat VM with
 the following parameter:
 
 -Dorg.apache.el.parser.COERCE_TO_ZERO=false
+
+
+The logback configuration need to be modified so to have log redirected to 
+files. The audit trail need to be written on a different file.
+A daily rolling file policy need to be specified.

@@ -14,6 +14,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 @Entity
 @Table(name = "acc_permesso")
 public class Permesso {
@@ -30,7 +33,6 @@ public class Permesso {
 	@Column(name="descrizione")
 	private String descrizione;
 
-
 	@OneToMany
 	@JoinTable(
 			name="acc_ruolo_permesso",
@@ -38,6 +40,17 @@ public class Permesso {
 			inverseJoinColumns = { @JoinColumn(name="ruolo_id", referencedColumnName="id")}
 	)
 	private Set<Ruolo> ruoli;
+
+	
+	public String toString() {
+		
+		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+			.append("id", id)
+			.append("permesso", permesso)
+			.append("descrizione", descrizione)
+			.append("ruoli", ruoli, false)
+			.toString();
+	}
 
 
 	public Integer getId() {

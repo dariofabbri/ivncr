@@ -8,6 +8,9 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 
 @Entity
 @Table(name = "com_tipo_indirizzo")
@@ -26,6 +29,16 @@ public class TipoIndirizzo {
 	@Column(name="descrizione")
 	private String descrizione;
 
+	
+	public String toString() {
+		
+		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+			.append("id", id)
+			.append("descrizione", descrizione)
+			.toString();
+	}
+
+	
 	public Integer getId() {
 		return id;
 	}
