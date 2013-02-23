@@ -6,6 +6,9 @@ import it.ivncr.erp.service.AbstractService;
 import it.ivncr.erp.service.NotFoundException;
 import it.ivncr.erp.service.QueryResult;
 import it.ivncr.erp.service.SortDirection;
+import it.ivncr.erp.util.AuditUtil;
+import it.ivncr.erp.util.AuditUtil.Operation;
+import it.ivncr.erp.util.AuditUtil.Snapshot;
 
 import java.util.Map;
 
@@ -155,6 +158,10 @@ public class ObiettivoServizioServiceImpl extends AbstractService implements Obi
 		session.save(entity);
 		logger.debug("ObiettivoServizio successfully created.");
 
+		// Audit call for the create operation.
+		//
+		AuditUtil.log(Operation.Create, Snapshot.Destination, entity);
+
 		return entity;
 	}
 
@@ -183,6 +190,10 @@ public class ObiettivoServizioServiceImpl extends AbstractService implements Obi
 			throw new NotFoundException(message);
 		}
 
+		// Audit call for the update operation.
+		//
+		AuditUtil.log(Operation.Update, Snapshot.Source, entity);
+
 		// Set entity fields.
 		//
 		entity.setAlias(alias);
@@ -202,6 +213,10 @@ public class ObiettivoServizioServiceImpl extends AbstractService implements Obi
 		session.update(entity);
 		logger.debug("Entity successfully updated.");
 
+		// Audit call for the update operation.
+		//
+		AuditUtil.log(Operation.Update, Snapshot.Destination, entity);
+
 		return entity;
 	}
 
@@ -217,5 +232,9 @@ public class ObiettivoServizioServiceImpl extends AbstractService implements Obi
 		}
 
 		session.delete(entity);
+
+		// Audit call for the delete operation.
+		//
+		AuditUtil.log(Operation.Delete, Snapshot.Source, entity);
 	}
 }

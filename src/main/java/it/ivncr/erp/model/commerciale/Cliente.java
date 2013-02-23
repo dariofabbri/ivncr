@@ -108,13 +108,14 @@ public class Cliente {
 	@Column(name="note")
 	private String note;
 
-	
+
+	@Override
 	public String toString() {
-		
+
 		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
 			.append("id", id)
 			.append("codice", codice)
-			.append("azienda", azienda)
+			.append("azienda", azienda, false)
 			.append("ragioneSociale", ragioneSociale)
 			.append("partitaIva", partitaIva)
 			.append("codiceFiscale", codiceFiscale)
@@ -141,7 +142,7 @@ public class Cliente {
 			.toString();
 	}
 
-	
+
 	public Integer getId() {
 		return id;
 	}

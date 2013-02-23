@@ -7,6 +7,9 @@ import it.ivncr.erp.service.AbstractService;
 import it.ivncr.erp.service.NotFoundException;
 import it.ivncr.erp.service.QueryResult;
 import it.ivncr.erp.service.SortDirection;
+import it.ivncr.erp.util.AuditUtil;
+import it.ivncr.erp.util.AuditUtil.Operation;
+import it.ivncr.erp.util.AuditUtil.Snapshot;
 
 import java.util.Map;
 
@@ -185,6 +188,10 @@ public class IndirizzoServiceImpl extends AbstractService implements IndirizzoSe
 		session.save(entity);
 		logger.debug("Indirizzo successfully created.");
 
+		// Audit call for the create operation.
+		//
+		AuditUtil.log(Operation.Create, Snapshot.Destination, entity);
+
 		return entity;
 	}
 
@@ -210,6 +217,10 @@ public class IndirizzoServiceImpl extends AbstractService implements IndirizzoSe
 			throw new NotFoundException(message);
 		}
 
+		// Audit call for the update operation.
+		//
+		AuditUtil.log(Operation.Update, Snapshot.Source, entity);
+
 		// Fetch referred entities.
 		//
 		TipoIndirizzo tipoIndirizzo = (TipoIndirizzo)session.get(TipoIndirizzo.class, codiceTipoIndirizzo);
@@ -230,6 +241,10 @@ public class IndirizzoServiceImpl extends AbstractService implements IndirizzoSe
 		session.update(entity);
 		logger.debug("Entity successfully updated.");
 
+		// Audit call for the update operation.
+		//
+		AuditUtil.log(Operation.Update, Snapshot.Destination, entity);
+
 		return entity;
 	}
 
@@ -245,5 +260,9 @@ public class IndirizzoServiceImpl extends AbstractService implements IndirizzoSe
 		}
 
 		session.delete(indirizzo);
+
+		// Audit call for the delete operation.
+		//
+		AuditUtil.log(Operation.Delete, Snapshot.Source, indirizzo);
 	}
 }

@@ -12,7 +12,33 @@ public class AuditUtil {
 
 	public static Logger logger = LoggerFactory.getLogger("audit");
 
-	public static void log(Object before, Object after) {
+
+	public enum Operation {
+		Create,
+		Update,
+		Delete
+	}
+
+
+	public enum Snapshot {
+		Source,
+		Destination
+	}
+
+
+	public static void log(Operation operation, Snapshot snapshot, Object status) {
+
+		// A few parameters combinations are not allowed. A create operation can only support
+		// a destination snapshot, while a delete only gets a source snapshot.
+		//
+		if(operation == Operation.Create && snapshot == Snapshot.Source) {
+			throw new IllegalArgumentException("Unsupported combination of parameters. Operation Create only support Destination snapshot.");
+		}
+		if(operation == Operation.Delete && snapshot == Snapshot.Destination) {
+			throw new IllegalArgumentException("Unsupported combination of parameters. Operation Delete only support Source snapshot.");
+		}
+
+		MDC.put("operation", operation);
 
 		StackTraceElement[] trace = Thread.currentThread().getStackTrace();
 		MDC.put("serviceClass", trace[2].getClassName());
@@ -29,8 +55,9 @@ public class AuditUtil {
 		}
 		MDC.put("logonUser", logonUser);
 
-		MDC.put("beforeStatus", before != null ? before.toString() : null);
-		MDC.put("afterStatus", after != null ? after.toString() : null);
+		MDC.put("snapshot", snapshot);
+
+		MDC.put("status", status != null ? status.toString() : null);
 
 		logger.info("");
 	}

@@ -12,6 +12,8 @@ import it.ivncr.erp.service.QueryResult;
 import it.ivncr.erp.service.ServiceException;
 import it.ivncr.erp.service.SortDirection;
 import it.ivncr.erp.util.AuditUtil;
+import it.ivncr.erp.util.AuditUtil.Operation;
+import it.ivncr.erp.util.AuditUtil.Snapshot;
 
 import java.util.Date;
 import java.util.List;
@@ -187,7 +189,7 @@ public class ClienteServiceImpl extends AbstractService implements ClienteServic
 
 		// Audit call for the create operation.
 		//
-		AuditUtil.log(null, cliente);
+		AuditUtil.log(Operation.Create, Snapshot.Destination, cliente);
 
 		return cliente;
 	}
@@ -213,6 +215,11 @@ public class ClienteServiceImpl extends AbstractService implements ClienteServic
 			logger.info(message);
 			throw new NotFoundException(message);
 		}
+
+		// Audit call for the update operation.
+		//
+		AuditUtil.log(Operation.Update, Snapshot.Source, cliente);
+
 
 		Date now = new Date();
 
@@ -240,6 +247,10 @@ public class ClienteServiceImpl extends AbstractService implements ClienteServic
 
 		session.update(cliente);
 		logger.debug("Entity successfully updated.");
+
+		// Audit call for the update operation.
+		//
+		AuditUtil.log(Operation.Update, Snapshot.Destination, cliente);
 
 		return cliente;
 	}
@@ -384,6 +395,10 @@ public class ClienteServiceImpl extends AbstractService implements ClienteServic
 			throw new NotFoundException(message);
 		}
 
+		// Audit call for the update operation.
+		//
+		AuditUtil.log(Operation.Update, Snapshot.Source, cliente);
+
 		// Check if the record has already been deactivated.
 		//
 		if(cliente.getBloccato()) {
@@ -404,6 +419,10 @@ public class ClienteServiceImpl extends AbstractService implements ClienteServic
 		cliente.setUltimaModifica(now);
 		session.update(cliente);
 
+		// Audit call for the update operation.
+		//
+		AuditUtil.log(Operation.Update, Snapshot.Destination, cliente);
+
 		return cliente;
 	}
 
@@ -417,6 +436,10 @@ public class ClienteServiceImpl extends AbstractService implements ClienteServic
 			logger.info(message);
 			throw new NotFoundException(message);
 		}
+
+		// Audit call for the update operation.
+		//
+		AuditUtil.log(Operation.Update, Snapshot.Source, cliente);
 
 		// Check if the record has already been activated.
 		//
@@ -438,6 +461,10 @@ public class ClienteServiceImpl extends AbstractService implements ClienteServic
 		cliente.setUltimaModifica(now);
 		session.update(cliente);
 
+		// Audit call for the update operation.
+		//
+		AuditUtil.log(Operation.Update, Snapshot.Destination, cliente);
+
 		return cliente;
 	}
 
@@ -452,12 +479,20 @@ public class ClienteServiceImpl extends AbstractService implements ClienteServic
 			throw new NotFoundException(message);
 		}
 
+		// Audit call for the update operation.
+		//
+		AuditUtil.log(Operation.Update, Snapshot.Source, cliente);
+
 		// Update the record.
 		//
 		Date now = new Date();
 		cliente.setNote(note);
 		cliente.setUltimaModifica(now);
 		session.update(cliente);
+
+		// Audit call for the update operation.
+		//
+		AuditUtil.log(Operation.Update, Snapshot.Destination, cliente);
 
 		return cliente;
 	}

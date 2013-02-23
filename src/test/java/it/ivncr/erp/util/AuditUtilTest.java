@@ -6,6 +6,8 @@ import it.ivncr.erp.model.accesso.Utente;
 import it.ivncr.erp.model.commerciale.Cliente;
 import it.ivncr.erp.model.commerciale.Divisa;
 import it.ivncr.erp.model.commerciale.Indirizzo;
+import it.ivncr.erp.util.AuditUtil.Operation;
+import it.ivncr.erp.util.AuditUtil.Snapshot;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -22,15 +24,13 @@ public class AuditUtilTest {
 		divisa.setId(1);
 		divisa.setDescrizione("EUR");
 
-		Cliente before = new Cliente();
-		before.setId(1);
-		before.setCodice("C000001");
-		before.setRagioneSociale("Pippo");
-		before.setDivisa(divisa);
+		Cliente cliente = new Cliente();
+		cliente.setId(1);
+		cliente.setCodice("C000001");
+		cliente.setRagioneSociale("Pippo");
+		cliente.setDivisa(divisa);
 
-		Object after = null;
-
-		AuditUtil.log(before, after);
+		AuditUtil.log(Operation.Create, Snapshot.Destination, cliente);
 	}
 
 	@Test
@@ -46,37 +46,35 @@ public class AuditUtilTest {
 		cliente.setRagioneSociale("Pippo");
 		cliente.setDivisa(divisa);
 
-		Indirizzo before = new Indirizzo();
-		before.setCliente(cliente);
-		before.setId(1);
-		before.setDestinatario1("Pluto");
+		Indirizzo indirizzo = new Indirizzo();
+		indirizzo.setCliente(cliente);
+		indirizzo.setId(1);
+		indirizzo.setDestinatario1("Pluto");
 
-		Object after = null;
-
-		AuditUtil.log(before, after);
+		AuditUtil.log(Operation.Update, Snapshot.Source, indirizzo);
 	}
 
 	@Test
 	public void testLogRuolo() {
 
 		Set<Utente> utenti = new HashSet<Utente>();
-		
+
 		Utente utente = new Utente();
 		utente.setId(1);
 		utente.setNome("nome #1");
 		utente.setCognome("cognome #1");
 		utenti.add(utente);
-		
+
 		utente = new Utente();
 		utente.setId(2);
 		utente.setNome("nome #2");
 		utente.setCognome("cognome #2");
 		utente.setUltimoLogin(new Date());
 		utenti.add(utente);
-		
-		
+
+
 		Set<Permesso> permessi = new HashSet<Permesso>();
-		
+
 		Permesso permesso = new Permesso();
 		permesso.setId(1);
 		permesso.setPermesso("permesso #1");
@@ -88,16 +86,14 @@ public class AuditUtilTest {
 		permesso.setPermesso("permesso #2");
 		permesso.setDescrizione("descrizione #2");
 		permessi.add(permesso);
-		
-		Ruolo before = new Ruolo();
-		before.setId(1);
-		before.setNome("nome #1");
-		before.setDescrizione("descrizione #1");
-		before.setUtenti(utenti);
-		before.setPermessi(permessi);
-		
-		Object after = null;
 
-		AuditUtil.log(before, after);
+		Ruolo ruolo = new Ruolo();
+		ruolo.setId(1);
+		ruolo.setNome("nome #1");
+		ruolo.setDescrizione("descrizione #1");
+		ruolo.setUtenti(utenti);
+		ruolo.setPermessi(permessi);
+
+		AuditUtil.log(Operation.Delete, Snapshot.Source, ruolo);
 	}
 }

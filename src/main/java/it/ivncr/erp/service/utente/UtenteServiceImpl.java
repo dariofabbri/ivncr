@@ -11,6 +11,9 @@ import it.ivncr.erp.service.NotFoundException;
 import it.ivncr.erp.service.QueryResult;
 import it.ivncr.erp.service.ServiceException;
 import it.ivncr.erp.service.SortDirection;
+import it.ivncr.erp.util.AuditUtil;
+import it.ivncr.erp.util.AuditUtil.Operation;
+import it.ivncr.erp.util.AuditUtil.Snapshot;
 
 import java.util.Date;
 import java.util.List;
@@ -140,6 +143,10 @@ public class UtenteServiceImpl extends AbstractService implements UtenteService 
 
 		session.delete(utente);
 		logger.debug("Utente successfully deleted.");
+
+		// Audit call for the delete operation.
+		//
+		AuditUtil.log(Operation.Delete, Snapshot.Source, utente);
 	}
 
 	@Override
@@ -172,6 +179,10 @@ public class UtenteServiceImpl extends AbstractService implements UtenteService 
 		session.save(utente);
 		logger.debug("Utente successfully created.");
 
+		// Audit call for the create operation.
+		//
+		AuditUtil.log(Operation.Create, Snapshot.Destination, utente);
+
 		return utente;
 	}
 
@@ -190,6 +201,10 @@ public class UtenteServiceImpl extends AbstractService implements UtenteService 
 			throw new NotFoundException(message);
 		}
 
+		// Audit call for the update operation.
+		//
+		AuditUtil.log(Operation.Update, Snapshot.Source, utente);
+
 		utente.setUsername(username);
 		utente.setNome(nome);
 		utente.setCognome(cognome);
@@ -197,6 +212,10 @@ public class UtenteServiceImpl extends AbstractService implements UtenteService 
 
 		session.update(utente);
 		logger.debug("Utente successfully updated.");
+
+		// Audit call for the update operation.
+		//
+		AuditUtil.log(Operation.Update, Snapshot.Destination, utente);
 
 		return utente;
 	}
@@ -216,6 +235,10 @@ public class UtenteServiceImpl extends AbstractService implements UtenteService 
 			accountEmail = new AccountEmail();
 		}
 
+		// Audit call for the update operation.
+		//
+		AuditUtil.log(Operation.Update, Snapshot.Source, accountEmail);
+
 		accountEmail.setAccount(account);
 		accountEmail.setPassword(password);
 		accountEmail.setUtente(utente);
@@ -223,6 +246,10 @@ public class UtenteServiceImpl extends AbstractService implements UtenteService 
 
 		utente.setAccountEmail(accountEmail);
 		session.update(utente);
+
+		// Audit call for the update operation.
+		//
+		AuditUtil.log(Operation.Update, Snapshot.Destination, accountEmail);
 
 		return utente;
 	}
@@ -237,6 +264,10 @@ public class UtenteServiceImpl extends AbstractService implements UtenteService 
 			throw new NotFoundException(message);
 		}
 
+		// Audit call for the update operation.
+		//
+		AuditUtil.log(Operation.Update, Snapshot.Source, utente);
+
 		String salt = generateSalt();
 		String digest = generateDigest(password, salt, HASH_ITERATIONS);
 
@@ -246,6 +277,10 @@ public class UtenteServiceImpl extends AbstractService implements UtenteService 
 
 		session.update(utente);
 		logger.debug("Password successfully changed.");
+
+		// Audit call for the update operation.
+		//
+		AuditUtil.log(Operation.Update, Snapshot.Destination, utente);
 
 		return utente;
 	}
@@ -259,6 +294,10 @@ public class UtenteServiceImpl extends AbstractService implements UtenteService 
 			logger.info(message);
 			throw new NotFoundException(message);
 		}
+
+		// Audit call for the update operation.
+		//
+		AuditUtil.log(Operation.Update, Snapshot.Source, utente);
 
 		// Check if the user is already active.
 		//
@@ -276,6 +315,10 @@ public class UtenteServiceImpl extends AbstractService implements UtenteService 
 		session.update(utente);
 		logger.debug("User successfully activated.");
 
+		// Audit call for the update operation.
+		//
+		AuditUtil.log(Operation.Update, Snapshot.Destination, utente);
+
 		return utente;
 	}
 
@@ -288,6 +331,10 @@ public class UtenteServiceImpl extends AbstractService implements UtenteService 
 			logger.info(message);
 			throw new NotFoundException(message);
 		}
+
+		// Audit call for the update operation.
+		//
+		AuditUtil.log(Operation.Update, Snapshot.Source, utente);
 
 		// Check if the user is already not active.
 		//
@@ -305,6 +352,10 @@ public class UtenteServiceImpl extends AbstractService implements UtenteService 
 		session.update(utente);
 		logger.debug("User successfully deactivated.");
 
+		// Audit call for the update operation.
+		//
+		AuditUtil.log(Operation.Update, Snapshot.Destination, utente);
+
 		return utente;
 	}
 
@@ -318,9 +369,17 @@ public class UtenteServiceImpl extends AbstractService implements UtenteService 
 			throw new NotFoundException(message);
 		}
 
+		// Audit call for the update operation.
+		//
+		AuditUtil.log(Operation.Update, Snapshot.Source, utente);
+
 		utente.setUltimoLogin(new Date());
 		session.update(utente);
 		logger.debug("Last logon timestamp successfully updated.");
+
+		// Audit call for the update operation.
+		//
+		AuditUtil.log(Operation.Update, Snapshot.Destination, utente);
 
 		return utente;
 	}
@@ -567,9 +626,17 @@ public class UtenteServiceImpl extends AbstractService implements UtenteService 
 			throw new NotFoundException(message);
 		}
 
+		// Audit call for the update operation.
+		//
+		AuditUtil.log(Operation.Update, Snapshot.Source, utente);
+
 		utente.setFoto(foto);
 		session.update(utente);
 		logger.debug(String.format("Picture successfully uploaded for specified user: %s", id));
+
+		// Audit call for the update operation.
+		//
+		AuditUtil.log(Operation.Update, Snapshot.Destination, utente);
 	}
 
 

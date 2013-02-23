@@ -7,6 +7,9 @@ import it.ivncr.erp.service.AbstractService;
 import it.ivncr.erp.service.NotFoundException;
 import it.ivncr.erp.service.QueryResult;
 import it.ivncr.erp.service.SortDirection;
+import it.ivncr.erp.util.AuditUtil;
+import it.ivncr.erp.util.AuditUtil.Operation;
+import it.ivncr.erp.util.AuditUtil.Snapshot;
 
 import java.util.List;
 import java.util.Map;
@@ -149,6 +152,10 @@ public class ContattoServiceImpl extends AbstractService implements ContattoServ
 		session.save(contatto);
 		logger.debug("Contatto successfully created.");
 
+		// Audit call for the create operation.
+		//
+		AuditUtil.log(Operation.Create, Snapshot.Destination, contatto);
+
 		return contatto;
 	}
 
@@ -172,6 +179,10 @@ public class ContattoServiceImpl extends AbstractService implements ContattoServ
 			throw new NotFoundException(message);
 		}
 
+		// Audit call for the update operation.
+		//
+		AuditUtil.log(Operation.Update, Snapshot.Source, contatto);
+
 		// Fetch referred entities.
 		//
 		TipoContatto tipoContatto = (TipoContatto)session.get(TipoContatto.class, codiceTipoContatto);
@@ -190,6 +201,10 @@ public class ContattoServiceImpl extends AbstractService implements ContattoServ
 		session.update(contatto);
 		logger.debug("Entity successfully updated.");
 
+		// Audit call for the update operation.
+		//
+		AuditUtil.log(Operation.Update, Snapshot.Destination, contatto);
+
 		return contatto;
 	}
 
@@ -205,6 +220,11 @@ public class ContattoServiceImpl extends AbstractService implements ContattoServ
 		}
 
 		session.delete(contatto);
+
+		// Audit call for the delete operation.
+		//
+		AuditUtil.log(Operation.Delete, Snapshot.Source, contatto);
+
 	}
 
 	@SuppressWarnings("unchecked")
