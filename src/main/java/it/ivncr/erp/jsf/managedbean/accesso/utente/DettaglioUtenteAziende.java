@@ -13,6 +13,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 
 import org.primefaces.event.TabChangeEvent;
 import org.slf4j.Logger;
@@ -67,6 +68,15 @@ public class DettaglioUtenteAziende implements Serializable {
 
 			updateDisabledForDefaultSelection();
 		}
+	}
+	
+	
+	public void onAziendaPreferitaChanged(ActionEvent e) {
+		
+        String param = (String) FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("clicked");
+        if(param != null) {
+        	codiceAziendaPreferita = Integer.parseInt(param);
+        }
 	}
 
 

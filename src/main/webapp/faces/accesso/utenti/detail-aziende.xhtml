@@ -2,7 +2,8 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:custom="http://java.sun.com/jsf/composite/components/custom">
 					
 	<h:form id="detailAziendeForm">
 	
@@ -64,26 +65,16 @@
 					        		
 			<f:facet name="header">
 		    	Lista delle aziende disponibili
-		
-				<p:selectOneRadio id="customRadio"
-					value="#{dettaglioUtenteAziende.codiceAziendaPreferita}" 
-					layout="custom">
-					
-					<f:selectItems 
-						value="#{dettaglioUtenteAziende.aziende}" var="item"
-						itemLabel="#{item.codice}" itemValue="#{item.id}" />
-						
-					<p:ajax event="change" process="@this" update=":tabView:detailAziendeForm:resetDefaultButton"/>
-					 
-				</p:selectOneRadio>  
 		    </f:facet>
 
 			<p:column selectionMode="multiple" style="width: 40px;"/>
 			
 			<p:column headerText="Default" style="text-align: center; width: 40px;">
-				<p:radioButton for="customRadio" 
-					itemIndex="#{rowIndex}" 
-					disabled="#{dettaglioUtenteAziende.disabled[rowIndex]}"/>
+				<custom:radio 
+					checked="#{dettaglioUtenteAziende.codiceAziendaPreferita}" 
+					item="#{azienda.id}" 
+					ajaxListener="#{dettaglioUtenteAziende.onAziendaPreferitaChanged}"
+					update=":tabView:detailAziendeForm"/>				
             </p:column>
             
 			<p:column headerText="Codice" 
