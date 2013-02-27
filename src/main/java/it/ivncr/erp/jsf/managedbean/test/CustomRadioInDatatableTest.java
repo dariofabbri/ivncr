@@ -8,7 +8,8 @@ import java.util.Map;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
@@ -92,10 +93,12 @@ public class CustomRadioInDatatableTest implements Serializable {
 		};
 	}
 
-	public void processValueChange(AjaxBehaviorEvent e) {
-
-		Integer id = (Integer)e.getComponent().getAttributes().get("itemId");
-		System.out.println(id);
+	public void doIt(ActionEvent e) {
+		
+        String param = (String) FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("clicked");
+        if(param != null) {
+        	preferred = Integer.parseInt(param);
+        }
 	}
 
 
