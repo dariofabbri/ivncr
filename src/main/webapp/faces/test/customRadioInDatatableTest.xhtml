@@ -1,0 +1,73 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:custom="http://java.sun.com/jsf/composite/components/custom">
+	
+	<h:head>
+
+		<f:facet name="first">
+			<meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
+			<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+			<title>Test</title>
+		</f:facet>
+
+	</h:head>
+	
+	<h:body>
+		
+		<h:form>
+												
+			<p:commandButton value="Show preferred" update="dialog" oncomplete="dialogWidget.show()"/>
+			
+			<p:dialog
+				id="dialog"
+				widgetVar="dialogWidget"
+				modal="true">
+				
+				<h:outputText value="#{customRadioInDatatableTest.preferred}"/>
+				
+			</p:dialog>
+										
+			<p:dataTable 
+				id="testTable" 
+				var="row" 
+				value="#{customRadioInDatatableTest.model}"
+				paginator="true" 
+				paginatorPosition="bottom" rows="10"
+				paginatorTemplate="{CurrentPageReport} {RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+				currentPageReportTemplate="Found {totalRecords} record - Page {currentPage} of {totalPages}"
+				pageLinks="10"
+				selectionMode="single"
+				selection="#{customRadioInDatatableTest.selected}"
+				rowIndexVar="rowIndex"
+				lazy="true">
+		      		
+				<f:facet name="header">
+			    	Test datatable
+			    </f:facet>
+					
+				<p:column headerText="Preferred" style="text-align: center; width: 40px;">
+					<p:selectBooleanCheckbox value="#{row.preferred}">
+						<p:ajax process="@this" immediate="true" listener="#{customRadioInDatatableTest.processValueChange}"/>
+						<f:attribute name="itemId" value="#{row.id}"/>
+					</p:selectBooleanCheckbox>
+	            </p:column>
+					
+				<p:column headerText="Preferred" style="text-align: center; width: 200px;">
+					<custom:radio checked="#{customRadioInDatatableTest.preferred}" item="#{row.id}" />
+	            </p:column>
+		
+				<p:column headerText="Description" sortBy="#{row.description}"
+					filterBy="#{row.description}">
+					<h:outputText value="#{row.description}" />
+				</p:column>
+		
+			</p:dataTable>
+
+		</h:form>
+	
+	</h:body>
+		
+</html>
