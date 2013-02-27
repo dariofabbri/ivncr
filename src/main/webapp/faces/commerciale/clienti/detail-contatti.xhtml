@@ -2,7 +2,8 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:custom="http://java.sun.com/jsf/composite/components/custom">
 
 	<f:subview id="listContattiView">
 	
@@ -72,21 +73,14 @@
 	      		
 			<f:facet name="header">
 		    	Lista dei contatti
-		
-				<p:selectOneRadio id="customRadio"
-					value="#{dettaglioClienteContatti.codiceContattoPreferito}" 
-					layout="custom">
-					
-					<f:selectItems 
-						value="#{dettaglioClienteContatti.currentListContent}" var="item"
-						itemLabel="#{item.id}" itemValue="#{item.id}" />
-					 
-				</p:selectOneRadio>  
 		    </f:facet>
 				
 			<p:column headerText="Default" style="text-align: center; width: 40px;">
-				<p:radioButton for="customRadio" 
-					itemIndex="#{rowIndex}" />
+				<custom:radio 
+					checked="#{dettaglioClienteContatti.codiceContattoPreferito}" 
+					item="#{contatto.id}" 
+					ajaxListener="#{dettaglioClienteContatti.onContattoPreferitoChanged}"
+					update=":detailForm:tabView:listContattiView:contattiTable"/>				
             </p:column>
 	
 			<p:column headerText="Nome" sortBy="#{contatto.nome}"

@@ -21,6 +21,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 
 import org.primefaces.context.RequestContext;
 import org.primefaces.model.LazyDataModel;
@@ -179,6 +180,14 @@ public class DettaglioClienteContatti implements Serializable {
 		cellulare = selected.getCellulare();
 		fax = selected.getFax();
 		email = selected.getEmail();
+	}
+	
+	public void onContattoPreferitoChanged(ActionEvent e) {
+		
+        String param = (String) FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("clicked");
+        if(param != null) {
+        	codiceContattoPreferito = Integer.parseInt(param);
+        }
 	}
 
 	public void doSave() {
