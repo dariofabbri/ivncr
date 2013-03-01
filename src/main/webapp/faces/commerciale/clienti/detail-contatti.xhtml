@@ -57,7 +57,7 @@
 				disabled="#{empty dettaglioClienteContatti.codiceContattoPreferito}"
 				actionListener="#{dettaglioClienteContatti.doSetDefault}"
 				process="@this"
-				update=":detailForm:tabView:listContattiView:buttons,:detailForm:tabView:listContattiView:contattiTable,:detailForm:growl"
+				update=":detailForm:tabView:listContattiView:buttons,:detailForm:tabView:listContattiView:contattiTable,:detailForm:growl,:detailForm:contattoPrincipale"
 				icon="ui-icon-pencil" />
 			<p:tooltip 
 				for="setDefaultButton" 
@@ -71,7 +71,7 @@
 				disabled="#{empty dettaglioClienteContatti.codiceContattoPreferito}"
 				actionListener="#{dettaglioClienteContatti.doClearDefault}"
 				process="@this"
-				update=":detailForm:tabView:listContattiView:buttons :detailForm:tabView:listContattiView:contattiTable,:detailForm:growl"
+				update=":detailForm:tabView:listContattiView:buttons :detailForm:tabView:listContattiView:contattiTable,:detailForm:growl,:detailForm:contattoPrincipale"
 				icon="ui-icon-pencil" />
 			<p:tooltip 
 				for="clearDefaultButton" 

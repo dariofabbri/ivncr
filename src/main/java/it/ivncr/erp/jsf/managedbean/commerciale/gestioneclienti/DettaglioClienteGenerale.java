@@ -2,11 +2,13 @@ package it.ivncr.erp.jsf.managedbean.commerciale.gestioneclienti;
 
 import it.ivncr.erp.jsf.managedbean.accesso.session.LoginInfo;
 import it.ivncr.erp.model.commerciale.Cliente;
+import it.ivncr.erp.model.commerciale.Contatto;
 import it.ivncr.erp.model.commerciale.Divisa;
 import it.ivncr.erp.model.commerciale.GruppoCliente;
 import it.ivncr.erp.model.commerciale.TipoBusinessPartner;
 import it.ivncr.erp.service.ServiceFactory;
 import it.ivncr.erp.service.cliente.ClienteService;
+import it.ivncr.erp.service.contatto.ContattoService;
 import it.ivncr.erp.service.lut.LUTService;
 import it.ivncr.erp.util.ValidationUtil;
 
@@ -142,10 +144,20 @@ public class DettaglioClienteGenerale implements Serializable {
 
 	public void loadRiepilogoContatto() {
 
-		contattoPrincipaleNome = "Nome Cognome";
-		contattoPrincipaleTelefoni = "328.1234567 / 335.7654321";
-		contattoPrincipaleFax = "06.72356723";
-		contattoPrincipaleEmail = "mail@gmail.com";
+		ContattoService cs = ServiceFactory.createService("Contatto");
+		Contatto contatto = cs.getDefault(id);
+
+		if(contatto == null) {
+			contattoPrincipaleNome = null;
+			contattoPrincipaleTelefoni = null;
+			contattoPrincipaleFax = null;
+			contattoPrincipaleEmail = null;
+		} else {
+			contattoPrincipaleNome = contatto.getNome();
+			contattoPrincipaleTelefoni = contatto.getAggregatoTelefoni();
+			contattoPrincipaleFax = contatto.getFax();
+			contattoPrincipaleEmail = contatto.getEmail();
+		}
 	}
 
 

@@ -343,6 +343,11 @@ public class DettaglioClienteContatti implements Serializable {
 					"Si è verificato un errore in fase di impostazione del contatto preferito.");
 			FacesContext.getCurrentInstance().addMessage(null, message);
 		}
+
+		// Also update the default selection for main contatto
+		// for header panel.
+		//
+		dettaglioClienteGenerale.loadRiepilogoContatto();
 	}
 
 
@@ -376,6 +381,11 @@ public class DettaglioClienteContatti implements Serializable {
 					"Si è verificato un errore in fase di impostazione del contatto preferito.");
 			FacesContext.getCurrentInstance().addMessage(null, message);
 		}
+
+		// Also update the default selection for main contatto
+		// for header panel.
+		//
+		dettaglioClienteGenerale.loadRiepilogoContatto();
 	}
 
 

@@ -1,5 +1,8 @@
 package it.ivncr.erp.model.commerciale;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -56,9 +60,10 @@ public class Contatto {
 	@Column(name="preferito")
 	private Boolean preferito;
 
-	
+
+	@Override
 	public String toString() {
-		
+
 		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
 			.append("id", id)
 			.append("cliente", cliente, false)
@@ -72,6 +77,19 @@ public class Contatto {
 			.append("email", email)
 			.append("preferito", preferito)
 			.toString();
+	}
+
+	public String getAggregatoTelefoni() {
+
+		List<String> list = new ArrayList<String>();
+		if(telefono1 != null)
+			list.add(telefono1);
+		if(telefono2 != null)
+			list.add(telefono2);
+		if(cellulare != null)
+			list.add(cellulare);
+
+		return StringUtils.join(list, " / ");
 	}
 
 	public Integer getId() {
