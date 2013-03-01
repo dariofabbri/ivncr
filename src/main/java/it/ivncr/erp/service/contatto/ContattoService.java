@@ -47,4 +47,8 @@ public interface ContattoService extends EntityService<Contatto> {
 	void delete(Integer id);
 
 	List<String> listDistinctTitolo();
+
+	void setDefault(Integer clienteId, Integer contattoId);
+
+	Contatto getDefault(Integer clienteId);
 }

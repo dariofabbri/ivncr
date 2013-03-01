@@ -120,15 +120,25 @@ public class DettaglioClienteContatti implements Serializable {
 	@PostConstruct
 	public void init() {
 
+		// Create service classes.
+		//
 		LUTService lutService = ServiceFactory.createService("LUT");
+		ContattoService cs = ServiceFactory.createService("Contatto");
 
 		// Load tipo contatto LUT.
 		//
 		listTipoContatto = lutService.listItems("TipoContatto");
 
+		// Load default contatto.
+		//
+		Contatto defaultContatto = cs.getDefault(dettaglioClienteGenerale.getId());
+		codiceContattoPreferito = defaultContatto != null ? defaultContatto.getId() : null;
 
-		ContattoService cs = ServiceFactory.createService("Contatto");
+		// Load titoli for autocomplete.
+		//
 		listTitoli = cs.listDistinctTitolo();
+
+
 
 		logger.debug("Initialization performed.");
 	}
@@ -181,10 +191,10 @@ public class DettaglioClienteContatti implements Serializable {
 		fax = selected.getFax();
 		email = selected.getEmail();
 	}
-	
+
 	public void onContattoPreferitoChanged(ActionEvent e) {
-		
-        String param = (String) FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("clicked");
+
+        String param = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("clicked");
         if(param != null) {
         	codiceContattoPreferito = Integer.parseInt(param);
         }
@@ -297,6 +307,77 @@ public class DettaglioClienteContatti implements Serializable {
 			FacesContext.getCurrentInstance().addMessage(null, message);
 		}
 	}
+
+
+	public void doSetDefault() {
+
+		if(codiceContattoPreferito == null) {
+			String msg = "Unexpected null id detected.";
+			logger.error(msg);
+			throw new RuntimeException(msg);
+		}
+
+		// Set the default.
+		//
+		try {
+			ContattoService cs = ServiceFactory.createService("Contatto");
+			cs.setDefault(dettaglioClienteGenerale.getId(), codiceContattoPreferito);
+
+			logger.debug("Default successfully set.");
+
+			// Add a message.
+			//
+			FacesMessage message = new FacesMessage(
+					FacesMessage.SEVERITY_INFO,
+					"Impostazione effettuata",
+					"La selezione del contatto preferito si è conclusa con successo.");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+
+		} catch(Exception e) {
+
+			logger.warn("Exception caught while setting default.", e);
+
+			FacesMessage message = new FacesMessage(
+					FacesMessage.SEVERITY_ERROR,
+					"Errore di sistema",
+					"Si è verificato un errore in fase di impostazione del contatto preferito.");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+		}
+	}
+
+
+	public void doClearDefault() {
+
+		codiceContattoPreferito = null;
+
+		// Set the default.
+		//
+		try {
+			ContattoService cs = ServiceFactory.createService("Contatto");
+			cs.setDefault(dettaglioClienteGenerale.getId(), null);
+
+			logger.debug("Default successfully cleared.");
+
+			// Add a message.
+			//
+			FacesMessage message = new FacesMessage(
+					FacesMessage.SEVERITY_INFO,
+					"Impostazione effettuata",
+					"La deselezione del contatto preferito si è conclusa con successo.");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+
+		} catch(Exception e) {
+
+			logger.warn("Exception caught while clearing default.", e);
+
+			FacesMessage message = new FacesMessage(
+					FacesMessage.SEVERITY_ERROR,
+					"Errore di sistema",
+					"Si è verificato un errore in fase di impostazione del contatto preferito.");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+		}
+	}
+
 
 	public List<String> completeTitolo(String query) {
 

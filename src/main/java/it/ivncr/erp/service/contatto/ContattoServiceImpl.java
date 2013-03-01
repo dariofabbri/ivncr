@@ -239,4 +239,57 @@ public class ContattoServiceImpl extends AbstractService implements ContattoServ
 
 		return result;
 	}
+
+	@Override
+	public void setDefault(Integer clienteId, Integer contattoId) {
+
+		String hql =
+				"update Contatto con " +
+				"set con.preferito = false " +
+				"where con.cliente.id = :clienteId ";
+		Query query = session.createQuery(hql);
+		query.setParameter("clienteId", clienteId);
+		query.executeUpdate();
+		logger.debug("Default selection cleared.");
+
+		// Audit call for the update operation.
+		//
+		AuditUtil.log(Operation.Update, Snapshot.Source, String.format("Cleared default contatto for cliente %d.", clienteId));
+
+
+		if(contattoId == null) {
+			logger.debug("No default specified, not setting a new one.");
+			return;
+		}
+
+		hql =
+				"update Contatto con " +
+				"set con.preferito = true " +
+				"where con.cliente.id = :clienteId " +
+				"and con.id = :contattoId ";
+		query = session.createQuery(hql);
+		query.setParameter("clienteId", clienteId);
+		query.setParameter("contattoId", contattoId);
+		query.executeUpdate();
+		logger.debug("New default set.");
+
+		// Audit call for the update operation.
+		//
+		AuditUtil.log(Operation.Update, Snapshot.Source, String.format("Set new default contatto %d for cliente %d.", contattoId, clienteId));
+	}
+
+	@Override
+	public Contatto getDefault(Integer clienteId) {
+
+		String hql =
+				"from Contatto con " +
+				"where con.cliente.id = :clienteId " +
+				"and con.preferito = true ";
+		Query query = session.createQuery(hql);
+		query.setParameter("clienteId", clienteId);
+		Contatto contatto = (Contatto)query.uniqueResult();
+		logger.debug("Default contatto found: " + contatto);
+
+		return contatto;
+	}
 }

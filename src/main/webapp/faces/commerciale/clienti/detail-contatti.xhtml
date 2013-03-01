@@ -51,6 +51,34 @@
 				showEffect="fade" 
 				hideEffect="fade"/>
 	
+			<p:commandButton
+				id="setDefaultButton" 
+				value="Imposta principale"
+				disabled="#{empty dettaglioClienteContatti.codiceContattoPreferito}"
+				actionListener="#{dettaglioClienteContatti.doSetDefault}"
+				process="@this"
+				update=":detailForm:tabView:listContattiView:buttons,:detailForm:tabView:listContattiView:contattiTable,:detailForm:growl"
+				icon="ui-icon-pencil" />
+			<p:tooltip 
+				for="setDefaultButton" 
+				value="Imposta il nuovo contatto principale" 
+				showEffect="fade" 
+				hideEffect="fade"/>
+	
+			<p:commandButton
+				id="clearDefaultButton" 
+				value="Annulla principale"
+				disabled="#{empty dettaglioClienteContatti.codiceContattoPreferito}"
+				actionListener="#{dettaglioClienteContatti.doClearDefault}"
+				process="@this"
+				update=":detailForm:tabView:listContattiView:buttons :detailForm:tabView:listContattiView:contattiTable,:detailForm:growl"
+				icon="ui-icon-pencil" />
+			<p:tooltip 
+				for="clearDefaultButton" 
+				value="Rimuove la selezione del contatto principale" 
+				showEffect="fade" 
+				hideEffect="fade"/>
+	
 		</p:outputPanel>
 										
 		<p:dataTable 
@@ -80,7 +108,7 @@
 					checked="#{dettaglioClienteContatti.codiceContattoPreferito}" 
 					item="#{contatto.id}" 
 					ajaxListener="#{dettaglioClienteContatti.onContattoPreferitoChanged}"
-					update=":detailForm:tabView:listContattiView:contattiTable"/>				
+					update=":detailForm:tabView:listContattiView:contattiTable :detailForm:tabView:listContattiView:buttons"/>				
             </p:column>
 	
 			<p:column headerText="Nome" sortBy="#{contatto.nome}"
