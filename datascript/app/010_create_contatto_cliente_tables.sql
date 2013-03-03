@@ -1,19 +1,20 @@
-CREATE TABLE com_tipo_contatto
+CREATE TABLE app.com_tipo_contatto
 (
 	id SERIAL NOT NULL PRIMARY KEY,
 	descrizione VARCHAR(255) NOT NULL
 );
 
-INSERT INTO com_tipo_contatto (id, descrizione) VALUES (1, 'Referente commerciale');
-INSERT INTO com_tipo_contatto (id, descrizione) VALUES (2, 'Referente amministrativo');
-INSERT INTO com_tipo_contatto (id, descrizione) VALUES (3, 'Referente operativo');
+INSERT INTO app.com_tipo_contatto (id, descrizione) VALUES (1, 'Referente commerciale');
+INSERT INTO app.com_tipo_contatto (id, descrizione) VALUES (2, 'Referente amministrativo');
+INSERT INTO app.com_tipo_contatto (id, descrizione) VALUES (3, 'Referente operativo');
+SELECT setval('app.com_tipo_contatto_id_seq', (SELECT MAX(id) FROM app.com_tipo_contatto));
 
 
-CREATE TABLE com_contatto
+CREATE TABLE app.com_contatto
 (
 	id serial NOT NULL PRIMARY KEY,
-  tipo_contatto_id INTEGER NOT NULL REFERENCES com_tipo_contatto(id),
-  cliente_id INTEGER NOT NULL REFERENCES com_cliente(id),
+  tipo_contatto_id INTEGER NOT NULL REFERENCES app.com_tipo_contatto(id),
+  cliente_id INTEGER NOT NULL REFERENCES app.com_cliente(id),
 	titolo VARCHAR(50),
   nome VARCHAR(255) NOT NULL,
   telefono1 VARCHAR(255),

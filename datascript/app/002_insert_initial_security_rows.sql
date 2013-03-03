@@ -1,4 +1,4 @@
-INSERT INTO acc_utente (
+INSERT INTO app.acc_utente (
 	  username,
 	  nome,
 	  cognome,
@@ -27,20 +27,20 @@ INSERT INTO acc_utente (
     true
   );
 
-INSERT INTO acc_ruolo (nome, descrizione)
+INSERT INTO app.acc_ruolo (nome, descrizione)
   VALUES ('admin', 'Ruolo di amministrazione');
 
-INSERT INTO acc_permesso (permesso)
+INSERT INTO app.acc_permesso (permesso)
   VALUES ('*');
 
-INSERT INTO acc_utente_ruolo (utente_id, ruolo_id)
+INSERT INTO app.acc_utente_ruolo (utente_id, ruolo_id)
   VALUES (
-	(select id from acc_utente where username = 'admin'), 
-	(select id from acc_ruolo where nome = 'admin')
+	(select id from app.acc_utente where username = 'admin'), 
+	(select id from app.acc_ruolo where nome = 'admin')
 );
 
-INSERT INTO acc_ruolo_permesso (ruolo_id, permesso_id)
+INSERT INTO app.acc_ruolo_permesso (ruolo_id, permesso_id)
   VALUES (
-	(select id from acc_ruolo where nome = 'admin'), 
-	(select id from acc_permesso where permesso = '*')
+	(select id from app.acc_ruolo where nome = 'admin'), 
+	(select id from app.acc_permesso where permesso = '*')
 );

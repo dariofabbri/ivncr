@@ -14,6 +14,9 @@
         <!-- SQL dialect -->
         <property name="dialect">org.hibernate.dialect.PostgreSQL82Dialect</property>
 
+		<!-- Default database schema -->
+		<property name="hibernate.default_schema">app</property>
+
         <!-- Enable Hibernate's automatic session context management -->
         <property name="hibernate.current_session_context_class">thread</property>
 

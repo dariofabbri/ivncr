@@ -1,2 +1,2 @@
-ALTER TABLE com_cliente ADD COLUMN note VARCHAR(4000);
+ALTER TABLE app.com_cliente ADD COLUMN note VARCHAR(4000);
 

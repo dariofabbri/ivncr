@@ -1,7 +1,7 @@
-CREATE TABLE com_obiettivo_servizio
+CREATE TABLE app.com_obiettivo_servizio
 (
 	id serial NOT NULL PRIMARY KEY,
-  cliente_id INTEGER NOT NULL REFERENCES com_cliente(id),
+  cliente_id INTEGER NOT NULL REFERENCES app.com_cliente(id),
   alias VARCHAR(255) NOT NULL,
 	toponimo VARCHAR(50),
   indirizzo VARCHAR(255),

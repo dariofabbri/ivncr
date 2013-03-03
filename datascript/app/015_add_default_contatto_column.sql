@@ -1,2 +1,2 @@
-ALTER TABLE com_contatto ADD preferito BOOLEAN;
+ALTER TABLE app.com_contatto ADD preferito BOOLEAN;
 
