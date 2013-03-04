@@ -1,7 +1,5 @@
 package it.ivncr.erp.model.personale;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -17,12 +15,12 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
-@Table(name = "per_sistema_lavoro")
-public class SistemaLavoro {
+@Table(name = "per_recapito_telefonico")
+public class RecapitoTelefonico {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "per_sistema_lavoro_id_seq")
-	@SequenceGenerator(name = "per_sistema_lavoro_id_seq", sequenceName = "per_sistema_lavoro_id_seq")
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "per_recapito_telefonico_id_seq")
+	@SequenceGenerator(name = "per_recapito_telefonico_id_seq", sequenceName = "per_recapito_telefonico_id_seq")
 	@Column(name="id")
 	private Integer id;
 
@@ -31,14 +29,11 @@ public class SistemaLavoro {
 	private Addetto addetto;
 
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="tipo_sistema_lavoro_id")
-	private TipoSistemaLavoro tipoSistemaLavoro;
+	@JoinColumn(name="tipo_recapito_telefonico_id")
+	private TipoRecapitoTelefonico tipoRecapitoTelefonico;
 
-	@Column(name="valido_da")
-	private Date validoDa;
-
-	@Column(name="valido_a")
-	private Date validoA;
+	@Column(name="recapito")
+	private String recapito;
 
 
 	@Override
@@ -47,9 +42,8 @@ public class SistemaLavoro {
 		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
 			.append("id", id)
 			.append("addetto", addetto, false)
-			.append("tipoSistemaLavoro", tipoSistemaLavoro, false)
-			.append("validoDa", validoDa)
-			.append("validoA", validoA)
+			.append("tipoRecapitoTelefonico", tipoRecapitoTelefonico, false)
+			.append("recapito", recapito)
 			.toString();
 	}
 
@@ -70,27 +64,20 @@ public class SistemaLavoro {
 		this.addetto = addetto;
 	}
 
-	public TipoSistemaLavoro getTipoSistemaLavoro() {
-		return tipoSistemaLavoro;
+	public TipoRecapitoTelefonico getTipoRecapitoTelefonico() {
+		return tipoRecapitoTelefonico;
 	}
 
-	public void setTipoSistemaLavoro(TipoSistemaLavoro tipoSistemaLavoro) {
-		this.tipoSistemaLavoro = tipoSistemaLavoro;
+	public void setTipoRecapitoTelefonico(
+			TipoRecapitoTelefonico tipoRecapitoTelefonico) {
+		this.tipoRecapitoTelefonico = tipoRecapitoTelefonico;
 	}
 
-	public Date getValidoDa() {
-		return validoDa;
+	public String getRecapito() {
+		return recapito;
 	}
 
-	public void setValidoDa(Date validoDa) {
-		this.validoDa = validoDa;
-	}
-
-	public Date getValidoA() {
-		return validoA;
-	}
-
-	public void setValidoA(Date validoA) {
-		this.validoA = validoA;
+	public void setRecapito(String recapito) {
+		this.recapito = recapito;
 	}
 }

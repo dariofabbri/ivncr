@@ -54,6 +54,54 @@
 		<mapping class="it.ivncr.erp.model.generale.Paese" />
 		<mapping class="it.ivncr.erp.model.generale.Provincia" />
 
+		<mapping class="it.ivncr.erp.model.personale.Addetto" />
+		<mapping class="it.ivncr.erp.model.personale.AddettoReparto" />
+		<mapping class="it.ivncr.erp.model.personale.Armamento" />
+		<mapping class="it.ivncr.erp.model.personale.CalibroArma" />
+		<mapping class="it.ivncr.erp.model.personale.CaricaSindacale" />
+		<mapping class="it.ivncr.erp.model.personale.Carriera" />
+		<mapping class="it.ivncr.erp.model.personale.Ccnl" />
+		<mapping class="it.ivncr.erp.model.personale.Corso" />
+		<mapping class="it.ivncr.erp.model.personale.DatiSanitari" />
+		<mapping class="it.ivncr.erp.model.personale.DecretoGpg" />
+		<mapping class="it.ivncr.erp.model.personale.Documento" />
+		<mapping class="it.ivncr.erp.model.personale.EstensioneDecreto" />
+		<mapping class="it.ivncr.erp.model.personale.Grado" />
+		<mapping class="it.ivncr.erp.model.personale.GradoParentela" />
+		<mapping class="it.ivncr.erp.model.personale.GruppoSanguigno" />
+		<mapping class="it.ivncr.erp.model.personale.Indirizzo" />
+		<mapping class="it.ivncr.erp.model.personale.InfoSindacali" />
+		<mapping class="it.ivncr.erp.model.personale.Istruzione" />
+		<mapping class="it.ivncr.erp.model.personale.LibrettoPortoArmi" />
+		<mapping class="it.ivncr.erp.model.personale.LicenzaPortoArmi" />
+		<mapping class="it.ivncr.erp.model.personale.Lingua" />
+		<mapping class="it.ivncr.erp.model.personale.LinguaConosciuta" />
+		<mapping class="it.ivncr.erp.model.personale.LivelloCcnl" />
+		<mapping class="it.ivncr.erp.model.personale.LivelloLingua" />
+		<mapping class="it.ivncr.erp.model.personale.Malattia" />
+		<mapping class="it.ivncr.erp.model.personale.ModelloArma" />
+		<mapping class="it.ivncr.erp.model.personale.PosizioneLavorativa" />
+		<mapping class="it.ivncr.erp.model.personale.PosizioneMilitare" />
+		<mapping class="it.ivncr.erp.model.personale.Qualifica" />
+		<mapping class="it.ivncr.erp.model.personale.RecapitoEmail" />
+		<mapping class="it.ivncr.erp.model.personale.RecapitoTelefonico" />
+		<mapping class="it.ivncr.erp.model.personale.Reparto" />
+		<mapping class="it.ivncr.erp.model.personale.Ruolo" />
+		<mapping class="it.ivncr.erp.model.personale.SiglaSindacale" />
+		<mapping class="it.ivncr.erp.model.personale.SistemaLavoro" />
+		<mapping class="it.ivncr.erp.model.personale.StatoArma" />
+		<mapping class="it.ivncr.erp.model.personale.StatoCivile" />
+		<mapping class="it.ivncr.erp.model.personale.StatoFamiglia" />
+		<mapping class="it.ivncr.erp.model.personale.TipoArma" />
+		<mapping class="it.ivncr.erp.model.personale.TipoCertificato" />
+		<mapping class="it.ivncr.erp.model.personale.TipoContratto" />
+		<mapping class="it.ivncr.erp.model.personale.TipoDocumento" />
+		<mapping class="it.ivncr.erp.model.personale.TipoIndirizzo" />
+		<mapping class="it.ivncr.erp.model.personale.TipoPosizioneMilitare" />
+		<mapping class="it.ivncr.erp.model.personale.TipoRecapitoTelefonico" />
+		<mapping class="it.ivncr.erp.model.personale.TipoSistemaLavoro" />
+		<mapping class="it.ivncr.erp.model.personale.TitoloStudio" />
+
     </session-factory>
 
 </hibernate-configuration>

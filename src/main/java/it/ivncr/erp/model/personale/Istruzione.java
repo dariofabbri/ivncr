@@ -17,12 +17,12 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
-@Table(name = "per_sistema_lavoro")
-public class SistemaLavoro {
+@Table(name = "per_istruzione")
+public class Istruzione {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "per_sistema_lavoro_id_seq")
-	@SequenceGenerator(name = "per_sistema_lavoro_id_seq", sequenceName = "per_sistema_lavoro_id_seq")
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "per_istruzione_id_seq")
+	@SequenceGenerator(name = "per_istruzione_id_seq", sequenceName = "per_istruzione_id_seq")
 	@Column(name="id")
 	private Integer id;
 
@@ -31,14 +31,14 @@ public class SistemaLavoro {
 	private Addetto addetto;
 
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="tipo_sistema_lavoro_id")
-	private TipoSistemaLavoro tipoSistemaLavoro;
+	@JoinColumn(name="titolo_studio_id")
+	private TitoloStudio titoloStudio;
 
-	@Column(name="valido_da")
-	private Date validoDa;
+	@Column(name="data_conseguimento")
+	private Date dataConseguimento;
 
-	@Column(name="valido_a")
-	private Date validoA;
+	@Column(name="presso")
+	private String presso;
 
 
 	@Override
@@ -47,9 +47,9 @@ public class SistemaLavoro {
 		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
 			.append("id", id)
 			.append("addetto", addetto, false)
-			.append("tipoSistemaLavoro", tipoSistemaLavoro, false)
-			.append("validoDa", validoDa)
-			.append("validoA", validoA)
+			.append("titoloStudio", titoloStudio, false)
+			.append("dataConseguimento", dataConseguimento)
+			.append("presso", presso)
 			.toString();
 	}
 
@@ -70,27 +70,27 @@ public class SistemaLavoro {
 		this.addetto = addetto;
 	}
 
-	public TipoSistemaLavoro getTipoSistemaLavoro() {
-		return tipoSistemaLavoro;
+	public TitoloStudio getTitoloStudio() {
+		return titoloStudio;
 	}
 
-	public void setTipoSistemaLavoro(TipoSistemaLavoro tipoSistemaLavoro) {
-		this.tipoSistemaLavoro = tipoSistemaLavoro;
+	public void setTitoloStudio(TitoloStudio titoloStudio) {
+		this.titoloStudio = titoloStudio;
 	}
 
-	public Date getValidoDa() {
-		return validoDa;
+	public Date getDataConseguimento() {
+		return dataConseguimento;
 	}
 
-	public void setValidoDa(Date validoDa) {
-		this.validoDa = validoDa;
+	public void setDataConseguimento(Date dataConseguimento) {
+		this.dataConseguimento = dataConseguimento;
 	}
 
-	public Date getValidoA() {
-		return validoA;
+	public String getPresso() {
+		return presso;
 	}
 
-	public void setValidoA(Date validoA) {
-		this.validoA = validoA;
+	public void setPresso(String presso) {
+		this.presso = presso;
 	}
 }

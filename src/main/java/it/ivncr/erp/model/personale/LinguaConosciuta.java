@@ -1,13 +1,10 @@
 package it.ivncr.erp.model.personale;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
@@ -17,12 +14,11 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
-@Table(name = "per_sistema_lavoro")
-public class SistemaLavoro {
+@Table(name = "per_lingua_conosciuta")
+public class LinguaConosciuta {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "per_sistema_lavoro_id_seq")
-	@SequenceGenerator(name = "per_sistema_lavoro_id_seq", sequenceName = "per_sistema_lavoro_id_seq")
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "per_lingua_conosciuta_id_seq")
+	@SequenceGenerator(name = "per_lingua_conosciuta_id_seq", sequenceName = "per_lingua_conosciuta_id_seq")
 	@Column(name="id")
 	private Integer id;
 
@@ -31,14 +27,15 @@ public class SistemaLavoro {
 	private Addetto addetto;
 
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="tipo_sistema_lavoro_id")
-	private TipoSistemaLavoro tipoSistemaLavoro;
+	@JoinColumn(name="lingua_id")
+	private Lingua lingua;
 
-	@Column(name="valido_da")
-	private Date validoDa;
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="livello_lingua_id")
+	private LivelloLingua livelloLingua;
 
-	@Column(name="valido_a")
-	private Date validoA;
+	@Column(name="note")
+	private String note;
 
 
 	@Override
@@ -47,9 +44,9 @@ public class SistemaLavoro {
 		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
 			.append("id", id)
 			.append("addetto", addetto, false)
-			.append("tipoSistemaLavoro", tipoSistemaLavoro, false)
-			.append("validoDa", validoDa)
-			.append("validoA", validoA)
+			.append("lingua", lingua, false)
+			.append("livelloLingua", livelloLingua, false)
+			.append("note", note)
 			.toString();
 	}
 
@@ -70,27 +67,27 @@ public class SistemaLavoro {
 		this.addetto = addetto;
 	}
 
-	public TipoSistemaLavoro getTipoSistemaLavoro() {
-		return tipoSistemaLavoro;
+	public Lingua getLingua() {
+		return lingua;
 	}
 
-	public void setTipoSistemaLavoro(TipoSistemaLavoro tipoSistemaLavoro) {
-		this.tipoSistemaLavoro = tipoSistemaLavoro;
+	public void setLingua(Lingua lingua) {
+		this.lingua = lingua;
 	}
 
-	public Date getValidoDa() {
-		return validoDa;
+	public LivelloLingua getLivelloLingua() {
+		return livelloLingua;
 	}
 
-	public void setValidoDa(Date validoDa) {
-		this.validoDa = validoDa;
+	public void setLivelloLingua(LivelloLingua livelloLingua) {
+		this.livelloLingua = livelloLingua;
 	}
 
-	public Date getValidoA() {
-		return validoA;
+	public String getNote() {
+		return note;
 	}
 
-	public void setValidoA(Date validoA) {
-		this.validoA = validoA;
+	public void setNote(String note) {
+		this.note = note;
 	}
 }

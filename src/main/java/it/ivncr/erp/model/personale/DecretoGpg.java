@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
@@ -17,12 +16,11 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
-@Table(name = "per_sistema_lavoro")
-public class SistemaLavoro {
+@Table(name = "per_decreto_gpg")
+public class DecretoGpg {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "per_sistema_lavoro_id_seq")
-	@SequenceGenerator(name = "per_sistema_lavoro_id_seq", sequenceName = "per_sistema_lavoro_id_seq")
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "per_decreto_gpg_id_seq")
+	@SequenceGenerator(name = "per_decreto_gpg_id_seq", sequenceName = "per_decreto_gpg_id_seq")
 	@Column(name="id")
 	private Integer id;
 
@@ -30,15 +28,17 @@ public class SistemaLavoro {
 	@JoinColumn(name="addetto_id")
 	private Addetto addetto;
 
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="tipo_sistema_lavoro_id")
-	private TipoSistemaLavoro tipoSistemaLavoro;
+	@Column(name="numero")
+	private String numero;
 
-	@Column(name="valido_da")
-	private Date validoDa;
+	@Column(name="data_rilascio")
+	private Date dataRilascio;
 
-	@Column(name="valido_a")
-	private Date validoA;
+	@Column(name="data_scadenza")
+	private Date dataScadenza;
+
+	@Column(name="note")
+	private String note;
 
 
 	@Override
@@ -47,9 +47,10 @@ public class SistemaLavoro {
 		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
 			.append("id", id)
 			.append("addetto", addetto, false)
-			.append("tipoSistemaLavoro", tipoSistemaLavoro, false)
-			.append("validoDa", validoDa)
-			.append("validoA", validoA)
+			.append("numero", numero)
+			.append("dataRilascio", dataRilascio)
+			.append("dataScadenza", dataScadenza)
+			.append("note", note)
 			.toString();
 	}
 
@@ -70,27 +71,35 @@ public class SistemaLavoro {
 		this.addetto = addetto;
 	}
 
-	public TipoSistemaLavoro getTipoSistemaLavoro() {
-		return tipoSistemaLavoro;
+	public String getNumero() {
+		return numero;
 	}
 
-	public void setTipoSistemaLavoro(TipoSistemaLavoro tipoSistemaLavoro) {
-		this.tipoSistemaLavoro = tipoSistemaLavoro;
+	public void setNumero(String numero) {
+		this.numero = numero;
 	}
 
-	public Date getValidoDa() {
-		return validoDa;
+	public Date getDataRilascio() {
+		return dataRilascio;
 	}
 
-	public void setValidoDa(Date validoDa) {
-		this.validoDa = validoDa;
+	public void setDataRilascio(Date dataRilascio) {
+		this.dataRilascio = dataRilascio;
 	}
 
-	public Date getValidoA() {
-		return validoA;
+	public Date getDataScadenza() {
+		return dataScadenza;
 	}
 
-	public void setValidoA(Date validoA) {
-		this.validoA = validoA;
+	public void setDataScadenza(Date dataScadenza) {
+		this.dataScadenza = dataScadenza;
+	}
+
+	public String getNote() {
+		return note;
+	}
+
+	public void setNote(String note) {
+		this.note = note;
 	}
 }

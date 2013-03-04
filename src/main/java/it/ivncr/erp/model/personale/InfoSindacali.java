@@ -17,12 +17,12 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
-@Table(name = "per_sistema_lavoro")
-public class SistemaLavoro {
+@Table(name = "per_info_sindacali")
+public class InfoSindacali {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "per_sistema_lavoro_id_seq")
-	@SequenceGenerator(name = "per_sistema_lavoro_id_seq", sequenceName = "per_sistema_lavoro_id_seq")
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "per_info_sindacali_id_seq")
+	@SequenceGenerator(name = "per_info_sindacali_id_seq", sequenceName = "per_info_sindacali_id_seq")
 	@Column(name="id")
 	private Integer id;
 
@@ -31,8 +31,12 @@ public class SistemaLavoro {
 	private Addetto addetto;
 
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="tipo_sistema_lavoro_id")
-	private TipoSistemaLavoro tipoSistemaLavoro;
+	@JoinColumn(name="sigla_sindacale_id")
+	private SiglaSindacale siglaSindacale;
+
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="carica_sindacale_id")
+	private CaricaSindacale caricaSindacale;
 
 	@Column(name="valido_da")
 	private Date validoDa;
@@ -47,7 +51,8 @@ public class SistemaLavoro {
 		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
 			.append("id", id)
 			.append("addetto", addetto, false)
-			.append("tipoSistemaLavoro", tipoSistemaLavoro, false)
+			.append("siglaSindacale", siglaSindacale, false)
+			.append("caricaSindacale", caricaSindacale, false)
 			.append("validoDa", validoDa)
 			.append("validoA", validoA)
 			.toString();
@@ -70,12 +75,20 @@ public class SistemaLavoro {
 		this.addetto = addetto;
 	}
 
-	public TipoSistemaLavoro getTipoSistemaLavoro() {
-		return tipoSistemaLavoro;
+	public SiglaSindacale getSiglaSindacale() {
+		return siglaSindacale;
 	}
 
-	public void setTipoSistemaLavoro(TipoSistemaLavoro tipoSistemaLavoro) {
-		this.tipoSistemaLavoro = tipoSistemaLavoro;
+	public void setSiglaSindacale(SiglaSindacale siglaSindacale) {
+		this.siglaSindacale = siglaSindacale;
+	}
+
+	public CaricaSindacale getCaricaSindacale() {
+		return caricaSindacale;
+	}
+
+	public void setCaricaSindacale(CaricaSindacale caricaSindacale) {
+		this.caricaSindacale = caricaSindacale;
 	}
 
 	public Date getValidoDa() {

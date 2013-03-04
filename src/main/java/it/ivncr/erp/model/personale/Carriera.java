@@ -17,12 +17,12 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
-@Table(name = "per_sistema_lavoro")
-public class SistemaLavoro {
+@Table(name = "per_carriera")
+public class Carriera {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "per_sistema_lavoro_id_seq")
-	@SequenceGenerator(name = "per_sistema_lavoro_id_seq", sequenceName = "per_sistema_lavoro_id_seq")
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "per_carriera_id_seq")
+	@SequenceGenerator(name = "per_carriera_id_seq", sequenceName = "per_carriera_id_seq")
 	@Column(name="id")
 	private Integer id;
 
@@ -31,8 +31,12 @@ public class SistemaLavoro {
 	private Addetto addetto;
 
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="tipo_sistema_lavoro_id")
-	private TipoSistemaLavoro tipoSistemaLavoro;
+	@JoinColumn(name="qualifica_id")
+	private Qualifica qualifica;
+
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="livello_ccnl_id")
+	private LivelloCcnl livelloCcnl;
 
 	@Column(name="valido_da")
 	private Date validoDa;
@@ -47,7 +51,8 @@ public class SistemaLavoro {
 		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
 			.append("id", id)
 			.append("addetto", addetto, false)
-			.append("tipoSistemaLavoro", tipoSistemaLavoro, false)
+			.append("qualifica", qualifica, false)
+			.append("livelloCcnl", livelloCcnl, false)
 			.append("validoDa", validoDa)
 			.append("validoA", validoA)
 			.toString();
@@ -70,12 +75,20 @@ public class SistemaLavoro {
 		this.addetto = addetto;
 	}
 
-	public TipoSistemaLavoro getTipoSistemaLavoro() {
-		return tipoSistemaLavoro;
+	public Qualifica getQualifica() {
+		return qualifica;
 	}
 
-	public void setTipoSistemaLavoro(TipoSistemaLavoro tipoSistemaLavoro) {
-		this.tipoSistemaLavoro = tipoSistemaLavoro;
+	public void setQualifica(Qualifica qualifica) {
+		this.qualifica = qualifica;
+	}
+
+	public LivelloCcnl getLivelloCcnl() {
+		return livelloCcnl;
+	}
+
+	public void setLivelloCcnl(LivelloCcnl livelloCcnl) {
+		this.livelloCcnl = livelloCcnl;
 	}
 
 	public Date getValidoDa() {
