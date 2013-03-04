@@ -1,4 +1,5 @@
 psql -U postgres -f create_database.sql postgres
+psql -U ivncr -f create_schema.sql ivncr
 
 psql -U ivncr -f 001_create_security_tables.sql ivncr
 psql -U ivncr -f 002_insert_initial_security_rows.sql ivncr
@@ -14,3 +15,6 @@ psql -U ivncr -f 011_create_indirizzi_cliente_tables.sql ivncr
 psql -U ivncr -f 012_add_cliente_note_column.sql ivncr
 psql -U ivncr -f 013_create_provincia_table.sql ivncr
 psql -U ivncr -f 014_create_obiettivi_cliente_tables.sql ivncr
+psql -U ivncr -f 015_add_default_contatto_column.sql ivncr
+psql -U ivncr -f 016_create_paese_tables.sql ivncr
+psql -U ivncr -f 017_create_personale_tables.sql ivncr
