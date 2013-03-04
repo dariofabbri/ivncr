@@ -7,7 +7,7 @@
 INSERT INTO app.per_tipo_indirizzo (id, descrizione) VALUES (1, 'Residenza');
 INSERT INTO app.per_tipo_indirizzo (id, descrizione) VALUES (2, 'Domicilio');
 INSERT INTO app.per_tipo_indirizzo (id, descrizione) VALUES (3, 'Residenza (cessata)');
-INSERT INTO app.per_tipo_indirizzo (id, descrizione) VALUES (4, 'Domicilio (cessata)');
+INSERT INTO app.per_tipo_indirizzo (id, descrizione) VALUES (4, 'Domicilio (cessato)');
 SELECT setval('app.per_tipo_indirizzo_id_seq', (SELECT MAX(id) FROM app.per_tipo_indirizzo));
 
 
