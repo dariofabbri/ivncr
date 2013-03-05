@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
@@ -19,6 +20,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 @Table(name = "per_malattia")
 public class Malattia {
 
+	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "per_malattia_id_seq")
 	@SequenceGenerator(name = "per_malattia_id_seq", sequenceName = "per_malattia_id_seq")
 	@Column(name="id")

@@ -63,7 +63,7 @@
 		<mapping class="it.ivncr.erp.model.personale.Grado" />
 		<mapping class="it.ivncr.erp.model.personale.GradoParentela" />
 		<mapping class="it.ivncr.erp.model.personale.GruppoSanguigno" />
-		<mapping class="it.ivncr.erp.model.personale.Indirizzo" />
+		<mapping class="it.ivncr.erp.model.personale.IndirizzoAddetto" />
 		<mapping class="it.ivncr.erp.model.personale.InfoSindacali" />
 		<mapping class="it.ivncr.erp.model.personale.Istruzione" />
 		<mapping class="it.ivncr.erp.model.personale.LibrettoPortoArmi" />
@@ -80,7 +80,7 @@
 		<mapping class="it.ivncr.erp.model.personale.RecapitoEmail" />
 		<mapping class="it.ivncr.erp.model.personale.RecapitoTelefonico" />
 		<mapping class="it.ivncr.erp.model.personale.Reparto" />
-		<mapping class="it.ivncr.erp.model.personale.Ruolo" />
+		<mapping class="it.ivncr.erp.model.personale.RuoloAziendale" />
 		<mapping class="it.ivncr.erp.model.personale.SiglaSindacale" />
 		<mapping class="it.ivncr.erp.model.personale.SistemaLavoro" />
 		<mapping class="it.ivncr.erp.model.personale.StatoArma" />
@@ -90,7 +90,7 @@
 		<mapping class="it.ivncr.erp.model.personale.TipoCertificato" />
 		<mapping class="it.ivncr.erp.model.personale.TipoContratto" />
 		<mapping class="it.ivncr.erp.model.personale.TipoDocumento" />
-		<mapping class="it.ivncr.erp.model.personale.TipoIndirizzo" />
+		<mapping class="it.ivncr.erp.model.personale.TipoIndirizzoAddetto" />
 		<mapping class="it.ivncr.erp.model.personale.TipoPosizioneMilitare" />
 		<mapping class="it.ivncr.erp.model.personale.TipoRecapitoTelefonico" />
 		<mapping class="it.ivncr.erp.model.personale.TipoSistemaLavoro" />

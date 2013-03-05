@@ -14,7 +14,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
 @Table(name = "per_tipo_indirizzo")
-public class TipoIndirizzo {
+public class TipoIndirizzoAddetto {
 
 	public static final Integer RESIDENZA = 1;
 	public static final Integer DOMICILIO = 2;

@@ -19,7 +19,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
 @Table(name = "per_indirizzo")
-public class Indirizzo {
+public class IndirizzoAddetto {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "per_indirizzo_id_seq")
@@ -33,7 +33,7 @@ public class Indirizzo {
 
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="tipo_indirizzo_id")
-	private TipoIndirizzo tipoIndirizzo;
+	private TipoIndirizzoAddetto tipoIndirizzo;
 
 	@Column(name="destinatario1")
 	private String destinatario1;
@@ -123,11 +123,11 @@ public class Indirizzo {
 		this.addetto = addetto;
 	}
 
-	public TipoIndirizzo getTipoIndirizzo() {
+	public TipoIndirizzoAddetto getTipoIndirizzo() {
 		return tipoIndirizzo;
 	}
 
-	public void setTipoIndirizzo(TipoIndirizzo tipoIndirizzo) {
+	public void setTipoIndirizzo(TipoIndirizzoAddetto tipoIndirizzo) {
 		this.tipoIndirizzo = tipoIndirizzo;
 	}
 

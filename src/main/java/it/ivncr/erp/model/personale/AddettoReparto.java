@@ -36,7 +36,7 @@ public class AddettoReparto {
 
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="ruolo_id")
-	private Ruolo ruolo;
+	private RuoloAziendale ruolo;
 
 	@Column(name="valido_da")
 	private Date validoDa;
@@ -83,11 +83,11 @@ public class AddettoReparto {
 		this.reparto = reparto;
 	}
 
-	public Ruolo getRuolo() {
+	public RuoloAziendale getRuolo() {
 		return ruolo;
 	}
 
-	public void setRuolo(Ruolo ruolo) {
+	public void setRuolo(RuoloAziendale ruolo) {
 		this.ruolo = ruolo;
 	}
 

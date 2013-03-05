@@ -14,7 +14,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
 @Table(name = "per_ruolo")
-public class Ruolo {
+public class RuoloAziendale {
 
 	public static final Integer DIRIGENTE = 1;
 	public static final Integer PORTIERE = 2;
