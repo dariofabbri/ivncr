@@ -438,23 +438,23 @@ CREATE TABLE app.per_calibro_arma
   descrizione VARCHAR(255) NOT NULL
 );
 
-INSERT INTO app.per_calibro_arma (id, descrizione) VALUES (, '22');
-INSERT INTO app.per_calibro_arma (id, descrizione) VALUES (, '32');
-INSERT INTO app.per_calibro_arma (id, descrizione) VALUES (, '35');
-INSERT INTO app.per_calibro_arma (id, descrizione) VALUES (, '357');
-INSERT INTO app.per_calibro_arma (id, descrizione) VALUES (, '357 magnum');
-INSERT INTO app.per_calibro_arma (id, descrizione) VALUES (, '38');
-INSERT INTO app.per_calibro_arma (id, descrizione) VALUES (, '40');
-INSERT INTO app.per_calibro_arma (id, descrizione) VALUES (, '41');
-INSERT INTO app.per_calibro_arma (id, descrizione) VALUES (, '44');
-INSERT INTO app.per_calibro_arma (id, descrizione) VALUES (, '7.65');
-INSERT INTO app.per_calibro_arma (id, descrizione) VALUES (, '6.35');
-INSERT INTO app.per_calibro_arma (id, descrizione) VALUES (, '9');
-INSERT INTO app.per_calibro_arma (id, descrizione) VALUES (, '9 corto');
-INSERT INTO app.per_calibro_arma (id, descrizione) VALUES (, '9 x 17');
-INSERT INTO app.per_calibro_arma (id, descrizione) VALUES (, '9 x 21');
-INSERT INTO app.per_calibro_arma (id, descrizione) VALUES (, '12');
-INSERT INTO app.per_calibro_arma (id, descrizione) VALUES (, '380 auto');
+INSERT INTO app.per_calibro_arma (id, descrizione) VALUES (1, '22');
+INSERT INTO app.per_calibro_arma (id, descrizione) VALUES (2, '32');
+INSERT INTO app.per_calibro_arma (id, descrizione) VALUES (3, '35');
+INSERT INTO app.per_calibro_arma (id, descrizione) VALUES (4, '357');
+INSERT INTO app.per_calibro_arma (id, descrizione) VALUES (5, '357 magnum');
+INSERT INTO app.per_calibro_arma (id, descrizione) VALUES (6, '38');
+INSERT INTO app.per_calibro_arma (id, descrizione) VALUES (7, '40');
+INSERT INTO app.per_calibro_arma (id, descrizione) VALUES (8, '41');
+INSERT INTO app.per_calibro_arma (id, descrizione) VALUES (9, '44');
+INSERT INTO app.per_calibro_arma (id, descrizione) VALUES (10, '7.65');
+INSERT INTO app.per_calibro_arma (id, descrizione) VALUES (11, '6.35');
+INSERT INTO app.per_calibro_arma (id, descrizione) VALUES (12, '9');
+INSERT INTO app.per_calibro_arma (id, descrizione) VALUES (13, '9 corto');
+INSERT INTO app.per_calibro_arma (id, descrizione) VALUES (14, '9 x 17');
+INSERT INTO app.per_calibro_arma (id, descrizione) VALUES (15, '9 x 21');
+INSERT INTO app.per_calibro_arma (id, descrizione) VALUES (16, '12');
+INSERT INTO app.per_calibro_arma (id, descrizione) VALUES (17, '380 auto');
 SELECT setval('app.per_calibro_arma_id_seq', (SELECT MAX(id) FROM app.per_calibro_arma));
 
 
@@ -599,17 +599,17 @@ CREATE TABLE app.per_livello_ccnl
   descrizione VARCHAR(255) NOT NULL
 );
 
-INSERT INTO app.per_livello_ccnl (id, descrizione) VALUES (, '1° livello');
-INSERT INTO app.per_livello_ccnl (id, descrizione) VALUES (, '1° livello super');
-INSERT INTO app.per_livello_ccnl (id, descrizione) VALUES (, '2° livello');
-INSERT INTO app.per_livello_ccnl (id, descrizione) VALUES (, '3° livello');
-INSERT INTO app.per_livello_ccnl (id, descrizione) VALUES (, '3° livello super');
-INSERT INTO app.per_livello_ccnl (id, descrizione) VALUES (, '4° livello');
-INSERT INTO app.per_livello_ccnl (id, descrizione) VALUES (, '4° livello super');
-INSERT INTO app.per_livello_ccnl (id, descrizione) VALUES (, '5° livello');
-INSERT INTO app.per_livello_ccnl (id, descrizione) VALUES (, '6° livello');
-INSERT INTO app.per_livello_ccnl (id, descrizione) VALUES (, 'Quadro');
-INSERT INTO app.per_livello_ccnl (id, descrizione) VALUES (, 'Nozioni di base');
+INSERT INTO app.per_livello_ccnl (id, descrizione) VALUES (1, '1° livello');
+INSERT INTO app.per_livello_ccnl (id, descrizione) VALUES (2, '1° livello super');
+INSERT INTO app.per_livello_ccnl (id, descrizione) VALUES (3, '2° livello');
+INSERT INTO app.per_livello_ccnl (id, descrizione) VALUES (4, '3° livello');
+INSERT INTO app.per_livello_ccnl (id, descrizione) VALUES (5, '3° livello super');
+INSERT INTO app.per_livello_ccnl (id, descrizione) VALUES (6, '4° livello');
+INSERT INTO app.per_livello_ccnl (id, descrizione) VALUES (7, '4° livello super');
+INSERT INTO app.per_livello_ccnl (id, descrizione) VALUES (8, '5° livello');
+INSERT INTO app.per_livello_ccnl (id, descrizione) VALUES (9, '6° livello');
+INSERT INTO app.per_livello_ccnl (id, descrizione) VALUES (10, 'Quadro');
+INSERT INTO app.per_livello_ccnl (id, descrizione) VALUES (11, 'Nozioni di base');
 
 
 CREATE TABLE app.per_addetto
