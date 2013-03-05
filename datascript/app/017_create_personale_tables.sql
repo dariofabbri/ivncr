@@ -438,8 +438,24 @@ CREATE TABLE app.per_calibro_arma
   descrizione VARCHAR(255) NOT NULL
 );
 
---INSERT INTO app.per_calibro_arma (id, descrizione) VALUES (, '');
---SELECT setval('app.per_calibro_arma_id_seq', (SELECT MAX(id) FROM app.per_calibro_arma));
+INSERT INTO app.per_calibro_arma (id, descrizione) VALUES (, '22');
+INSERT INTO app.per_calibro_arma (id, descrizione) VALUES (, '32');
+INSERT INTO app.per_calibro_arma (id, descrizione) VALUES (, '35');
+INSERT INTO app.per_calibro_arma (id, descrizione) VALUES (, '357');
+INSERT INTO app.per_calibro_arma (id, descrizione) VALUES (, '357 magnum');
+INSERT INTO app.per_calibro_arma (id, descrizione) VALUES (, '38');
+INSERT INTO app.per_calibro_arma (id, descrizione) VALUES (, '40');
+INSERT INTO app.per_calibro_arma (id, descrizione) VALUES (, '41');
+INSERT INTO app.per_calibro_arma (id, descrizione) VALUES (, '44');
+INSERT INTO app.per_calibro_arma (id, descrizione) VALUES (, '7.65');
+INSERT INTO app.per_calibro_arma (id, descrizione) VALUES (, '6.35');
+INSERT INTO app.per_calibro_arma (id, descrizione) VALUES (, '9');
+INSERT INTO app.per_calibro_arma (id, descrizione) VALUES (, '9 corto');
+INSERT INTO app.per_calibro_arma (id, descrizione) VALUES (, '9 x 17');
+INSERT INTO app.per_calibro_arma (id, descrizione) VALUES (, '9 x 21');
+INSERT INTO app.per_calibro_arma (id, descrizione) VALUES (, '12');
+INSERT INTO app.per_calibro_arma (id, descrizione) VALUES (, '380 auto');
+SELECT setval('app.per_calibro_arma_id_seq', (SELECT MAX(id) FROM app.per_calibro_arma));
 
 
 CREATE TABLE app.per_stato_arma
