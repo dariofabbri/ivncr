@@ -1,3 +1,5 @@
+\encoding UTF8;
+
 CREATE TABLE app.com_tipo_indirizzo
 (
 	id SERIAL NOT NULL PRIMARY KEY,

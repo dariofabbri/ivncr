@@ -1,3 +1,5 @@
+\encoding UTF8;
+
 CREATE TABLE app.com_gruppo_cliente
 (
 	id SERIAL NOT NULL PRIMARY KEY,

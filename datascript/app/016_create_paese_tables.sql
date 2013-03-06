@@ -1,3 +1,5 @@
+\encoding UTF8;
+
 CREATE TABLE app.gen_paese
 (
 	id SERIAL NOT NULL PRIMARY KEY,

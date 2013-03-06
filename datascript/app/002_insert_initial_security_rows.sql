@@ -1,3 +1,5 @@
+\encoding UTF8;
+
 INSERT INTO app.acc_utente (
 	  username,
 	  nome,

@@ -1,3 +1,5 @@
+\encoding UTF8;
+
 INSERT INTO app.com_gruppo_cliente (id, descrizione) VALUES (1, 'Grande utenza');
 INSERT INTO app.com_gruppo_cliente (id, descrizione) VALUES (2, 'Piccola utenza');
 INSERT INTO app.com_gruppo_cliente (id, descrizione) VALUES (3, 'Media utenza');

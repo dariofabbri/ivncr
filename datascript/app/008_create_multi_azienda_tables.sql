@@ -1,3 +1,5 @@
+\encoding UTF8;
+
 CREATE TABLE app.gen_azienda
 (
 	id serial NOT NULL PRIMARY KEY,

@@ -1,3 +1,5 @@
+\encoding UTF8;
+
 CREATE TABLE app.gen_provincia
 (
 	id SERIAL NOT NULL PRIMARY KEY,

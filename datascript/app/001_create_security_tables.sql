@@ -1,3 +1,5 @@
+\encoding UTF8;
+
 CREATE TABLE app.acc_utente
 (
 	id serial NOT NULL PRIMARY KEY,

@@ -1,3 +1,5 @@
+\encoding UTF8;
+
 CREATE TABLE app.com_obiettivo_servizio
 (
 	id serial NOT NULL PRIMARY KEY,

@@ -1,4 +1,6 @@
-﻿CREATE TABLE app.per_tipo_indirizzo
+\encoding UTF8;
+
+CREATE TABLE app.per_tipo_indirizzo
 (
 	id SERIAL NOT NULL PRIMARY KEY,
 	descrizione VARCHAR(255) NOT NULL
