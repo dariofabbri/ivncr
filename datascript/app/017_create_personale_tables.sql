@@ -614,6 +614,17 @@ INSERT INTO app.per_livello_ccnl (id, descrizione) VALUES (10, 'Quadro');
 INSERT INTO app.per_livello_ccnl (id, descrizione) VALUES (11, 'Nozioni di base');
 
 
+CREATE TABLE app.per_tipo_rinnovo_decreto_gpg
+(
+  id SERIAL NOT NULL PRIMARY KEY,
+  descrizione VARCHAR(255) NOT NULL
+);
+
+INSERT INTO app.per_tipo_rinnovo_decreto_gpg (id, descrizione) VALUES (1, 'Prima nomina G.P.G.');
+INSERT INTO app.per_tipo_rinnovo_decreto_gpg (id, descrizione) VALUES (2, 'Rinnovo nomina G.P.G.');
+
+
+
 CREATE TABLE app.per_addetto
 (
   id SERIAL NOT NULL PRIMARY KEY,
@@ -861,6 +872,7 @@ CREATE TABLE app.per_decreto_gpg
 (
   id SERIAL NOT NULL PRIMARY KEY,
   addetto_id INTEGER NOT NULL REFERENCES app.per_addetto(id),
+  tipo_rinnovo_id INTEGER NOT NULL REFERENCES app.per_tipo_rinnovo_decreto_gpg(id),
   numero VARCHAR(255) NOT NULL,
   data_rilascio DATE,
   data_scadenza DATE,

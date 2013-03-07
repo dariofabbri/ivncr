@@ -93,6 +93,7 @@
 		<mapping class="it.ivncr.erp.model.personale.TipoIndirizzoAddetto" />
 		<mapping class="it.ivncr.erp.model.personale.TipoPosizioneMilitare" />
 		<mapping class="it.ivncr.erp.model.personale.TipoRecapitoTelefonico" />
+		<mapping class="it.ivncr.erp.model.personale.TipoRinnovoDecretoGpg" />
 		<mapping class="it.ivncr.erp.model.personale.TipoSistemaLavoro" />
 		<mapping class="it.ivncr.erp.model.personale.TitoloStudio" />
 
