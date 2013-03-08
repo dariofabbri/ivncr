@@ -131,7 +131,7 @@ public class DettaglioClienteContatti implements Serializable {
 
 		// Load default contatto.
 		//
-		Contatto defaultContatto = cs.getDefault(dettaglioClienteGenerale.getId());
+		Contatto defaultContatto = cs.getDefault(dettaglioClienteGenerale.getId(), false);
 		codiceContattoPreferito = defaultContatto != null ? defaultContatto.getId() : null;
 
 		// Load titoli for autocomplete.

@@ -13,12 +13,12 @@
 	        
 	        <f:facet name="options">
 	        
-	        	<h:panelGrid columns="2">
+	        	<h:panelGrid columns="3">
 	        	
 					<p:inplace 
 						id="selectableInplaceAzienda" 
-						label="#{loginInfo.azienda.codice}"
-						style="font-weight: bold; font-size: 1.3em;"
+						label="#{loginInfo.azienda.codice} - #{loginInfo.azienda.descrizione}"
+						style="#{loginInfo.azienda.stile}"
 						effectSpeed="fast" >
 						  
 						<p:selectOneMenu
@@ -40,6 +40,7 @@
 						  
 					</p:inplace>
 
+					<p:spacer width="20px"/>
 
 					<p:commandButton 
 						value="Logout" 

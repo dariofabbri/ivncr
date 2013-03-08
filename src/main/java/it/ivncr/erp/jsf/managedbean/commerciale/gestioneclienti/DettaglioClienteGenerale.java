@@ -145,7 +145,7 @@ public class DettaglioClienteGenerale implements Serializable {
 	public void loadRiepilogoContatto() {
 
 		ContattoService cs = ServiceFactory.createService("Contatto");
-		Contatto contatto = cs.getDefault(id);
+		Contatto contatto = cs.getDefault(id, true);
 
 		if(contatto == null) {
 			contattoPrincipaleNome = null;

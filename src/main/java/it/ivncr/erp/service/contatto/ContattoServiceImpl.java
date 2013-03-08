@@ -279,7 +279,7 @@ public class ContattoServiceImpl extends AbstractService implements ContattoServ
 	}
 
 	@Override
-	public Contatto getDefault(Integer clienteId) {
+	public Contatto getDefault(Integer clienteId, boolean fallback) {
 
 		String hql =
 				"from Contatto con " +
@@ -288,6 +288,20 @@ public class ContattoServiceImpl extends AbstractService implements ContattoServ
 		Query query = session.createQuery(hql);
 		query.setParameter("clienteId", clienteId);
 		Contatto contatto = (Contatto)query.uniqueResult();
+
+		if(contatto == null && fallback) {
+			logger.debug("Default contatto not found using flag, falling back to first of the list.");
+
+			hql =
+					"from Contatto con " +
+					"where con.cliente.id = :clienteId " +
+					"order by con.id ";
+			query = session.createQuery(hql);
+			query.setParameter("clienteId", clienteId);
+			query.setMaxResults(1);
+			contatto = (Contatto)query.uniqueResult();
+		}
+
 		logger.debug("Default contatto found: " + contatto);
 
 		return contatto;

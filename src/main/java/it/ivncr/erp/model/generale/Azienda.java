@@ -35,21 +35,26 @@ public class Azienda {
 	@Column(name="descrizione")
 	private String descrizione;
 
+	@Column(name="stile")
+	private String stile;
+
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="azienda")
 	@OrderBy
 	private Set<UtenteAzienda> utenti;
 
-	
+
+	@Override
 	public String toString() {
-		
+
 		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
 			.append("id", id)
 			.append("codice", codice)
 			.append("descrizione", descrizione)
+			.append("stile", stile)
 			.append("utenti", utenti, false)
 			.toString();
 	}
-	
+
 
 	public Integer getId() {
 		return id;
@@ -73,6 +78,14 @@ public class Azienda {
 
 	public void setDescrizione(String descrizione) {
 		this.descrizione = descrizione;
+	}
+
+	public String getStile() {
+		return stile;
+	}
+
+	public void setStile(String stile) {
+		this.stile = stile;
 	}
 
 	public Set<UtenteAzienda> getUtenti() {
