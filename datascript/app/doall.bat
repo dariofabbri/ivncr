@@ -18,3 +18,4 @@ psql -U ivncr -f 014_create_obiettivi_cliente_tables.sql ivncr
 psql -U ivncr -f 015_add_default_contatto_column.sql ivncr
 psql -U ivncr -f 016_create_paese_tables.sql ivncr
 psql -U ivncr -f 017_create_personale_tables.sql ivncr
+psql -U ivncr -f 018_add_azienda_stile_column.sql ivncr

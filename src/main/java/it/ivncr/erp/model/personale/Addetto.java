@@ -67,6 +67,9 @@ public class Addetto {
 	@Column(name="attivo")
 	private Boolean attivo;
 
+	@Column(name="data_giuramento")
+	private Date dataGiuramento;
+
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="stato_civile_id")
 	private StatoCivile statoCivile;
@@ -95,6 +98,7 @@ public class Addetto {
 			.append("note", note)
 			.append("fittizio", fittizio)
 			.append("attivo", attivo)
+			.append("dataGiuramento", dataGiuramento)
 			.append("statoCivile", statoCivile, false)
 			.append("creazione", creazione)
 			.append("ultimaModifica", ultimaModifica)
@@ -203,6 +207,14 @@ public class Addetto {
 
 	public void setAttivo(Boolean attivo) {
 		this.attivo = attivo;
+	}
+
+	public Date getDataGiuramento() {
+		return dataGiuramento;
+	}
+
+	public void setDataGiuramento(Date dataGiuramento) {
+		this.dataGiuramento = dataGiuramento;
 	}
 
 	public StatoCivile getStatoCivile() {

@@ -543,7 +543,7 @@ CREATE TABLE app.per_qualifica
   descrizione VARCHAR(255) NOT NULL
 );
 
-INSERT INTO app.per_qualifica (id, descrizione) VALUES (1, 'Operaio');
+INSERT INTO app.per_qualifica (id, descrizione) VALUES (1, 'Operaio/a');
 INSERT INTO app.per_qualifica (id, descrizione) VALUES (2, 'Impiegato 5° livello');
 INSERT INTO app.per_qualifica (id, descrizione) VALUES (3, 'Impiegato 5° livello apprendista');
 INSERT INTO app.per_qualifica (id, descrizione) VALUES (4, 'Apprendista contabile 3° livello');
@@ -579,7 +579,7 @@ INSERT INTO app.per_qualifica (id, descrizione) VALUES (33, 'C.UF.');
 INSERT INTO app.per_qualifica (id, descrizione) VALUES (34, 'CAP.');
 INSERT INTO app.per_qualifica (id, descrizione) VALUES (35, 'Dir.');
 INSERT INTO app.per_qualifica (id, descrizione) VALUES (36, 'GPG');
-INSERT INTO app.per_qualifica (id, descrizione) VALUES (37, 'Grad.');
+INSERT INTO app.per_qualifica (id, descrizione) VALUES (37, 'Grad');
 INSERT INTO app.per_qualifica (id, descrizione) VALUES (38, 'I');
 INSERT INTO app.per_qualifica (id, descrizione) VALUES (39, 'Imp.');
 INSERT INTO app.per_qualifica (id, descrizione) VALUES (40, 'O.PT');
@@ -587,12 +587,15 @@ INSERT INTO app.per_qualifica (id, descrizione) VALUES (41, 'OP');
 INSERT INTO app.per_qualifica (id, descrizione) VALUES (42, 'OUCO');
 INSERT INTO app.per_qualifica (id, descrizione) VALUES (43, 'Portiere');
 INSERT INTO app.per_qualifica (id, descrizione) VALUES (44, 'Quad.');
-INSERT INTO app.per_qualifica (id, descrizione) VALUES (45, 'S.Uff.');
+INSERT INTO app.per_qualifica (id, descrizione) VALUES (45, 'S.uff');
 INSERT INTO app.per_qualifica (id, descrizione) VALUES (46, 'Tec.');
 INSERT INTO app.per_qualifica (id, descrizione) VALUES (47, 'Uff.');
 INSERT INTO app.per_qualifica (id, descrizione) VALUES (48, 'Vig.');
 INSERT INTO app.per_qualifica (id, descrizione) VALUES (49, 'Vig.CF');
-
+INSERT INTO app.per_qualifica (id, descrizione) VALUES (50, 'Vig');
+INSERT INTO app.per_qualifica (id, descrizione) VALUES (51, 'S.uf');
+INSERT INTO app.per_qualifica (id, descrizione) VALUES (52, 'Impiegato 1° liv. s');
+SELECT setval('app.per_qualifica_id_seq', (SELECT MAX(id) FROM app.per_qualifica));
 
 
 CREATE TABLE app.per_livello_ccnl
@@ -601,17 +604,18 @@ CREATE TABLE app.per_livello_ccnl
   descrizione VARCHAR(255) NOT NULL
 );
 
-INSERT INTO app.per_livello_ccnl (id, descrizione) VALUES (1, '1° livello');
-INSERT INTO app.per_livello_ccnl (id, descrizione) VALUES (2, '1° livello super');
-INSERT INTO app.per_livello_ccnl (id, descrizione) VALUES (3, '2° livello');
-INSERT INTO app.per_livello_ccnl (id, descrizione) VALUES (4, '3° livello');
-INSERT INTO app.per_livello_ccnl (id, descrizione) VALUES (5, '3° livello super');
-INSERT INTO app.per_livello_ccnl (id, descrizione) VALUES (6, '4° livello');
-INSERT INTO app.per_livello_ccnl (id, descrizione) VALUES (7, '4° livello super');
-INSERT INTO app.per_livello_ccnl (id, descrizione) VALUES (8, '5° livello');
-INSERT INTO app.per_livello_ccnl (id, descrizione) VALUES (9, '6° livello');
+INSERT INTO app.per_livello_ccnl (id, descrizione) VALUES (1, '1 livello');
+INSERT INTO app.per_livello_ccnl (id, descrizione) VALUES (2, '1 livello super');
+INSERT INTO app.per_livello_ccnl (id, descrizione) VALUES (3, '2 livello');
+INSERT INTO app.per_livello_ccnl (id, descrizione) VALUES (4, '3 livello');
+INSERT INTO app.per_livello_ccnl (id, descrizione) VALUES (5, '3 livello super');
+INSERT INTO app.per_livello_ccnl (id, descrizione) VALUES (6, '4 livello');
+INSERT INTO app.per_livello_ccnl (id, descrizione) VALUES (7, '4 livello super');
+INSERT INTO app.per_livello_ccnl (id, descrizione) VALUES (8, '5 livello');
+INSERT INTO app.per_livello_ccnl (id, descrizione) VALUES (9, '6 livello');
 INSERT INTO app.per_livello_ccnl (id, descrizione) VALUES (10, 'Quadro');
 INSERT INTO app.per_livello_ccnl (id, descrizione) VALUES (11, 'Nozioni di base');
+SELECT setval('app.per_livello_ccnl_id_seq', (SELECT MAX(id) FROM app.per_livello_ccnl));
 
 
 CREATE TABLE app.per_tipo_rinnovo_decreto_gpg
@@ -622,6 +626,22 @@ CREATE TABLE app.per_tipo_rinnovo_decreto_gpg
 
 INSERT INTO app.per_tipo_rinnovo_decreto_gpg (id, descrizione) VALUES (1, 'Prima nomina G.P.G.');
 INSERT INTO app.per_tipo_rinnovo_decreto_gpg (id, descrizione) VALUES (2, 'Rinnovo nomina G.P.G.');
+SELECT setval('app.per_tipo_rinnovo_decreto_gpg_id_seq', (SELECT MAX(id) FROM app.per_tipo_rinnovo_decreto_gpg));
+
+
+
+CREATE_TABLE app.per_durata_documento
+(
+  id SERIAL NOT NULL PRIMARY KEY,
+  tipo_documento VARCHAR(255) NOT NULL,
+  durata_mesi INTEGER NOT NULL
+);
+
+INSERT INTO app.per_durata_documento (id, tipo_documento, durata_mesi) VALUES (1, 'LIBRETTO PORTO ARMI', 72);
+INSERT INTO app.per_durata_documento (id, tipo_documento, durata_mesi) VALUES (2, 'LICENZA PORTO ARMI', 24);
+INSERT INTO app.per_durata_documento (id, tipo_documento, durata_mesi) VALUES (3, 'DECRETO GPG', 24);
+INSERT INTO app.per_durata_documento (id, tipo_documento, durata_mesi) VALUES (4, 'ESTENSIONE DECRETO GPG', 24);
+SELECT setval('app.per_durata_documento_id_seq', (SELECT MAX(id) FROM app.per_durata_documento));
 
 
 
@@ -640,6 +660,7 @@ CREATE TABLE app.per_addetto
   note VARCHAR(4000),
   fittizio BOOLEAN,
   attivo BOOLEAN,
+  data_giuramento DATE,
   stato_civile_id INTEGER NOT NULL REFERENCES app.per_stato_civile(id),
   creazione_ts TIMESTAMP WITH TIME ZONE,
   ultima_modifica_ts TIMESTAMP WITH TIME ZONE
@@ -652,6 +673,29 @@ CREATE TABLE app.per_reparto
   azienda_id INTEGER NOT NULL REFERENCES app.gen_azienda(id),
   descrizione VARCHAR(255) NOT NULL
 );
+
+INSERT INTO app.per_reparto (id, azienda_id, descrizione) VALUES(1, 1, 'Ex-Securintel');
+INSERT INTO app.per_reparto (id, azienda_id, descrizione) VALUES(2, 1, 'Trasporto Valori');
+INSERT INTO app.per_reparto (id, azienda_id, descrizione) VALUES(3, 1, 'Uffici');
+INSERT INTO app.per_reparto (id, azienda_id, descrizione) VALUES(4, 1, 'Ausiliari');
+INSERT INTO app.per_reparto (id, azienda_id, descrizione) VALUES(5, 1, 'Circoscrizione 1');
+INSERT INTO app.per_reparto (id, azienda_id, descrizione) VALUES(6, 1, 'Circoscrizione 3');
+INSERT INTO app.per_reparto (id, azienda_id, descrizione) VALUES(7, 1, 'Portierato');
+INSERT INTO app.per_reparto (id, azienda_id, descrizione) VALUES(8, 1, 'Met.Ro.');
+INSERT INTO app.per_reparto (id, azienda_id, descrizione) VALUES(9, 1, 'Ambasciata Americana');
+INSERT INTO app.per_reparto (id, azienda_id, descrizione) VALUES(10, 1, 'R.A.I. Saxa Rubra');
+INSERT INTO app.per_reparto (id, azienda_id, descrizione) VALUES(11, 1, 'Sede Centrale');
+INSERT INTO app.per_reparto (id, azienda_id, descrizione) VALUES(12, 1, 'Uffici');
+INSERT INTO app.per_reparto (id, azienda_id, descrizione) VALUES(13, 1, 'Pattuglie');
+INSERT INTO app.per_reparto (id, azienda_id, descrizione) VALUES(14, 1, 'Ausiliari');
+INSERT INTO app.per_reparto (id, azienda_id, descrizione) VALUES(15, 1, 'Circoscrizione 2');
+INSERT INTO app.per_reparto (id, azienda_id, descrizione) VALUES(16, 1, 'Circoscrizione 4');
+INSERT INTO app.per_reparto (id, azienda_id, descrizione) VALUES(17, 1, 'Pattuglie Appio');
+INSERT INTO app.per_reparto (id, azienda_id, descrizione) VALUES(18, 1, 'Pattuglie Pisana');
+INSERT INTO app.per_reparto (id, azienda_id, descrizione) VALUES(19, 1, 'Pattuglie Pomezia');
+INSERT INTO app.per_reparto (id, azienda_id, descrizione) VALUES(20, 1, 'Pattuglie Guidonia');
+INSERT INTO app.per_reparto (id, azienda_id, descrizione) VALUES(21, 1, 'Ospedali');
+SELECT setval('app.per_reparto', (SELECT MAX(id) FROM app.per_reparto));
 
 
 CREATE TABLE app.per_sistema_lavoro
