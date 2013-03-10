@@ -12,38 +12,31 @@
 		
 		<p:growl id="growl" showSummary="true" showDetail="true" life="2000"/>
 
-			<h1 class="title ui-widget-header ui-corner-all">Gestione addetti</h1>
+			<h1 class="title ui-widget-header ui-corner-all">Gestione Addetti</h1>
 			
 			<p:outputPanel id="buttons" style="display: block; margin-top: 2em; margin-bottom: 2em;">
-
-				<p:commandButton 
-					id="searchButton"
-					value="Ricerca avanzata"
-					icon="ui-icon-search" 
-					update=":searchForm" 
-					onclick="searchDialog.show();"/>
 					
 				<p:commandButton 
 					value="Nuovo addetto"
-					action="#{gestioneAddetti.startCreate}"
+					action="#{gestioneClienti.startCreate}"
 					icon="ui-icon-star" />
 
 				<p:commandButton 
-					value="Elimina addetto selezionato"
-					disabled="#{empty gestioneAddetti.selected}"
+					value="Cessa addetto selezionato"
+					disabled="#{gestioneClienti.selected == null}"
 					onclick="deleteDialog.show();"
 					icon="ui-icon-trash" />
 
 				<p:commandButton 
 					value="Modifica addetto selezionato"
-					disabled="#{empty gestioneAddetti.selected}"
-					action="#{gestioneAddetti.startUpdate}"
+					disabled="#{gestioneClienti.selected == null}"
+					action="#{gestioneClienti.startUpdate}"
 					icon="ui-icon-pencil" />
 
 			</p:outputPanel>
 
-			<p:dataTable var="addetto" 
-				value="#{gestioneAddetti.model}"
+			<p:dataTable var="cliente" 
+				value="#{gestioneClienti.model}"
 				paginator="true" 
 				paginatorPosition="bottom" rows="10"
 				paginatorTemplate="{CurrentPageReport} {RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
@@ -52,9 +45,8 @@
 				pageLinks="10"
 				emptyMessage="Nessun record trovato" 
 				selectionMode="single"
-				selection="#{gestioneAddetti.selected}"
-				sortBy="#{addetto.matricola}"
-				id="addettiTable" 
+				selection="#{gestioneClienti.selected}" 
+				id="clientiTable" 
 				lazy="true">
 
 				<p:ajax event="rowSelect" update=":form:buttons"/>
@@ -65,31 +57,29 @@
 			    	Lista degli addetti
 			    </f:facet>
 
-				<p:column headerText="Matricola" sortBy="#{addetto.matricola}"
-					filterBy="#{addetto.matricola}">
-					<h:outputText value="#{addetto.matricola}" />
+				<p:column headerText="Matricola" sortBy="#{cliente.codice}"
+					filterBy="#{cliente.codice}">
+					<h:outputText value="#{cliente.codice}" />
 				</p:column>
 
-				<p:column headerText="Nome" sortBy="#{addetto.nome}"
-					filterBy="#{addetto.nome}">
-					<h:outputText value="#{addetto.nome}" />
+				<p:column headerText="Nome" sortBy="#{cliente.ragioneSociale}"
+					filterBy="#{cliente.ragioneSociale}">
+					<h:outputText value="#{cliente.ragioneSociale}" />
 				</p:column>
 				
-				<p:column headerText="Cognome" sortBy="#{addetto.cognome}"
-					filterBy="#{addetto.cognome}">
-					<h:outputText value="#{addetto.cognome}" />
+				<p:column headerText="Cognome" sortBy="#{cliente.partitaIva}"
+					filterBy="#{cliente.partitaIva}">
+					<h:outputText value="#{cliente.partitaIva}" />
 				</p:column>
 				
-				<p:column headerText="Codice fiscale" sortBy="#{addetto.codiceFiscale}"
-					filterBy="#{addetto.codiceFiscale}">
-					<h:outputText value="#{addetto.codiceFiscale}" />
+				<p:column headerText="Reparto" sortBy="#{cliente.partitaIva}"
+					filterBy="#{cliente.partitaIva}">
+					<h:outputText value="#{cliente.partitaIva}" />
 				</p:column>
 
 			</p:dataTable>
 
 		</h:form>
-		
-		<ui:include src="search.xhtml"/>
 		
 	</ui:define>
 

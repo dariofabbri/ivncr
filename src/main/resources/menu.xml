@@ -2,7 +2,7 @@
 
 	<submenu label="Personale" icon="ui-icon-wrench">
 	
-			<menuitem value="Gestione Addetti" url="/faces/personale/addetti/index.xhtml" />
+			<menuitem value="Gestione addetti" url="/faces/personale/addetti/index.xhtml" />
 			
 	</submenu>
 
