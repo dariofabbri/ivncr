@@ -59,6 +59,7 @@
 		<mapping class="it.ivncr.erp.model.personale.DatiSanitari" />
 		<mapping class="it.ivncr.erp.model.personale.DecretoGpg" />
 		<mapping class="it.ivncr.erp.model.personale.Documento" />
+		<mapping class="it.ivncr.erp.model.personale.DurataDocumento" />
 		<mapping class="it.ivncr.erp.model.personale.EstensioneDecreto" />
 		<mapping class="it.ivncr.erp.model.personale.Grado" />
 		<mapping class="it.ivncr.erp.model.personale.GradoParentela" />
