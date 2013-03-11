@@ -9,8 +9,8 @@ import javax.faces.validator.ValidatorException;
 
 import org.apache.commons.lang3.StringUtils;
 
-@FacesValidator(value="matricolaValidator")
-public class MatricolaValidator implements Validator {
+@FacesValidator(value="matricolaAddettoValidator")
+public class MatricolaAddettoValidator implements Validator {
 
 	@Override
 	public void validate(FacesContext context, UIComponent component, Object value)
@@ -18,7 +18,7 @@ public class MatricolaValidator implements Validator {
 
 		// Get the string value of the passed object.
 		//
-		String s = value.toString();
+		String s = value.toString().trim();;
 
 		// Check if it is a valid integer.
 		//
@@ -29,6 +29,15 @@ public class MatricolaValidator implements Validator {
 			message.setSeverity(FacesMessage.SEVERITY_ERROR);
 			throw new ValidatorException(message);
 		}
-	}
 
+		// Matricola must be exactly 5 digit.
+		//
+		if(s.length() != 5) {
+			FacesMessage message = new FacesMessage();
+			message.setSummary("Matricola non valida");
+			message.setDetail("La matricola deve essere esattamente di 5 cifre");
+			message.setSeverity(FacesMessage.SEVERITY_ERROR);
+			throw new ValidatorException(message);
+		}
+	}
 }

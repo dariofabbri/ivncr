@@ -3,183 +3,256 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
-			
-	<h:form>
-								
-		<p:messages globalOnly="false" showSummary="false" showDetail="true" closable="true"/>
-
-		<p:focus/>
+	
+	<p:panelGrid styleClass="multi-col-layout" id="testataPanel">
 		
-		<p:panelGrid styleClass="form-panel">
+		<p:row>
 			
-			<p:row>
-				
-				<p:column>
-		
-					<p:panelGrid styleClass="form-panel">
-						
-						<p:row>
-							<p:column>
-								<p:outputLabel for="matricola" value="Matricola:" />
-							</p:column>
-							<p:column>
-								<p:inputText value="" id="matricola"
-									required="true" requiredMessage="Il campo è obbligatorio" />
-								<p:watermark for="matricola" value="Codice identificativo dell\'addetto" />   
-								<p:tooltip for="matricola" showEffect="fade" value="La matricola rappresnta blah vlahh" />
-							</p:column>
-						</p:row>
-						
-						<p:row>
-							<p:column>
-								<p:outputLabel for="nome" value="Nome:" />
-							</p:column>
-							<p:column>
-								<p:inputText value="" id="nome"
-									required="true" requiredMessage="Il campo è obbligatorio" />
-								<p:watermark for="nome" value="Nome dell\'addetto" />  
-								<p:tooltip for="nome" showEffect="fade" value="Il Nome rappresnta blah vlahh" />
-							</p:column>
-						</p:row>
-						
-						<p:row>
-							<p:column>
-								<p:outputLabel for="cognome" value="Cognome:" />
-							</p:column>
-							<p:column>
-								<p:inputText value="" id="cognome"
-									required="true" requiredMessage="Il campo è obbligatorio"/>
-								<p:watermark for="cognome" value="Cognome dell\'addetto" />  
-								<p:tooltip for="cognome" showEffect="fade" value="Il Cognome rappresnta blah vlahh" />
-							</p:column>
-						</p:row>
-						
-						<p:row>
-							<p:column>
-								<p:outputLabel for="datadinascita" value="Data di Nascita:" />
-							</p:column>
-							<p:column>
-								<p:inputText value="" id="datadinascita"
-									required="true" requiredMessage="Il campo è obbligatorio"/>
-								<p:watermark for="datadinascita" value="Data di nascita dell\'addetto" />  
-								<p:tooltip for="datadinascita" showEffect="fade" value="La data di nascita rappresnta blah vlahh" />
-							</p:column>
-						</p:row>
-						
-						<p:row>
-							<p:column>
-								<p:outputLabel for="luogodinascita" value="Luogo di Nascita:" />
-							</p:column>
-							<p:column>
-								<p:inputText value="" id="luogodinascita"
-									required="true" requiredMessage="Il campo è obbligatorio"/>
-								<p:watermark for="luogodinascita" value="Luogo di Nascita dell\'addetto" />  
-								<p:tooltip for="luogodinascita" showEffect="fade" value="Il Luogo di Nascita rappresnta blah vlahh" />
-							</p:column>
-						</p:row>
-						
-						<p:row>
-							<p:column>
-								<p:outputLabel for="codicefiscale" value="Codice Fiscale:" />
-							</p:column>
-							<p:column>
-								<p:inputText value="" id="codicefiscale"
-									required="true" requiredMessage="Il campo è obbligatorio"/>
-								<p:watermark for="codicefiscale" value="Codice Fiscale dell\'addetto" />  
-								<p:tooltip for="codicefiscale" showEffect="fade" value="Il Codice Fiscale rappresnta blah vlahh" />
-							</p:column>
-						</p:row>
-						
-						<p:row>
-							<p:column>
-								<p:outputLabel for="sesso" value="Sesso:" />
-							</p:column>
-							<p:column>
-								<p:selectOneMenu
-									required="true" 
-									requiredMessage="Il campo è obbligatorio"
-									id="sesso" 
-									value="#{dettaglioClienteTestata.codiceDivisa}"
-									effect="fade">
-									<f:selectItem itemLabel="Selezionare il sesso" itemValue="" />
-									<f:selectItems 
-											value="#{dettaglioClienteTestata.listGruppoCliente}" var="item"
-											itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
-								</p:selectOneMenu>			 		 
-								<p:tooltip for="sesso" showEffect="fade" value="Tooltip codice divisa" />
-							</p:column>
-						</p:row>
-						
-					</p:panelGrid>
-				
-				</p:column>
-				
-				<p:column>
-				
-					<p:panelGrid styleClass="form-panel">
+			<p:column>
+	
+				<p:panelGrid styleClass="form-panel">
 					
-						<p:row>
-						
-							<p:column>
+					<p:row>
+						<p:column>
+							<p:outputLabel for="matricola" value="Matricola:" />
+						</p:column>
+						<p:column>
+							<p:inputText value="#{dettaglioAddettoGenerale.matricola}" id="matricola"
+								required="true" requiredMessage="Il campo codice è obbligatorio"
+								validator="matricolaAddettoValidator" validatorMessage="La matricola dell'addetto non rispetta la struttura ammessa (nnnnn dove n è una cifra tra 0 e 9)"
+								disabled="#{not empty dettaglioAddettoGenerale.id}"/>
+							<p:watermark for="matricola" value="Matricola dell\'addetto" />  
+							<p:tooltip for="matricola" showEffect="fade" value="La matricola rappresenta univocamente l'addetto" />
+						</p:column>
+					</p:row>
+					
+					<p:row>
+						<p:column>							
+							<p:outputLabel for="nome" value="Nome:" />
+						</p:column>
+						<p:column>
+							<p:inputText value="#{dettaglioAddettoGenerale.nome}" id="nome"
+								required="true" requiredMessage="Il campo nome è obbligatorio"/>
+							<p:watermark for="nome" value="Nome dell\'addetto" />  
+							<p:tooltip for="nome" showEffect="fade" value="Campo nome dell'addetto" />
+						</p:column>
+					</p:row>
+					
+					<p:row>
+						<p:column>							
+							<p:outputLabel for="cognome" value="Cognome:" />
+						</p:column>
+						<p:column>
+							<p:inputText value="#{dettaglioAddettoGenerale.cognome}" id="cognome"
+								required="true" requiredMessage="Il campo cognome è obbligatorio"/>
+							<p:watermark for="cognome" value="Cognome dell\'addetto" />  
+							<p:tooltip for="cognome" showEffect="fade" value="Campo cognome dell'addetto" />
+						</p:column>
+					</p:row>
+					
+					<p:row>
+						<p:column>							
+							<p:outputLabel for="dataNascita" value="Data di nascita:" />
+						</p:column>
+						<p:column>
+							<p:calendar value="#{dettaglioAddettoGenerale.dataNascita}" id="dataNascita"
+								required="true" requiredMessage="Il campo data di nascita è obbligatorio"
+								pattern="dd/MM/yyyy"/>
+							<p:watermark for="dataNascita" value="Data di nascita dell\'addetto" />  
+							<p:tooltip for="dataNascita" showEffect="fade" value="Campo data di nascita dell'addetto" />
+						</p:column>
+					</p:row>
+					
+					<p:row>
+						<p:column>							
+							<p:outputLabel for="luogoNascita" value="Luogo di nascita:" />
+						</p:column>
+						<p:column>
+							<p:inputText value="#{dettaglioAddettoGenerale.luogoNascita}" id="luogoNascita"
+								required="true" requiredMessage="Il campo luogo di nascita è obbligatorio"/>
+							<p:watermark for="luogoNascita" value="Luogo di nascita dell\'addetto" />  
+							<p:tooltip for="luogoNascita" showEffect="fade" value="Campo luogo di nascita dell'addetto" />
+						</p:column>
+					</p:row>
+
+					<p:row>
+						<p:column>
+							<p:outputLabel for="codiceFiscale" value="Codice fiscale:" />
+						</p:column>
+						<p:column>
+							<p:inputText value="#{dettaglioAddettoGenerale.codiceFiscale}" id="codiceFiscale"
+								validator="codiceFiscaleValidator" validatorMessage="Il codice fiscale inserito non è valido"/>
+							<p:watermark for="codiceFiscale" value="Codice fiscale dell\'addetto" />  
+							<p:tooltip for="codiceFiscale" showEffect="fade" value="Codice fiscale dell'addetto" />
+						</p:column>
+					</p:row>
+
+					<p:row>
+						<p:column>
+							<p:outputLabel for="sesso" value="Sesso:" />
+						</p:column>
+						<p:column>
+							<p:selectOneMenu
+								required="true" 
+								requiredMessage="Il campo sesso è obbligatorio"
+								id="sesso" 
+								value="#{dettaglioAddettoGenerale.sesso}"
+								effect="fade">
+								<f:selectItem itemLabel="Selezionare un sesso" itemValue="" />
+								<f:selectItem itemLabel="Maschile" itemValue="M" />
+								<f:selectItem itemLabel="Femminile" itemValue="F" />
+							</p:selectOneMenu>	
+							<p:tooltip for="sesso" showEffect="fade" value="Sesso dell'addetto" />
+						</p:column>
+					</p:row>
+					
+					<p:row>
+						<p:column>
+							<p:outputLabel for="codiceStatoCivile" value="Stato civile:" />
+						</p:column>
+						<p:column>
+							<p:selectOneMenu
+								required="true" 
+								requiredMessage="Il campo stato civile è obbligatorio"
+								id="codiceStatoCivile" 
+								value="#{dettaglioAddettoGenerale.codiceStatoCivile}"
+								effect="fade">
+								<f:selectItem itemLabel="Selezionare uno stato civile" itemValue="" />
+								<f:selectItems 
+									value="#{dettaglioAddettoGenerale.listStatoCivile}" var="item"
+									itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+							</p:selectOneMenu>			 		 
+							<p:tooltip for="codiceStatoCivile" showEffect="fade" value="Stato civile dell'addetto" />
+						</p:column>
+					</p:row>	
+					
+					<p:row>
+						<p:column>							
+							<p:outputLabel for="dataGiuramento" value="Data giuramento:" />
+						</p:column>
+						<p:column>
+							<p:calendar value="#{dettaglioAddettoGenerale.dataGiuramento}" id="dataGiuramento"
+								locale="it" pattern="dd/MM/yyyy"/>
+							<p:watermark for="dataGiuramento" value="Data del giuramento dell\'addetto" />  
+							<p:tooltip for="dataGiuramento" showEffect="fade" value="Data del giuramento come G.P.G. dell'addetto" />
+						</p:column>
+					</p:row>
+
+				</p:panelGrid>
+				
+			</p:column>
 			
-								<p:fieldset legend="Foto Addetto" toggleable="true" toggleSpeed="500" collapsed="true"> 
-						
-									<p:graphicImage value="http://24.media.tumblr.com/tumblr_m9pa95XNIn1qc8tdwo1_400.gif"/> 
-									
-								</p:fieldset>
+			<p:column rendered="#{not empty dettaglioAddettoGenerale.id}">							
+		
+				<p:panelGrid styleClass="form-panel">
+				
+					<p:row>
+					
+						<p:column>
 							
-							</p:column>
-						
-						</p:row>
-						
-						<p:row>
-						
-							<p:column>
-				
-								<p:fieldset legend="Contatti Principale Addetto" toggleable="true" toggleSpeed="500" collapsed="true"> 
-						
-									<h:panelGrid columns="1">
-									
-										<h:outputText value="Indirzzo:" />
-										<h:outputText value="Recapiti Telefonici:" />
-										<h:outputText value="Email:" />				
-									
-									</h:panelGrid>
-									
-								</p:fieldset>
+							<p:fieldset 
+								id="contattoPrincipale" 
+								legend="Contatto principale" 
+								collapsed="true" 
+								toggleable="true" 
+								toggleSpeed="500"> 
+					
+								<p:panelGrid styleClass="form-panel">
+								
+									<p:row>
+										<p:column>
+											<h:outputText value="Nome:" />
+										</p:column>
+										<p:column>
+											<h:outputText value="#{dettaglioClienteGenerale.contattoPrincipaleNome}" styleClass="info-label"/>
+										</p:column>
+									</p:row>
+								
+									<p:row>
+										<p:column>
+											<h:outputText value="Telefoni:" />
+										</p:column>
+										<p:column>
+											<h:outputText value="#{dettaglioClienteGenerale.contattoPrincipaleTelefoni}" styleClass="info-label"/>
+										</p:column>
+									</p:row>
+								
+									<p:row>
+										<p:column>
+											<h:outputText value="Fax:" />
+										</p:column>
+										<p:column>
+											<h:outputText value="#{dettaglioClienteGenerale.contattoPrincipaleFax}" styleClass="info-label"/>
+										</p:column>
+									</p:row>
+								
+									<p:row>
+										<p:column>
+											<h:outputText value="Email:" />
+										</p:column>
+										<p:column>
+											<h:outputText value="#{dettaglioClienteGenerale.contattoPrincipaleEmail}" styleClass="info-label"/>
+										</p:column>
+									</p:row>
+								
+								</p:panelGrid>
+								
+							</p:fieldset>
 							
-							</p:column>
-						
-						</p:row>
-						
-					</p:panelGrid>
+						</p:column>
+					
+					</p:row>
+					
+					<p:row>
+					
+						<p:column>
 				
-				</p:column>
-
-			</p:row>
-			
-			<p:row>
-			
-				<p:column colspan="2" styleClass="form-footer">
-
-					<p:commandButton
-						id="saveButton"
-						value="Salva"
-						actionListener="#{dettaglioClienteTestata.doSave}"
-						update="@form"
-						icon="ui-icon-star"/>
-					<p:tooltip 
-						for="saveButton" 
-						value="Salva i dati dell'addetto" 
-						showEffect="fade" 
-						hideEffect="fade"/>
+							<p:fieldset legend="Altre informazioni" collapsed="true" toggleable="true" toggleSpeed="500"> 
+					
+								<p:panelGrid styleClass="form-panel">
 									
-				</p:column>
+									<p:row>
+										<p:column>
+											<h:outputText value="Saldo contabile:" />
+										</p:column>
+										<p:column>
+											<h:outputText value="#{dettaglioClienteGenerale.saldoContabile}" styleClass="info-label"/>
+										</p:column>
+									</p:row>
+								
+								</p:panelGrid>
+								
+							</p:fieldset>
+						
+						</p:column>
+						
+					</p:row>
+					
+				</p:panelGrid>
 				
-			</p:row>
+			</p:column>
 			
-		</p:panelGrid>				
+		</p:row>
+		
+		<p:row>
+		
+			<p:column colspan="2" styleClass="form-footer">
+				<p:commandButton
+					id="saveButton"
+					value="Salva"
+					actionListener="#{dettaglioAddettoGenerale.doSave}"
+					update="@form"
+					process="testataPanel"
+					icon="ui-icon-star"/>
+				<p:tooltip 
+					for="saveButton" 
+					value="Salva i dati dell\'addetto" 
+					showEffect="fade" 
+					hideEffect="fade"/>
+			</p:column>
+			
+		</p:row>
 
-	</h:form>
-
+	</p:panelGrid>
+	
 </html>
