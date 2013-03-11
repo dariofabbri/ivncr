@@ -12,9 +12,11 @@ import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +42,7 @@ public class DettaglioAddettoGenerale implements Serializable {
 	private String luogoNascita;
 	private String codiceFiscale;
 	private String sesso;
+	private Boolean fittizio;
 	private Integer codiceStatoCivile;
 	private Date dataGiuramento;
 
@@ -70,8 +73,96 @@ public class DettaglioAddettoGenerale implements Serializable {
 			dataNascita = addetto.getDataNascita();
 			luogoNascita = addetto.getLuogoNascita();
 			codiceFiscale = addetto.getCodiceFiscale();
+			sesso = addetto.getSesso();
 			dataGiuramento = addetto.getDataGiuramento();
 			codiceStatoCivile = addetto.getStatoCivile() != null ? addetto.getStatoCivile().getId() : null;
+
+		} else {
+
+			// Retrieve next available numero matricola.
+			// TODO: the max-based mechanism is perfect to avoid holes in the numbering,
+			//       but fails when concurrent creation of a new entity happens.
+			//
+			AddettoService as = ServiceFactory.createService("Addetto");
+			matricola = as.retrieveNextMatricola(loginInfo.getCodiceAzienda());
+		}
+	}
+
+
+	public void doSave() {
+
+		// Apply form-level validations.
+		//
+		if(!formValidations())
+			return;
+
+		// Create service to persist data.
+		//
+		AddettoService as = ServiceFactory.createService("Addetto");
+
+		try {
+			Addetto addetto = null;
+
+			// If the record already exists, just update it.
+			//
+			if(id != null) {
+
+				addetto = as.update(
+						id,
+						nome,
+						cognome,
+						dataNascita,
+						luogoNascita,
+						codiceFiscale,
+						sesso,
+						note,
+						fittizio,
+						dataGiuramento,
+						codiceStatoCivile);
+
+				logger.debug("Entity successfully updated.");
+			}
+
+			// Otherwise create a new record.
+			//
+			else {
+
+				addetto = as.create(
+						loginInfo.getCodiceAzienda(),
+						matricola,
+						nome,
+						cognome,
+						dataNascita,
+						luogoNascita,
+						codiceFiscale,
+						sesso,
+						note,
+						fittizio,
+						dataGiuramento,
+						codiceStatoCivile);
+				id = addetto.getId();
+
+				logger.debug("Entity successfully created.");
+
+			}
+
+			// Everything went fine.
+			//
+			FacesMessage message = new FacesMessage(
+					FacesMessage.SEVERITY_INFO,
+					"Successo",
+					"Il salvataggio dei dati si è concluso con successo.");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+
+		} catch(Exception e) {
+
+			logger.warn("Exception caught while saving entity.", e);
+
+			FacesMessage message = new FacesMessage(
+					FacesMessage.SEVERITY_ERROR,
+					"Errore di sistema",
+					"Si è verificato un errore in fase di salvataggio del record.");
+			FacesContext.getCurrentInstance().addMessage(null, message);
 		}
 	}
 
@@ -156,6 +247,14 @@ public class DettaglioAddettoGenerale implements Serializable {
 
 	public void setSesso(String sesso) {
 		this.sesso = sesso;
+	}
+
+	public Boolean getFittizio() {
+		return fittizio;
+	}
+
+	public void setFittizio(Boolean fittizio) {
+		this.fittizio = fittizio;
 	}
 
 	public Integer getCodiceStatoCivile() {

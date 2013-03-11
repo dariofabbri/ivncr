@@ -134,7 +134,6 @@ public class AddettoServiceImpl extends AbstractService implements AddettoServic
 			String sesso,
 			String note,
 			Boolean fittizio,
-			Boolean attivo,
 			Date dataGiuramento,
 			Integer codiceStatoCivile) {
 
@@ -160,8 +159,8 @@ public class AddettoServiceImpl extends AbstractService implements AddettoServic
 		addetto.setCodiceFiscale(codiceFiscale);
 		addetto.setSesso(sesso);
 		addetto.setNote(note);
+		addetto.setAttivo(true);
 		addetto.setFittizio(fittizio);
-		addetto.setAttivo(attivo);
 		addetto.setDataGiuramento(dataGiuramento);
 		addetto.setStatoCivile(statoCivile);
 
@@ -191,7 +190,6 @@ public class AddettoServiceImpl extends AbstractService implements AddettoServic
 			String sesso,
 			String note,
 			Boolean fittizio,
-			Boolean attivo,
 			Date dataGiuramento,
 			Integer codiceStatoCivile) {
 
@@ -223,7 +221,6 @@ public class AddettoServiceImpl extends AbstractService implements AddettoServic
 		addetto.setSesso(sesso);
 		addetto.setNote(note);
 		addetto.setFittizio(fittizio);
-		addetto.setAttivo(attivo);
 		addetto.setDataGiuramento(dataGiuramento);
 		addetto.setStatoCivile(statoCivile);
 
@@ -237,5 +234,53 @@ public class AddettoServiceImpl extends AbstractService implements AddettoServic
 		AuditUtil.log(Operation.Update, Snapshot.Destination, addetto);
 
 		return addetto;
+	}
+
+
+	@Override
+	public String retrieveNextMatricola(Integer codiceAzienda) {
+
+		String hql =
+				"select max(add.matricola) " +
+				"from Addetto add " +
+				"where add.azienda.id = :codiceAzienda ";
+		Query query = session.createQuery(hql);
+		query.setParameter("codiceAzienda", codiceAzienda);
+		String lastCodice = (String)query.uniqueResult();
+
+		Integer max = null;
+		if(lastCodice == null) {
+			max = 1;
+		} else {
+			max = Integer.parseInt(lastCodice) + 1;
+		}
+
+		String matricola = String.format("%05d", max);
+		logger.debug("Next matricola: " + matricola);
+		return matricola;
+	}
+
+
+	@Override
+	public void setFoto(Integer id, byte[] foto) {
+
+		Addetto addetto = retrieve(id);
+		if(addetto == null) {
+			String message = String.format("It has not been possible to retrieve specified entity: %d", id);
+			logger.info(message);
+			throw new NotFoundException(message);
+		}
+
+		// Audit call for the update operation.
+		//
+		AuditUtil.log(Operation.Update, Snapshot.Source, addetto);
+
+		addetto.setFoto(foto);
+		session.update(addetto);
+		logger.debug(String.format("Picture successfully uploaded for specified addetto: %s", id));
+
+		// Audit call for the update operation.
+		//
+		AuditUtil.log(Operation.Update, Snapshot.Destination, addetto);
 	}
 }

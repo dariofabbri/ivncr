@@ -321,7 +321,7 @@ public class DettaglioClienteGenerale implements Serializable {
 
 			Cliente cliente = null;
 
-			// If the user already exists, just update the record.
+			// If the record already exists, just update it.
 			//
 			if(id != null) {
 

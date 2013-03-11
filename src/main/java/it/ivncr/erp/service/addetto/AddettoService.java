@@ -32,7 +32,6 @@ public interface AddettoService extends EntityService<Addetto> {
 			String sesso,
 			String note,
 			Boolean fittizio,
-			Boolean attivo,
 			Date dataGiuramento,
 			Integer codiceStatoCivile);
 
@@ -46,7 +45,10 @@ public interface AddettoService extends EntityService<Addetto> {
 			String sesso,
 			String note,
 			Boolean fittizio,
-			Boolean attivo,
 			Date dataGiuramento,
 			Integer codiceStatoCivile);
+
+	String retrieveNextMatricola(Integer codiceAzienda);
+
+	void setFoto(Integer id, byte[] foto);
 }

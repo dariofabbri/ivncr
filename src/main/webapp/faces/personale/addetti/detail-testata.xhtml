@@ -2,6 +2,7 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:p="http://primefaces.org/ui">
 	
 	<p:panelGrid styleClass="multi-col-layout" id="testataPanel">
@@ -20,7 +21,7 @@
 							<p:inputText value="#{dettaglioAddettoGenerale.matricola}" id="matricola"
 								required="true" requiredMessage="Il campo codice è obbligatorio"
 								validator="matricolaAddettoValidator" validatorMessage="La matricola dell'addetto non rispetta la struttura ammessa (nnnnn dove n è una cifra tra 0 e 9)"
-								disabled="#{not empty dettaglioAddettoGenerale.id}"/>
+								disabled="true"/>
 							<p:watermark for="matricola" value="Matricola dell\'addetto" />  
 							<p:tooltip for="matricola" showEffect="fade" value="La matricola rappresenta univocamente l'addetto" />
 						</p:column>
@@ -137,6 +138,16 @@
 							<p:tooltip for="dataGiuramento" showEffect="fade" value="Data del giuramento come G.P.G. dell'addetto" />
 						</p:column>
 					</p:row>
+					
+					<p:row>
+						<p:column>							
+							<p:outputLabel for="fittizio" value="Fittizio:" />
+						</p:column>
+						<p:column>
+							<p:selectBooleanCheckbox value="#{dettaglioAddettoGenerale.fittizio}" id="fittizio"/>
+							<p:tooltip for="fittizio" showEffect="fade" value="Indica un addetto fittizio" />
+						</p:column>
+					</p:row>
 
 				</p:panelGrid>
 				
@@ -151,9 +162,9 @@
 						<p:column>
 							
 							<p:fieldset 
-								id="contattoPrincipale" 
-								legend="Contatto principale" 
-								collapsed="true" 
+								id="fotoAddetto" 
+								legend="Fotografia" 
+								collapsed="false" 
 								toggleable="true" 
 								toggleSpeed="500"> 
 					
@@ -161,37 +172,12 @@
 								
 									<p:row>
 										<p:column>
-											<h:outputText value="Nome:" />
-										</p:column>
-										<p:column>
-											<h:outputText value="#{dettaglioClienteGenerale.contattoPrincipaleNome}" styleClass="info-label"/>
-										</p:column>
-									</p:row>
-								
-									<p:row>
-										<p:column>
-											<h:outputText value="Telefoni:" />
-										</p:column>
-										<p:column>
-											<h:outputText value="#{dettaglioClienteGenerale.contattoPrincipaleTelefoni}" styleClass="info-label"/>
-										</p:column>
-									</p:row>
-								
-									<p:row>
-										<p:column>
-											<h:outputText value="Fax:" />
-										</p:column>
-										<p:column>
-											<h:outputText value="#{dettaglioClienteGenerale.contattoPrincipaleFax}" styleClass="info-label"/>
-										</p:column>
-									</p:row>
-								
-									<p:row>
-										<p:column>
-											<h:outputText value="Email:" />
-										</p:column>
-										<p:column>
-											<h:outputText value="#{dettaglioClienteGenerale.contattoPrincipaleEmail}" styleClass="info-label"/>
+											<c:if test="#{empty dettaglioAddettoFoto.current}">
+												<p:graphicImage name="img/image-not-present.jpg" library="default"/>
+											</c:if>
+											<c:if test="#{not empty dettaglioAddettoFoto.current}">
+												<p:graphicImage value="#{dettaglioAddettoFoto.current}"/>
+											</c:if>
 										</p:column>
 									</p:row>
 								
@@ -201,31 +187,6 @@
 							
 						</p:column>
 					
-					</p:row>
-					
-					<p:row>
-					
-						<p:column>
-				
-							<p:fieldset legend="Altre informazioni" collapsed="true" toggleable="true" toggleSpeed="500"> 
-					
-								<p:panelGrid styleClass="form-panel">
-									
-									<p:row>
-										<p:column>
-											<h:outputText value="Saldo contabile:" />
-										</p:column>
-										<p:column>
-											<h:outputText value="#{dettaglioClienteGenerale.saldoContabile}" styleClass="info-label"/>
-										</p:column>
-									</p:row>
-								
-								</p:panelGrid>
-								
-							</p:fieldset>
-						
-						</p:column>
-						
 					</p:row>
 					
 				</p:panelGrid>
