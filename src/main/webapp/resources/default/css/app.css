@@ -89,3 +89,7 @@
 	font-style: italic;
 	max-width: 300px;
 }
+
+.ui-confirm-dialog {
+	max-width: 500px;
+}

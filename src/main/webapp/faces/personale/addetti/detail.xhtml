@@ -28,8 +28,22 @@
 	
 					<ui:include src="detail-testata.xhtml"/>			
 	
-					<p:tabView effect="fade" effectDuration="normal" id="tabView" rendered="#{not empty dettaglioClienteGenerale.id}">
-					
+					<p:tabView effect="fade" effectDuration="normal" id="tabView" rendered="#{not empty dettaglioAddettoGenerale.id}">
+						
+						<p:tab id="recapitiTab" title="Recapiti"/>
+						
+						<p:tab id="documentiTab" title="Documenti"/>
+						
+						<p:tab id="lavoroTab" title="Lavoro"/>
+						
+						<p:tab id="gpgTab" title="GPG"/>
+						
+						<p:tab id="saluteTab" title="Salute"/>
+						
+						<p:tab id="istruzioneTab" title="Istruzione"/>
+						
+						<p:tab id="noteTab" title="Note"/>
+											
 					</p:tabView>
 					
 				</p:panel>

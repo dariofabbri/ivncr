@@ -68,7 +68,7 @@ public class DettaglioAddettoFoto implements Serializable {
 		byte[] captured = event.getData();
 
 		AddettoService as = ServiceFactory.createService("Addetto");
-		as.setFoto(id, null);
+		as.setFoto(id, captured);
 		logger.debug("Picture successfully uploaded.");
 
 		String mime = ImageUtil.getMimeType(captured);
@@ -80,7 +80,7 @@ public class DettaglioAddettoFoto implements Serializable {
 		byte[] uploaded = event.getFile().getContents();
 
 		AddettoService as = ServiceFactory.createService("Addetto");
-		as.setFoto(id, null);
+		as.setFoto(id, uploaded);
 		logger.debug("Picture successfully uploaded.");
 
 		String mime = ImageUtil.getMimeType(uploaded);

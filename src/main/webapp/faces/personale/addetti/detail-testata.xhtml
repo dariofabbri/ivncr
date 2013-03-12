@@ -180,6 +180,23 @@
 											</c:if>
 										</p:column>
 									</p:row>
+									
+									<p:row>
+										<p:column>
+											<p:commandButton value="Elimina"
+												type="button"
+												disabled="#{empty dettaglioAddettoFoto.current}"
+												onclick="deleteFotoDialogWidget.show()"/>
+
+											<p:commandButton value="Scatta"
+												oncomplete="scattaFotoDialogWidget.show()"
+												update=":detailForm:scattaFotoDialog"/>
+
+											<p:commandButton value="Da file"
+												oncomplete="uploadFotoDialogWidget.show()"
+												update=":detailForm:uploadFotoDialog"/>
+										</p:column>
+									</p:row>
 								
 								</p:panelGrid>
 								
@@ -207,7 +224,7 @@
 					icon="ui-icon-star"/>
 				<p:tooltip 
 					for="saveButton" 
-					value="Salva i dati dell\'addetto" 
+					value="Salva i dati dell'addetto" 
 					showEffect="fade" 
 					hideEffect="fade"/>
 			</p:column>
@@ -216,4 +233,105 @@
 
 	</p:panelGrid>
 	
+		
+	<p:dialog
+		id="scattaFotoDialog"
+		header="Scatta una nuova foto" 
+		widgetVar="scattaFotoDialogWidget" 
+		modal="true"
+		showEffect="fade" 
+		hideEffect="fade"> 
+		
+		<p:panelGrid styleClass="form-panel">
+			
+			<p:row>
+				<p:column styleClass="form-header">
+					<h:outputText value="
+						Il pannello permette di scattare una foto e di associarla all'addetto selezionato. 
+						La funzionalità può essere utilizzata solo disponendo dell'apposito hardware (es. webcam)."/>					
+				</p:column>
+			</p:row>
+			
+			<p:row>
+				<p:column>
+					<p:photoCam 
+						widgetVar="photoCam"
+						listener="#{dettaglioAddettoFoto.onCapture}"
+						update=":detailForm:fotoAddetto" />
+				</p:column>
+			</p:row>	
+							
+			<p:row>
+				<p:column>
+			        <p:commandButton 
+			        	type="button" 
+			        	value="Scatta" 
+			        	onclick="photoCam.capture()"/>
+				</p:column>
+			</p:row>
+	
+		</p:panelGrid>
+		
+	</p:dialog>
+	
+		
+	<p:dialog
+		id="uploadFotoDialog"
+		header="Carica una foto da file" 
+		widgetVar="uploadFotoDialogWidget" 
+		modal="true"
+		showEffect="fade" 
+		hideEffect="fade"> 
+		
+		<p:panelGrid styleClass="form-panel">
+			
+			<p:row>
+				<p:column styleClass="form-header">
+					<h:outputText value="
+						Il pannello permette di caricare una foto da file e di associarla all'addetto selezionato."/>					
+				</p:column>
+			</p:row>
+			
+			<p:row>
+				<p:column>
+					<p:fileUpload 
+						fileUploadListener="#{dettaglioAddettoFoto.onFileUpload}"  
+						mode="advanced"
+						update=":detailForm:fotoAddetto"  
+						sizeLimit="500000"
+						label="Seleziona"
+						uploadLabel="Carica"
+						cancelLabel="Annulla"
+						invalidFileMessage="Tipo di file selezionato non valido"
+						invalidSizeMessage="Il file eccede le dimensioni massime ammesse"
+						allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/>  
+				</p:column>
+			</p:row>	
+	
+		</p:panelGrid>
+		
+	</p:dialog>
+	
+	
+	<p:confirmDialog 
+		id="deleteFotoDialog"
+		header="Elimina foto" 
+		widgetVar="deleteFotoDialogWidget"
+		message="Si conferma l'eliminazione della foto corrente? L'operazione non può essere annullata. Blah blah blah blah blah blah."
+		showEffect="fade" 
+		hideEffect="fade">
+		
+		<p:commandButton 
+			value="Elimina" 
+			update=":detailForm:fotoAddetto" 
+			oncomplete="deleteFotoDialogWidget.hide()"  
+            actionListener="#{dettaglioAddettoFoto.doClean}" />
+              
+        <p:commandButton 
+        	id="decline" 
+        	value="Annulla" 
+        	onclick="deleteFotoDialogWidget.hide()" 
+        	type="button" />
+        	   
+	</p:confirmDialog>
 </html>
