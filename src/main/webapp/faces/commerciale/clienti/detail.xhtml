@@ -28,7 +28,12 @@
 	
 					<ui:include src="detail-testata.xhtml"/>			
 	
-					<p:tabView effect="fade" effectDuration="normal" id="tabView" rendered="#{not empty dettaglioClienteGenerale.id}">
+					<p:tabView 
+						id="tabView" 
+						effect="fade" 
+						effectDuration="normal"
+						dynamic="true" 
+						rendered="#{not empty dettaglioClienteGenerale.id}">
 	
 						<p:tab id="generalTab" title="Generale">
 						

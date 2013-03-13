@@ -51,15 +51,18 @@
 		<mapping class="it.ivncr.erp.model.personale.Addetto" />
 		<mapping class="it.ivncr.erp.model.personale.AddettoReparto" />
 		<mapping class="it.ivncr.erp.model.personale.Armamento" />
+		<mapping class="it.ivncr.erp.model.personale.AvanzamentoCarriera" />
 		<mapping class="it.ivncr.erp.model.personale.CalibroArma" />
 		<mapping class="it.ivncr.erp.model.personale.CaricaSindacale" />
-		<mapping class="it.ivncr.erp.model.personale.Carriera" />
 		<mapping class="it.ivncr.erp.model.personale.Ccnl" />
+		<mapping class="it.ivncr.erp.model.personale.CertificatoMedico" />
 		<mapping class="it.ivncr.erp.model.personale.Corso" />
 		<mapping class="it.ivncr.erp.model.personale.DatiSanitari" />
 		<mapping class="it.ivncr.erp.model.personale.DecretoGpg" />
+		<mapping class="it.ivncr.erp.model.personale.Disciplina" />
 		<mapping class="it.ivncr.erp.model.personale.Documento" />
 		<mapping class="it.ivncr.erp.model.personale.DurataDocumento" />
+		<mapping class="it.ivncr.erp.model.personale.EsercitazioneTiro" />
 		<mapping class="it.ivncr.erp.model.personale.EstensioneDecreto" />
 		<mapping class="it.ivncr.erp.model.personale.Grado" />
 		<mapping class="it.ivncr.erp.model.personale.GradoParentela" />
@@ -73,7 +76,6 @@
 		<mapping class="it.ivncr.erp.model.personale.LinguaConosciuta" />
 		<mapping class="it.ivncr.erp.model.personale.LivelloCcnl" />
 		<mapping class="it.ivncr.erp.model.personale.LivelloLingua" />
-		<mapping class="it.ivncr.erp.model.personale.Malattia" />
 		<mapping class="it.ivncr.erp.model.personale.ModelloArma" />
 		<mapping class="it.ivncr.erp.model.personale.PosizioneLavorativa" />
 		<mapping class="it.ivncr.erp.model.personale.PosizioneMilitare" />
@@ -88,15 +90,18 @@
 		<mapping class="it.ivncr.erp.model.personale.StatoCivile" />
 		<mapping class="it.ivncr.erp.model.personale.StatoFamiglia" />
 		<mapping class="it.ivncr.erp.model.personale.TipoArma" />
-		<mapping class="it.ivncr.erp.model.personale.TipoCertificato" />
+		<mapping class="it.ivncr.erp.model.personale.TipoCertificatoMedico" />
 		<mapping class="it.ivncr.erp.model.personale.TipoContratto" />
 		<mapping class="it.ivncr.erp.model.personale.TipoDocumento" />
+		<mapping class="it.ivncr.erp.model.personale.TipoEsercitazioneTiro" />
 		<mapping class="it.ivncr.erp.model.personale.TipoIndirizzoAddetto" />
 		<mapping class="it.ivncr.erp.model.personale.TipoPosizioneMilitare" />
 		<mapping class="it.ivncr.erp.model.personale.TipoRecapitoTelefonico" />
 		<mapping class="it.ivncr.erp.model.personale.TipoRinnovoDecretoGpg" />
 		<mapping class="it.ivncr.erp.model.personale.TipoSistemaLavoro" />
 		<mapping class="it.ivncr.erp.model.personale.TitoloStudio" />
+		<mapping class="it.ivncr.erp.model.personale.VisitaCollegiale" />
+		<mapping class="it.ivncr.erp.model.personale.VisitaMedicoCompetente" />
 
 	</session-factory>
 

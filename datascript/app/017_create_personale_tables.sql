@@ -475,21 +475,21 @@ INSERT INTO app.per_stato_arma (id, descrizione) VALUES (6, 'Sequestrata');
 SELECT setval('app.per_stato_arma_id_seq', (SELECT MAX(id) FROM app.per_stato_arma));
 
 
-CREATE TABLE app.per_tipo_certificato
+CREATE TABLE app.per_tipo_certificato_medico
 (
   id SERIAL NOT NULL PRIMARY KEY,
   descrizione VARCHAR(255) NOT NULL
 );
 
-INSERT INTO app.per_tipo_certificato (id, descrizione) VALUES (1, 'Donazione sangue');
-INSERT INTO app.per_tipo_certificato (id, descrizione) VALUES (2, 'Infortunio');
-INSERT INTO app.per_tipo_certificato (id, descrizione) VALUES (3, 'Malattia');
-INSERT INTO app.per_tipo_certificato (id, descrizione) VALUES (4, 'Maternità inizio');
-INSERT INTO app.per_tipo_certificato (id, descrizione) VALUES (5, 'Maternità fine');
-INSERT INTO app.per_tipo_certificato (id, descrizione) VALUES (6, 'Non riconosciuto');
-INSERT INTO app.per_tipo_certificato (id, descrizione) VALUES (7, 'Ricovero ospedaliero inizio');
-INSERT INTO app.per_tipo_certificato (id, descrizione) VALUES (8, 'Ricovero ospedaliero fine');
-SELECT setval('app.per_tipo_certificato_id_seq', (SELECT MAX(id) FROM app.per_tipo_certificato));
+INSERT INTO app.per_tipo_certificato_medico (id, descrizione) VALUES (1, 'Donazione sangue');
+INSERT INTO app.per_tipo_certificato_medico (id, descrizione) VALUES (2, 'Infortunio');
+INSERT INTO app.per_tipo_certificato_medico (id, descrizione) VALUES (3, 'Malattia');
+INSERT INTO app.per_tipo_certificato_medico (id, descrizione) VALUES (4, 'Maternità inizio');
+INSERT INTO app.per_tipo_certificato_medico (id, descrizione) VALUES (5, 'Maternità fine');
+INSERT INTO app.per_tipo_certificato_medico (id, descrizione) VALUES (6, 'Non riconosciuto');
+INSERT INTO app.per_tipo_certificato_medico (id, descrizione) VALUES (7, 'Ricovero ospedaliero inizio');
+INSERT INTO app.per_tipo_certificato_medico (id, descrizione) VALUES (8, 'Ricovero ospedaliero fine');
+SELECT setval('app.per_tipo_certificato_medico_id_seq', (SELECT MAX(id) FROM app.per_tipo_certificato_medico));
 
 
 CREATE TABLE app.per_lingua
@@ -629,8 +629,19 @@ INSERT INTO app.per_tipo_rinnovo_decreto_gpg (id, descrizione) VALUES (2, 'Rinno
 SELECT setval('app.per_tipo_rinnovo_decreto_gpg_id_seq', (SELECT MAX(id) FROM app.per_tipo_rinnovo_decreto_gpg));
 
 
+CREATE TABLE app.per_tipo_esercitazione_tiro
+(
+  id SERIAL NOT NULL PRIMARY KEY,
+  descrizione VARCHAR(255) NOT NULL
+);
 
-CREATE_TABLE app.per_durata_documento
+INSERT INTO app.per_tipo_esercitazione_tiro (id, descrizione) VALUES (1, '1° tiro');
+INSERT INTO app.per_tipo_esercitazione_tiro (id, descrizione) VALUES (2, '2° tiro');
+INSERT INTO app.per_tipo_esercitazione_tiro (id, descrizione) VALUES (3, 'Esame');
+SELECT setval('app.per_tipo_esercitazione_tiro_id_seq', (SELECT MAX(id) FROM app.per_tipo_esercitazione_tiro));
+
+
+CREATE TABLE app.per_durata_documento
 (
   id SERIAL NOT NULL PRIMARY KEY,
   tipo_documento VARCHAR(255) NOT NULL,
@@ -748,7 +759,7 @@ CREATE TABLE app.per_info_sindacali
 );
 
 
-CREATE TABLE app.per_carriera
+CREATE TABLE app.per_avanzamento_carriera
 (
   id SERIAL NOT NULL PRIMARY KEY,
   addetto_id INTEGER NOT NULL REFERENCES app.per_addetto(id),
@@ -924,11 +935,11 @@ CREATE TABLE app.per_decreto_gpg
 );
 
 
-CREATE TABLE app.per_malattia
+CREATE TABLE app.per_certificato_medico
 (
   id SERIAL NOT NULL PRIMARY KEY,
   addetto_id INTEGER NOT NULL REFERENCES app.per_addetto(id),
-  tipo_certificato_id INTEGER NOT NULL REFERENCES app.per_tipo_certificato(id),
+  tipo_certificato_medico_id INTEGER NOT NULL REFERENCES app.per_tipo_certificato_medico(id),
   data_certificato DATE,
   data_ricezione DATE,
   data_inizio_validita DATE,
@@ -954,5 +965,49 @@ CREATE TABLE app.per_lingua_conosciuta
   addetto_id INTEGER NOT NULL REFERENCES app.per_addetto(id),
   lingua_id INTEGER NOT NULL REFERENCES app.per_lingua(id),
   livello_lingua_id INTEGER NOT NULL REFERENCES app.per_livello_lingua(id),
+  note VARCHAR(4000)
+);
+
+
+CREATE TABLE app.per_esercitazione_tiro
+(
+  id SERIAL NOT NULL PRIMARY KEY,
+  addetto_id INTEGER NOT NULL REFERENCES app.per_addetto(id),
+  data_tiro DATE NOT NULL,
+  poligono VARCHAR(255),
+  tipo_esercitazione_tiro_id INTEGER NOT NULL REFERENCES app.per_tipo_esercitazione_tiro(id),
+  importo_richiesto NUMERIC(18, 4),
+  importo_rimborsato NUMERIC(18, 4)
+);
+
+
+CREATE TABLE app.per_visita_medico_competente
+(
+  id SERIAL NOT NULL PRIMARY KEY,
+  addetto_id INTEGER NOT NULL REFERENCES app.per_addetto(id),
+  medico VARCHAR(255),
+  data_visita DATE NOT NULL,
+  esito VARCHAR(4000),
+  data_visita_successiva DATE
+);
+
+
+CREATE TABLE app.per_visita_collegiale
+(
+  id SERIAL NOT NULL PRIMARY KEY,
+  addetto_id INTEGER NOT NULL REFERENCES app.per_addetto(id),
+  data_richiesta DATE,
+  motivazione VARCHAR(255),
+  data_esito DATE,
+  esito VARCHAR(4000)
+);
+
+
+CREATE TABLE app.per_disciplina
+(
+  id SERIAL NOT NULL PRIMARY KEY,
+  addetto_id INTEGER NOT NULL REFERENCES app.per_addetto(id),
+  provvedimento VARCHAR(255),
+  data_provvedimento DATE,
   note VARCHAR(4000)
 );
