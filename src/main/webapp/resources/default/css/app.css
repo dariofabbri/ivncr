@@ -58,20 +58,20 @@
 	padding-bottom: 1em;
 }
 
-.multi-col-layout tr {
+.multi-col-layout > tbody > tr {
 	border: none;
 }
 
-.multi-col-layout td {
+.multi-col-layout > tbody > tr > td {
 	border: none;
 	vertical-align: top;
 }
 
-.form-panel tr {
+.form-panel > tbody > tr {
 	border: none;
 }
 
-.form-panel td {
+.form-panel > tbody > tr > td {
 	border: none;
 	vertical-align: middle;
 }
@@ -80,8 +80,7 @@
 .form-panel .ui-inputtextarea,
 .form-panel .ui-password,
 .form-panel .ui-selectonemenu,
-.form-panel .ui-autocomplete
-{
+.form-panel .ui-autocomplete {
 	width: 300px;
 }
 
@@ -92,4 +91,10 @@
 
 .ui-confirm-dialog {
 	max-width: 500px;
+}
+
+.small-datatable .ui-sortable-column,
+.small-datatable .ui-widget-content,
+.small-datatable tbody td {
+	font-size: 12px;
 }

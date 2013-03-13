@@ -2,9 +2,11 @@ package it.ivncr.erp.jsf.managedbean.personale.gestioneaddetti;
 
 import it.ivncr.erp.jsf.managedbean.accesso.session.LoginInfo;
 import it.ivncr.erp.model.personale.Addetto;
+import it.ivncr.erp.model.personale.Familiare;
 import it.ivncr.erp.model.personale.StatoCivile;
 import it.ivncr.erp.service.ServiceFactory;
 import it.ivncr.erp.service.addetto.AddettoService;
+import it.ivncr.erp.service.familiare.FamiliareService;
 import it.ivncr.erp.service.lut.LUTService;
 
 import java.io.Serializable;
@@ -47,6 +49,7 @@ public class DettaglioAddettoGenerale implements Serializable {
 	private Date dataGiuramento;
 
 	private List<StatoCivile> listStatoCivile;
+	private List<Familiare> listFamiliari;
 
 	private String note;
 
@@ -76,6 +79,9 @@ public class DettaglioAddettoGenerale implements Serializable {
 			sesso = addetto.getSesso();
 			dataGiuramento = addetto.getDataGiuramento();
 			codiceStatoCivile = addetto.getStatoCivile() != null ? addetto.getStatoCivile().getId() : null;
+
+			FamiliareService fs = ServiceFactory.createService("Familiare");
+			listFamiliari = fs.listByAddetto(id);
 
 		} else {
 
@@ -279,6 +285,14 @@ public class DettaglioAddettoGenerale implements Serializable {
 
 	public void setListStatoCivile(List<StatoCivile> listStatoCivile) {
 		this.listStatoCivile = listStatoCivile;
+	}
+
+	public List<Familiare> getListFamiliari() {
+		return listFamiliari;
+	}
+
+	public void setListFamiliari(List<Familiare> listFamiliari) {
+		this.listFamiliari = listFamiliari;
 	}
 
 	public String getNote() {

@@ -164,7 +164,7 @@
 							<p:fieldset 
 								id="fotoAddetto" 
 								legend="Fotografia" 
-								collapsed="false" 
+								collapsed="true" 
 								toggleable="true" 
 								toggleSpeed="500"> 
 					
@@ -196,6 +196,7 @@
 												oncomplete="uploadFotoDialogWidget.show()"
 												update=":detailForm:uploadFotoDialog"/>
 										</p:column>
+										
 									</p:row>
 								
 								</p:panelGrid>
@@ -205,6 +206,93 @@
 						</p:column>
 					
 					</p:row>
+				
+					<p:row>
+					
+						<p:column>
+							
+							<p:fieldset 
+								id="familiari" 
+								legend="Familiari" 
+								collapsed="true" 
+								toggleable="true" 
+								toggleSpeed="500">
+					
+								<p:panelGrid styleClass="form-panel">
+								
+									<p:row>
+									
+										<p:column>
+										
+											<p:dataTable
+												id="familiariTable"
+												var="familiare"
+												value="#{dettaglioAddettoGenerale.listFamiliari}"
+												styleClass="small-datatable">
+
+												<p:column 
+													sortBy="#{familiare.tipoFamiliare.descrizione}"
+													headerText="Grado">
+													<h:outputText value="#{familiare.tipoFamiliare.descrizione}"/>
+												</p:column>
+
+												<p:column 
+													sortBy="#{familiare.nome}"
+													headerText="Nome">
+													<h:outputText value="#{familiare.nome}"/>
+												</p:column>
+
+												<p:column 
+													sortBy="#{familiare.cognome}"
+													headerText="Cognome">
+													<h:outputText value="#{familiare.cognome}"/>
+												</p:column>
+
+												<p:column 
+													sortBy="#{familiare.luogoNascita}"
+													headerText="Luogo nascita">
+													<h:outputText value="#{familiare.luogoNascita}"/>
+												</p:column>
+
+												<p:column 
+													sortBy="#{familiare.dataNascita}"
+													headerText="Data nascita">
+													<h:outputText value="#{familiare.dataNascita}">
+														<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+													</h:outputText>
+												</p:column>
+																									
+											</p:dataTable>
+										
+										</p:column>
+										
+									</p:row>
+									
+									<p:row>
+										<p:column>
+											<p:commandButton value="Nuovo"
+												type="button"
+												disabled="#{empty dettaglioAddettoFoto.current}"
+												onclick="deleteFotoDialogWidget.show()"/>
+
+											<p:commandButton value="Modifica"
+												oncomplete="scattaFotoDialogWidget.show()"
+												update=":detailForm:scattaFotoDialog"/>
+
+											<p:commandButton value="Elimina"
+												oncomplete="uploadFotoDialogWidget.show()"
+												update=":detailForm:uploadFotoDialog"/>
+										</p:column>
+										
+									</p:row>
+									
+								</p:panelGrid>
+
+							</p:fieldset>
+							
+						</p:column>
+						
+					</p:row> 
 					
 				</p:panelGrid>
 				

@@ -41,7 +41,7 @@ public class Familiare {
 	private String cognome;
 
 	@Column(name="luogo_nascita")
-	private Date luogoNascita;
+	private String luogoNascita;
 
 	@Column(name="data_nascita")
 	private Date dataNascita;
@@ -106,11 +106,11 @@ public class Familiare {
 		this.cognome = cognome;
 	}
 
-	public Date getLuogoNascita() {
+	public String getLuogoNascita() {
 		return luogoNascita;
 	}
 
-	public void setLuogoNascita(Date luogoNascita) {
+	public void setLuogoNascita(String luogoNascita) {
 		this.luogoNascita = luogoNascita;
 	}
 
