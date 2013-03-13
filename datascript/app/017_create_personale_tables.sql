@@ -641,6 +641,19 @@ INSERT INTO app.per_tipo_esercitazione_tiro (id, descrizione) VALUES (3, 'Esame'
 SELECT setval('app.per_tipo_esercitazione_tiro_id_seq', (SELECT MAX(id) FROM app.per_tipo_esercitazione_tiro));
 
 
+CREATE TABLE app.per_tipo_familiare
+(
+  id SERIAL NOT NULL PRIMARY KEY,
+  descrizione VARCHAR(255) NOT NULL
+);
+
+INSERT INTO app.per_tipo_familiare (id, descrizione) VALUES (1, 'Madre');
+INSERT INTO app.per_tipo_familiare (id, descrizione) VALUES (2, 'Padre');
+INSERT INTO app.per_tipo_familiare (id, descrizione) VALUES (3, 'Sorella');
+INSERT INTO app.per_tipo_familiare (id, descrizione) VALUES (4, 'Fratello');
+SELECT setval('app.per_tipo_familiare_id_seq', (SELECT MAX(id) FROM app.per_tipo_familiare));
+
+
 CREATE TABLE app.per_durata_documento
 (
   id SERIAL NOT NULL PRIMARY KEY,
@@ -1009,5 +1022,18 @@ CREATE TABLE app.per_disciplina
   addetto_id INTEGER NOT NULL REFERENCES app.per_addetto(id),
   provvedimento VARCHAR(255),
   data_provvedimento DATE,
+  note VARCHAR(4000)
+);
+
+
+CREATE TABLE app.per_familiare
+(
+  id SERIAL NOT NULL PRIMARY KEY,
+  addetto_id INTEGER NOT NULL REFERENCES app.per_addetto(id),
+  tipo_familiare_id INTEGER NOT NULL REFERENCES app.per_tipo_familiare(id),
+  nome VARCHAR(255),
+  cognome VARCHAR(255),
+  luogo_nascita VARCHAR(255),
+  data_nascita DATE,
   note VARCHAR(4000)
 );
