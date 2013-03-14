@@ -30,7 +30,10 @@
 	
 					<p:tabView effect="fade" effectDuration="normal" id="tabView" rendered="#{not empty dettaglioAddettoGenerale.id}">
 						
-						<p:tab id="recapitiTab" title="Recapiti"/>
+						<p:tab id="recapitiTab" title="Recapiti">
+							<ui:include src="detail-recapiti.xhtml"/>
+						</p:tab>
+						
 						
 						<p:tab id="anagraficaTab" title="Anagrafica"/>
 						
