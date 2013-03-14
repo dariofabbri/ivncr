@@ -484,8 +484,8 @@ CREATE TABLE app.per_tipo_certificato_medico
 INSERT INTO app.per_tipo_certificato_medico (id, descrizione) VALUES (1, 'Donazione sangue');
 INSERT INTO app.per_tipo_certificato_medico (id, descrizione) VALUES (2, 'Infortunio');
 INSERT INTO app.per_tipo_certificato_medico (id, descrizione) VALUES (3, 'Malattia');
-INSERT INTO app.per_tipo_certificato_medico (id, descrizione) VALUES (4, 'Maternità inizio');
-INSERT INTO app.per_tipo_certificato_medico (id, descrizione) VALUES (5, 'Maternità fine');
+INSERT INTO app.per_tipo_certificato_medico (id, descrizione) VALUES (4, 'Maternita inizio');
+INSERT INTO app.per_tipo_certificato_medico (id, descrizione) VALUES (5, 'Maternita fine');
 INSERT INTO app.per_tipo_certificato_medico (id, descrizione) VALUES (6, 'Non riconosciuto');
 INSERT INTO app.per_tipo_certificato_medico (id, descrizione) VALUES (7, 'Ricovero ospedaliero inizio');
 INSERT INTO app.per_tipo_certificato_medico (id, descrizione) VALUES (8, 'Ricovero ospedaliero fine');
