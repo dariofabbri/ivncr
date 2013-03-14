@@ -82,6 +82,7 @@
 						</p:column>
 						<p:column>
 							<p:inputText value="#{dettaglioAddettoGenerale.codiceFiscale}" id="codiceFiscale"
+								required="true" requiredMessage="Il campo codice fiscale è obbligatorio"
 								validator="codiceFiscaleValidator" validatorMessage="Il codice fiscale inserito non è valido"/>
 							<p:watermark for="codiceFiscale" value="Codice fiscale dell\'addetto" />  
 							<p:tooltip for="codiceFiscale" showEffect="fade" value="Codice fiscale dell'addetto" />
@@ -227,8 +228,16 @@
 											<p:dataTable
 												id="familiariTable"
 												var="familiare"
-												value="#{dettaglioAddettoGenerale.listFamiliari}"
+												value="#{dettaglioAddettoFamiliare.listFamiliari}"
+												selectionMode="single"
+												selection="#{dettaglioAddettoFamiliare.selected}"
+												rowKey="#{familiare.id}"
+												sortBy="#{familiare.tipoFamiliare.descrizione}"
 												styleClass="small-datatable">
+
+												<p:ajax event="rowSelect" update=":detailForm:familiariButtons"/>
+								
+												<p:ajax event="rowUnselect" update=":detailForm:familiariButtons"/>
 
 												<p:column 
 													sortBy="#{familiare.tipoFamiliare.descrizione}"
@@ -270,20 +279,30 @@
 									
 									<p:row>
 										<p:column>
-											<p:commandButton value="Nuovo"
-												type="button"
-												disabled="#{empty dettaglioAddettoFoto.current}"
-												onclick="deleteFotoDialogWidget.show()"/>
-
-											<p:commandButton value="Modifica"
-												oncomplete="scattaFotoDialogWidget.show()"
-												update=":detailForm:scattaFotoDialog"/>
-
-											<p:commandButton value="Elimina"
-												oncomplete="uploadFotoDialogWidget.show()"
-												update=":detailForm:uploadFotoDialog"/>
+											
+											<p:outputPanel id="familiariButtons">
+												
+												<p:commandButton value="Nuovo"
+													oncomplete="detailFamiliareDialogWidget.show()"
+													actionListener="#{dettaglioAddettoFamiliare.startCreate}"
+													process="@this"
+													update=":detailForm:detailFamiliareView:detailFamiliareDialog"/>
+	
+												<p:commandButton value="Modifica"
+													disabled="#{empty dettaglioAddettoFamiliare.selected}"
+													oncomplete="detailFamiliareDialogWidget.show()"
+													actionListener="#{dettaglioAddettoFamiliare.startUpdate}"
+													process="@this"
+													update=":detailForm:detailFamiliareView:detailFamiliareDialog"/>
+	
+												<p:commandButton value="Elimina"
+													disabled="#{empty dettaglioAddettoFamiliare.selected}"
+													type="button"
+													onclick="deleteFamiliareDialogWidget.show()"/>
+												
+											</p:outputPanel>
+											
 										</p:column>
-										
 									</p:row>
 									
 								</p:panelGrid>
@@ -405,21 +424,164 @@
 		id="deleteFotoDialog"
 		header="Elimina foto" 
 		widgetVar="deleteFotoDialogWidget"
-		message="Si conferma l'eliminazione della foto corrente? L'operazione non può essere annullata. Blah blah blah blah blah blah."
+		message="Si conferma l'eliminazione della foto corrente? L'operazione non può essere annullata."
 		showEffect="fade" 
 		hideEffect="fade">
 		
 		<p:commandButton 
 			value="Elimina" 
+			process="@this"
 			update=":detailForm:fotoAddetto" 
 			oncomplete="deleteFotoDialogWidget.hide()"  
             actionListener="#{dettaglioAddettoFoto.doClean}" />
               
         <p:commandButton 
-        	id="decline" 
         	value="Annulla" 
         	onclick="deleteFotoDialogWidget.hide()" 
         	type="button" />
         	   
 	</p:confirmDialog>
+	
+	
+	
+	<f:subview id="detailFamiliareView">
+	
+		<p:dialog 
+			id="detailFamiliareDialog"
+			header="Dati del familiare" 
+			widgetVar="detailFamiliareDialogWidget" 
+			modal="true"
+			showEffect="fade" 
+			hideEffect="fade"> 
+					
+			<p:messages id="messages" globalOnly="false" showSummary="false" showDetail="true" closable="true"/>
+			
+			<p:panelGrid id="panel" styleClass="form-panel">
+							
+				<p:row>
+					<p:column colspan="2" styleClass="form-header">
+						<h:outputText value="Il pannello permette di impostare le informazioni di dettaglio del familiare."/>
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>
+						<p:outputLabel for="codiceTipoFamiliare" value="Tipo familiare:" />
+					</p:column>
+					<p:column>
+						<p:selectOneMenu
+							required="true" 
+							requiredMessage="Il campo tipo familiare è obbligatorio"
+							id="codiceTipoFamiliare" 
+							value="#{dettaglioAddettoFamiliare.codiceTipoFamiliare}"
+							effect="fade">
+							<f:selectItem itemLabel="Selezionare un tipo" itemValue="" />
+							<f:selectItems 
+								value="#{dettaglioAddettoFamiliare.listTipoFamiliare}" var="item"
+								itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+						</p:selectOneMenu>	
+						<p:tooltip for="codiceTipoFamiliare" showEffect="fade" value="Tipologia di familiare" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="nome" value="Nome:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioAddettoFamiliare.nome}" id="nome"
+							required="true" requiredMessage="Il campo nome è obbligatorio"/>
+						<p:watermark for="nome" value="Nome del familiare" />  
+						<p:tooltip for="nome" showEffect="fade" value="Campo nome del familiare" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="cognome" value="Cognome:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioAddettoFamiliare.cognome}" id="cognome"
+							required="true" requiredMessage="Il campo cognome è obbligatorio"/>
+						<p:watermark for="cognome" value="Cognome del familiare" />  
+						<p:tooltip for="cognome" showEffect="fade" value="Campo cognome del familiare" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="luogoNascita" value="Luogo di nascita:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioAddettoFamiliare.luogoNascita}" id="luogoNascita"/>
+						<p:watermark for="luogoNascita" value="Luogo di nascita del familiare" />  
+						<p:tooltip for="luogoNascita" showEffect="fade" value="Campo luogo di nascita del familiare" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="dataNascita" value="Data di nascita:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioAddettoFamiliare.dataNascita}" id="dataNascita"
+									pattern="dd/MM/yyyy"/>
+						<p:watermark for="dataNascita" value="Data di nascita del familiare" />  
+						<p:tooltip for="dataNascita" showEffect="fade" value="Campo data di nascita del familiare" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="note" value="Note:" />
+					</p:column>
+					<p:column>
+						<p:inputTextarea value="#{dettaglioAddettoFamiliare.note}" id="note"/>
+						<p:watermark for="note" value="Eventuali annotazioni sul familiare" />  
+						<p:tooltip for="note" showEffect="fade" value="Eventuali annotazioni sul familiare" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column colspan="2" styleClass="form-footer">
+						<p:commandButton value="Salva"
+							actionListener="#{dettaglioAddettoFamiliare.doSave}" 
+							update="detailFamiliareView:messages,detailFamiliareView:panel,:detailForm:familiariTable,:detailForm:growl"
+							process="detailFamiliareView:detailFamiliareDialog"
+							oncomplete="if(args.ok) { detailFamiliareDialogWidget.hide(); }"/>
+						<p:commandButton value="Annulla"
+							type="button"
+							onclick="detailFamiliareDialogWidget.hide();" />
+					</p:column>
+				</p:row>
+				
+			</p:panelGrid>
+	
+		</p:dialog>
+	
+	</f:subview>
+	
+	
+	<p:confirmDialog 
+		id="deleteFamiliareDialog"
+		header="Elimina familiare" 
+		widgetVar="deleteFamiliareDialogWidget"
+		message="Si conferma l'eliminazione del familiare selezionato? L'operazione non può essere annullata."
+		showEffect="fade" 
+		hideEffect="fade">
+		
+		<p:commandButton 
+			value="Elimina"
+			update=":detailForm:familiariTable,:detailForm:growl"
+			process="@this" 
+			oncomplete="deleteFamiliareDialogWidget.hide()"  
+            actionListener="#{dettaglioAddettoFamiliare.doDelete}" />
+              
+        <p:commandButton 
+        	value="Annulla" 
+        	onclick="deleteFamiliareDialogWidget.hide()" 
+        	type="button" />
+        	   
+	</p:confirmDialog>
+	
 </html>

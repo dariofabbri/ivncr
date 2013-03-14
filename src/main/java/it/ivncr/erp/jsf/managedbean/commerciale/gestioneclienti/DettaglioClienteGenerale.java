@@ -403,7 +403,7 @@ public class DettaglioClienteGenerale implements Serializable {
 
 		// Normalize fields.
 		//
-		codiceFiscale = codiceFiscale.toUpperCase();
+		codiceFiscale = codiceFiscale != null ? codiceFiscale.toUpperCase() : null;
 
 		// What goes into codice fiscale and partita IVA depends on the selection made
 		// on tipo business partner field.
