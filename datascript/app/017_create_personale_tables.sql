@@ -268,10 +268,10 @@ CREATE TABLE app.per_grado_parentela
 
 INSERT INTO app.per_grado_parentela (id, descrizione) VALUES (1, 'Coniuge');
 INSERT INTO app.per_grado_parentela (id, descrizione) VALUES (2, 'Convivente');
-INSERT INTO app.per_grado_parentela (id, descrizione) VALUES (3, 'Ex-coniuge');
+INSERT INTO app.per_grado_parentela (id, descrizione) VALUES (3, 'Ex Coniuge');
 INSERT INTO app.per_grado_parentela (id, descrizione) VALUES (4, 'Familiare');
 INSERT INTO app.per_grado_parentela (id, descrizione) VALUES (5, 'Figlio/a');
-INSERT INTO app.per_grado_parentela (id, descrizione) VALUES (6, 'Figlio/a convivente');
+INSERT INTO app.per_grado_parentela (id, descrizione) VALUES (6, 'Figlio/a Convivente');
 SELECT setval('app.per_grado_parentela_id_seq', (SELECT MAX(id) FROM app.per_grado_parentela));
 
 
