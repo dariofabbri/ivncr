@@ -31,13 +31,12 @@ public class DettaglioAddettoIndirizzi implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@ManagedProperty("#{gestioneAddetti.edited.id}")
+	@ManagedProperty("#{dettaglioAddettoGenerale.id}")
 	private Integer addettoId;
 
 	private Integer id;
 	private Integer codiceTipoIndirizzo;
-	private String destinatario1;
-	private String destinatario2;
+	private String presso;
 	private String toponimo;
 	private String indirizzo;
 	private String civico;
@@ -107,8 +106,7 @@ public class DettaglioAddettoIndirizzi implements Serializable {
 
 		id = selected.getId();
 		codiceTipoIndirizzo = selected.getTipoIndirizzo().getId();
-		destinatario1 = selected.getDestinatario1();
-		destinatario2 = selected.getDestinatario2();
+		presso = selected.getPresso();
 		toponimo = selected.getToponimo();
 		indirizzo = selected.getIndirizzo();
 		civico = selected.getCivico();
@@ -127,8 +125,7 @@ public class DettaglioAddettoIndirizzi implements Serializable {
 
 		id = null;
 		codiceTipoIndirizzo = null;
-		destinatario1 = null;
-		destinatario2 = null;
+		presso = null;
 		toponimo = null;
 		indirizzo = null;
 		civico = null;
@@ -162,8 +159,7 @@ public class DettaglioAddettoIndirizzi implements Serializable {
 				entity = ias.update(
 						id,
 						codiceTipoIndirizzo,
-						destinatario1,
-						destinatario2,
+						presso,
 						toponimo,
 						indirizzo,
 						civico,
@@ -184,8 +180,7 @@ public class DettaglioAddettoIndirizzi implements Serializable {
 				entity = ias.create(
 						addettoId,
 						codiceTipoIndirizzo,
-						destinatario1,
-						destinatario2,
+						presso,
 						toponimo,
 						indirizzo,
 						civico,
@@ -334,20 +329,12 @@ public class DettaglioAddettoIndirizzi implements Serializable {
 		this.codiceTipoIndirizzo = codiceTipoIndirizzo;
 	}
 
-	public String getDestinatario1() {
-		return destinatario1;
+	public String getPresso() {
+		return presso;
 	}
 
-	public void setDestinatario1(String destinatario1) {
-		this.destinatario1 = destinatario1;
-	}
-
-	public String getDestinatario2() {
-		return destinatario2;
-	}
-
-	public void setDestinatario2(String destinatario2) {
-		this.destinatario2 = destinatario2;
+	public void setPresso(String presso) {
+		this.presso = presso;
 	}
 
 	public String getToponimo() {

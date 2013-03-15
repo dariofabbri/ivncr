@@ -36,8 +36,8 @@
 						<h:outputText value="#{indirizzo.tipoIndirizzo.descrizione}" />
 					</p:column>
 
-					<p:column headerText="Destinatario" sortBy="#{indirizzo.destinatario}">
-						<h:outputText value="#{indirizzo.destinatarioComposto}" />
+					<p:column headerText="Presso" sortBy="#{indirizzo.presso}">
+						<h:outputText value="#{indirizzo.presso}" />
 					</p:column>
 			
 					<p:column headerText="Indirizzo" sortBy="#{indirizzo.indirizzo}">
@@ -152,24 +152,12 @@
 	
 				<p:row>
 					<p:column>				
-						<p:outputLabel for="destinatario1" value="Destinatario:" />
+						<p:outputLabel for="presso" value="Presso:" />
 					</p:column>
 					<p:column>
-						<p:inputText value="#{dettaglioAddettoIndirizzi.destinatario1}" id="destinatario1"
-							required="true" requiredMessage="Il campo destinatario è obbligatorio"/>
-						<p:watermark for="destinatario1" value="Prima riga di intestazione" />  
-						<p:tooltip for="destinatario1" showEffect="fade" value="Prima riga di intestazione" />
-					</p:column>
-				</p:row>
-	
-				<p:row>
-					<p:column>				
-						<p:outputLabel for="destinatario2" value="Destinatario (2):" />
-					</p:column>
-					<p:column>
-						<p:inputText value="#{dettaglioAddettoIndirizzi.destinatario2}" id="destinatario2"/>
-						<p:watermark for="destinatario2" value="Seconda riga di intestazione" />  
-						<p:tooltip for="destinatario2" showEffect="fade" value="Seconda riga di intestazione" />
+						<p:inputText value="#{dettaglioAddettoIndirizzi.presso}" id="presso"/>
+						<p:watermark for="presso" value="Presso" />  
+						<p:tooltip for="presso" showEffect="fade" value="Presso" />
 					</p:column>
 				</p:row>
 	

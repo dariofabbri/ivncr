@@ -28,7 +28,7 @@ public class DettaglioAddettoTelefoni implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@ManagedProperty("#{gestioneAddetti.edited.id}")
+	@ManagedProperty("#{dettaglioAddettoGenerale.id}")
 	private Integer addettoId;
 
 	private Integer id;

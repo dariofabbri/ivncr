@@ -58,8 +58,7 @@ public class IndirizzoAddettoServiceImpl extends AbstractService implements Indi
 	public IndirizzoAddetto create(
 			Integer codiceAddetto,
 			Integer codiceTipoIndirizzo,
-			String destinatario1,
-			String destinatario2,
+			String presso,
 			String toponimo,
 			String indirizzo,
 			String civico,
@@ -83,8 +82,7 @@ public class IndirizzoAddettoServiceImpl extends AbstractService implements Indi
 		//
 		entity.setAddetto(addetto);
 		entity.setTipoIndirizzo(tipoIndirizzo);
-		entity.setDestinatario1(destinatario1);
-		entity.setDestinatario2(destinatario2);
+		entity.setPresso(presso);
 		entity.setToponimo(toponimo);
 		entity.setIndirizzo(indirizzo);
 		entity.setCivico(civico);
@@ -112,8 +110,7 @@ public class IndirizzoAddettoServiceImpl extends AbstractService implements Indi
 	public IndirizzoAddetto update(
 			Integer id,
 			Integer codiceTipoIndirizzo,
-			String destinatario1,
-			String destinatario2,
+			String presso,
 			String toponimo,
 			String indirizzo,
 			String civico,
@@ -142,8 +139,7 @@ public class IndirizzoAddettoServiceImpl extends AbstractService implements Indi
 		// Set entity fields.
 		//
 		entity.setTipoIndirizzo(tipoIndirizzo);
-		entity.setDestinatario1(destinatario1);
-		entity.setDestinatario2(destinatario2);
+		entity.setPresso(presso);
 		entity.setToponimo(toponimo);
 		entity.setIndirizzo(indirizzo);
 		entity.setCivico(civico);

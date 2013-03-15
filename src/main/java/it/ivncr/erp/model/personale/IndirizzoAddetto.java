@@ -35,11 +35,8 @@ public class IndirizzoAddetto {
 	@JoinColumn(name="tipo_indirizzo_id")
 	private TipoIndirizzoAddetto tipoIndirizzo;
 
-	@Column(name="destinatario1")
-	private String destinatario1;
-
-	@Column(name="destinatario2")
-	private String destinatario2;
+	@Column(name="presso")
+	private String presso;
 
 	@Column(name="toponimo")
 	private String toponimo;
@@ -76,8 +73,7 @@ public class IndirizzoAddetto {
 			.append("id", id)
 			.append("addetto", addetto, false)
 			.append("tipoIndirizzo", tipoIndirizzo, false)
-			.append("destinatario1", destinatario1)
-			.append("destinatario2", destinatario2)
+			.append("presso", presso)
 			.append("toponimo", toponimo)
 			.append("indirizzo", indirizzo)
 			.append("civico", civico)
@@ -97,13 +93,6 @@ public class IndirizzoAddetto {
 				StringUtils.stripToEmpty(toponimo),
 				StringUtils.stripToEmpty(indirizzo),
 				StringUtils.stripToEmpty(civico)).trim();
-	}
-
-	public String getDestinatarioComposto() {
-
-		return String.format("%s %s",
-				StringUtils.stripToEmpty(destinatario1),
-				StringUtils.stripToEmpty(destinatario2)).trim();
 	}
 
 
@@ -131,20 +120,12 @@ public class IndirizzoAddetto {
 		this.tipoIndirizzo = tipoIndirizzo;
 	}
 
-	public String getDestinatario1() {
-		return destinatario1;
+	public String getPresso() {
+		return presso;
 	}
 
-	public void setDestinatario1(String destinatario1) {
-		this.destinatario1 = destinatario1;
-	}
-
-	public String getDestinatario2() {
-		return destinatario2;
-	}
-
-	public void setDestinatario2(String destinatario2) {
-		this.destinatario2 = destinatario2;
+	public void setPresso(String presso) {
+		this.presso = presso;
 	}
 
 	public String getToponimo() {

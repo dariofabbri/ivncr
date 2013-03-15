@@ -14,8 +14,7 @@ public interface IndirizzoAddettoService extends EntityService<IndirizzoAddetto>
 	IndirizzoAddetto create(
 			Integer codiceAddetto,
 			Integer codiceTipoIndirizzo,
-			String destinatario1,
-			String destinatario2,
+			String presso,
 			String toponimo,
 			String indirizzo,
 			String civico,
@@ -29,8 +28,7 @@ public interface IndirizzoAddettoService extends EntityService<IndirizzoAddetto>
 	IndirizzoAddetto update(
 			Integer id,
 			Integer codiceTipoIndirizzo,
-			String destinatario1,
-			String destinatario2,
+			String presso,
 			String toponimo,
 			String indirizzo,
 			String civico,
