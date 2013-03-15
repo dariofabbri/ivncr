@@ -1,0 +1,232 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:custom="http://java.sun.com/jsf/composite/components/custom">
+			
+	<p:panelGrid styleClass="form-panel">
+					
+		<p:row>
+			<p:column colspan="2" styleClass="form-header">
+				<h:outputText value="Elenco dei documenti dell'addetto."/>
+			</p:column>
+		</p:row>
+		
+		<p:row>
+		
+			<p:column>
+								
+				<p:dataTable
+					id="documentiTable"
+					var="documento"
+					value="#{dettaglioAddettoDocumenti.listDocumenti}"
+					selectionMode="single"
+					selection="#{dettaglioAddettoDocumenti.selected}"
+					rowKey="#{documento.id}"
+					sortBy="#{documento.validoDa}"
+					emptyMessage="Nessun record trovato" 
+					styleClass="small-datatable">
+
+					<p:ajax event="rowSelect" update=":detailForm:tabView:anagraficaAccordion:documentiButtons"/>
+	
+					<p:ajax event="rowUnselect" update=":detailForm:tabView:anagraficaAccordion:documentiButtons"/>
+
+					<p:column headerText="Tipo documento" sortBy="#{documento.tipoDocumento.descrizione}">
+						<h:outputText value="#{documento.tipoDocumento.descrizione}" />
+					</p:column>
+
+					<p:column headerText="Numero" sortBy="#{documento.numero}">
+						<h:outputText value="#{documento.numero}" />
+					</p:column>
+
+					<p:column headerText="Rilasciato da" sortBy="#{documento.rilasciatoDa}">
+						<h:outputText value="#{documento.rilasciatoDa}" />
+					</p:column>
+
+					<p:column headerText="Data rilascio" sortBy="#{documento.dataRilascio}">
+						<h:outputText value="#{documento.dataRilascio}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Data scadenza" sortBy="#{documento.dataScadenza}">
+						<h:outputText value="#{documento.dataScadenza}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+																		
+				</p:dataTable>
+			
+			</p:column>
+			
+		</p:row>
+		
+		<p:row>
+			<p:column>
+				
+				<p:outputPanel id="documentiButtons">
+					
+					<p:commandButton value="Nuovo"
+						oncomplete="detailDocumentoDialogWidget.show()"
+						actionListener="#{dettaglioAddettoDocumenti.startCreate}"
+						process="@this"
+						update=":detailForm:tabView:anagraficaAccordion:detailDocumentoView:detailDocumentoDialog"/>
+
+					<p:commandButton value="Modifica"
+						disabled="#{empty dettaglioAddettoDocumenti.selected}"
+						oncomplete="detailDocumentoDialogWidget.show()"
+						actionListener="#{dettaglioAddettoDocumenti.startUpdate}"
+						process="@this"
+						update=":detailForm:tabView:anagraficaAccordion:detailDocumentoView:detailDocumentoDialog"/>
+
+					<p:commandButton value="Elimina"
+						disabled="#{empty dettaglioAddettoDocumenti.selected}"
+						type="button"
+						onclick="deleteDocumentoDialogWidget.show()"/>
+					
+				</p:outputPanel>
+				
+			</p:column>
+		</p:row>
+		
+	</p:panelGrid>
+
+	
+	
+	<f:subview id="detailDocumentoView">
+	
+		<p:dialog 
+			id="detailDocumentoDialog"
+			header="Dettagli del documento dell'addetto" 
+			widgetVar="detailDocumentoDialogWidget" 
+			modal="true"
+			showEffect="fade" 
+			hideEffect="fade"> 
+					
+			<p:messages id="messages" globalOnly="false" showSummary="false" showDetail="true" closable="true"/>
+			
+			<p:panelGrid id="panel" styleClass="form-panel">
+							
+				<p:row>
+					<p:column colspan="2" styleClass="form-header">
+						<h:outputText value="Il pannello permette di immettere le informazioni di dettaglio circa il documento dell'addetto."/>
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>
+						<p:outputLabel for="codiceTipoDocumento" value="Tipo documento:" />
+					</p:column>
+					<p:column>
+						<p:selectOneMenu
+							required="true" 
+							requiredMessage="Il campo tipo documento è obbligatorio"
+							id="codiceTipoDocumento" 
+							value="#{dettaglioAddettoDocumenti.codiceTipoDocumento}"
+							effect="fade">
+							<f:selectItem itemLabel="Selezionare un tipo di documento" itemValue="" />
+							<f:selectItems 
+								value="#{dettaglioAddettoDocumenti.listTipoDocumento}" var="item"
+								itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+						</p:selectOneMenu>	
+						<p:tooltip for="codiceTipoDocumento" showEffect="fade" value="Tipo di documento" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="numero" value="Numero documento:"/>
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioAddettoDocumenti.numero}" id="numero"
+							required="true" 
+							requiredMessage="Il campo numero documento è obbligatorio"/>
+						<p:watermark for="numero" value="Numero del documento" />  
+						<p:tooltip for="numero" showEffect="fade" value="Numero del documento" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="rilasciatoDa" value="Rilasciato da:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioAddettoDocumenti.rilasciatoDa}" id="rilasciatoDa"/>
+						<p:watermark for="rilasciatoDa" value="Rilasciato da" />  
+						<p:tooltip for="rilasciatoDa" showEffect="fade" value="Ente che ha rilasciato il documento" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="dataRilascio" value="Data di rilascio:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioAddettoDocumenti.dataRilascio}" id="dataRilascio"
+							pattern="dd/MM/yyyy"
+							required="true" 
+							requiredMessage="Il campo data di rilascio del documento è obbligatorio"/>
+						<p:watermark for="dataRilascio" value="Data di rilascio del documento" />  
+						<p:tooltip for="dataRilascio" showEffect="fade" value="Data di rilasco del documento" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="dataScadenza" value="Data di scadenza:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioAddettoDocumenti.dataScadenza}" id="dataScadenza"
+							pattern="dd/MM/yyyy"/>
+						<p:watermark for="dataScadenza" value="Data di scadenza del documento" />  
+						<p:tooltip for="dataScadenza" showEffect="fade" value="Data di scadenza del documento" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column colspan="2" styleClass="form-footer">
+						<p:commandButton value="Salva"
+							id="saveButton"
+							actionListener="#{dettaglioAddettoDocumenti.doSave}" 
+							update="detailDocumentoView:messages,detailDocumentoView:panel,:detailForm:tabView:anagraficaAccordion:documentiTable,:detailForm:growl"
+							process="detailDocumentoView:detailDocumentoDialog"
+							oncomplete="if(args.ok) { detailDocumentoDialogWidget.hide(); }"/>
+						<p:commandButton value="Annulla"
+							type="button"
+							onclick="detailDocumentoDialogWidget.hide();" />
+					</p:column>
+				</p:row>
+				
+			</p:panelGrid>
+	
+			<p:defaultCommand target="saveButton" scope="detailDocumentoDialog"/>
+			
+		</p:dialog>
+	
+	</f:subview>
+	
+	
+	<p:confirmDialog 
+		id="deleteDocumentoDialog"
+		header="Elimina documento" 
+		widgetVar="deleteDocumentoDialogWidget"
+		message="Si conferma l'eliminazione del documento selezionato? L'operazione non può essere annullata."
+		showEffect="fade" 
+		hideEffect="fade">
+		
+		<p:commandButton 
+			value="Elimina"
+			update=":detailForm:tabView:anagraficaAccordion:documentiTable,:detailForm:tabView:anagraficaAccordion:documentiButtons,:detailForm:growl"
+			process="@this" 
+			oncomplete="deleteDocumentoDialogWidget.hide()"  
+            actionListener="#{dettaglioAddettoDocumenti.doDelete}" />
+              
+        <p:commandButton 
+        	value="Annulla" 
+        	onclick="deleteDocumentoDialogWidget.hide()" 
+        	type="button" />
+        	   
+	</p:confirmDialog>
+
+</html>
