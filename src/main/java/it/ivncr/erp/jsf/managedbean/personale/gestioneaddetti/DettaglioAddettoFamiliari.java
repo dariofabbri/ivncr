@@ -23,9 +23,9 @@ import org.slf4j.LoggerFactory;
 
 @ManagedBean
 @ViewScoped
-public class DettaglioAddettoFamiliare implements Serializable {
+public class DettaglioAddettoFamiliari implements Serializable {
 
-	private static final Logger logger = LoggerFactory.getLogger(DettaglioAddettoFamiliare.class);
+	private static final Logger logger = LoggerFactory.getLogger(DettaglioAddettoFamiliari.class);
 
 	private static final long serialVersionUID = 1L;
 
@@ -75,6 +75,12 @@ public class DettaglioAddettoFamiliare implements Serializable {
 	public void startUpdate() {
 
 		logger.debug("Entering startUpdate() method.");
+
+		// Reloading the entity is required to be sure that the value has not changed since it was
+		// read in the data table list of values.
+		//
+		FamiliareService fs = ServiceFactory.createService("FamiliareService");
+		selected = fs.retrieveDeep(selected.getId());
 
 		id = selected.getId();
 		codiceTipoFamiliare = selected.getTipoFamiliare().getId();
@@ -193,6 +199,10 @@ public class DettaglioAddettoFamiliare implements Serializable {
 					"Successo",
 					"L'eliminazione del record selezionato si è conclusa con successo.");
 			FacesContext.getCurrentInstance().addMessage(null, message);
+
+			// Reset selection.
+			//
+			selected = null;
 
 			// Refresh list.
 			//

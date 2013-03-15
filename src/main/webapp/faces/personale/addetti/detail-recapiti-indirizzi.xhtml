@@ -1,0 +1,338 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:custom="http://java.sun.com/jsf/composite/components/custom">
+			
+	<p:panelGrid id="panel" styleClass="form-panel">
+					
+		<p:row>
+			<p:column colspan="2" styleClass="form-header">
+				<h:outputText value="Elenco storico degli indirizzi dell'addetto."/>
+			</p:column>
+		</p:row>
+		
+		<p:row>
+		
+			<p:column>
+								
+				<p:dataTable
+					id="indirizziTable"
+					var="indirizzo"
+					value="#{dettaglioAddettoIndirizzi.listIndirizzi}"
+					selectionMode="single"
+					selection="#{dettaglioAddettoIndirizzi.selected}"
+					rowKey="#{indirizzo.id}"
+					sortBy="#{indirizzo.validoDa}"
+					emptyMessage="Nessun record trovato" 
+					styleClass="small-datatable">
+
+					<p:ajax event="rowSelect" update=":detailForm:tabView:recapitiView:recapitiAccordion:indirizziButtons"/>
+	
+					<p:ajax event="rowUnselect" update=":detailForm:tabView:recapitiView:recapitiAccordion:indirizziButtons"/>
+
+					<p:column headerText="Tipo" sortBy="#{indirizzo.tipoIndirizzo.descrizione}">
+						<h:outputText value="#{indirizzo.tipoIndirizzo.descrizione}" />
+					</p:column>
+
+					<p:column headerText="Destinatario" sortBy="#{indirizzo.destinatario}">
+						<h:outputText value="#{indirizzo.destinatarioComposto}" />
+					</p:column>
+			
+					<p:column headerText="Indirizzo" sortBy="#{indirizzo.indirizzo}">
+						<h:outputText value="#{indirizzo.indirizzoComposto}" />
+					</p:column>
+			
+					<p:column headerText="Localita" sortBy="#{indirizzo.localita}">
+						<h:outputText value="#{indirizzo.localita}" />
+					</p:column>
+			
+					<p:column headerText="CAP" sortBy="#{indirizzo.cap}">
+						<h:outputText value="#{indirizzo.cap}" />
+					</p:column>
+			
+					<p:column headerText="Provincia" sortBy="#{indirizzo.provincia}">
+						<h:outputText value="#{indirizzo.provincia}" />
+					</p:column>
+				
+					<p:column headerText="Paese" sortBy="#{indirizzo.paese}">
+						<h:outputText value="#{indirizzo.paese}" />
+					</p:column>
+
+					<p:column headerText="Valido da" sortBy="#{indirizzo.validoDa}">
+						<h:outputText value="#{indirizzo.validoDa}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Valido a" sortBy="#{indirizzo.validoA}">
+						<h:outputText value="#{indirizzo.validoA}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+																		
+				</p:dataTable>
+			
+			</p:column>
+			
+		</p:row>
+		
+		<p:row>
+			<p:column>
+				
+				<p:outputPanel id="indirizziButtons">
+					
+					<p:commandButton value="Nuovo"
+						oncomplete="detailIndirizzoDialogWidget.show()"
+						actionListener="#{dettaglioAddettoIndirizzi.startCreate}"
+						process="@this"
+						update=":detailForm:tabView:recapitiView:recapitiAccordion:detailIndirizzoView:detailIndirizzoDialog"/>
+
+					<p:commandButton value="Modifica"
+						disabled="#{empty dettaglioAddettoIndirizzi.selected}"
+						oncomplete="detailIndirizzoDialogWidget.show()"
+						actionListener="#{dettaglioAddettoIndirizzi.startUpdate}"
+						process="@this"
+						update=":detailForm:tabView:recapitiView:recapitiAccordion:detailIndirizzoView:detailIndirizzoDialog"/>
+
+					<p:commandButton value="Elimina"
+						disabled="#{empty dettaglioAddettoIndirizzi.selected}"
+						type="button"
+						onclick="deleteIndirizzoDialogWidget.show()"/>
+					
+				</p:outputPanel>
+				
+			</p:column>
+		</p:row>
+		
+	</p:panelGrid>
+
+	
+	
+	<f:subview id="detailIndirizzoView">
+	
+		<p:dialog 
+			id="detailIndirizzoDialog"
+			header="Dati dell'indirizzo" 
+			widgetVar="detailIndirizzoDialogWidget" 
+			modal="true"
+			showEffect="fade" 
+			hideEffect="fade"> 
+					
+			<p:messages id="messages" globalOnly="false" showSummary="false" showDetail="true" closable="true"/>
+			
+			<p:panelGrid id="panel" styleClass="form-panel">
+							
+				<p:row>
+					<p:column colspan="2" styleClass="form-header">
+						<h:outputText value="Il pannello permette di impostare le informazioni di dettaglio dell'indirizzo dell'addetto."/>
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>
+						<p:outputLabel for="codiceTipoIndirizzo" value="Tipo indirizzo:" />
+					</p:column>
+					<p:column>
+						<p:selectOneMenu
+							required="true" 
+							requiredMessage="Il campo tipo indirizzo è obbligatorio"
+							id="codiceTipoIndirizzo" 
+							value="#{dettaglioAddettoIndirizzi.codiceTipoIndirizzo}"
+							effect="fade">
+							<f:selectItem itemLabel="Selezionare un tipo" itemValue="" />
+							<f:selectItems 
+								value="#{dettaglioAddettoIndirizzi.listTipoIndirizzo}" var="item"
+								itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+						</p:selectOneMenu>	
+						<p:tooltip for="codiceTipoIndirizzo" showEffect="fade" value="Tipologia di indirizzo" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="destinatario1" value="Destinatario:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioAddettoIndirizzi.destinatario1}" id="destinatario1"
+							required="true" requiredMessage="Il campo destinatario è obbligatorio"/>
+						<p:watermark for="destinatario1" value="Prima riga di intestazione" />  
+						<p:tooltip for="destinatario1" showEffect="fade" value="Prima riga di intestazione" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="destinatario2" value="Destinatario (2):" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioAddettoIndirizzi.destinatario2}" id="destinatario2"/>
+						<p:watermark for="destinatario2" value="Seconda riga di intestazione" />  
+						<p:tooltip for="destinatario2" showEffect="fade" value="Seconda riga di intestazione" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="indirizzo" value="Indirizzo:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioAddettoIndirizzi.toponimo}" id="toponimo"
+							required="true" requiredMessage="Il toponimo nel campo indirizzo è obbligatorio"
+							style="width: 60px;"/>
+						<p:watermark for="toponimo" value="Toponimo" />  
+						<p:tooltip for="toponimo" showEffect="fade" value="Toponimo dell'indirizzo (via, piazza, ecc...)" />
+
+						<p:inputText value="#{dettaglioAddettoIndirizzi.indirizzo}" id="indirizzo"
+							required="true" requiredMessage="L'indirizzo è obbligatorio"
+							style="width: 160px;"/>
+						<p:watermark for="indirizzo" value="Indirizzo" />  
+						<p:tooltip for="indirizzo" showEffect="fade" value="Indirizzo" />
+
+						<p:inputText value="#{dettaglioAddettoIndirizzi.civico}" id="civico"
+							required="true" requiredMessage="Il numero civico nel campo indirizzo è obbligatorio"
+							style="width: 60px;"/>
+						<p:watermark for="civico" value="Civico" />  
+						<p:tooltip for="civico" showEffect="fade" value="Numero civico dell'indirizzo" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="localita" value="Località:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioAddettoIndirizzi.localita}" id="localita"/>
+						<p:watermark for="localita" value="Località" />  
+						<p:tooltip for="localita" showEffect="fade" value="Località" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="cap" value="CAP:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioAddettoIndirizzi.cap}" id="cap"/>
+						<p:watermark for="cap" value="CAP" />  
+						<p:tooltip for="cap" showEffect="fade" value="Codice di Avviamento Postale" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="provincia" value="Provincia:" />
+					</p:column>
+					<p:column>
+						<p:autoComplete id="provincia"
+							value="#{dettaglioAddettoIndirizzi.provincia}"
+							completeMethod="#{dettaglioAddettoIndirizzi.completeProvincia}"
+							forceSelection="true" 
+							var="p"
+							itemLabel="#{p.sigla}"
+							itemValue="#{p.sigla}"
+							converter="provinciaConverter">
+							<f:facet name="itemtip">
+								<h:panelGrid columns="2">
+									<h:outputText value="Sigla:"/>
+									<h:outputText value="#{p.sigla}"/>
+
+									<h:outputText value="Descrizione:"/>
+									<h:outputText value="#{p.descrizione}"/>
+
+									<h:outputText value="Regione:"/>
+									<h:outputText value="#{p.regione}"/>
+								</h:panelGrid>
+							</f:facet>
+						</p:autoComplete>
+						<p:watermark for="provincia" value="Provincia" />  
+						<p:tooltip for="provincia" showEffect="fade" value="Provincia" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="paese" value="Paese:" />
+					</p:column>
+					<p:column>
+						<p:autoComplete
+							id="paese"
+							value="#{dettaglioAddettoIndirizzi.paese}"
+							completeMethod="#{dettaglioAddettoIndirizzi.completePaese}"
+							forceSelection="true"/>
+						<p:watermark for="paese" value="Paese" />  
+						<p:tooltip for="paese" showEffect="fade" value="Paese" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="validoDa" value="Valido da:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioAddettoIndirizzi.validoDa}" id="validoDa"
+							pattern="dd/MM/yyyy"/>
+						<p:watermark for="validoDa" value="Data di inizio validità" />  
+						<p:tooltip for="validoDa" showEffect="fade" value="Data di inizio validità del record" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="validoA" value="Valido a:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioAddettoIndirizzi.validoA}" id="validoA"
+							pattern="dd/MM/yyyy"/>
+						<p:watermark for="validoA" value="Data di fine validità" />  
+						<p:tooltip for="validoA" showEffect="fade" value="Data di fine validità del record" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column colspan="2" styleClass="form-footer">
+						<p:commandButton value="Salva"
+							id="saveButton"
+							actionListener="#{dettaglioAddettoIndirizzi.doSave}" 
+							update="detailIndirizzoView:messages,detailIndirizzoView:panel,:detailForm:tabView:recapitiView:recapitiAccordion:indirizziTable,:detailForm:growl"
+							process="detailIndirizzoView:detailIndirizzoDialog"
+							oncomplete="if(args.ok) { detailIndirizzoDialogWidget.hide(); }"/>
+						<p:commandButton value="Annulla"
+							type="button"
+							onclick="detailIndirizzoDialogWidget.hide();" />
+					</p:column>
+				</p:row>
+				
+			</p:panelGrid>
+	
+			<p:defaultCommand target="saveButton" scope="detailIndirizzoDialog"/>
+			
+		</p:dialog>
+	
+	</f:subview>
+	
+	
+	<p:confirmDialog 
+		id="deleteIndirizzoDialog"
+		header="Elimina indirizzo" 
+		widgetVar="deleteIndirizzoDialogWidget"
+		message="Si conferma l'eliminazione dell'indirizzo selezionato? L'operazione non può essere annullata."
+		showEffect="fade" 
+		hideEffect="fade">
+		
+		<p:commandButton 
+			value="Elimina"
+			update=":detailForm:tabView:recapitiView:recapitiAccordion:indirizziTable,:detailForm:tabView:recapitiView:recapitiAccordion:indirizziButtons,:detailForm:growl"
+			process="@this" 
+			oncomplete="deleteIndirizzoDialogWidget.hide()"  
+            actionListener="#{dettaglioAddettoIndirizzi.doDelete}" />
+              
+        <p:commandButton 
+        	value="Annulla" 
+        	onclick="deleteIndirizzoDialogWidget.hide()" 
+        	type="button" />
+        	   
+	</p:confirmDialog>
+
+</html>
