@@ -5,7 +5,7 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:custom="http://java.sun.com/jsf/composite/components/custom">
 			
-	<p:panelGrid id="panel" styleClass="form-panel">
+	<p:panelGrid styleClass="form-panel">
 					
 		<p:row>
 			<p:column colspan="2" styleClass="form-header">
@@ -28,9 +28,9 @@
 					emptyMessage="Nessun record trovato" 
 					styleClass="small-datatable">
 
-					<p:ajax event="rowSelect" update=":detailForm:tabView:recapitiView:recapitiAccordion:indirizziButtons"/>
+					<p:ajax event="rowSelect" update=":detailForm:tabView:recapitiAccordion:indirizziButtons"/>
 	
-					<p:ajax event="rowUnselect" update=":detailForm:tabView:recapitiView:recapitiAccordion:indirizziButtons"/>
+					<p:ajax event="rowUnselect" update=":detailForm:tabView:recapitiAccordion:indirizziButtons"/>
 
 					<p:column headerText="Tipo" sortBy="#{indirizzo.tipoIndirizzo.descrizione}">
 						<h:outputText value="#{indirizzo.tipoIndirizzo.descrizione}" />
@@ -87,14 +87,14 @@
 						oncomplete="detailIndirizzoDialogWidget.show()"
 						actionListener="#{dettaglioAddettoIndirizzi.startCreate}"
 						process="@this"
-						update=":detailForm:tabView:recapitiView:recapitiAccordion:detailIndirizzoView:detailIndirizzoDialog"/>
+						update=":detailForm:tabView:recapitiAccordion:detailIndirizzoView:detailIndirizzoDialog"/>
 
 					<p:commandButton value="Modifica"
 						disabled="#{empty dettaglioAddettoIndirizzi.selected}"
 						oncomplete="detailIndirizzoDialogWidget.show()"
 						actionListener="#{dettaglioAddettoIndirizzi.startUpdate}"
 						process="@this"
-						update=":detailForm:tabView:recapitiView:recapitiAccordion:detailIndirizzoView:detailIndirizzoDialog"/>
+						update=":detailForm:tabView:recapitiAccordion:detailIndirizzoView:detailIndirizzoDialog"/>
 
 					<p:commandButton value="Elimina"
 						disabled="#{empty dettaglioAddettoIndirizzi.selected}"
@@ -295,7 +295,7 @@
 						<p:commandButton value="Salva"
 							id="saveButton"
 							actionListener="#{dettaglioAddettoIndirizzi.doSave}" 
-							update="detailIndirizzoView:messages,detailIndirizzoView:panel,:detailForm:tabView:recapitiView:recapitiAccordion:indirizziTable,:detailForm:growl"
+							update="detailIndirizzoView:messages,detailIndirizzoView:panel,:detailForm:tabView:recapitiAccordion:indirizziTable,:detailForm:growl"
 							process="detailIndirizzoView:detailIndirizzoDialog"
 							oncomplete="if(args.ok) { detailIndirizzoDialogWidget.hide(); }"/>
 						<p:commandButton value="Annulla"
@@ -323,7 +323,7 @@
 		
 		<p:commandButton 
 			value="Elimina"
-			update=":detailForm:tabView:recapitiView:recapitiAccordion:indirizziTable,:detailForm:tabView:recapitiView:recapitiAccordion:indirizziButtons,:detailForm:growl"
+			update=":detailForm:tabView:recapitiAccordion:indirizziTable,:detailForm:tabView:recapitiAccordion:indirizziButtons,:detailForm:growl"
 			process="@this" 
 			oncomplete="deleteIndirizzoDialogWidget.hide()"  
             actionListener="#{dettaglioAddettoIndirizzi.doDelete}" />

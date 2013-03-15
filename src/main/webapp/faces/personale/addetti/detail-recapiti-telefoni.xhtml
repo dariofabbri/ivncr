@@ -1,0 +1,178 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:custom="http://java.sun.com/jsf/composite/components/custom">
+			
+	<p:panelGrid styleClass="form-panel">
+					
+		<p:row>
+			<p:column colspan="2" styleClass="form-header">
+				<h:outputText value="Elenco dei recapiti telefonici dell'addetto."/>
+			</p:column>
+		</p:row>
+		
+		<p:row>
+		
+			<p:column>
+								
+				<p:dataTable
+					id="recapitiTelefoniTable"
+					var="recapitoTelefonico"
+					value="#{dettaglioAddettoTelefoni.listRecapitiTelefonici}"
+					selectionMode="single"
+					selection="#{dettaglioAddettoTelefoni.selected}"
+					rowKey="#{recapitoTelefonico.id}"
+					sortBy="#{recapitoTelefonico.tipoRecapitoTelefonico}"
+					emptyMessage="Nessun record trovato" 
+					styleClass="small-datatable">
+
+					<p:ajax event="rowSelect" update=":detailForm:tabView:recapitiAccordion:recapitiTelefoniciButtons"/>
+	
+					<p:ajax event="rowUnselect" update=":detailForm:tabView:recapitiAccordion:recapitiTelefoniciButtons"/>
+
+					<p:column headerText="Tipo" sortBy="#{recapitoTelefonico.tipoRecapitoTelefonico.descrizione}">
+						<h:outputText value="#{recapitoTelefonico.tipoRecapitoTelefonico.descrizione}" />
+					</p:column>
+
+					<p:column headerText="Recapito" sortBy="#{recapitoTelefonico.recapito}">
+						<h:outputText value="#{recapitoTelefonico.recapito}" />
+					</p:column>
+																		
+				</p:dataTable>
+			
+			</p:column>
+			
+		</p:row>
+		
+		<p:row>
+			<p:column>
+				
+				<p:outputPanel id="recapitiTelefoniciButtons">
+					
+					<p:commandButton value="Nuovo"
+						oncomplete="detailRecapitoTelefonicoDialogWidget.show()"
+						actionListener="#{dettaglioAddettoTelefoni.startCreate}"
+						process="@this"
+						update=":detailForm:tabView:recapitiAccordion:detailRecapitoTelefonicoView:detailRecapitoTelefonicoDialog"/>
+
+					<p:commandButton value="Modifica"
+						disabled="#{empty dettaglioAddettoTelefoni.selected}"
+						oncomplete="detailRecapitoTelefonicoDialogWidget.show()"
+						actionListener="#{dettaglioAddettoTelefoni.startUpdate}"
+						process="@this"
+						update=":detailForm:tabView:recapitiAccordion:detailRecapitoTelefonicoView:detailRecapitoTelefonicoDialog"/>
+
+					<p:commandButton value="Elimina"
+						disabled="#{empty dettaglioAddettoTelefoni.selected}"
+						type="button"
+						onclick="deleteRecapitoTelefonicoDialogWidget.show()"/>
+					
+				</p:outputPanel>
+				
+			</p:column>
+		</p:row>
+		
+	</p:panelGrid>
+
+	
+	
+	<f:subview id="detailRecapitoTelefonicoView">
+	
+		<p:dialog 
+			id="detailRecapitoTelefonicoDialog"
+			header="Dati di dettaglio del recapito telefonico" 
+			widgetVar="detailRecapitoTelefonicoDialogWidget" 
+			modal="true"
+			showEffect="fade" 
+			hideEffect="fade"> 
+					
+			<p:messages id="messages" globalOnly="false" showSummary="false" showDetail="true" closable="true"/>
+			
+			<p:panelGrid id="panel" styleClass="form-panel">
+							
+				<p:row>
+					<p:column colspan="2" styleClass="form-header">
+						<h:outputText value="Il pannello permette di impostare le informazioni di dettaglio del recapito telefonico dell'addetto."/>
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>
+						<p:outputLabel for="codiceTipoRecapitoTelefonico" value="Tipo recapito telefonico:" />
+					</p:column>
+					<p:column>
+						<p:selectOneMenu
+							required="true" 
+							requiredMessage="Il campo tipo recapito telefonico è obbligatorio"
+							id="codiceTipoRecapitoTelefonico" 
+							value="#{dettaglioAddettoTelefoni.codiceTipoRecapitoTelefonico}"
+							effect="fade">
+							<f:selectItem itemLabel="Selezionare un tipo" itemValue="" />
+							<f:selectItems 
+								value="#{dettaglioAddettoTelefoni.listTipoRecapitoTelefonico}" var="item"
+								itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+						</p:selectOneMenu>	
+						<p:tooltip for="codiceTipoRecapitoTelefonico" showEffect="fade" value="Tipologia di recapito telefonico" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="recapito" value="Recapito:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioAddettoTelefoni.recapito}" id="recapito"
+							required="true" requiredMessage="Il campo recapito è obbligatorio"/>
+						<p:watermark for="recapito" value="Recapito telefonico" />  
+						<p:tooltip for="recapito" showEffect="fade" value="Recapito telefonico" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column colspan="2" styleClass="form-footer">
+						<p:commandButton value="Salva"
+							id="saveButton"
+							actionListener="#{dettaglioAddettoTelefoni.doSave}" 
+							update="detailRecapitoTelefonicoView:messages,detailRecapitoTelefonicoView:panel,:detailForm:tabView:recapitiAccordion:recapitiTelefoniTable,:detailForm:growl"
+							process="detailRecapitoTelefonicoView:detailRecapitoTelefonicoDialog"
+							oncomplete="if(args.ok) { detailRecapitoTelefonicoDialogWidget.hide(); }"/>
+						<p:commandButton value="Annulla"
+							type="button"
+							onclick="detailRecapitoTelefonicoDialogWidget.hide();" />
+					</p:column>
+				</p:row>
+				
+			</p:panelGrid>
+	
+			<p:defaultCommand target="saveButton" scope="detailRecapitoTelefonicoDialog"/>
+			
+		</p:dialog>
+	
+	</f:subview>
+	
+	
+	<p:confirmDialog 
+		id="deleteRecapitoTelefonicoDialog"
+		header="Elimina recapito telefonico" 
+		widgetVar="deleteRecapitoTelefonicoDialogWidget"
+		message="Si conferma l'eliminazione del recapito telefonico selezionato? L'operazione non può essere annullata."
+		showEffect="fade" 
+		hideEffect="fade">
+		
+		<p:commandButton 
+			value="Elimina"
+			update=":detailForm:tabView:recapitiAccordion:recapitiTelefoniTable,:detailForm:tabView:recapitiAccordion:recapitiTelefoniciButtons,:detailForm:growl"
+			process="@this" 
+			oncomplete="deleteRecapitoTelefonicoDialogWidget.hide()"  
+            actionListener="#{dettaglioAddettoTelefoni.doDelete}" />
+              
+        <p:commandButton 
+        	value="Annulla" 
+        	onclick="deleteRecapitoTelefonicoDialogWidget.hide()" 
+        	type="button" />
+        	   
+	</p:confirmDialog>
+
+</html>

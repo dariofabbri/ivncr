@@ -4,21 +4,19 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:custom="http://java.sun.com/jsf/composite/components/custom">
-
-	<f:subview id="recapitiView">
 	
-		<p:accordionPanel id="recapitiAccordion">
-		
-			<p:tab title="Indirizzi">
-				<ui:include src="detail-recapiti-indirizzi.xhtml"/>
-			</p:tab>
-			
-			<p:tab title="Recapiti telefonici" />
-			
-			<p:tab title="Email" />
-		
-		</p:accordionPanel>
+	<p:accordionPanel id="recapitiAccordion">
 	
-	</f:subview>
+		<p:tab title="Indirizzi">
+			<ui:include src="detail-recapiti-indirizzi.xhtml"/>
+		</p:tab>
+		
+		<p:tab title="Recapiti telefonici">
+			<ui:include src="detail-recapiti-telefoni.xhtml"/>
+		</p:tab>
+		
+		<p:tab title="Email" />
+	
+	</p:accordionPanel>
 		
 </html>
