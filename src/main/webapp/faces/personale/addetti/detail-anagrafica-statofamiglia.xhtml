@@ -1,0 +1,231 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:custom="http://java.sun.com/jsf/composite/components/custom">
+			
+	<p:panelGrid styleClass="form-panel">
+					
+		<p:row>
+			<p:column colspan="2" styleClass="form-header">
+				<h:outputText value="Elenco storico dei componenti lo stato di famiglia dell'addetto."/>
+			</p:column>
+		</p:row>
+		
+		<p:row>
+		
+			<p:column>
+								
+				<p:dataTable
+					id="statoFamigliaTable"
+					var="statoFamiglia"
+					value="#{dettaglioAddettoStatoFamiglia.listStatoFamiglia}"
+					selectionMode="single"
+					selection="#{dettaglioAddettoStatoFamiglia.selected}"
+					rowKey="#{statoFamiglia.id}"
+					sortBy="#{statoFamiglia.validoDa}"
+					emptyMessage="Nessun record trovato" 
+					styleClass="small-datatable">
+
+					<p:ajax event="rowSelect" update=":detailForm:tabView:anagraficaAccordion:statoFamigliaButtons"/>
+	
+					<p:ajax event="rowUnselect" update=":detailForm:tabView:anagraficaAccordion:statoFamigliaButtons"/>
+
+					<p:column headerText="Grado parentela" sortBy="#{statoFamiglia.gradoParentela.descrizione}">
+						<h:outputText value="#{statoFamiglia.gradoParentela.descrizione}" />
+					</p:column>
+
+					<p:column headerText="Nome" sortBy="#{statoFamiglia.nome}">
+						<h:outputText value="#{statoFamiglia.nome}" />
+					</p:column>
+
+					<p:column headerText="Data nascita" sortBy="#{statoFamiglia.dataNascita}">
+						<h:outputText value="#{statoFamiglia.dataNascita}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Valido da" sortBy="#{statoFamiglia.validoDa}">
+						<h:outputText value="#{statoFamiglia.validoDa}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Valido a" sortBy="#{statoFamiglia.validoA}">
+						<h:outputText value="#{statoFamiglia.validoA}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+																		
+				</p:dataTable>
+			
+			</p:column>
+			
+		</p:row>
+		
+		<p:row>
+			<p:column>
+				
+				<p:outputPanel id="statoFamigliaButtons">
+					
+					<p:commandButton value="Nuovo"
+						oncomplete="detailStatoFamigliaDialogWidget.show()"
+						actionListener="#{dettaglioAddettoStatoFamiglia.startCreate}"
+						process="@this"
+						update=":detailForm:tabView:anagraficaAccordion:detailStatoFamigliaView:detailStatoFamigliaDialog"/>
+
+					<p:commandButton value="Modifica"
+						disabled="#{empty dettaglioAddettoStatoFamiglia.selected}"
+						oncomplete="detailStatoFamigliaDialogWidget.show()"
+						actionListener="#{dettaglioAddettoStatoFamiglia.startUpdate}"
+						process="@this"
+						update=":detailForm:tabView:anagraficaAccordion:detailStatoFamigliaView:detailStatoFamigliaDialog"/>
+
+					<p:commandButton value="Elimina"
+						disabled="#{empty dettaglioAddettoStatoFamiglia.selected}"
+						type="button"
+						onclick="deleteStatoFamigliaDialogWidget.show()"/>
+					
+				</p:outputPanel>
+				
+			</p:column>
+		</p:row>
+		
+	</p:panelGrid>
+
+	
+	
+	<f:subview id="detailStatoFamigliaView">
+	
+		<p:dialog 
+			id="detailStatoFamigliaDialog"
+			header="Dettagli del componente lo stato di famiglia" 
+			widgetVar="detailStatoFamigliaDialogWidget" 
+			modal="true"
+			showEffect="fade" 
+			hideEffect="fade"> 
+					
+			<p:messages id="messages" globalOnly="false" showSummary="false" showDetail="true" closable="true"/>
+			
+			<p:panelGrid id="panel" styleClass="form-panel">
+							
+				<p:row>
+					<p:column colspan="2" styleClass="form-header">
+						<h:outputText value="Il pannello permette di immettere le informazioni di dettaglio del componente lo stato di famiglia dell'addetto."/>
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>
+						<p:outputLabel for="codiceGradoParentela" value="Grado di parentela:" />
+					</p:column>
+					<p:column>
+						<p:selectOneMenu
+							required="true" 
+							requiredMessage="Il campo grado di parentela è obbligatorio"
+							id="codiceGradoParentela" 
+							value="#{dettaglioAddettoStatoFamiglia.codiceGradoParentela}"
+							effect="fade">
+							<f:selectItem itemLabel="Selezionare un grado di parentela" itemValue="" />
+							<f:selectItems 
+								value="#{dettaglioAddettoStatoFamiglia.listGradoParentela}" var="item"
+								itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+						</p:selectOneMenu>	
+						<p:tooltip for="codiceGradoParentela" showEffect="fade" value="Grado di parentela del componente lo stato di famiglia" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="nome" value="Nome:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioAddettoStatoFamiglia.nome}" id="nome"/>
+						<p:watermark for="nome" value="Nome del componente" />  
+						<p:tooltip for="nome" showEffect="fade" value="Nome del componente lo stato di famiglia" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="dataNascita" value="Data di nascita:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioAddettoStatoFamiglia.dataNascita}" id="dataNascita"
+							pattern="dd/MM/yyyy"/>
+						<p:watermark for="dataNascita" value="Data di nascita" />  
+						<p:tooltip for="dataNascita" showEffect="fade" value="Data di nascita del componente lo stato di famiglia" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="validoDa" value="Valido da:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioAddettoStatoFamiglia.validoDa}" id="validoDa"
+							pattern="dd/MM/yyyy"/>
+						<p:watermark for="validoDa" value="Data di inizio validità" />  
+						<p:tooltip for="validoDa" showEffect="fade" value="Data di inizio validità del record" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="validoA" value="Valido a:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioAddettoStatoFamiglia.validoA}" id="validoA"
+							pattern="dd/MM/yyyy"/>
+						<p:watermark for="validoA" value="Data di fine validità" />  
+						<p:tooltip for="validoA" showEffect="fade" value="Data di fine validità del record" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column colspan="2" styleClass="form-footer">
+						<p:commandButton value="Salva"
+							id="saveButton"
+							actionListener="#{dettaglioAddettoStatoFamiglia.doSave}" 
+							update="detailStatoFamigliaView:messages,detailStatoFamigliaView:panel,:detailForm:tabView:anagraficaAccordion:statoFamigliaTable,:detailForm:growl"
+							process="detailStatoFamigliaView:detailStatoFamigliaDialog"
+							oncomplete="if(args.ok) { detailStatoFamigliaDialogWidget.hide(); }"/>
+						<p:commandButton value="Annulla"
+							type="button"
+							onclick="detailStatoFamigliaDialogWidget.hide();" />
+					</p:column>
+				</p:row>
+				
+			</p:panelGrid>
+	
+			<p:defaultCommand target="saveButton" scope="detailStatoFamigliaDialog"/>
+			
+		</p:dialog>
+	
+	</f:subview>
+	
+	
+	<p:confirmDialog 
+		id="deleteStatoFamigliaDialog"
+		header="Elimina record dello stato di famiglia" 
+		widgetVar="deleteStatoFamigliaDialogWidget"
+		message="Si conferma l'eliminazione del record selezionato? L'operazione non può essere annullata."
+		showEffect="fade" 
+		hideEffect="fade">
+		
+		<p:commandButton 
+			value="Elimina"
+			update=":detailForm:tabView:anagraficaAccordion:statoFamigliaTable,:detailForm:tabView:anagraficaAccordion:statoFamigliaButtons,:detailForm:growl"
+			process="@this" 
+			oncomplete="deleteStatoFamigliaDialogWidget.hide()"  
+            actionListener="#{dettaglioAddettoStatoFamiglia.doDelete}" />
+              
+        <p:commandButton 
+        	value="Annulla" 
+        	onclick="deleteStatoFamigliaDialogWidget.hide()" 
+        	type="button" />
+        	   
+	</p:confirmDialog>
+
+</html>
