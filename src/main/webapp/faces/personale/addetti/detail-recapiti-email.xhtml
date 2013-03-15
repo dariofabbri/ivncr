@@ -1,0 +1,155 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:custom="http://java.sun.com/jsf/composite/components/custom">
+			
+	<p:panelGrid styleClass="form-panel">
+					
+		<p:row>
+			<p:column colspan="2" styleClass="form-header">
+				<h:outputText value="Elenco dei recapiti di posta elettronica dell'addetto."/>
+			</p:column>
+		</p:row>
+		
+		<p:row>
+		
+			<p:column>
+								
+				<p:dataTable
+					id="recapitiEmailTable"
+					var="recapitoEmail"
+					value="#{dettaglioAddettoEmail.listRecapitiEmail}"
+					selectionMode="single"
+					selection="#{dettaglioAddettoEmail.selected}"
+					rowKey="#{recapitoEmail.id}"
+					sortBy="#{recapitoEmail.email}"
+					emptyMessage="Nessun record trovato" 
+					styleClass="small-datatable">
+
+					<p:ajax event="rowSelect" update=":detailForm:tabView:recapitiAccordion:recapitiEmailButtons"/>
+	
+					<p:ajax event="rowUnselect" update=":detailForm:tabView:recapitiAccordion:recapitiEmailButtons"/>
+
+					<p:column headerText="Indirizzo email" sortBy="#{recapitoEmail.email}">
+						<h:outputText value="#{recapitoEmail.email}" />
+					</p:column>
+																		
+				</p:dataTable>
+			
+			</p:column>
+			
+		</p:row>
+		
+		<p:row>
+			<p:column>
+				
+				<p:outputPanel id="recapitiEmailButtons">
+					
+					<p:commandButton value="Nuovo"
+						oncomplete="detailRecapitoEmailDialogWidget.show()"
+						actionListener="#{dettaglioAddettoEmail.startCreate}"
+						process="@this"
+						update=":detailForm:tabView:recapitiAccordion:detailRecapitoEmailView:detailRecapitoEmailDialog"/>
+
+					<p:commandButton value="Modifica"
+						disabled="#{empty dettaglioAddettoEmail.selected}"
+						oncomplete="detailRecapitoEmailDialogWidget.show()"
+						actionListener="#{dettaglioAddettoEmail.startUpdate}"
+						process="@this"
+						update=":detailForm:tabView:recapitiAccordion:detailRecapitoEmailView:detailRecapitoEmailDialog"/>
+
+					<p:commandButton value="Elimina"
+						disabled="#{empty dettaglioAddettoEmail.selected}"
+						type="button"
+						onclick="deleteRecapitoEmailDialogWidget.show()"/>
+					
+				</p:outputPanel>
+				
+			</p:column>
+		</p:row>
+		
+	</p:panelGrid>
+
+	
+	
+	<f:subview id="detailRecapitoEmailView">
+	
+		<p:dialog 
+			id="detailRecapitoEmailDialog"
+			header="Dati di dettaglio del recapito email" 
+			widgetVar="detailRecapitoEmailDialogWidget" 
+			modal="true"
+			showEffect="fade" 
+			hideEffect="fade"> 
+					
+			<p:messages id="messages" globalOnly="false" showSummary="false" showDetail="true" closable="true"/>
+			
+			<p:panelGrid id="panel" styleClass="form-panel">
+							
+				<p:row>
+					<p:column colspan="2" styleClass="form-header">
+						<h:outputText value="Il pannello permette di impostare l'indirizzo email dell'addetto."/>
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="email" value="Indirizzo email:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioAddettoEmail.email}" id="email"
+							validator="emailValidator" validatorMessage="L'indirizzo email immesso non è valido"						
+							required="true" requiredMessage="Il campo email è obbligatorio"/>
+						<p:watermark for="email" value="Indirizzo email" />  
+						<p:tooltip for="email" showEffect="fade" value="Indirizzo email" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column colspan="2" styleClass="form-footer">
+						<p:commandButton value="Salva"
+							id="saveButton"
+							actionListener="#{dettaglioAddettoEmail.doSave}" 
+							update="detailRecapitoEmailView:messages,detailRecapitoEmailView:panel,:detailForm:tabView:recapitiAccordion:recapitiEmailTable,:detailForm:growl"
+							process="detailRecapitoEmailView:detailRecapitoEmailDialog"
+							oncomplete="if(args.ok) { detailRecapitoEmailDialogWidget.hide(); }"/>
+						<p:commandButton value="Annulla"
+							type="button"
+							onclick="detailRecapitoEmailDialogWidget.hide();" />
+					</p:column>
+				</p:row>
+				
+			</p:panelGrid>
+	
+			<p:defaultCommand target="saveButton" scope="detailRecapitoEmailDialog"/>
+			
+		</p:dialog>
+	
+	</f:subview>
+	
+	
+	<p:confirmDialog 
+		id="deleteRecapitoEmailDialog"
+		header="Elimina indirizzo email" 
+		widgetVar="deleteRecapitoEmailDialogWidget"
+		message="Si conferma l'eliminazione dell'indirizzo di posta elettronica selezionato? L'operazione non può essere annullata."
+		showEffect="fade" 
+		hideEffect="fade">
+		
+		<p:commandButton 
+			value="Elimina"
+			update=":detailForm:tabView:recapitiAccordion:recapitiEmailTable,:detailForm:tabView:recapitiAccordion:recapitiEmailButtons,:detailForm:growl"
+			process="@this" 
+			oncomplete="deleteRecapitoEmailDialogWidget.hide()"  
+            actionListener="#{dettaglioAddettoEmail.doDelete}" />
+              
+        <p:commandButton 
+        	value="Annulla" 
+        	onclick="deleteRecapitoEmailDialogWidget.hide()" 
+        	type="button" />
+        	   
+	</p:confirmDialog>
+
+</html>
