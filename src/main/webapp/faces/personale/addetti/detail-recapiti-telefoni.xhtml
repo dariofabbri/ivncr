@@ -124,6 +124,7 @@
 					</p:column>
 					<p:column>
 						<p:inputText value="#{dettaglioAddettoTelefoni.recapito}" id="recapito"
+							validator="phoneValidator" validatorMessage="Il numero immesso come recapito telefonico non è valido"						
 							required="true" requiredMessage="Il campo recapito è obbligatorio"/>
 						<p:watermark for="recapito" value="Recapito telefonico" />  
 						<p:tooltip for="recapito" showEffect="fade" value="Recapito telefonico" />
