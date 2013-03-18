@@ -30,6 +30,10 @@ public class DecretoGpg {
 	@JoinColumn(name="addetto_id")
 	private Addetto addetto;
 
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="tipo_rinnovo_id")
+	private TipoRinnovoDecretoGpg tipoRinnovo;
+
 	@Column(name="numero")
 	private String numero;
 
@@ -49,6 +53,7 @@ public class DecretoGpg {
 		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
 			.append("id", id)
 			.append("addetto", addetto, false)
+			.append("tipoRinnovo", tipoRinnovo, false)
 			.append("numero", numero)
 			.append("dataRilascio", dataRilascio)
 			.append("dataScadenza", dataScadenza)
@@ -71,6 +76,14 @@ public class DecretoGpg {
 
 	public void setAddetto(Addetto addetto) {
 		this.addetto = addetto;
+	}
+
+	public TipoRinnovoDecretoGpg getTipoRinnovo() {
+		return tipoRinnovo;
+	}
+
+	public void setTipoRinnovo(TipoRinnovoDecretoGpg tipoRinnovo) {
+		this.tipoRinnovo = tipoRinnovo;
 	}
 
 	public String getNumero() {
