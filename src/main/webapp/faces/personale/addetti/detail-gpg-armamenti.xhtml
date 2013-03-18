@@ -1,0 +1,308 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:custom="http://java.sun.com/jsf/composite/components/custom">
+			
+	<p:panelGrid styleClass="form-panel">
+					
+		<p:row>
+			<p:column colspan="2" styleClass="form-header">
+				<h:outputText value="Elenco delle armi in dotazione all'addetto."/>
+			</p:column>
+		</p:row>
+		
+		<p:row>
+		
+			<p:column>
+								
+				<p:dataTable
+					id="armamentiTable"
+					var="armamento"
+					value="#{dettaglioAddettoArmamenti.listArmamenti}"
+					selectionMode="single"
+					selection="#{dettaglioAddettoArmamenti.selected}"
+					rowKey="#{armamento.id}"
+					sortBy="#{armamento.dataInizio}"
+					emptyMessage="Nessun record trovato" 
+					styleClass="small-datatable">
+
+					<p:ajax event="rowSelect" update=":detailForm:tabView:gpgAccordion:armamentiButtons"/>
+	
+					<p:ajax event="rowUnselect" update=":detailForm:tabView:gpgAccordion:armamentiButtons"/>
+
+					<p:column headerText="Tipo" sortBy="#{armamento.tipoArma.descrizione}">
+						<h:outputText value="#{armamento.tipoArma.descrizione}" />
+					</p:column>
+
+					<p:column headerText="Modello" sortBy="#{armamento.modelloArma}">
+						<h:outputText value="#{armamento.modelloArma}" />
+					</p:column>
+
+					<p:column headerText="Calibro" sortBy="#{armamento.calibroArma}">
+						<h:outputText value="#{armamento.calibroArma}" />
+					</p:column>
+
+					<p:column headerText="Matricola" sortBy="#{armamento.matricola}">
+						<h:outputText value="#{armamento.matricola}" />
+					</p:column>
+
+					<p:column headerText="Stato" sortBy="#{armamento.statoArma.descrizione}">
+						<h:outputText value="#{armamento.statoArma.descrizione}" />
+					</p:column>
+
+					<p:column headerText="Data denuncia" sortBy="#{armamento.dataDenuncia}">
+						<h:outputText value="#{armamento.dataDenuncia}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Data inizio" sortBy="#{armamento.dataInizio}">
+						<h:outputText value="#{armamento.dataInizio}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Data fine" sortBy="#{armamento.dataFine}">
+						<h:outputText value="#{armamento.dataFine}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+																		
+				</p:dataTable>
+			
+			</p:column>
+			
+		</p:row>
+		
+		<p:row>
+			<p:column>
+				
+				<p:outputPanel id="armamentiButtons">
+					
+					<p:commandButton value="Nuovo"
+						oncomplete="detailArmamentoDialogWidget.show()"
+						actionListener="#{dettaglioAddettoArmamenti.startCreate}"
+						process="@this"
+						update=":detailForm:tabView:gpgAccordion:detailArmamentoView:detailArmamentoDialog"/>
+
+					<p:commandButton value="Modifica"
+						disabled="#{empty dettaglioAddettoArmamenti.selected}"
+						oncomplete="detailArmamentoDialogWidget.show()"
+						actionListener="#{dettaglioAddettoArmamenti.startUpdate}"
+						process="@this"
+						update=":detailForm:tabView:gpgAccordion:detailArmamentoView:detailArmamentoDialog"/>
+
+					<p:commandButton value="Elimina"
+						disabled="#{empty dettaglioAddettoArmamenti.selected}"
+						type="button"
+						onclick="deleteArmamentoDialogWidget.show()"/>
+					
+				</p:outputPanel>
+				
+			</p:column>
+		</p:row>
+		
+	</p:panelGrid>
+
+	
+	
+	<f:subview id="detailArmamentoView">
+	
+		<p:dialog 
+			id="detailArmamentoDialog"
+			header="Dettagli dell'armamento dell'addetto" 
+			widgetVar="detailArmamentoDialogWidget" 
+			modal="true"
+			showEffect="fade" 
+			hideEffect="fade"> 
+					
+			<p:messages id="messages" globalOnly="false" showSummary="false" showDetail="true" closable="true"/>
+			
+			<p:panelGrid id="panel" styleClass="form-panel">
+							
+				<p:row>
+					<p:column colspan="2" styleClass="form-header">
+						<h:outputText value="Il pannello permette di immettere le informazioni di dettaglio relative all'armamento dell'addetto."/>
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>
+						<p:outputLabel for="codiceTipoArma" value="Tipo arma:" />
+					</p:column>
+					<p:column>
+						<p:selectOneMenu
+							required="true" 
+							requiredMessage="Il campo tipo arma è obbligatorio"
+							id="codiceTipoArma" 
+							value="#{dettaglioAddettoArmamenti.codiceTipoArma}"
+							effect="fade">
+							<f:selectItem itemLabel="Selezionare un tipo di arma" itemValue="" />
+							<f:selectItems 
+								value="#{dettaglioAddettoArmamenti.listTipoArma}" var="item"
+								itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+						</p:selectOneMenu>	
+						<p:tooltip for="codiceTipoArma" showEffect="fade" value="Tipo di arma" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="modelloArma" value="Modello arma:"/>
+					</p:column>
+					<p:column>
+						<p:autoComplete
+							id="modelloArma"
+							value="#{dettaglioAddettoArmamenti.modelloArma}"
+							completeMethod="#{dettaglioAddettoArmamenti.completeModelloArma}"
+							forceSelection="false"
+							maxResults="15"/>
+						<p:watermark for="modelloArma" value="Modello dell\'arma" />  
+						<p:tooltip for="modelloArma" showEffect="fade" value="Modello dell'arma" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="calibroArma" value="Calibro arma:"/>
+					</p:column>
+					<p:column>
+						<p:autoComplete
+							id="calibroArma"
+							value="#{dettaglioAddettoArmamenti.calibroArma}"
+							completeMethod="#{dettaglioAddettoArmamenti.completeCalibroArma}"
+							forceSelection="false"
+							maxResults="15"/>
+						<p:watermark for="calibroArma" value="Calibro dell\'arma" />  
+						<p:tooltip for="calibroArma" showEffect="fade" value="Calibro dell'arma" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="matricola" value="Matricola:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioAddettoArmamenti.matricola}" id="matricola"
+							required="true" 
+							requiredMessage="Il campo matricola dell'arma è obbligatorio"/>
+						<p:watermark for="matricola" value="Matricola dell\'arma" />  
+						<p:tooltip for="matricola" showEffect="fade" value="Numero di matricola dell'arma" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>
+						<p:outputLabel for="codiceStatoArma" value="Stato:" />
+					</p:column>
+					<p:column>
+						<p:selectOneMenu
+							required="true" 
+							requiredMessage="Il campo stato arma è obbligatorio"
+							id="codiceStatoArma" 
+							value="#{dettaglioAddettoArmamenti.codiceStatoArma}"
+							effect="fade">
+							<f:selectItem itemLabel="Selezionare uno stato" itemValue="" />
+							<f:selectItems 
+								value="#{dettaglioAddettoArmamenti.listStatoArma}" var="item"
+								itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+						</p:selectOneMenu>	
+						<p:tooltip for="codiceStatoArma" showEffect="fade" value="Stato dell'arma" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="dataDenuncia" value="Data denuncia:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioAddettoArmamenti.dataDenuncia}" id="dataDenuncia"
+							pattern="dd/MM/yyyy"/>
+						<p:watermark for="dataDenuncia" value="Data di denuncia dell\'arma" />  
+						<p:tooltip for="dataDenuncia" showEffect="fade" value="Data di denuncia dell'arma" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="dataInizio" value="Data inizio:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioAddettoArmamenti.dataInizio}" id="dataInizio"
+							pattern="dd/MM/yyyy"/>
+						<p:watermark for="dataInizio" value="Data inizio" />  
+						<p:tooltip for="dataInizio" showEffect="fade" value="Data inizio" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="dataFine" value="Data fine:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioAddettoArmamenti.dataFine}" id="dataFine"
+							pattern="dd/MM/yyyy"/>
+						<p:watermark for="dataFine" value="Data fine" />  
+						<p:tooltip for="dataFine" showEffect="fade" value="Data fine" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="note" value="Note:" />
+					</p:column>
+					<p:column>
+						<p:inputTextarea value="#{dettaglioAddettoArmamenti.note}" id="note"/>
+						<p:watermark for="note" value="Eventuali annotazioni sull\'arma" />  
+						<p:tooltip for="note" showEffect="fade" value="Eventuali annotazioni sull'arma" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column colspan="2" styleClass="form-footer">
+						<p:commandButton value="Salva"
+							id="saveButton"
+							actionListener="#{dettaglioAddettoArmamenti.doSave}" 
+							update="detailArmamentoView:messages,detailArmamentoView:panel,:detailForm:tabView:gpgAccordion:armamentiTable,:detailForm:growl"
+							process="detailArmamentoView:detailArmamentoDialog"
+							oncomplete="if(args.ok) { detailArmamentoDialogWidget.hide(); }"/>
+						<p:commandButton value="Annulla"
+							type="button"
+							onclick="detailArmamentoDialogWidget.hide();" />
+					</p:column>
+				</p:row>
+				
+			</p:panelGrid>
+	
+			<p:defaultCommand target="saveButton" scope="detailArmamentoDialog"/>
+			
+		</p:dialog>
+	
+	</f:subview>
+	
+	
+	<p:confirmDialog 
+		id="deleteArmamentoDialog"
+		header="Elimina armamento" 
+		widgetVar="deleteArmamentoDialogWidget"
+		message="Si conferma l'eliminazione dell'arma selezionata? L'operazione non può essere annullata."
+		showEffect="fade" 
+		hideEffect="fade">
+		
+		<p:commandButton 
+			value="Elimina"
+			update=":detailForm:tabView:gpgAccordion:armamentiTable,:detailForm:tabView:gpgAccordion:armamentiButtons,:detailForm:growl"
+			process="@this" 
+			oncomplete="deleteArmamentoDialogWidget.hide()"  
+            actionListener="#{dettaglioAddettoArmamenti.doDelete}" />
+              
+        <p:commandButton 
+        	value="Annulla" 
+        	onclick="deleteArmamentoDialogWidget.hide()" 
+        	type="button" />
+        	   
+	</p:confirmDialog>
+
+</html>

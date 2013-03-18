@@ -1,0 +1,227 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:custom="http://java.sun.com/jsf/composite/components/custom">
+			
+	<p:panelGrid styleClass="form-panel">
+					
+		<p:row>
+			<p:column colspan="2" styleClass="form-header">
+				<h:outputText value="Elenco storico delle licenze di porto d'armi dell'addetto."/>
+			</p:column>
+		</p:row>
+		
+		<p:row>
+		
+			<p:column>
+								
+				<p:dataTable
+					id="licenzeTable"
+					var="licenza"
+					value="#{dettaglioAddettoLicenze.listLicenze}"
+					selectionMode="single"
+					selection="#{dettaglioAddettoLicenze.selected}"
+					rowKey="#{licenza.id}"
+					sortBy="#{licenza.dataScadenza}"
+					sortOrder="descending"
+					emptyMessage="Nessun record trovato" 
+					styleClass="small-datatable">
+
+					<p:ajax event="rowSelect" update=":detailForm:tabView:gpgAccordion:licenzeButtons"/>
+	
+					<p:ajax event="rowUnselect" update=":detailForm:tabView:gpgAccordion:licenzeButtons"/>
+
+					<p:column headerText="Libretto" sortBy="#{licenza.librettoPortoArmi.numero}">
+						<h:outputText value="#{licenza.librettoPortoArmi.numero}" />
+					</p:column>
+
+					<p:column headerText="Numero" sortBy="#{licenza.numero}">
+						<h:outputText value="#{licenza.numero}" />
+					</p:column>
+
+					<p:column headerText="Data rilascio" sortBy="#{licenza.dataRilascio}">
+						<h:outputText value="#{licenza.dataRilascio}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Data scadenza" sortBy="#{licenza.dataScadenza}">
+						<h:outputText value="#{licenza.dataScadenza}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+																		
+				</p:dataTable>
+			
+			</p:column>
+			
+		</p:row>
+		
+		<p:row>
+			<p:column>
+				
+				<p:outputPanel id="licenzeButtons">
+					
+					<p:commandButton value="Nuovo"
+						oncomplete="detailLicenzaDialogWidget.show()"
+						actionListener="#{dettaglioAddettoLicenze.startCreate}"
+						process="@this"
+						update=":detailForm:tabView:gpgAccordion:detailLicenzaView:detailLicenzaDialog"/>
+
+					<p:commandButton value="Modifica"
+						disabled="#{empty dettaglioAddettoLicenze.selected}"
+						oncomplete="detailLicenzaDialogWidget.show()"
+						actionListener="#{dettaglioAddettoLicenze.startUpdate}"
+						process="@this"
+						update=":detailForm:tabView:gpgAccordion:detailLicenzaView:detailLicenzaDialog"/>
+
+					<p:commandButton value="Elimina"
+						disabled="#{empty dettaglioAddettoLicenze.selected}"
+						type="button"
+						onclick="deleteLicenzaDialogWidget.show()"/>
+					
+				</p:outputPanel>
+				
+			</p:column>
+		</p:row>
+		
+	</p:panelGrid>
+
+	
+	
+	<f:subview id="detailLicenzaView">
+	
+		<p:dialog 
+			id="detailLicenzaDialog"
+			header="Dettagli della licenza di porto d'armi" 
+			widgetVar="detailLicenzaDialogWidget" 
+			modal="true"
+			showEffect="fade" 
+			hideEffect="fade"> 
+					
+			<p:messages id="messages" globalOnly="false" showSummary="false" showDetail="true" closable="true"/>
+			
+			<p:panelGrid id="panel" styleClass="form-panel">
+							
+				<p:row>
+					<p:column colspan="2" styleClass="form-header">
+						<h:outputText value="Il pannello permette di immettere le informazioni di dettaglio relative alla licenza di porto d'armi dell'addetto."/>
+					</p:column>
+				</p:row>
+		
+				<p:row>
+					<p:column>
+						<p:outputLabel for="codiceLibretto" value="Libretto:" />
+					</p:column>
+					<p:column>
+						<p:selectOneMenu
+							required="true" 
+							requiredMessage="Il campo libretto è obbligatorio"
+							id="codiceLibretto" 
+							value="#{dettaglioAddettoLicenze.codiceLibretto}"
+							effect="fade">
+							<f:selectItem itemLabel="Selezionare un libretto" itemValue="" />
+							<f:selectItems 
+								value="#{dettaglioAddettoLicenze.listLibretti}" var="item"
+								itemLabel="#{item.numero}" itemValue="#{item.id}" />
+						</p:selectOneMenu>	
+						<p:tooltip for="codiceLibretto" showEffect="fade" value="Numero del libretto di porto d'armi" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="numero" value="Numero:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioAddettoLicenze.numero}" id="numero"
+							required="true" 
+							requiredMessage="Il campo numero della licenza è obbligatorio"/>
+						<p:watermark for="numero" value="Numero della licenza" />  
+						<p:tooltip for="numero" showEffect="fade" value="Numero della licenza" />
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="dataRilascio" value="Data rilascio:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioAddettoLicenze.dataRilascio}" id="dataRilascio"
+							pattern="dd/MM/yyyy"/>
+						<p:watermark for="dataRilascio" value="Data di rilascio" />  
+						<p:tooltip for="dataRilascio" showEffect="fade" value="Data di rilascio della licenza di porto d'armi" />
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="dataScadenza" value="Data scadenza:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioAddettoLicenze.dataScadenza}" id="dataScadenza"
+							pattern="dd/MM/yyyy"/>
+						<p:watermark for="dataScadenza" value="Data di scadenza" />  
+						<p:tooltip for="dataScadenza" showEffect="fade" value="Data di scadenza della licenza di porto d'armi" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="note" value="Note:" />
+					</p:column>
+					<p:column>
+						<p:inputTextarea value="#{dettaglioAddettoLicenze.note}" id="note"/>
+						<p:watermark for="note" value="Eventuali annotazioni sulla licenza" />  
+						<p:tooltip for="note" showEffect="fade" value="Eventuali annotazioni sulla licenza di porto d'armi" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column colspan="2" styleClass="form-footer">
+						<p:commandButton value="Salva"
+							id="saveButton"
+							actionListener="#{dettaglioAddettoLicenze.doSave}" 
+							update="detailLicenzaView:messages,detailLicenzaView:panel,:detailForm:tabView:gpgAccordion:licenzeTable,:detailForm:growl"
+							process="detailLicenzaView:detailLicenzaDialog"
+							oncomplete="if(args.ok) { detailLicenzaDialogWidget.hide(); }"/>
+						<p:commandButton value="Annulla"
+							type="button"
+							onclick="detailLicenzaDialogWidget.hide();" />
+					</p:column>
+				</p:row>
+				
+			</p:panelGrid>
+	
+			<p:defaultCommand target="saveButton" scope="detailLicenzaDialog"/>
+			
+		</p:dialog>
+	
+	</f:subview>
+	
+	
+	<p:confirmDialog 
+		id="deleteLicenzaDialog"
+		header="Elimina licenza" 
+		widgetVar="deleteLicenzaDialogWidget"
+		message="Si conferma l'eliminazione del record relativo alla licenza selezionata? L'operazione non può essere annullata."
+		showEffect="fade" 
+		hideEffect="fade">
+		
+		<p:commandButton 
+			value="Elimina"
+			update=":detailForm:tabView:gpgAccordion:licenzeTable,:detailForm:tabView:gpgAccordion:licenzeButtons,:detailForm:growl"
+			process="@this" 
+			oncomplete="deleteLicenzaDialogWidget.hide()"  
+            actionListener="#{dettaglioAddettoLicenze.doDelete}" />
+              
+        <p:commandButton 
+        	value="Annulla" 
+        	onclick="deleteLicenzaDialogWidget.hide()" 
+        	type="button" />
+        	   
+	</p:confirmDialog>
+
+</html>

@@ -1,0 +1,217 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:custom="http://java.sun.com/jsf/composite/components/custom">
+			
+	<p:panelGrid styleClass="form-panel">
+					
+		<p:row>
+			<p:column colspan="2" styleClass="form-header">
+				<h:outputText value="Elenco storico dei libretti di porto d'armi dell'addetto."/>
+			</p:column>
+		</p:row>
+		
+		<p:row>
+		
+			<p:column>
+								
+				<p:dataTable
+					id="librettiTable"
+					var="libretto"
+					value="#{dettaglioAddettoLibretti.listLibretti}"
+					selectionMode="single"
+					selection="#{dettaglioAddettoLibretti.selected}"
+					rowKey="#{libretto.id}"
+					sortBy="#{libretto.dataScadenza}"
+					sortOrder="descending"
+					emptyMessage="Nessun record trovato" 
+					styleClass="small-datatable">
+
+					<p:ajax event="rowSelect" update=":detailForm:tabView:gpgAccordion:librettiButtons"/>
+	
+					<p:ajax event="rowUnselect" update=":detailForm:tabView:gpgAccordion:librettiButtons"/>
+
+					<p:column headerText="Numero" sortBy="#{libretto.numero}">
+						<h:outputText value="#{libretto.numero}" />
+					</p:column>
+
+					<p:column headerText="Fucile" sortBy="#{libretto.fucile}">
+						<h:outputText value="#{libretto.fucile ? 'Sì' : 'No'}" />
+					</p:column>
+
+					<p:column headerText="Data rilascio" sortBy="#{libretto.dataRilascio}">
+						<h:outputText value="#{libretto.dataRilascio}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Data scadenza" sortBy="#{libretto.dataScadenza}">
+						<h:outputText value="#{libretto.dataScadenza}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+																		
+				</p:dataTable>
+			
+			</p:column>
+			
+		</p:row>
+		
+		<p:row>
+			<p:column>
+				
+				<p:outputPanel id="librettiButtons">
+					
+					<p:commandButton value="Nuovo"
+						oncomplete="detailLibrettoDialogWidget.show()"
+						actionListener="#{dettaglioAddettoLibretti.startCreate}"
+						process="@this"
+						update=":detailForm:tabView:gpgAccordion:detailLibrettoView:detailLibrettoDialog"/>
+
+					<p:commandButton value="Modifica"
+						disabled="#{empty dettaglioAddettoLibretti.selected}"
+						oncomplete="detailLibrettoDialogWidget.show()"
+						actionListener="#{dettaglioAddettoLibretti.startUpdate}"
+						process="@this"
+						update=":detailForm:tabView:gpgAccordion:detailLibrettoView:detailLibrettoDialog"/>
+
+					<p:commandButton value="Elimina"
+						disabled="#{empty dettaglioAddettoLibretti.selected}"
+						type="button"
+						onclick="deleteLibrettoDialogWidget.show()"/>
+					
+				</p:outputPanel>
+				
+			</p:column>
+		</p:row>
+		
+	</p:panelGrid>
+
+	
+	
+	<f:subview id="detailLibrettoView">
+	
+		<p:dialog 
+			id="detailLibrettoDialog"
+			header="Dettagli del libretto di porto d'armi" 
+			widgetVar="detailLibrettoDialogWidget" 
+			modal="true"
+			showEffect="fade" 
+			hideEffect="fade"> 
+					
+			<p:messages id="messages" globalOnly="false" showSummary="false" showDetail="true" closable="true"/>
+			
+			<p:panelGrid id="panel" styleClass="form-panel">
+							
+				<p:row>
+					<p:column colspan="2" styleClass="form-header">
+						<h:outputText value="Il pannello permette di immettere le informazioni di dettaglio relative al libretto di porto d'armi dell'addetto."/>
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="numero" value="Numero:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioAddettoLibretti.numero}" id="numero"
+							required="true" 
+							requiredMessage="Il campo numero del libretto è obbligatorio"/>
+						<p:watermark for="numero" value="Numero del libretto" />  
+						<p:tooltip for="numero" showEffect="fade" value="Numero del libretto" />
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="fucile" value="Fucile:" />
+					</p:column>
+					<p:column>
+						<p:selectBooleanCheckbox value="#{dettaglioAddettoLibretti.fucile}" id="fucile"/>
+						<p:tooltip for="fucile" showEffect="fade" value="Abilitazione per il fucile" />
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="dataRilascio" value="Data rilascio:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioAddettoLibretti.dataRilascio}" id="dataRilascio"
+							pattern="dd/MM/yyyy"/>
+						<p:watermark for="dataRilascio" value="Data di rilascio" />  
+						<p:tooltip for="dataRilascio" showEffect="fade" value="Data di rilascio del libretto di porto d'armi" />
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="dataScadenza" value="Data scadenza:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioAddettoLibretti.dataScadenza}" id="dataScadenza"
+							pattern="dd/MM/yyyy"/>
+						<p:watermark for="dataScadenza" value="Data di scadenza" />  
+						<p:tooltip for="dataScadenza" showEffect="fade" value="Data di scadenza del libretto di porto d'armi" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="note" value="Note:" />
+					</p:column>
+					<p:column>
+						<p:inputTextarea value="#{dettaglioAddettoLibretti.note}" id="note"/>
+						<p:watermark for="note" value="Eventuali annotazioni sul libretto" />  
+						<p:tooltip for="note" showEffect="fade" value="Eventuali annotazioni sul libretto di porto d'armi" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column colspan="2" styleClass="form-footer">
+						<p:commandButton value="Salva"
+							id="saveButton"
+							actionListener="#{dettaglioAddettoLibretti.doSave}" 
+							update="detailLibrettoView:messages,detailLibrettoView:panel,:detailForm:tabView:gpgAccordion:librettiTable,:detailForm:growl"
+							process="detailLibrettoView:detailLibrettoDialog"
+							oncomplete="if(args.ok) { detailLibrettoDialogWidget.hide(); }"/>
+						<p:commandButton value="Annulla"
+							type="button"
+							onclick="detailLibrettoDialogWidget.hide();" />
+					</p:column>
+				</p:row>
+				
+			</p:panelGrid>
+	
+			<p:defaultCommand target="saveButton" scope="detailLibrettoDialog"/>
+			
+		</p:dialog>
+	
+	</f:subview>
+	
+	
+	<p:confirmDialog 
+		id="deleteLibrettoDialog"
+		header="Elimina libretto" 
+		widgetVar="deleteLibrettoDialogWidget"
+		message="Si conferma l'eliminazione del record relativo al libretto selezionato? L'operazione non può essere annullata."
+		showEffect="fade" 
+		hideEffect="fade">
+		
+		<p:commandButton 
+			value="Elimina"
+			update=":detailForm:tabView:gpgAccordion:librettiTable,:detailForm:tabView:gpgAccordion:librettiButtons,:detailForm:growl"
+			process="@this" 
+			oncomplete="deleteLibrettoDialogWidget.hide()"  
+            actionListener="#{dettaglioAddettoLibretti.doDelete}" />
+              
+        <p:commandButton 
+        	value="Annulla" 
+        	onclick="deleteLibrettoDialogWidget.hide()" 
+        	type="button" />
+        	   
+	</p:confirmDialog>
+
+</html>
