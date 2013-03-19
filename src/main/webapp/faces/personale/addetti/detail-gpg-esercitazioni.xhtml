@@ -48,13 +48,13 @@
 
 					<p:column headerText="Importo richiesto" sortBy="#{esercitazione.importoRichiesto}">
 						<h:outputText value="#{esercitazione.importoRichiesto}">
-							<f:convertNumber type="currency" pattern="0.00" />
+							<f:converter converterId="currencyConverter"/>
 						</h:outputText>
 					</p:column>
 
 					<p:column headerText="Importo rimborsato" sortBy="#{esercitazione.importoRimborsato}">
 						<h:outputText value="#{esercitazione.importoRimborsato}">
-							<f:convertNumber type="currency" pattern="0.00" />
+							<f:converter converterId="currencyConverter"/>
 						</h:outputText>
 					</p:column>
 																		
@@ -169,7 +169,6 @@
 					</p:column>
 					<p:column>
 						<p:inputText value="#{dettaglioAddettoEsercitazioni.importoRichiesto}" id="importoRichiesto"
-							validator="currencyValidator" validatorMessage="Il campo importo richiesto non rappresenta un importo valido"
 							converter="currencyConverter" converterMessage="Il campo importo richiesto non rappresenta un importo valido"/>
 						<p:watermark for="importoRichiesto" value="Importo richiesto" />  
 						<p:tooltip for="importoRichiesto" showEffect="fade" value="Importo richiesto per l'esercitazione di tiro" />
@@ -182,7 +181,6 @@
 					</p:column>
 					<p:column>
 						<p:inputText value="#{dettaglioAddettoEsercitazioni.importoRimborsato}" id="importoRimborsato"
-							validator="currencyValidator" validatorMessage="Il campo importo rimborsato non rappresenta un importo valido"
 							converter="currencyConverter" converterMessage="Il campo importo richiesto non rappresenta un importo valido"/>
 						<p:watermark for="importoRimborsato" value="Importo rimborsato" />  
 						<p:tooltip for="importoRimborsato" showEffect="fade" value="Importo rimborsato per l'esercitazione di tiro" />
