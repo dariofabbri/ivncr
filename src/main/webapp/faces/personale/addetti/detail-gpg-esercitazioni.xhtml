@@ -1,0 +1,237 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:custom="http://java.sun.com/jsf/composite/components/custom">
+			
+	<p:panelGrid styleClass="form-panel">
+					
+		<p:row>
+			<p:column colspan="2" styleClass="form-header">
+				<h:outputText value="Elenco delle esercitazioni di tiro dell'addetto."/>
+			</p:column>
+		</p:row>
+		
+		<p:row>
+		
+			<p:column>
+								
+				<p:dataTable
+					id="esercitazioniTable"
+					var="esercitazione"
+					value="#{dettaglioAddettoEsercitazioni.listEsercitazioni}"
+					selectionMode="single"
+					selection="#{dettaglioAddettoEsercitazioni.selected}"
+					rowKey="#{esercitazione.id}"
+					sortBy="#{esercitazione.dataTiro}"
+					emptyMessage="Nessun record trovato" 
+					styleClass="small-datatable">
+
+					<p:ajax event="rowSelect" update=":detailForm:tabView:gpgAccordion:esercitazioniButtons"/>
+	
+					<p:ajax event="rowUnselect" update=":detailForm:tabView:gpgAccordion:esercitazioniButtons"/>
+
+					<p:column headerText="Data tiro" sortBy="#{esercitazione.dataTiro}">
+						<h:outputText value="#{esercitazione.dataTiro}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Poligono" sortBy="#{esercitazione.poligono}">
+						<h:outputText value="#{esercitazione.poligono}" />
+					</p:column>
+
+					<p:column headerText="Tipo esercitazione" sortBy="#{esercitazione.tipoEsercitazioneTiro.descrizione}">
+						<h:outputText value="#{esercitazione.tipoEsercitazioneTiro.descrizione}" />
+					</p:column>
+
+					<p:column headerText="Importo richiesto" sortBy="#{esercitazione.importoRichiesto}">
+						<h:outputText value="#{esercitazione.importoRichiesto}">
+							<f:convertNumber type="currency" pattern="0.00" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Importo rimborsato" sortBy="#{esercitazione.importoRimborsato}">
+						<h:outputText value="#{esercitazione.importoRimborsato}">
+							<f:convertNumber type="currency" pattern="0.00" />
+						</h:outputText>
+					</p:column>
+																		
+				</p:dataTable>
+			
+			</p:column>
+			
+		</p:row>
+		
+		<p:row>
+			<p:column>
+				
+				<p:outputPanel id="esercitazioniButtons">
+					
+					<p:commandButton value="Nuovo"
+						oncomplete="detailEsercitazioneDialogWidget.show()"
+						actionListener="#{dettaglioAddettoEsercitazioni.startCreate}"
+						process="@this"
+						update=":detailForm:tabView:gpgAccordion:detailEsercitazioneView:detailEsercitazioneDialog"/>
+
+					<p:commandButton value="Modifica"
+						disabled="#{empty dettaglioAddettoEsercitazioni.selected}"
+						oncomplete="detailEsercitazioneDialogWidget.show()"
+						actionListener="#{dettaglioAddettoEsercitazioni.startUpdate}"
+						process="@this"
+						update=":detailForm:tabView:gpgAccordion:detailEsercitazioneView:detailEsercitazioneDialog"/>
+
+					<p:commandButton value="Elimina"
+						disabled="#{empty dettaglioAddettoEsercitazioni.selected}"
+						type="button"
+						onclick="deleteEsercitazioneDialogWidget.show()"/>
+					
+				</p:outputPanel>
+				
+			</p:column>
+		</p:row>
+		
+	</p:panelGrid>
+
+	
+	
+	<f:subview id="detailEsercitazioneView">
+	
+		<p:dialog 
+			id="detailEsercitazioneDialog"
+			header="Dettagli dell'esercitazione di tiro" 
+			widgetVar="detailEsercitazioneDialogWidget" 
+			modal="true"
+			showEffect="fade" 
+			hideEffect="fade"> 
+					
+			<p:messages id="messages" globalOnly="false" showSummary="false" showDetail="true" closable="true"/>
+			
+			<p:panelGrid id="panel" styleClass="form-panel">
+							
+				<p:row>
+					<p:column colspan="2" styleClass="form-header">
+						<h:outputText value="Il pannello permette di immettere le informazioni di dettaglio riguardo l'esercitazione di tiro dell'addetto."/>
+					</p:column>
+				</p:row>
+							
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="dataTiro" value="Data tiro:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioAddettoEsercitazioni.dataTiro}" id="dataTiro"
+							pattern="dd/MM/yyyy"
+							required="true" 
+							requiredMessage="Il campo data tiro è obbligatorio"/>
+						<p:watermark for="dataTiro" value="Data tiro" />  
+						<p:tooltip for="dataTiro" showEffect="fade" value="Data dell'esercitazione di tiro" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="poligono" value="Poligono:"/>
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioAddettoEsercitazioni.poligono}" id="poligono"
+							required="true" 
+							requiredMessage="Il campo poligono è obbligatorio"/>
+						<p:watermark for="poligono" value="Poligono" />  
+						<p:tooltip for="poligono" showEffect="fade" value="Poligono dove si è svolta l'esercitazione di tiro" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>
+						<p:outputLabel for="codiceTipoEsercitazione" value="Tipo esercitazione:" />
+					</p:column>
+					<p:column>
+						<p:selectOneMenu
+							required="true" 
+							requiredMessage="Il campo tipo esercitazione è obbligatorio"
+							id="codiceTipoEsercitazione" 
+							value="#{dettaglioAddettoEsercitazioni.codiceTipoEsercitazione}"
+							effect="fade">
+							<f:selectItem itemLabel="Selezionare un tipo di esercitazione" itemValue="" />
+							<f:selectItems 
+								value="#{dettaglioAddettoEsercitazioni.listTipoEsercitazione}" var="item"
+								itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+						</p:selectOneMenu>	
+						<p:tooltip for="codiceTipoEsercitazione" showEffect="fade" value="Tipo di esercitazione di tiro" />
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>
+						<p:outputLabel for="importoRichiesto" value="Importo richiesto:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioAddettoEsercitazioni.importoRichiesto}" id="importoRichiesto"
+							validator="currencyValidator" validatorMessage="Il campo importo richiesto non rappresenta un importo valido"
+							converter="currencyConverter" converterMessage="Il campo importo richiesto non rappresenta un importo valido"/>
+						<p:watermark for="importoRichiesto" value="Importo richiesto" />  
+						<p:tooltip for="importoRichiesto" showEffect="fade" value="Importo richiesto per l'esercitazione di tiro" />
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>
+						<p:outputLabel for="importoRimborsato" value="Importo rimborsato:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioAddettoEsercitazioni.importoRimborsato}" id="importoRimborsato"
+							validator="currencyValidator" validatorMessage="Il campo importo rimborsato non rappresenta un importo valido"
+							converter="currencyConverter" converterMessage="Il campo importo richiesto non rappresenta un importo valido"/>
+						<p:watermark for="importoRimborsato" value="Importo rimborsato" />  
+						<p:tooltip for="importoRimborsato" showEffect="fade" value="Importo rimborsato per l'esercitazione di tiro" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column colspan="2" styleClass="form-footer">
+						<p:commandButton value="Salva"
+							id="saveButton"
+							actionListener="#{dettaglioAddettoEsercitazioni.doSave}" 
+							update="detailEsercitazioneView:messages,detailEsercitazioneView:panel,:detailForm:tabView:gpgAccordion:esercitazioniTable,:detailForm:growl"
+							process="detailEsercitazioneView:detailEsercitazioneDialog"
+							oncomplete="if(args.ok) { detailEsercitazioneDialogWidget.hide(); }"/>
+						<p:commandButton value="Annulla"
+							type="button"
+							onclick="detailEsercitazioneDialogWidget.hide();" />
+					</p:column>
+				</p:row>
+				
+			</p:panelGrid>
+	
+			<p:defaultCommand target="saveButton" scope="detailEsercitazioneDialog"/>
+			
+		</p:dialog>
+	
+	</f:subview>
+	
+	
+	<p:confirmDialog 
+		id="deleteEsercitazioneDialog"
+		header="Elimina esercitazione di tiro" 
+		widgetVar="deleteEsercitazioneDialogWidget"
+		message="Si conferma l'eliminazione dell'esercitazione di tiro selezionata? L'operazione non può essere annullata."
+		showEffect="fade" 
+		hideEffect="fade">
+		
+		<p:commandButton 
+			value="Elimina"
+			update=":detailForm:tabView:gpgAccordion:esercitazioniTable,:detailForm:tabView:gpgAccordion:esercitazioniButtons,:detailForm:growl"
+			process="@this" 
+			oncomplete="deleteEsercitazioneDialogWidget.hide()"  
+            actionListener="#{dettaglioAddettoEsercitazioni.doDelete}" />
+              
+        <p:commandButton 
+        	value="Annulla" 
+        	onclick="deleteEsercitazioneDialogWidget.hide()" 
+        	type="button" />
+        	   
+	</p:confirmDialog>
+
+</html>
