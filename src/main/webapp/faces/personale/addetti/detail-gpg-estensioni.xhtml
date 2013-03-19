@@ -1,0 +1,223 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:custom="http://java.sun.com/jsf/composite/components/custom">
+			
+	<p:panelGrid styleClass="form-panel">
+					
+		<p:row>
+			<p:column colspan="2" styleClass="form-header">
+				<h:outputText value="Elenco storico delle estensioni dei decreti G.P.G. dell'addetto."/>
+			</p:column>
+		</p:row>
+		
+		<p:row>
+		
+			<p:column>
+								
+				<p:dataTable
+					id="estensioniTable"
+					var="estensione"
+					value="#{dettaglioAddettoEstensioni.listEstensioni}"
+					selectionMode="single"
+					selection="#{dettaglioAddettoEstensioni.selected}"
+					rowKey="#{estensione.id}"
+					sortBy="#{estensione.dataFineValidita}"
+					sortOrder="descending"
+					emptyMessage="Nessun record trovato" 
+					styleClass="small-datatable">
+
+					<p:ajax event="rowSelect" update=":detailForm:tabView:gpgAccordion:estensioniButtons"/>
+	
+					<p:ajax event="rowUnselect" update=":detailForm:tabView:gpgAccordion:estensioniButtons"/>
+
+					<p:column headerText="Provincia" sortBy="#{estensione.provincia}">
+						<h:outputText value="#{estensione.provincia}" />
+					</p:column>
+
+					<p:column headerText="Data inizio validità" sortBy="#{estensione.dataInizioValidita}">
+						<h:outputText value="#{estensione.dataInizioValidita}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Data fine validità" sortBy="#{estensione.dataFineValidita}">
+						<h:outputText value="#{estensione.dataFineValidita}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+																		
+				</p:dataTable>
+			
+			</p:column>
+			
+		</p:row>
+		
+		<p:row>
+			<p:column>
+				
+				<p:outputPanel id="estensioniButtons">
+					
+					<p:commandButton value="Nuovo"
+						oncomplete="detailEstensioneDialogWidget.show()"
+						actionListener="#{dettaglioAddettoEstensioni.startCreate}"
+						process="@this"
+						update=":detailForm:tabView:gpgAccordion:detailEstensioneView:detailEstensioneDialog"/>
+
+					<p:commandButton value="Modifica"
+						disabled="#{empty dettaglioAddettoEstensioni.selected}"
+						oncomplete="detailEstensioneDialogWidget.show()"
+						actionListener="#{dettaglioAddettoEstensioni.startUpdate}"
+						process="@this"
+						update=":detailForm:tabView:gpgAccordion:detailEstensioneView:detailEstensioneDialog"/>
+
+					<p:commandButton value="Elimina"
+						disabled="#{empty dettaglioAddettoEstensioni.selected}"
+						type="button"
+						onclick="deleteEstensioneDialogWidget.show()"/>
+					
+				</p:outputPanel>
+				
+			</p:column>
+		</p:row>
+		
+	</p:panelGrid>
+
+	
+	
+	<f:subview id="detailEstensioneView">
+	
+		<p:dialog 
+			id="detailEstensioneDialog"
+			header="Dettagli dell'estensione decreto G.P.G." 
+			widgetVar="detailEstensioneDialogWidget" 
+			modal="true"
+			showEffect="fade" 
+			hideEffect="fade"> 
+					
+			<p:messages id="messages" globalOnly="false" showSummary="false" showDetail="true" closable="true"/>
+			
+			<p:panelGrid id="panel" styleClass="form-panel">
+							
+				<p:row>
+					<p:column colspan="2" styleClass="form-header">
+						<h:outputText value="Il pannello permette di immettere le informazioni di dettaglio relative all'estensione del decreto G.P.G. dell'addetto."/>
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="provincia" value="Provincia:" />
+					</p:column>
+					<p:column>
+						<p:autoComplete id="provincia"
+							required="true"
+							requiredMessage="Il campo provincia è obbligatorio"
+							value="#{dettaglioAddettoEstensioni.provincia}"
+							completeMethod="#{dettaglioAddettoEstensioni.completeProvincia}"
+							forceSelection="true" 
+							var="p"
+							itemLabel="#{p.sigla}"
+							itemValue="#{p.sigla}"
+							converter="provinciaConverter">
+							<f:facet name="itemtip">
+								<h:panelGrid columns="2">
+									<h:outputText value="Sigla:"/>
+									<h:outputText value="#{p.sigla}"/>
+
+									<h:outputText value="Descrizione:"/>
+									<h:outputText value="#{p.descrizione}"/>
+
+									<h:outputText value="Regione:"/>
+									<h:outputText value="#{p.regione}"/>
+								</h:panelGrid>
+							</f:facet>
+						</p:autoComplete>
+						<p:watermark for="provincia" value="Provincia" />  
+						<p:tooltip for="provincia" showEffect="fade" value="Provincia per la quale è valida l'estensione" />
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="dataInizioValidita" value="Data inizio validità:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioAddettoEstensioni.dataInizioValidita}" id="dataInizioValidita"
+							pattern="dd/MM/yyyy"/>
+						<p:watermark for="dataInizioValidita" value="Data di inizio validità" />  
+						<p:tooltip for="dataInizioValidita" showEffect="fade" value="Data di inizio validità dell'estensione del decreto G.P.G." />
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="dataFineValidita" value="Data fine validità:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioAddettoEstensioni.dataFineValidita}" id="dataFineValidita"
+							pattern="dd/MM/yyyy"/>
+						<p:watermark for="dataFineValidita" value="Data di fine validità" />  
+						<p:tooltip for="dataFineValidita" showEffect="fade" value="Data di fine validità dell'estensione del decreto G.P.G." />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="note" value="Note:" />
+					</p:column>
+					<p:column>
+						<p:inputTextarea value="#{dettaglioAddettoEstensioni.note}" id="note"/>
+						<p:watermark for="note" value="Eventuali annotazioni sull\'estensione" />  
+						<p:tooltip for="note" showEffect="fade" value="Eventuali annotazioni sull'estensione del decreto G.P.G." />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column colspan="2" styleClass="form-footer">
+						<p:commandButton value="Salva"
+							id="saveButton"
+							actionListener="#{dettaglioAddettoEstensioni.doSave}" 
+							update="detailEstensioneView:messages,detailEstensioneView:panel,:detailForm:tabView:gpgAccordion:estensioniTable,:detailForm:growl"
+							process="detailEstensioneView:detailEstensioneDialog"
+							oncomplete="if(args.ok) { detailEstensioneDialogWidget.hide(); }"/>
+						<p:commandButton value="Annulla"
+							type="button"
+							onclick="detailEstensioneDialogWidget.hide();" />
+					</p:column>
+				</p:row>
+				
+			</p:panelGrid>
+	
+			<p:defaultCommand target="saveButton" scope="detailEstensioneDialog"/>
+			
+		</p:dialog>
+	
+	</f:subview>
+	
+	
+	<p:confirmDialog 
+		id="deleteEstensioneDialog"
+		header="Elimina estensione decreto" 
+		widgetVar="deleteEstensioneDialogWidget"
+		message="Si conferma l'eliminazione del record relativo all'estensione selezionata? L'operazione non può essere annullata."
+		showEffect="fade" 
+		hideEffect="fade">
+		
+		<p:commandButton 
+			value="Elimina"
+			update=":detailForm:tabView:gpgAccordion:estensioniTable,:detailForm:tabView:gpgAccordion:estensioniButtons,:detailForm:growl"
+			process="@this" 
+			oncomplete="deleteEstensioneDialogWidget.hide()"  
+            actionListener="#{dettaglioAddettoEstensioni.doDelete}" />
+              
+        <p:commandButton 
+        	value="Annulla" 
+        	onclick="deleteEstensioneDialogWidget.hide()" 
+        	type="button" />
+        	   
+	</p:confirmDialog>
+
+</html>
