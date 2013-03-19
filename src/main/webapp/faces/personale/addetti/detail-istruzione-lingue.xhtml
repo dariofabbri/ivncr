@@ -1,0 +1,198 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:custom="http://java.sun.com/jsf/composite/components/custom">
+			
+	<p:panelGrid styleClass="form-panel">
+					
+		<p:row>
+			<p:column colspan="2" styleClass="form-header">
+				<h:outputText value="Elenco delle lingue conosciute dall'addetto."/>
+			</p:column>
+		</p:row>
+		
+		<p:row>
+		
+			<p:column>
+								
+				<p:dataTable
+					id="lingueTable"
+					var="lingua"
+					value="#{dettaglioAddettoLingue.listLingue}"
+					selectionMode="single"
+					selection="#{dettaglioAddettoLingue.selected}"
+					rowKey="#{lingua.id}"
+					sortBy="#{lingua.lingua.descrizione}"
+					sortOrder="ascending"
+					emptyMessage="Nessun record trovato" 
+					styleClass="small-datatable">
+
+					<p:ajax event="rowSelect" update=":detailForm:tabView:istruzioneAccordion:lingueButtons"/>
+	
+					<p:ajax event="rowUnselect" update=":detailForm:tabView:istruzioneAccordion:lingueButtons"/>
+
+					<p:column headerText="Lingua" sortBy="#{lingua.lingua.descrizione}">
+						<h:outputText value="#{lingua.lingua.descrizione}" />
+					</p:column>
+
+					<p:column headerText="Livello" sortBy="#{lingua.livelloLingua.descrizione}">
+						<h:outputText value="#{lingua.livelloLingua.descrizione}" />
+					</p:column>
+																		
+				</p:dataTable>
+			
+			</p:column>
+			
+		</p:row>
+		
+		<p:row>
+			<p:column>
+				
+				<p:outputPanel id="lingueButtons">
+					
+					<p:commandButton value="Nuovo"
+						oncomplete="detailLinguaDialogWidget.show()"
+						actionListener="#{dettaglioAddettoLingue.startCreate}"
+						process="@this"
+						update=":detailForm:tabView:istruzioneAccordion:detailLinguaView:detailLinguaDialog"/>
+
+					<p:commandButton value="Modifica"
+						disabled="#{empty dettaglioAddettoLingue.selected}"
+						oncomplete="detailLinguaDialogWidget.show()"
+						actionListener="#{dettaglioAddettoLingue.startUpdate}"
+						process="@this"
+						update=":detailForm:tabView:istruzioneAccordion:detailLinguaView:detailLinguaDialog"/>
+
+					<p:commandButton value="Elimina"
+						disabled="#{empty dettaglioAddettoLingue.selected}"
+						type="button"
+						onclick="deleteLinguaDialogWidget.show()"/>
+					
+				</p:outputPanel>
+				
+			</p:column>
+		</p:row>
+		
+	</p:panelGrid>
+
+	
+	
+	<f:subview id="detailLinguaView">
+	
+		<p:dialog 
+			id="detailLinguaDialog"
+			header="Dettagli della lingua" 
+			widgetVar="detailLinguaDialogWidget" 
+			modal="true"
+			showEffect="fade" 
+			hideEffect="fade"> 
+					
+			<p:messages id="messages" globalOnly="false" showSummary="false" showDetail="true" closable="true"/>
+			
+			<p:panelGrid id="panel" styleClass="form-panel">
+							
+				<p:row>
+					<p:column colspan="2" styleClass="form-header">
+						<h:outputText value="Il pannello permette di immettere le informazioni di dettaglio circa la lingua conosciuta dall'addetto."/>
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>
+						<p:outputLabel for="codiceLingua" value="Lingua:" />
+					</p:column>
+					<p:column>
+						<p:selectOneMenu
+							required="true" 
+							requiredMessage="Il campo lingua è obbligatorio"
+							id="codiceLingua" 
+							value="#{dettaglioAddettoLingue.codiceLingua}"
+							effect="fade">
+							<f:selectItem itemLabel="Selezionare una lingua" itemValue="" />
+							<f:selectItems 
+								value="#{dettaglioAddettoLingue.listLingua}" var="item"
+								itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+						</p:selectOneMenu>	
+						<p:tooltip for="codiceLingua" showEffect="fade" value="Lingua conosciuta dall'addetto" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>
+						<p:outputLabel for="codiceLivelloLingua" value="Livello:" />
+					</p:column>
+					<p:column>
+						<p:selectOneMenu
+							required="true" 
+							requiredMessage="Il campo livello è obbligatorio"
+							id="codiceLivelloLingua" 
+							value="#{dettaglioAddettoLingue.codiceLivelloLingua}"
+							effect="fade">
+							<f:selectItem itemLabel="Selezionare un livello" itemValue="" />
+							<f:selectItems 
+								value="#{dettaglioAddettoLingue.listLivelloLingua}" var="item"
+								itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+						</p:selectOneMenu>	
+						<p:tooltip for="codiceLivelloLingua" showEffect="fade" value="Livello al quale è conosciuta la Lingua" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="note" value="Note:" />
+					</p:column>
+					<p:column>
+						<p:inputTextarea value="#{dettaglioAddettoLingue.note}" id="note" />
+						<p:watermark for="note" value="Eventuali annotazioni sulla lingua" />
+						<p:tooltip for="note" showEffect="fade" value="Eventuali annotazioni sulla lingua" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column colspan="2" styleClass="form-footer">
+						<p:commandButton value="Salva"
+							id="saveButton"
+							actionListener="#{dettaglioAddettoLingue.doSave}" 
+							update="detailLinguaView:messages,detailLinguaView:panel,:detailForm:tabView:istruzioneAccordion:lingueTable,:detailForm:growl"
+							process="detailLinguaView:detailLinguaDialog"
+							oncomplete="if(args.ok) { detailLinguaDialogWidget.hide(); }"/>
+						<p:commandButton value="Annulla"
+							type="button"
+							onclick="detailLinguaDialogWidget.hide();" />
+					</p:column>
+				</p:row>
+				
+			</p:panelGrid>
+	
+			<p:defaultCommand target="saveButton" scope="detailLinguaDialog"/>
+			
+		</p:dialog>
+	
+	</f:subview>
+	
+	
+	<p:confirmDialog 
+		id="deleteLinguaDialog"
+		header="Elimina lingua" 
+		widgetVar="deleteLinguaDialogWidget"
+		message="Si conferma l'eliminazione della lingua selezionata? L'operazione non può essere annullata."
+		showEffect="fade" 
+		hideEffect="fade">
+		
+		<p:commandButton 
+			value="Elimina"
+			update=":detailForm:tabView:istruzioneAccordion:lingueTable,:detailForm:tabView:istruzioneAccordion:lingueButtons,:detailForm:growl"
+			process="@this" 
+			oncomplete="deleteLinguaDialogWidget.hide()"  
+            actionListener="#{dettaglioAddettoLingue.doDelete}" />
+              
+        <p:commandButton 
+        	value="Annulla" 
+        	onclick="deleteLinguaDialogWidget.hide()" 
+        	type="button" />
+        	   
+	</p:confirmDialog>
+
+</html>

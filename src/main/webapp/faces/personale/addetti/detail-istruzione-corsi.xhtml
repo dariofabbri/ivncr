@@ -1,0 +1,265 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:custom="http://java.sun.com/jsf/composite/components/custom">
+			
+	<p:panelGrid styleClass="form-panel">
+					
+		<p:row>
+			<p:column colspan="2" styleClass="form-header">
+				<h:outputText value="Elenco dei corsi frequentati dall'addetto."/>
+			</p:column>
+		</p:row>
+		
+		<p:row>
+		
+			<p:column>
+								
+				<p:dataTable
+					id="corsiTable"
+					var="corso"
+					value="#{dettaglioAddettoCorsi.listCorsi}"
+					selectionMode="single"
+					selection="#{dettaglioAddettoCorsi.selected}"
+					rowKey="#{corso.id}"
+					sortBy="#{corso.dataConseguimento}"
+					sortOrder="descending"
+					emptyMessage="Nessun record trovato" 
+					styleClass="small-datatable">
+
+					<p:ajax event="rowSelect" update=":detailForm:tabView:istruzioneAccordion:corsiButtons"/>
+	
+					<p:ajax event="rowUnselect" update=":detailForm:tabView:istruzioneAccordion:corsiButtons"/>
+
+					<p:column headerText="Ente" sortBy="#{corso.ente}">
+						<h:outputText value="#{corso.ente}" />
+					</p:column>
+
+					<p:column headerText="Abilitazione" sortBy="#{corso.abilitazione}">
+						<h:outputText value="#{corso.abilitazione}" />
+					</p:column>
+
+					<p:column headerText="Ore corso" sortBy="#{corso.oreCorso}">
+						<h:outputText value="#{corso.oreCorso}" />
+					</p:column>
+
+					<p:column headerText="Valutazione" sortBy="#{corso.valutazione}">
+						<h:outputText value="#{corso.valutazione}" />
+					</p:column>
+
+					<p:column headerText="Data conseguimento" sortBy="#{corso.dataConseguimento}">
+						<h:outputText value="#{corso.dataConseguimento}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Data inizio" sortBy="#{corso.dataInizio}">
+						<h:outputText value="#{corso.dataInizio}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Data fine" sortBy="#{corso.dataFine}">
+						<h:outputText value="#{corso.dataFine}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+																		
+				</p:dataTable>
+			
+			</p:column>
+			
+		</p:row>
+		
+		<p:row>
+			<p:column>
+				
+				<p:outputPanel id="corsiButtons">
+					
+					<p:commandButton value="Nuovo"
+						oncomplete="detailCorsoDialogWidget.show()"
+						actionListener="#{dettaglioAddettoCorsi.startCreate}"
+						process="@this"
+						update=":detailForm:tabView:istruzioneAccordion:detailCorsoView:detailCorsoDialog"/>
+
+					<p:commandButton value="Modifica"
+						disabled="#{empty dettaglioAddettoCorsi.selected}"
+						oncomplete="detailCorsoDialogWidget.show()"
+						actionListener="#{dettaglioAddettoCorsi.startUpdate}"
+						process="@this"
+						update=":detailForm:tabView:istruzioneAccordion:detailCorsoView:detailCorsoDialog"/>
+
+					<p:commandButton value="Elimina"
+						disabled="#{empty dettaglioAddettoCorsi.selected}"
+						type="button"
+						onclick="deleteCorsoDialogWidget.show()"/>
+					
+				</p:outputPanel>
+				
+			</p:column>
+		</p:row>
+		
+	</p:panelGrid>
+
+	
+	
+	<f:subview id="detailCorsoView">
+	
+		<p:dialog 
+			id="detailCorsoDialog"
+			header="Dettagli del corso" 
+			widgetVar="detailCorsoDialogWidget" 
+			modal="true"
+			showEffect="fade" 
+			hideEffect="fade"> 
+					
+			<p:messages id="messages" globalOnly="false" showSummary="false" showDetail="true" closable="true"/>
+			
+			<p:panelGrid id="panel" styleClass="form-panel">
+							
+				<p:row>
+					<p:column colspan="2" styleClass="form-header">
+						<h:outputText value="Il pannello permette di immettere le informazioni di dettaglio del corso frequentato dall'addetto."/>
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="ente" value="Ente:"/>
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioAddettoCorsi.ente}" id="ente" />
+						<p:watermark for="ente" value="Ente del corso" />  
+						<p:tooltip for="ente" showEffect="fade" value="Ente che ha erogato il corso" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="abilitazione" value="Abilitazione:"/>
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioAddettoCorsi.abilitazione}" id="abilitazione" />
+						<p:watermark for="abilitazione" value="Abilitazione conseguita" />  
+						<p:tooltip for="abilitazione" showEffect="fade" value="Abilitazione conseguita con il corso" />
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>
+						<p:outputLabel for="oreCorso" value="Ore del corso:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioAddettoCorsi.oreCorso}" id="oreCorso"
+							converter="integerConverter" converterMessage="Il campo ore corso non rappresenta un numero valido"/>
+						<p:watermark for="oreCorso" value="Durata del corso (in ore)" />  
+						<p:tooltip for="oreCorso" showEffect="fade" value="Durata del corso in ore" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="valutazione" value="Valutazione:"/>
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioAddettoCorsi.valutazione}" id="valutazione" />
+						<p:watermark for="valutazione" value="Valutazione finale" />  
+						<p:tooltip for="valutazione" showEffect="fade" value="Valutazione finale" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="dataConseguimento" value="Data di conseguimento:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioAddettoCorsi.dataConseguimento}" id="dataConseguimento"
+							pattern="dd/MM/yyyy"/>
+						<p:watermark for="dataConseguimento" value="Data di conseguimento" />  
+						<p:tooltip for="dataConseguimento" showEffect="fade" value="Data di conseguimento" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="dataInizio" value="Data di inizio:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioAddettoCorsi.dataInizio}" id="dataInizio"
+							pattern="dd/MM/yyyy"/>
+						<p:watermark for="dataInizio" value="Data di inizio" />  
+						<p:tooltip for="dataInizio" showEffect="fade" value="Data di inizio del corso" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="dataFine" value="Data di fine:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioAddettoCorsi.dataFine}" id="dataFine"
+							pattern="dd/MM/yyyy"/>
+						<p:watermark for="dataFine" value="Data di fine" />  
+						<p:tooltip for="dataFine" showEffect="fade" value="Data di fine del corso" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="note" value="Note:" />
+					</p:column>
+					<p:column>
+						<p:inputTextarea value="#{dettaglioAddettoCorsi.note}" id="note"/>
+						<p:watermark for="note" value="Eventuali annotazioni sul corso" />  
+						<p:tooltip for="note" showEffect="fade" value="Eventuali annotazioni sul corso frequentato" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column colspan="2" styleClass="form-footer">
+						<p:commandButton value="Salva"
+							id="saveButton"
+							actionListener="#{dettaglioAddettoCorsi.doSave}" 
+							update="detailCorsoView:messages,detailCorsoView:panel,:detailForm:tabView:istruzioneAccordion:corsiTable,:detailForm:growl"
+							process="detailCorsoView:detailCorsoDialog"
+							oncomplete="if(args.ok) { detailCorsoDialogWidget.hide(); }"/>
+						<p:commandButton value="Annulla"
+							type="button"
+							onclick="detailCorsoDialogWidget.hide();" />
+					</p:column>
+				</p:row>
+				
+			</p:panelGrid>
+	
+			<p:defaultCommand target="saveButton" scope="detailCorsoDialog"/>
+			
+		</p:dialog>
+	
+	</f:subview>
+	
+	
+	<p:confirmDialog 
+		id="deleteCorsoDialog"
+		header="Elimina corso" 
+		widgetVar="deleteCorsoDialogWidget"
+		message="Si conferma l'eliminazione del corso selezionato? L'operazione non può essere annullata."
+		showEffect="fade" 
+		hideEffect="fade">
+		
+		<p:commandButton 
+			value="Elimina"
+			update=":detailForm:tabView:istruzioneAccordion:corsiTable,:detailForm:tabView:istruzioneAccordion:corsiButtons,:detailForm:growl"
+			process="@this" 
+			oncomplete="deleteCorsoDialogWidget.hide()"  
+            actionListener="#{dettaglioAddettoCorsi.doDelete}" />
+              
+        <p:commandButton 
+        	value="Annulla" 
+        	onclick="deleteCorsoDialogWidget.hide()" 
+        	type="button" />
+        	   
+	</p:confirmDialog>
+
+</html>

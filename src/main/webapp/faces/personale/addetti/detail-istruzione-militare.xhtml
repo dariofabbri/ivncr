@@ -1,0 +1,112 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:custom="http://java.sun.com/jsf/composite/components/custom">
+
+	<f:subview id="detailPosizioneMilitareView">			
+	
+		<p:panelGrid id="panel" styleClass="form-panel">
+						
+			<p:row>
+				<p:column colspan="2" styleClass="form-header">
+					<h:outputText value="Il pannello permette di immettere le informazioni relative alla posizione militare dell'addetto."/>
+				</p:column>
+			</p:row>
+	
+			<p:row>
+				<p:column>
+					<p:outputLabel for="codiceTipoPosizione" value="Tipo posizione:" />
+				</p:column>
+				<p:column>
+					<p:selectOneMenu
+						required="true" 
+						requiredMessage="Il campo tipo posizione è obbligatorio"
+						id="codiceTipoPosizione" 
+						value="#{dettaglioAddettoMilitare.codiceTipoPosizione}"
+						effect="fade">
+						<f:selectItem itemLabel="Selezionare un tipo di posizione" itemValue="" />
+						<f:selectItems 
+							value="#{dettaglioAddettoMilitare.listTipoPosizione}" var="item"
+							itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+					</p:selectOneMenu>	
+					<p:tooltip for="codiceTipoPosizione" showEffect="fade" value="Tipo posizione" />
+				</p:column>
+			</p:row>
+	
+			<p:row>
+				<p:column>				
+					<p:outputLabel for="presso" value="Presso:"/>
+				</p:column>
+				<p:column>
+					<p:inputText value="#{dettaglioAddettoMilitare.presso}" id="presso"
+						required="true" 
+						requiredMessage="Il campo presso è obbligatorio"/>
+					<p:watermark for="presso" value="Reparto di servizio" />  
+					<p:tooltip for="presso" showEffect="fade" value="Reparto presso il quale si è prestato servizio" />
+				</p:column>
+			</p:row>
+	
+			<p:row>
+				<p:column>
+					<p:outputLabel for="codiceGrado" value="Grado:" />
+				</p:column>
+				<p:column>
+					<p:selectOneMenu
+						required="true" 
+						requiredMessage="Il campo grado è obbligatorio"
+						id="codiceGrado" 
+						value="#{dettaglioAddettoMilitare.codiceGrado}"
+						effect="fade">
+						<f:selectItem itemLabel="Selezionare un grado" itemValue="" />
+						<f:selectItems 
+							value="#{dettaglioAddettoMilitare.listGrado}" var="item"
+							itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+					</p:selectOneMenu>	
+					<p:tooltip for="codiceGrado" showEffect="fade" value="Grado al momento del congedo" />
+				</p:column>
+			</p:row>
+						
+			<p:row>
+				<p:column>							
+					<p:outputLabel for="dataCongedo" value="Data congedo:" />
+				</p:column>
+				<p:column>
+					<p:calendar value="#{dettaglioAddettoMilitare.dataCongedo}" id="dataCongedo"
+						pattern="dd/MM/yyyy"
+						required="true" 
+						requiredMessage="Il campo data congedo è obbligatorio"/>
+					<p:watermark for="dataCongedo" value="Data congedo" />  
+					<p:tooltip for="dataCongedo" showEffect="fade" value="Data di congedo" />
+				</p:column>
+			</p:row>
+							
+			<p:row>
+				<p:column>							
+					<p:outputLabel for="note" value="Note:" />
+				</p:column>
+				<p:column>
+					<p:inputTextarea value="#{dettaglioAddettoMilitare.note}" id="note"/>
+					<p:watermark for="note" value="Eventuali annotazioni" />  
+					<p:tooltip for="note" showEffect="fade" value="Eventuali annotazioni sulla posizione militare dell'addetto" />
+				</p:column>
+			</p:row>
+	
+			<p:row>
+				<p:column colspan="2" styleClass="form-footer">
+					<p:commandButton value="Salva"
+						id="saveButton"
+						actionListener="#{dettaglioAddettoMilitare.doSave}" 
+						update="detailPosizioneMilitareView:panel,:detailForm:growl"
+						process="detailPosizioneMilitareView:panel"/>
+				</p:column>
+			</p:row>
+			
+		</p:panelGrid>
+	
+		<p:defaultCommand target="saveButton" scope="detailPosizioneMilitareView"/>
+
+	</f:subview>
+	
+</html>

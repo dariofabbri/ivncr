@@ -1,0 +1,196 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:custom="http://java.sun.com/jsf/composite/components/custom">
+			
+	<p:panelGrid styleClass="form-panel">
+					
+		<p:row>
+			<p:column colspan="2" styleClass="form-header">
+				<h:outputText value="Elenco dei titoli di studio dell'addetto."/>
+			</p:column>
+		</p:row>
+		
+		<p:row>
+		
+			<p:column>
+								
+				<p:dataTable
+					id="istruzioneTable"
+					var="istruzione"
+					value="#{dettaglioAddettoIstruzione.listIstruzione}"
+					selectionMode="single"
+					selection="#{dettaglioAddettoIstruzione.selected}"
+					rowKey="#{istruzione.id}"
+					sortBy="#{istruzione.dataConseguimento}"
+					sortOrder="descending"
+					emptyMessage="Nessun record trovato" 
+					styleClass="small-datatable">
+
+					<p:ajax event="rowSelect" update=":detailForm:tabView:istruzioneAccordion:istruzioneButtons"/>
+	
+					<p:ajax event="rowUnselect" update=":detailForm:tabView:istruzioneAccordion:istruzioneButtons"/>
+
+					<p:column headerText="Titolo di studio" sortBy="#{istruzione.titoloStudio.descrizione}">
+						<h:outputText value="#{istruzione.titoloStudio.descrizione}" />
+					</p:column>
+
+					<p:column headerText="Data conseguimento" sortBy="#{istruzione.dataConseguimento}">
+						<h:outputText value="#{istruzione.dataConseguimento}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Presso" sortBy="#{istruzione.presso}">
+						<h:outputText value="#{istruzione.presso}" />
+					</p:column>
+																		
+				</p:dataTable>
+			
+			</p:column>
+			
+		</p:row>
+		
+		<p:row>
+			<p:column>
+				
+				<p:outputPanel id="istruzioneButtons">
+					
+					<p:commandButton value="Nuovo"
+						oncomplete="detailIstruzioneDialogWidget.show()"
+						actionListener="#{dettaglioAddettoIstruzione.startCreate}"
+						process="@this"
+						update=":detailForm:tabView:istruzioneAccordion:detailIstruzioneView:detailIstruzioneDialog"/>
+
+					<p:commandButton value="Modifica"
+						disabled="#{empty dettaglioAddettoIstruzione.selected}"
+						oncomplete="detailIstruzioneDialogWidget.show()"
+						actionListener="#{dettaglioAddettoIstruzione.startUpdate}"
+						process="@this"
+						update=":detailForm:tabView:istruzioneAccordion:detailIstruzioneView:detailIstruzioneDialog"/>
+
+					<p:commandButton value="Elimina"
+						disabled="#{empty dettaglioAddettoIstruzione.selected}"
+						type="button"
+						onclick="deleteIstruzioneDialogWidget.show()"/>
+					
+				</p:outputPanel>
+				
+			</p:column>
+		</p:row>
+		
+	</p:panelGrid>
+
+	
+	
+	<f:subview id="detailIstruzioneView">
+	
+		<p:dialog 
+			id="detailIstruzioneDialog"
+			header="Dettagli del titolo di studio dell'addetto" 
+			widgetVar="detailIstruzioneDialogWidget" 
+			modal="true"
+			showEffect="fade" 
+			hideEffect="fade"> 
+					
+			<p:messages id="messages" globalOnly="false" showSummary="false" showDetail="true" closable="true"/>
+			
+			<p:panelGrid id="panel" styleClass="form-panel">
+							
+				<p:row>
+					<p:column colspan="2" styleClass="form-header">
+						<h:outputText value="Il pannello permette di immettere le informazioni di dettaglio circa i titoli di studio conseguiti dall'addetto."/>
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>
+						<p:outputLabel for="codiceTitoloStudio" value="Titolo di studio:" />
+					</p:column>
+					<p:column>
+						<p:selectOneMenu
+							required="true" 
+							requiredMessage="Il campo titolo di studio è obbligatorio"
+							id="codiceTitoloStudio" 
+							value="#{dettaglioAddettoIstruzione.codiceTitoloStudio}"
+							effect="fade">
+							<f:selectItem itemLabel="Selezionare un titolo di studio" itemValue="" />
+							<f:selectItems 
+								value="#{dettaglioAddettoIstruzione.listTitoloStudio}" var="item"
+								itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+						</p:selectOneMenu>	
+						<p:tooltip for="codiceTitoloStudio" showEffect="fade" value="Titolo di studio conseguito dall'addetto" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="dataConseguimento" value="Data di conseguimento:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioAddettoIstruzione.dataConseguimento}" id="dataConseguimento"
+							pattern="dd/MM/yyyy"/>
+						<p:watermark for="dataConseguimento" value="Data di conseguimento" />  
+						<p:tooltip for="dataConseguimento" showEffect="fade" value="Data di conseguimento del titolo" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="presso" value="Presso:"/>
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioAddettoIstruzione.presso}" id="presso" />
+						<p:watermark for="presso" value="Istituto" />  
+						<p:tooltip for="presso" showEffect="fade" value="Istituto presso il quale il titolo è stato conseguito" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column colspan="2" styleClass="form-footer">
+						<p:commandButton value="Salva"
+							id="saveButton"
+							actionListener="#{dettaglioAddettoIstruzione.doSave}" 
+							update="detailIstruzioneView:messages,detailIstruzioneView:panel,:detailForm:tabView:istruzioneAccordion:istruzioneTable,:detailForm:growl"
+							process="detailIstruzioneView:detailIstruzioneDialog"
+							oncomplete="if(args.ok) { detailIstruzioneDialogWidget.hide(); }"/>
+						<p:commandButton value="Annulla"
+							type="button"
+							onclick="detailIstruzioneDialogWidget.hide();" />
+					</p:column>
+				</p:row>
+				
+			</p:panelGrid>
+	
+			<p:defaultCommand target="saveButton" scope="detailIstruzioneDialog"/>
+			
+		</p:dialog>
+	
+	</f:subview>
+	
+	
+	<p:confirmDialog 
+		id="deleteIstruzioneDialog"
+		header="Elimina titolo" 
+		widgetVar="deleteIstruzioneDialogWidget"
+		message="Si conferma l'eliminazione del titolo di studio selezionato? L'operazione non può essere annullata."
+		showEffect="fade" 
+		hideEffect="fade">
+		
+		<p:commandButton 
+			value="Elimina"
+			update=":detailForm:tabView:istruzioneAccordion:istruzioneTable,:detailForm:tabView:istruzioneAccordion:istruzioneButtons,:detailForm:growl"
+			process="@this" 
+			oncomplete="deleteIstruzioneDialogWidget.hide()"  
+            actionListener="#{dettaglioAddettoIstruzione.doDelete}" />
+              
+        <p:commandButton 
+        	value="Annulla" 
+        	onclick="deleteIstruzioneDialogWidget.hide()" 
+        	type="button" />
+        	   
+	</p:confirmDialog>
+
+</html>

@@ -34,10 +34,10 @@ public class EsercitazioneTiroServiceImpl extends AbstractService implements Ese
 	@Override
 	public EsercitazioneTiro retrieve(Integer id) {
 
-		EsercitazioneTiro documento = (EsercitazioneTiro)session.get(EsercitazioneTiro.class, id);
-		logger.debug("Esercitazione tiro found: " + documento);
+		EsercitazioneTiro esercitazione = (EsercitazioneTiro)session.get(EsercitazioneTiro.class, id);
+		logger.debug("Esercitazione tiro found: " + esercitazione);
 
-		return documento;
+		return esercitazione;
 	}
 
 	@Override
