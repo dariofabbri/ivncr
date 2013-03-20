@@ -1,0 +1,246 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:custom="http://java.sun.com/jsf/composite/components/custom">
+			
+	<p:panelGrid styleClass="form-panel">
+					
+		<p:row>
+			<p:column colspan="2" styleClass="form-header">
+				<h:outputText value="Elenco dei certificati medici presentati dall'addetto."/>
+			</p:column>
+		</p:row>
+		
+		<p:row>
+		
+			<p:column>
+								
+				<p:dataTable
+					id="certificatiTable"
+					var="certificato"
+					value="#{dettaglioAddettoCertificati.listCertificati}"
+					selectionMode="single"
+					selection="#{dettaglioAddettoCertificati.selected}"
+					rowKey="#{certificato.id}"
+					sortBy="#{certificato.dataCertificato}"
+					sortOrder="descending"
+					emptyMessage="Nessun record trovato" 
+					styleClass="small-datatable">
+
+					<p:ajax event="rowSelect" update=":detailForm:tabView:saluteAccordion:certificatiButtons"/>
+	
+					<p:ajax event="rowUnselect" update=":detailForm:tabView:saluteAccordion:certificatiButtons"/>
+
+					<p:column headerText="Tipo certificato" sortBy="#{certificato.tipoCertificato.descrizione}">
+						<h:outputText value="#{certificato.tipoCertificato.descrizione}" />
+					</p:column>
+
+					<p:column headerText="Data certificato" sortBy="#{certificato.dataCertificato}">
+						<h:outputText value="#{certificato.dataCertificato}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Data ricezione" sortBy="#{certificato.dataRicezione}">
+						<h:outputText value="#{certificato.dataRicezione}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Data inizio validità" sortBy="#{certificato.dataInizioValidita}">
+						<h:outputText value="#{certificato.dataInizioValidita}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Data fine validità" sortBy="#{certificato.dataFineValidita}">
+						<h:outputText value="#{certificato.dataFineValidita}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+																		
+				</p:dataTable>
+			
+			</p:column>
+			
+		</p:row>
+		
+		<p:row>
+			<p:column>
+				
+				<p:outputPanel id="certificatiButtons">
+					
+					<p:commandButton value="Nuovo"
+						oncomplete="detailCertificatoDialogWidget.show()"
+						actionListener="#{dettaglioAddettoCertificati.startCreate}"
+						process="@this"
+						update=":detailForm:tabView:saluteAccordion:detailCertificatoView:detailCertificatoDialog"/>
+
+					<p:commandButton value="Modifica"
+						disabled="#{empty dettaglioAddettoCertificati.selected}"
+						oncomplete="detailCertificatoDialogWidget.show()"
+						actionListener="#{dettaglioAddettoCertificati.startUpdate}"
+						process="@this"
+						update=":detailForm:tabView:saluteAccordion:detailCertificatoView:detailCertificatoDialog"/>
+
+					<p:commandButton value="Elimina"
+						disabled="#{empty dettaglioAddettoCertificati.selected}"
+						type="button"
+						onclick="deleteCertificatoDialogWidget.show()"/>
+					
+				</p:outputPanel>
+				
+			</p:column>
+		</p:row>
+		
+	</p:panelGrid>
+
+	
+	
+	<f:subview id="detailCertificatoView">
+	
+		<p:dialog 
+			id="detailCertificatoDialog"
+			header="Dettagli del certificato medico" 
+			widgetVar="detailCertificatoDialogWidget" 
+			modal="true"
+			showEffect="fade" 
+			hideEffect="fade"> 
+					
+			<p:messages id="messages" globalOnly="false" showSummary="false" showDetail="true" closable="true"/>
+			
+			<p:panelGrid id="panel" styleClass="form-panel">
+							
+				<p:row>
+					<p:column colspan="2" styleClass="form-header">
+						<h:outputText value="Il pannello permette di immettere le informazioni di dettaglio riguardo il certificato medico presentato dall'addetto."/>
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>
+						<p:outputLabel for="codiceTipoCertificato" value="Tipo certificato:" />
+					</p:column>
+					<p:column>
+						<p:selectOneMenu
+							required="true" 
+							requiredMessage="Il campo tipo certificato è obbligatorio"
+							id="codiceTipoCertificato" 
+							value="#{dettaglioAddettoCertificati.codiceTipoCertificato}"
+							effect="fade">
+							<f:selectItem itemLabel="Selezionare un tipo certificato" itemValue="" />
+							<f:selectItems 
+								value="#{dettaglioAddettoCertificati.listTipoCertificatoMedico}" var="item"
+								itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+						</p:selectOneMenu>	
+						<p:tooltip for="codiceTipoCertificato" showEffect="fade" value="Tipo di certificato medico presentato dall'addetto" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="dataCertificato" value="Data del certificato:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioAddettoCertificati.dataCertificato}" id="dataCertificato"
+							pattern="dd/MM/yyyy"/>
+						<p:watermark for="dataCertificato" value="Data del certificato" />  
+						<p:tooltip for="dataCertificato" showEffect="fade" value="Data del certificato" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="dataRicezione" value="Data di ricezione:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioAddettoCertificati.dataRicezione}" id="dataRicezione"
+							pattern="dd/MM/yyyy"/>
+						<p:watermark for="dataRicezione" value="Data di ricezione" />  
+						<p:tooltip for="dataRicezione" showEffect="fade" value="Data di ricezione del certificato" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="dataInizioValidita" value="Data di inizio validità:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioAddettoCertificati.dataInizioValidita}" id="dataInizioValidita"
+							pattern="dd/MM/yyyy"/>
+						<p:watermark for="dataInizioValidita" value="Data di inizio validità" />  
+						<p:tooltip for="dataInizioValidita" showEffect="fade" value="Data di inizio validità del certificato" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="dataFineValidita" value="Data di fine validità:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioAddettoCertificati.dataFineValidita}" id="dataFineValidita"
+							pattern="dd/MM/yyyy"/>
+						<p:watermark for="dataFineValidita" value="Data di fine validità" />  
+						<p:tooltip for="dataFineValidita" showEffect="fade" value="Data di fine validità del certificato" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="note" value="Note:" />
+					</p:column>
+					<p:column>
+						<p:inputTextarea value="#{dettaglioAddettoCertificati.note}" id="note" />
+						<p:watermark for="note" value="Eventuali annotazioni sul certificato" />
+						<p:tooltip for="note" showEffect="fade" value="Eventuali annotazioni sul certificato medico" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column colspan="2" styleClass="form-footer">
+						<p:commandButton value="Salva"
+							id="saveButton"
+							actionListener="#{dettaglioAddettoCertificati.doSave}" 
+							update="detailCertificatoView:messages,detailCertificatoView:panel,:detailForm:tabView:saluteAccordion:certificatiTable,:detailForm:growl"
+							process="detailCertificatoView:detailCertificatoDialog"
+							oncomplete="if(args.ok) { detailCertificatoDialogWidget.hide(); }"/>
+						<p:commandButton value="Annulla"
+							type="button"
+							onclick="detailCertificatoDialogWidget.hide();" />
+					</p:column>
+				</p:row>
+				
+			</p:panelGrid>
+	
+			<p:defaultCommand target="saveButton" scope="detailCertificatoDialog"/>
+			
+		</p:dialog>
+	
+	</f:subview>
+	
+	
+	<p:confirmDialog 
+		id="deleteCertificatoDialog"
+		header="Elimina certificato medico" 
+		widgetVar="deleteCertificatoDialogWidget"
+		message="Si conferma l'eliminazione del certificato medico selezionato? L'operazione non può essere annullata."
+		showEffect="fade" 
+		hideEffect="fade">
+		
+		<p:commandButton 
+			value="Elimina"
+			update=":detailForm:tabView:saluteAccordion:certificatiTable,:detailForm:tabView:saluteAccordion:certificatiButtons,:detailForm:growl"
+			process="@this" 
+			oncomplete="deleteCertificatoDialogWidget.hide()"  
+            actionListener="#{dettaglioAddettoCertificati.doDelete}" />
+              
+        <p:commandButton 
+        	value="Annulla" 
+        	onclick="deleteCertificatoDialogWidget.hide()" 
+        	type="button" />
+        	   
+	</p:confirmDialog>
+
+</html>
