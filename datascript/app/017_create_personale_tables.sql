@@ -8,7 +8,7 @@ CREATE TABLE app.per_tipo_indirizzo
 
 INSERT INTO app.per_tipo_indirizzo (id, descrizione) VALUES (1, 'Residenza');
 INSERT INTO app.per_tipo_indirizzo (id, descrizione) VALUES (2, 'Domicilio');
-INSERT INTO app.per_tipo_indirizzo (id, descrizione) VALUES (3, 'Residenza precedednte');
+INSERT INTO app.per_tipo_indirizzo (id, descrizione) VALUES (3, 'Residenza precedente');
 INSERT INTO app.per_tipo_indirizzo (id, descrizione) VALUES (4, 'Domicilio precedente');
 SELECT setval('app.per_tipo_indirizzo_id_seq', (SELECT MAX(id) FROM app.per_tipo_indirizzo));
 
@@ -23,7 +23,7 @@ CREATE TABLE app.per_tipo_recapito_telefonico
 INSERT INTO app.per_tipo_recapito_telefonico (id, descrizione) VALUES (1, 'Cellulare');
 INSERT INTO app.per_tipo_recapito_telefonico (id, descrizione) VALUES (2, 'Cellulare di servizio');
 INSERT INTO app.per_tipo_recapito_telefonico (id, descrizione) VALUES (3, 'Telefono');
-INSERT INTO app.per_tipo_recapito_telefonico (id, descrizione) VALUES (3, 'Fax');
+INSERT INTO app.per_tipo_recapito_telefonico (id, descrizione) VALUES (4, 'Fax');
 SELECT setval('app.per_tipo_recapito_telefonico_id_seq', (SELECT MAX(id) FROM app.per_tipo_recapito_telefonico));
 
 
