@@ -1,0 +1,297 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:custom="http://java.sun.com/jsf/composite/components/custom">
+			
+	<p:panelGrid styleClass="form-panel">
+					
+		<p:row>
+			<p:column colspan="2" styleClass="form-header">
+				<h:outputText value="Elenco storico dei dati sanitari dell'addetto."/>
+			</p:column>
+		</p:row>
+		
+		<p:row>
+		
+			<p:column>
+								
+				<p:dataTable
+					id="datiSanitariTable"
+					var="datiSanitari"
+					value="#{dettaglioAddettoDatiSanitari.listDatiSanitari}"
+					selectionMode="single"
+					selection="#{dettaglioAddettoDatiSanitari.selected}"
+					rowKey="#{datiSanitari.id}"
+					sortBy="#{datiSanitari.validoDa}"
+					sortOrder="descending"
+					emptyMessage="Nessun record trovato" 
+					styleClass="small-datatable">
+
+					<p:ajax event="rowSelect" update=":detailForm:tabView:saluteAccordion:datiSanitariButtons"/>
+	
+					<p:ajax event="rowUnselect" update=":detailForm:tabView:saluteAccordion:datiSanitariButtons"/>
+
+					<p:column headerText="Medico di base" sortBy="#{datiSanitari.medicoBase}">
+						<h:outputText value="#{datiSanitari.medicoBase}" />
+					</p:column>
+
+					<p:column headerText="Gruppo sanguigno" sortBy="#{datiSanitari.gruppoSanguigno.descrizione}">
+						<h:outputText value="#{datiSanitari.gruppoSanguigno.descrizione}" />
+					</p:column>
+
+					<p:column headerText="ASL" sortBy="#{datiSanitari.asl}">
+						<h:outputText value="#{datiSanitari.asl}" />
+					</p:column>
+
+					<p:column headerText="Indirizzo ASL" sortBy="#{datiSanitari.indirizzoAsl}">
+						<h:outputText value="#{datiSanitari.indirizzoAsl}" />
+					</p:column>
+
+					<p:column headerText="Comune" sortBy="#{datiSanitari.comune}">
+						<h:outputText value="#{datiSanitari.comune}" />
+					</p:column>
+
+					<p:column headerText="Provincia" sortBy="#{datiSanitari.provincia}">
+						<h:outputText value="#{datiSanitari.provincia}" />
+					</p:column>
+
+					<p:column headerText="Valido da" sortBy="#{datiSanitari.validoDa}">
+						<h:outputText value="#{datiSanitari.validoDa}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Valido a" sortBy="#{datiSanitari.validoA}">
+						<h:outputText value="#{datiSanitari.validoA}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+																		
+				</p:dataTable>
+			
+			</p:column>
+			
+		</p:row>
+		
+		<p:row>
+			<p:column>
+				
+				<p:outputPanel id="datiSanitariButtons">
+					
+					<p:commandButton value="Nuovo"
+						oncomplete="detailDatiSanitariDialogWidget.show()"
+						actionListener="#{dettaglioAddettoDatiSanitari.startCreate}"
+						process="@this"
+						update=":detailForm:tabView:saluteAccordion:detailDatiSanitariView:detailDatiSanitariDialog"/>
+
+					<p:commandButton value="Modifica"
+						disabled="#{empty dettaglioAddettoDatiSanitari.selected}"
+						oncomplete="detailDatiSanitariDialogWidget.show()"
+						actionListener="#{dettaglioAddettoDatiSanitari.startUpdate}"
+						process="@this"
+						update=":detailForm:tabView:saluteAccordion:detailDatiSanitariView:detailDatiSanitariDialog"/>
+
+					<p:commandButton value="Elimina"
+						disabled="#{empty dettaglioAddettoDatiSanitari.selected}"
+						type="button"
+						onclick="deleteDatiSanitariDialogWidget.show()"/>
+					
+				</p:outputPanel>
+				
+			</p:column>
+		</p:row>
+		
+	</p:panelGrid>
+
+	
+	
+	<f:subview id="detailDatiSanitariView">
+	
+		<p:dialog 
+			id="detailDatiSanitariDialog"
+			header="Dati sanitari" 
+			widgetVar="detailDatiSanitariDialogWidget" 
+			modal="true"
+			showEffect="fade" 
+			hideEffect="fade"> 
+					
+			<p:messages id="messages" globalOnly="false" showSummary="false" showDetail="true" closable="true"/>
+			
+			<p:panelGrid id="panel" styleClass="form-panel">
+							
+				<p:row>
+					<p:column colspan="2" styleClass="form-header">
+						<h:outputText value="Il pannello permette di immettere le informazioni di dettaglio riguardo i dati sanitari dell'addetto."/>
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="medicoBase" value="Medico di base:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioAddettoDatiSanitari.medicoBase}" id="medicoBase"/>
+						<p:watermark for="medicoBase" value="Medico di base" />  
+						<p:tooltip for="medicoBase" showEffect="fade" value="Nome e cognome del medico di base" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>
+						<p:outputLabel for="codiceGruppoSanguigno" value="Gruppo sanguigno:" />
+					</p:column>
+					<p:column>
+						<p:selectOneMenu
+							id="codiceGruppoSanguigno" 
+							value="#{dettaglioAddettoDatiSanitari.codiceGruppoSanguigno}"
+							effect="fade">
+							<f:selectItem itemLabel="Selezionare un gruppo sanguigno" itemValue="" />
+							<f:selectItems 
+								value="#{dettaglioAddettoDatiSanitari.listGruppoSanguigno}" var="item"
+								itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+						</p:selectOneMenu>	
+						<p:tooltip for="codiceGruppoSanguigno" showEffect="fade" value="Gruppo sanguigno dell'addetto" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="asl" value="ASL:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioAddettoDatiSanitari.asl}" id="asl"/>
+						<p:watermark for="asl" value="ASL" />  
+						<p:tooltip for="asl" showEffect="fade" value="Azienda sanitaria locale" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="indirizzoAsl" value="Indirizzo ASL:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioAddettoDatiSanitari.indirizzoAsl}" id="indirizzoAsl"/>
+						<p:watermark for="indirizzoAsl" value="Indirizzo ASL" />  
+						<p:tooltip for="indirizzoAsl" showEffect="fade" value="Indirizzo azienda sanitaria locale" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="comune" value="Comune:" />
+					</p:column>
+					<p:column>
+						<p:autoComplete
+							id="comune"
+							value="#{dettaglioAddettoDatiSanitari.comune}"
+							completeMethod="#{dettaglioAddettoDatiSanitari.completeComune}"
+							forceSelection="false"
+							maxResults="15"/>
+						<p:watermark for="comune" value="Comune" />  
+						<p:tooltip for="comune" showEffect="fade" value="Comune" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="provincia" value="Provincia:" />
+					</p:column>
+					<p:column>
+						<p:autoComplete id="provincia"
+							value="#{dettaglioAddettoDatiSanitari.provincia}"
+							completeMethod="#{dettaglioAddettoDatiSanitari.completeProvincia}"
+							forceSelection="true" 
+							var="p"
+							itemLabel="#{p.sigla}"
+							itemValue="#{p.sigla}"
+							converter="provinciaConverter">
+							<f:facet name="itemtip">
+								<h:panelGrid columns="2">
+									<h:outputText value="Sigla:"/>
+									<h:outputText value="#{p.sigla}"/>
+
+									<h:outputText value="Descrizione:"/>
+									<h:outputText value="#{p.descrizione}"/>
+
+									<h:outputText value="Regione:"/>
+									<h:outputText value="#{p.regione}"/>
+								</h:panelGrid>
+							</f:facet>
+						</p:autoComplete>
+						<p:watermark for="provincia" value="Provincia" />  
+						<p:tooltip for="provincia" showEffect="fade" value="Provincia" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="validoDa" value="Valido da:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioAddettoDatiSanitari.validoDa}" id="validoDa"
+							pattern="dd/MM/yyyy"/>
+						<p:watermark for="validoDa" value="Valido da" />  
+						<p:tooltip for="validoDa" showEffect="fade" value="Valido da" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="validoA" value="Valido a:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioAddettoDatiSanitari.validoA}" id="validoA"
+							pattern="dd/MM/yyyy"/>
+						<p:watermark for="validoA" value="Valido a" />  
+						<p:tooltip for="validoA" showEffect="fade" value="Valido a" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column colspan="2" styleClass="form-footer">
+						<p:commandButton value="Salva"
+							id="saveButton"
+							actionListener="#{dettaglioAddettoDatiSanitari.doSave}" 
+							update="detailDatiSanitariView:messages,detailDatiSanitariView:panel,:detailForm:tabView:saluteAccordion:datiSanitariTable,:detailForm:growl"
+							process="detailDatiSanitariView:detailDatiSanitariDialog"
+							oncomplete="if(args.ok) { detailDatiSanitariDialogWidget.hide(); }"/>
+						<p:commandButton value="Annulla"
+							type="button"
+							onclick="detailDatiSanitariDialogWidget.hide();" />
+					</p:column>
+				</p:row>
+				
+			</p:panelGrid>
+	
+			<p:defaultCommand target="saveButton" scope="detailDatiSanitariDialog"/>
+			
+		</p:dialog>
+	
+	</f:subview>
+	
+	
+	<p:confirmDialog 
+		id="deleteDatiSanitariDialog"
+		header="Elimina dati sanitari" 
+		widgetVar="deleteDatiSanitariDialogWidget"
+		message="Si conferma l'eliminazione dei dati sanitari selezionati? L'operazione non può essere annullata."
+		showEffect="fade" 
+		hideEffect="fade">
+		
+		<p:commandButton 
+			value="Elimina"
+			update=":detailForm:tabView:saluteAccordion:datiSanitariTable,:detailForm:tabView:saluteAccordion:datiSanitariButtons,:detailForm:growl"
+			process="@this" 
+			oncomplete="deleteDatiSanitariDialogWidget.hide()"  
+            actionListener="#{dettaglioAddettoDatiSanitari.doDelete}" />
+              
+        <p:commandButton 
+        	value="Annulla" 
+        	onclick="deleteDatiSanitariDialogWidget.hide()" 
+        	type="button" />
+        	   
+	</p:confirmDialog>
+
+</html>

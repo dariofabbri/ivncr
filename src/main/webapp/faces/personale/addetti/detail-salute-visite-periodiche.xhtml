@@ -1,0 +1,201 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:custom="http://java.sun.com/jsf/composite/components/custom">
+			
+	<p:panelGrid styleClass="form-panel">
+					
+		<p:row>
+			<p:column colspan="2" styleClass="form-header">
+				<h:outputText value="Elenco delle visite periodiche del medico competente sostenute dall'addetto."/>
+			</p:column>
+		</p:row>
+		
+		<p:row>
+		
+			<p:column>
+								
+				<p:dataTable
+					id="visitePeriodicheTable"
+					var="visita"
+					value="#{dettaglioAddettoVisitePeriodiche.listVisite}"
+					selectionMode="single"
+					selection="#{dettaglioAddettoVisitePeriodiche.selected}"
+					rowKey="#{visita.id}"
+					sortBy="#{visita.dataVisita}"
+					sortOrder="descending"
+					emptyMessage="Nessun record trovato" 
+					styleClass="small-datatable">
+
+					<p:ajax event="rowSelect" update=":detailForm:tabView:saluteAccordion:visitePeriodicheButtons"/>
+	
+					<p:ajax event="rowUnselect" update=":detailForm:tabView:saluteAccordion:visitePeriodicheButtons"/>
+
+					<p:column headerText="Medico" sortBy="#{visita.medico}">
+						<h:outputText value="#{visita.medico}" />
+					</p:column>
+
+					<p:column headerText="Data visita" sortBy="#{visita.dataVisita}">
+						<h:outputText value="#{visita.dataVisita}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Data visita successiva" sortBy="#{visita.dataVisitaSuccessiva}">
+						<h:outputText value="#{visita.dataVisitaSuccessiva}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+																		
+				</p:dataTable>
+			
+			</p:column>
+			
+		</p:row>
+		
+		<p:row>
+			<p:column>
+				
+				<p:outputPanel id="visitePeriodicheButtons">
+					
+					<p:commandButton value="Nuovo"
+						oncomplete="detailVisitaDialogWidget.show()"
+						actionListener="#{dettaglioAddettoVisitePeriodiche.startCreate}"
+						process="@this"
+						update=":detailForm:tabView:saluteAccordion:detailVisitaPeriodicaView:detailVisitaDialog"/>
+
+					<p:commandButton value="Modifica"
+						disabled="#{empty dettaglioAddettoVisitePeriodiche.selected}"
+						oncomplete="detailVisitaDialogWidget.show()"
+						actionListener="#{dettaglioAddettoVisitePeriodiche.startUpdate}"
+						process="@this"
+						update=":detailForm:tabView:saluteAccordion:detailVisitaPeriodicaView:detailVisitaDialog"/>
+
+					<p:commandButton value="Elimina"
+						disabled="#{empty dettaglioAddettoVisitePeriodiche.selected}"
+						type="button"
+						onclick="deleteVisitaPeriodicaDialogWidget.show()"/>
+					
+				</p:outputPanel>
+				
+			</p:column>
+		</p:row>
+		
+	</p:panelGrid>
+
+	
+	
+	<f:subview id="detailVisitaPeriodicaView">
+	
+		<p:dialog 
+			id="detailVisitaDialog"
+			header="Dettagli della visita" 
+			widgetVar="detailVisitaDialogWidget" 
+			modal="true"
+			showEffect="fade" 
+			hideEffect="fade"> 
+					
+			<p:messages id="messages" globalOnly="false" showSummary="false" showDetail="true" closable="true"/>
+			
+			<p:panelGrid id="panel" styleClass="form-panel">
+							
+				<p:row>
+					<p:column colspan="2" styleClass="form-header">
+						<h:outputText value="Il pannello permette di immettere le informazioni relative alla visita periodica del medico competente sostenuta dall'addetto."/>
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="medico" value="Medico:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioAddettoVisitePeriodiche.medico}" id="medico"/>
+						<p:watermark for="medico" value="Medico" />  
+						<p:tooltip for="medico" showEffect="fade" value="Medico che ha eseguito la visita" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="dataVisita" value="Data della visita:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioAddettoVisitePeriodiche.dataVisita}" id="dataVisita"
+							pattern="dd/MM/yyyy"/>
+						<p:watermark for="dataVisita" value="Data della visita" />  
+						<p:tooltip for="dataVisita" showEffect="fade" value="Data in cui è stata effettuata la visita" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="esito" value="Esito:" />
+					</p:column>
+					<p:column>
+						<p:inputTextarea value="#{dettaglioAddettoVisitePeriodiche.esito}" id="esito"/>
+						<p:watermark for="esito" value="Esito della visita" />  
+						<p:tooltip for="esito" showEffect="fade" value="Esito della visita" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="dataVisitaSuccessiva" value="Data della visita successiva:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioAddettoVisitePeriodiche.dataVisitaSuccessiva}" id="dataVisitaSuccessiva"
+							pattern="dd/MM/yyyy"/>
+						<p:watermark for="dataVisitaSuccessiva" value="Data visita successiva" />  
+						<p:tooltip for="dataVisitaSuccessiva" showEffect="fade" value="Data della visita successiva" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column colspan="2" styleClass="form-footer">
+						<p:commandButton value="Salva"
+							id="saveButton"
+							actionListener="#{dettaglioAddettoVisitePeriodiche.doSave}" 
+							update="detailVisitaPeriodicaView:messages,detailVisitaPeriodicaView:panel,:detailForm:tabView:saluteAccordion:visitePeriodicheTable,:detailForm:growl"
+							process="detailVisitaPeriodicaView:detailVisitaDialog"
+							oncomplete="if(args.ok) { detailVisitaDialogWidget.hide(); }"/>
+						<p:commandButton value="Annulla"
+							type="button"
+							onclick="detailVisitaDialogWidget.hide();" />
+					</p:column>
+				</p:row>
+				
+			</p:panelGrid>
+	
+			<p:defaultCommand target="saveButton" scope="detailVisitaDialog"/>
+			
+		</p:dialog>
+	
+	</f:subview>
+	
+	
+	<p:confirmDialog 
+		id="deleteVisitaPeriodicaDialog"
+		header="Elimina visita periodica" 
+		widgetVar="deleteVisitaPeriodicaDialogWidget"
+		message="Si conferma l'eliminazione della visita selezionata? L'operazione non può essere annullata."
+		showEffect="fade" 
+		hideEffect="fade">
+		
+		<p:commandButton 
+			value="Elimina"
+			update=":detailForm:tabView:saluteAccordion:visitePeriodicheTable,:detailForm:tabView:saluteAccordion:visitePeriodicheButtons,:detailForm:growl"
+			process="@this" 
+			oncomplete="deleteVisitaPeriodicaDialogWidget.hide()"  
+            actionListener="#{dettaglioAddettoVisitePeriodiche.doDelete}" />
+              
+        <p:commandButton 
+        	value="Annulla" 
+        	onclick="deleteVisitaPeriodicaDialogWidget.hide()" 
+        	type="button" />
+        	   
+	</p:confirmDialog>
+
+</html>

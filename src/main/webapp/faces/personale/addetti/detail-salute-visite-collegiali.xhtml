@@ -1,0 +1,201 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:custom="http://java.sun.com/jsf/composite/components/custom">
+			
+	<p:panelGrid styleClass="form-panel">
+					
+		<p:row>
+			<p:column colspan="2" styleClass="form-header">
+				<h:outputText value="Elenco delle visite collegiali a cui è stato sottoposto l'addetto."/>
+			</p:column>
+		</p:row>
+		
+		<p:row>
+		
+			<p:column>
+								
+				<p:dataTable
+					id="visiteCollegialiTable"
+					var="visita"
+					value="#{dettaglioAddettoVisiteCollegiali.listVisite}"
+					selectionMode="single"
+					selection="#{dettaglioAddettoVisiteCollegiali.selected}"
+					rowKey="#{visita.id}"
+					sortBy="#{visita.dataEsito}"
+					sortOrder="descending"
+					emptyMessage="Nessun record trovato" 
+					styleClass="small-datatable">
+
+					<p:ajax event="rowSelect" update=":detailForm:tabView:saluteAccordion:visiteCollegialiButtons"/>
+	
+					<p:ajax event="rowUnselect" update=":detailForm:tabView:saluteAccordion:visiteCollegialiButtons"/>
+
+					<p:column headerText="Data richiesta" sortBy="#{visita.dataRichiesta}">
+						<h:outputText value="#{visita.dataRichiesta}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Motivazione" sortBy="#{visita.motivazione}">
+						<h:outputText value="#{visita.motivazione}" />
+					</p:column>
+
+					<p:column headerText="Data esito" sortBy="#{visita.dataEsito}">
+						<h:outputText value="#{visita.dataEsito}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+																		
+				</p:dataTable>
+			
+			</p:column>
+			
+		</p:row>
+		
+		<p:row>
+			<p:column>
+				
+				<p:outputPanel id="visiteCollegialiButtons">
+					
+					<p:commandButton value="Nuovo"
+						oncomplete="detailVisitaDialogWidget.show()"
+						actionListener="#{dettaglioAddettoVisiteCollegiali.startCreate}"
+						process="@this"
+						update=":detailForm:tabView:saluteAccordion:detailVisitaCollegialeView:detailVisitaDialog"/>
+
+					<p:commandButton value="Modifica"
+						disabled="#{empty dettaglioAddettoVisiteCollegiali.selected}"
+						oncomplete="detailVisitaDialogWidget.show()"
+						actionListener="#{dettaglioAddettoVisiteCollegiali.startUpdate}"
+						process="@this"
+						update=":detailForm:tabView:saluteAccordion:detailVisitaCollegialeView:detailVisitaDialog"/>
+
+					<p:commandButton value="Elimina"
+						disabled="#{empty dettaglioAddettoVisiteCollegiali.selected}"
+						type="button"
+						onclick="deleteVisitaCollegialeDialogWidget.show()"/>
+					
+				</p:outputPanel>
+				
+			</p:column>
+		</p:row>
+		
+	</p:panelGrid>
+
+	
+	
+	<f:subview id="detailVisitaCollegialeView">
+	
+		<p:dialog 
+			id="detailVisitaDialog"
+			header="Dettagli della visita" 
+			widgetVar="detailVisitaDialogWidget" 
+			modal="true"
+			showEffect="fade" 
+			hideEffect="fade"> 
+					
+			<p:messages id="messages" globalOnly="false" showSummary="false" showDetail="true" closable="true"/>
+			
+			<p:panelGrid id="panel" styleClass="form-panel">
+							
+				<p:row>
+					<p:column colspan="2" styleClass="form-header">
+						<h:outputText value="Il pannello permette di immettere le informazioni relative alla visita collegiale cui è stato sottoposto l'addetto."/>
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="dataRichiesta" value="Data della richiesta:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioAddettoVisiteCollegiali.dataRichiesta}" id="dataRichiesta"
+							pattern="dd/MM/yyyy"/>
+						<p:watermark for="dataRichiesta" value="Data della richiesta" />  
+						<p:tooltip for="dataRichiesta" showEffect="fade" value="Data della richiesta della visita" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="motivazione" value="Motivazione:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioAddettoVisiteCollegiali.motivazione}" id="motivazione"/>
+						<p:watermark for="motivazione" value="Motivazione" />  
+						<p:tooltip for="motivazione" showEffect="fade" value="Motivazione per la quale è stata richiesta la visita" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="dataEsito" value="Data dell'esito:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioAddettoVisiteCollegiali.dataEsito}" id="dataEsito"
+							pattern="dd/MM/yyyy"/>
+						<p:watermark for="dataEsito" value="Data dell\'esito" />  
+						<p:tooltip for="dataEsito" showEffect="fade" value="Data in cui la visita ha prodotto il suo esito" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>				
+						<p:outputLabel for="esito" value="Esito:" />
+					</p:column>
+					<p:column>
+						<p:inputTextarea value="#{dettaglioAddettoVisiteCollegiali.esito}" id="esito"/>
+						<p:watermark for="esito" value="Esito della visita" />  
+						<p:tooltip for="esito" showEffect="fade" value="Esito della visita" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column colspan="2" styleClass="form-footer">
+						<p:commandButton value="Salva"
+							id="saveButton"
+							actionListener="#{dettaglioAddettoVisiteCollegiali.doSave}" 
+							update="detailVisitaCollegialeView:messages,detailVisitaCollegialeView:panel,:detailForm:tabView:saluteAccordion:visiteCollegialiTable,:detailForm:growl"
+							process="detailVisitaCollegialeView:detailVisitaDialog"
+							oncomplete="if(args.ok) { detailVisitaDialogWidget.hide(); }"/>
+						<p:commandButton value="Annulla"
+							type="button"
+							onclick="detailVisitaDialogWidget.hide();" />
+					</p:column>
+				</p:row>
+				
+			</p:panelGrid>
+	
+			<p:defaultCommand target="saveButton" scope="detailVisitaDialog"/>
+			
+		</p:dialog>
+	
+	</f:subview>
+	
+	
+	<p:confirmDialog 
+		id="deleteVisitaCollegialeDialog"
+		header="Elimina visita collegiale" 
+		widgetVar="deleteVisitaCollegialeDialogWidget"
+		message="Si conferma l'eliminazione della visita selezionata? L'operazione non può essere annullata."
+		showEffect="fade" 
+		hideEffect="fade">
+		
+		<p:commandButton 
+			value="Elimina"
+			update=":detailForm:tabView:saluteAccordion:visiteCollegialiTable,:detailForm:tabView:saluteAccordion:visiteCollegialiButtons,:detailForm:growl"
+			process="@this" 
+			oncomplete="deleteVisitaCollegialeDialogWidget.hide()"  
+            actionListener="#{dettaglioAddettoVisiteCollegiali.doDelete}" />
+              
+        <p:commandButton 
+        	value="Annulla" 
+        	onclick="deleteVisitaCollegialeDialogWidget.hide()" 
+        	type="button" />
+        	   
+	</p:confirmDialog>
+
+</html>
