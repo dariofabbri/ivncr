@@ -18,8 +18,8 @@ public class TipoIndirizzoAddetto {
 
 	public static final Integer RESIDENZA = 1;
 	public static final Integer DOMICILIO = 2;
-	public static final Integer RESIDENZA_CESSATA = 3;
-	public static final Integer DOMICILIO_CESSATO = 4;
+	public static final Integer RESIDENZA_PRECEDENTE = 3;
+	public static final Integer DOMICILIO_PRECEDENTE = 4;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "per_tipo_indirizzo_id_seq")

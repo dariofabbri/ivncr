@@ -16,9 +16,10 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 @Table(name = "per_tipo_recapito_telefonico")
 public class TipoRecapitoTelefonico {
 
-	public static final Integer CELLULARE_PERSONALE = 1;
-	public static final Integer CELLULARE_AZIENDALE = 2;
-	public static final Integer TELEFONO_ABITAZIONE = 3;
+	public static final Integer CELLULARE = 1;
+	public static final Integer CELLULARE_SERVIZIO = 2;
+	public static final Integer TELEFONO = 3;
+	public static final Integer FAX = 4;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "per_tipo_recapito_telefonico_id_seq")
