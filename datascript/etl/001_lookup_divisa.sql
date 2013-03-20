@@ -8,3 +8,5 @@ CREATE TABLE etl.lut_divisa
 
 INSERT INTO etl.lut_divisa (azienda_id, codice_sap, codice_gestionale) VALUES (1, 'EUR', 1);
 INSERT INTO etl.lut_divisa (azienda_id, codice_sap, codice_gestionale) VALUES (1, 'USD', 2);
+INSERT INTO etl.lut_divisa (azienda_id, codice_sap, codice_gestionale) VALUES (3, 'EUR', 1);
+INSERT INTO etl.lut_divisa (azienda_id, codice_sap, codice_gestionale) VALUES (2, 'USD', 2);

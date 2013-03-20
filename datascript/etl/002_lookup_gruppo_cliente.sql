@@ -9,3 +9,5 @@ CREATE TABLE etl.lut_gruppo_cliente
 INSERT INTO etl.lut_gruppo_cliente (azienda_id, codice_sap, codice_gestionale) VALUES (1, 100, 1);
 INSERT INTO etl.lut_gruppo_cliente (azienda_id, codice_sap, codice_gestionale) VALUES (1, 102, 2);
 INSERT INTO etl.lut_gruppo_cliente (azienda_id, codice_sap, codice_gestionale) VALUES (1, 104, 3);
+INSERT INTO etl.lut_gruppo_cliente (azienda_id, codice_sap, codice_gestionale) VALUES (2, 100, 1);
+INSERT INTO etl.lut_gruppo_cliente (azienda_id, codice_sap, codice_gestionale) VALUES (2, 1, 2);
