@@ -1,0 +1,225 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:custom="http://java.sun.com/jsf/composite/components/custom">
+			
+	<p:panelGrid styleClass="form-panel">
+					
+		<p:row>
+			<p:column colspan="2" styleClass="form-header">
+				<h:outputText value="Elenco storico dei reparti dell'addetto."/>
+			</p:column>
+		</p:row>
+		
+		<p:row>
+		
+			<p:column>
+								
+				<p:dataTable
+					id="repartiTable"
+					var="reparto"
+					value="#{dettaglioAddettoReparti.listReparti}"
+					selectionMode="single"
+					selection="#{dettaglioAddettoReparti.selected}"
+					rowKey="#{reparto.id}"
+					sortBy="#{reparto.validoDa}"
+					sortOrder="descending"
+					emptyMessage="Nessun record trovato" 
+					styleClass="small-datatable">
+
+					<p:ajax event="rowSelect" update=":detailForm:tabView:lavoroAccordion:repartiButtons"/>
+	
+					<p:ajax event="rowUnselect" update=":detailForm:tabView:lavoroAccordion:repartiButtons"/>
+
+					<p:column headerText="Reparto" sortBy="#{reparto.reparto.descrizione}">
+						<h:outputText value="#{reparto.reparto.descrizione}" />
+					</p:column>
+
+					<p:column headerText="Ruolo aziendale" sortBy="#{reparto.ruolo.descrizione}">
+						<h:outputText value="#{reparto.ruolo.descrizione}" />
+					</p:column>
+
+					<p:column headerText="Valido da" sortBy="#{reparto.validoDa}">
+						<h:outputText value="#{reparto.validoDa}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Valido a" sortBy="#{datiSanitari.validoA}">
+						<h:outputText value="#{reparto.validoA}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+																		
+				</p:dataTable>
+			
+			</p:column>
+			
+		</p:row>
+		
+		<p:row>
+			<p:column>
+				
+				<p:outputPanel id="repartiButtons">
+					
+					<p:commandButton value="Nuovo"
+						oncomplete="detailRepartoDialogWidget.show()"
+						actionListener="#{dettaglioAddettoReparti.startCreate}"
+						process="@this"
+						update=":detailForm:tabView:lavoroAccordion:detailRepartoView:detailRepartoDialog"/>
+
+					<p:commandButton value="Modifica"
+						disabled="#{empty dettaglioAddettoReparti.selected}"
+						oncomplete="detailRepartoDialogWidget.show()"
+						actionListener="#{dettaglioAddettoReparti.startUpdate}"
+						process="@this"
+						update=":detailForm:tabView:lavoroAccordion:detailRepartoView:detailRepartoDialog"/>
+
+					<p:commandButton value="Elimina"
+						disabled="#{empty dettaglioAddettoReparti.selected}"
+						type="button"
+						onclick="deleteRepartoDialogWidget.show()"/>
+					
+				</p:outputPanel>
+				
+			</p:column>
+		</p:row>
+		
+	</p:panelGrid>
+
+	
+	
+	<f:subview id="detailRepartoView">
+	
+		<p:dialog 
+			id="detailRepartoDialog"
+			header="Reparto" 
+			widgetVar="detailRepartoDialogWidget" 
+			modal="true"
+			showEffect="fade" 
+			hideEffect="fade"> 
+					
+			<p:messages id="messages" globalOnly="false" showSummary="false" showDetail="true" closable="true"/>
+			
+			<p:panelGrid id="panel" styleClass="form-panel">
+							
+				<p:row>
+					<p:column colspan="2" styleClass="form-header">
+						<h:outputText value="Il pannello permette di immettere le informazioni di dettaglio relative al reparto cui è assegnato l'addetto."/>
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>
+						<p:outputLabel for="codiceReparto" value="Reparto:" />
+					</p:column>
+					<p:column>
+						<p:selectOneMenu
+							id="codiceReparto" 
+							value="#{dettaglioAddettoReparti.codiceReparto}"
+							required="true"
+							requiredMessage="Il campo reparto è obbligatorio"
+							effect="fade">
+							<f:selectItem itemLabel="Selezionare un reparto" itemValue="" />
+							<f:selectItems 
+								value="#{dettaglioAddettoReparti.listReparto}" var="item"
+								itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+						</p:selectOneMenu>	
+						<p:tooltip for="codiceReparto" showEffect="fade" value="Reparto dell'addetto" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>
+						<p:outputLabel for="codiceRuolo" value="Ruolo aziendale:" />
+					</p:column>
+					<p:column>
+						<p:selectOneMenu
+							id="codiceRuolo" 
+							value="#{dettaglioAddettoReparti.codiceRuolo}"
+							required="true"
+							requiredMessage="Il campo ruolo è obbligatorio"
+							effect="fade">
+							<f:selectItem itemLabel="Selezionare un ruolo" itemValue="" />
+							<f:selectItems 
+								value="#{dettaglioAddettoReparti.listRuoloAziendale}" var="item"
+								itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+						</p:selectOneMenu>	
+						<p:tooltip for="codiceRuolo" showEffect="fade" value="Ruolo dell'addetto" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="validoDa" value="Valido da:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioAddettoReparti.validoDa}" id="validoDa"
+							required="true"
+							requiredMessage="Il campo valido da è obbligatorio"
+							pattern="dd/MM/yyyy"/>
+						<p:watermark for="validoDa" value="Valido da" />  
+						<p:tooltip for="validoDa" showEffect="fade" value="Valido da" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="validoA" value="Valido a:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioAddettoReparti.validoA}" id="validoA"
+							pattern="dd/MM/yyyy"/>
+						<p:watermark for="validoA" value="Valido a" />  
+						<p:tooltip for="validoA" showEffect="fade" value="Valido a" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column colspan="2" styleClass="form-footer">
+						<p:commandButton value="Salva"
+							id="saveButton"
+							actionListener="#{dettaglioAddettoReparti.doSave}" 
+							update="detailRepartoView:messages,detailRepartoView:panel,:detailForm:tabView:lavoroAccordion:repartiTable,:detailForm:growl"
+							process="detailRepartoView:detailRepartoDialog"
+							oncomplete="if(args.ok) { detailRepartoDialogWidget.hide(); }"/>
+						<p:commandButton value="Annulla"
+							type="button"
+							onclick="detailRepartoDialogWidget.hide();" />
+					</p:column>
+				</p:row>
+				
+			</p:panelGrid>
+	
+			<p:defaultCommand target="saveButton" scope="detailRepartoDialog"/>
+			
+		</p:dialog>
+	
+	</f:subview>
+	
+	
+	<p:confirmDialog 
+		id="deleteRepartoDialog"
+		header="Elimina reparto" 
+		widgetVar="deleteRepartoDialogWidget"
+		message="Si conferma l'eliminazione del reparto selezionato? L'operazione non può essere annullata."
+		showEffect="fade" 
+		hideEffect="fade">
+		
+		<p:commandButton 
+			value="Elimina"
+			update=":detailForm:tabView:lavoroAccordion:repartiTable,:detailForm:tabView:lavoroAccordion:repartiButtons,:detailForm:growl"
+			process="@this" 
+			oncomplete="deleteRepartoDialogWidget.hide()"  
+            actionListener="#{dettaglioAddettoReparti.doDelete}" />
+              
+        <p:commandButton 
+        	value="Annulla" 
+        	onclick="deleteRepartoDialogWidget.hide()" 
+        	type="button" />
+        	   
+	</p:confirmDialog>
+
+</html>
