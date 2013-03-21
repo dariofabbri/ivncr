@@ -1,0 +1,187 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:custom="http://java.sun.com/jsf/composite/components/custom">
+			
+	<p:panelGrid styleClass="form-panel">
+					
+		<p:row>
+			<p:column colspan="2" styleClass="form-header">
+				<h:outputText value="Elenco storico dei provvedimenti disciplinari dell'addetto."/>
+			</p:column>
+		</p:row>
+		
+		<p:row>
+		
+			<p:column>
+								
+				<p:dataTable
+					id="disciplinaTable"
+					var="disciplina"
+					value="#{dettaglioAddettoDisciplina.listDisciplina}"
+					selectionMode="single"
+					selection="#{dettaglioAddettoDisciplina.selected}"
+					rowKey="#{disciplina.id}"
+					sortBy="#{disciplina.dataProvvedimento}"
+					sortOrder="descending"
+					emptyMessage="Nessun record trovato" 
+					styleClass="small-datatable">
+
+					<p:ajax event="rowSelect" update=":detailForm:tabView:lavoroAccordion:disciplinaButtons"/>
+	
+					<p:ajax event="rowUnselect" update=":detailForm:tabView:lavoroAccordion:disciplinaButtons"/>
+
+					<p:column headerText="Provvedimento" sortBy="#{disciplina.provvedimento}">
+						<h:outputText value="#{disciplina.provvedimento}" />
+					</p:column>
+
+					<p:column headerText="Data provvedimento" sortBy="#{disciplina.dataProvvedimento}">
+						<h:outputText value="#{disciplina.dataProvvedimento}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+																		
+				</p:dataTable>
+			
+			</p:column>
+			
+		</p:row>
+		
+		<p:row>
+			<p:column>
+				
+				<p:outputPanel id="disciplinaButtons">
+					
+					<p:commandButton value="Nuovo"
+						oncomplete="detailDisciplinaDialogWidget.show()"
+						actionListener="#{dettaglioAddettoDisciplina.startCreate}"
+						process="@this"
+						update=":detailForm:tabView:lavoroAccordion:detailDisciplinaView:detailDisciplinaDialog"/>
+
+					<p:commandButton value="Modifica"
+						disabled="#{empty dettaglioAddettoDisciplina.selected}"
+						oncomplete="detailDisciplinaDialogWidget.show()"
+						actionListener="#{dettaglioAddettoDisciplina.startUpdate}"
+						process="@this"
+						update=":detailForm:tabView:lavoroAccordion:detailDisciplinaView:detailDisciplinaDialog"/>
+
+					<p:commandButton value="Elimina"
+						disabled="#{empty dettaglioAddettoDisciplina.selected}"
+						type="button"
+						onclick="deleteDisciplinaDialogWidget.show()"/>
+					
+				</p:outputPanel>
+				
+			</p:column>
+		</p:row>
+		
+	</p:panelGrid>
+
+	
+	
+	<f:subview id="detailDisciplinaView">
+	
+		<p:dialog 
+			id="detailDisciplinaDialog"
+			header="Provvedimento disciplinare" 
+			widgetVar="detailDisciplinaDialogWidget" 
+			modal="true"
+			showEffect="fade" 
+			hideEffect="fade"> 
+					
+			<p:messages id="messages" globalOnly="false" showSummary="false" showDetail="true" closable="true"/>
+			
+			<p:panelGrid id="panel" styleClass="form-panel">
+							
+				<p:row>
+					<p:column colspan="2" styleClass="form-header">
+						<h:outputText value="Il pannello permette di immettere le informazioni di dettaglio relative al provvedimento disciplinare dell'addetto."/>
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="provvedimento" value="Provvedimento:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioAddettoDisciplina.provvedimento}" id="provvedimento"
+							required="true"
+							requiredMessage="Il campo provvedimento è obbligatorio"/>
+						<p:watermark for="provvedimento" value="Provvedimento" />  
+						<p:tooltip for="provvedimento" showEffect="fade" value="Provvedimento" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="dataProvvedimento" value="Data provvedimento:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioAddettoDisciplina.dataProvvedimento}" id="dataProvvedimento"
+							required="true"
+							requiredMessage="Il campo data provvedimento è obbligatorio"
+							pattern="dd/MM/yyyy"/>
+						<p:watermark for="dataProvvedimento" value="Data provvedimento" />  
+						<p:tooltip for="dataProvvedimento" showEffect="fade" value="Data del provvedimento" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="note" value="Note:" />
+					</p:column>
+					<p:column>
+						<p:inputTextarea value="#{dettaglioAddettoDisciplina.note}" id="note" />
+						<p:watermark for="note" value="Eventuali annotazioni sul provvedimento" />  
+						<p:tooltip for="note" showEffect="fade" value="Eventuali annotazioni sul provvedimento" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column colspan="2" styleClass="form-footer">
+						<p:commandButton value="Salva"
+							id="saveButton"
+							actionListener="#{dettaglioAddettoDisciplina.doSave}" 
+							update="detailDisciplinaView:messages,detailDisciplinaView:panel,:detailForm:tabView:lavoroAccordion:disciplinaTable,:detailForm:growl"
+							process="detailDisciplinaView:detailDisciplinaDialog"
+							oncomplete="if(args.ok) { detailDisciplinaDialogWidget.hide(); }"/>
+						<p:commandButton value="Annulla"
+							type="button"
+							onclick="detailDisciplinaDialogWidget.hide();" />
+					</p:column>
+				</p:row>
+				
+			</p:panelGrid>
+	
+			<p:defaultCommand target="saveButton" scope="detailDisciplinaDialog"/>
+			
+		</p:dialog>
+	
+	</f:subview>
+	
+	
+	<p:confirmDialog 
+		id="deleteDisciplinaDialog"
+		header="Elimina provvedimento disciplinare" 
+		widgetVar="deleteDisciplinaDialogWidget"
+		message="Si conferma l'eliminazione del provvedimento disciplinare selezionato? L'operazione non può essere annullata."
+		showEffect="fade" 
+		hideEffect="fade">
+		
+		<p:commandButton 
+			value="Elimina"
+			update=":detailForm:tabView:lavoroAccordion:disciplinaTable,:detailForm:tabView:lavoroAccordion:disciplinaButtons,:detailForm:growl"
+			process="@this" 
+			oncomplete="deleteDisciplinaDialogWidget.hide()"  
+            actionListener="#{dettaglioAddettoDisciplina.doDelete}" />
+              
+        <p:commandButton 
+        	value="Annulla" 
+        	onclick="deleteDisciplinaDialogWidget.hide()" 
+        	type="button" />
+        	   
+	</p:confirmDialog>
+
+</html>
