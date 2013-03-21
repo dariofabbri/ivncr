@@ -66,7 +66,7 @@ public class PosizioneLavorativa {
 	private Date dataFineContratto;
 
 	@Column(name="motivo_dimissioni")
-	private Date motivoDimissioni;
+	private String motivoDimissioni;
 
 
 	@Override
@@ -186,11 +186,11 @@ public class PosizioneLavorativa {
 		this.dataFineContratto = dataFineContratto;
 	}
 
-	public Date getMotivoDimissioni() {
+	public String getMotivoDimissioni() {
 		return motivoDimissioni;
 	}
 
-	public void setMotivoDimissioni(Date motivoDimissioni) {
+	public void setMotivoDimissioni(String motivoDimissioni) {
 		this.motivoDimissioni = motivoDimissioni;
 	}
 }

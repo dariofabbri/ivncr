@@ -1,0 +1,346 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:custom="http://java.sun.com/jsf/composite/components/custom">
+			
+	<p:panelGrid styleClass="form-panel">
+					
+		<p:row>
+			<p:column colspan="2" styleClass="form-header">
+				<h:outputText value="Elenco storico delle posizioni lavorative dell'addetto."/>
+			</p:column>
+		</p:row>
+		
+		<p:row>
+		
+			<p:column>
+								
+				<p:dataTable
+					id="posizioniTable"
+					var="posizione"
+					value="#{dettaglioAddettoPosizioni.listPosizioni}"
+					selectionMode="single"
+					selection="#{dettaglioAddettoPosizioni.selected}"
+					rowKey="#{posizione.id}"
+					sortBy="#{posizione.dataAssunzione}"
+					sortOrder="descending"
+					emptyMessage="Nessun record trovato" 
+					styleClass="small-datatable">
+
+					<p:ajax event="rowSelect" update=":detailForm:tabView:lavoroAccordion:posizioniButtons"/>
+	
+					<p:ajax event="rowUnselect" update=":detailForm:tabView:lavoroAccordion:posizioniButtons"/>
+
+					<p:column headerText="Tipo contratto" sortBy="#{posizione.tipoContratto.descrizione}">
+						<h:outputText value="#{posizione.tipoContratto.descrizione}" />
+					</p:column>
+
+					<p:column headerText="CCNL" sortBy="#{posizione.ccnl.descrizione}">
+						<h:outputText value="#{posizione.ccnl.descrizione}" />
+					</p:column>
+
+					<p:column headerText="Azienda" sortBy="#{posizione.azienda.descrizione}">
+						<h:outputText value="#{posizione.azienda.descrizione}" />
+					</p:column>
+
+					<p:column headerText="Durata contratto" sortBy="#{posizione.durataContratto}">
+						<h:outputText value="#{posizione.durataContratto}" />
+					</p:column>
+
+					<p:column headerText="Data assunzione" sortBy="#{posizione.dataAssunzione}">
+						<h:outputText value="#{posizione.dataAssunzione}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Durata prova" sortBy="#{posizione.durataProva}">
+						<h:outputText value="#{posizione.durataProva}" />
+					</p:column>
+
+					<p:column headerText="Data primo giorno" sortBy="#{posizione.dataPrimoGiorno}">
+						<h:outputText value="#{posizione.dataPrimoGiorno}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Data fine prova" sortBy="#{posizione.dataFineProva}">
+						<h:outputText value="#{posizione.dataFineProva}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Data cessazione" sortBy="#{posizione.dataCessazione}">
+						<h:outputText value="#{posizione.dataCessazione}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Data fine contratto" sortBy="#{posizione.dataFineContratto}">
+						<h:outputText value="#{posizione.dataFineContratto}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+																		
+				</p:dataTable>
+			
+			</p:column>
+			
+		</p:row>
+		
+		<p:row>
+			<p:column>
+				
+				<p:outputPanel id="posizioniButtons">
+					
+					<p:commandButton value="Nuovo"
+						oncomplete="detailPosizioneDialogWidget.show()"
+						actionListener="#{dettaglioAddettoPosizioni.startCreate}"
+						process="@this"
+						update=":detailForm:tabView:lavoroAccordion:detailPosizioneView:detailPosizioneDialog"/>
+
+					<p:commandButton value="Modifica"
+						disabled="#{empty dettaglioAddettoPosizioni.selected}"
+						oncomplete="detailPosizioneDialogWidget.show()"
+						actionListener="#{dettaglioAddettoPosizioni.startUpdate}"
+						process="@this"
+						update=":detailForm:tabView:lavoroAccordion:detailPosizioneView:detailPosizioneDialog"/>
+
+					<p:commandButton value="Elimina"
+						disabled="#{empty dettaglioAddettoPosizioni.selected}"
+						type="button"
+						onclick="deletePosizioneDialogWidget.show()"/>
+					
+				</p:outputPanel>
+				
+			</p:column>
+		</p:row>
+		
+	</p:panelGrid>
+
+	
+	
+	<f:subview id="detailPosizioneView">
+	
+		<p:dialog 
+			id="detailPosizioneDialog"
+			header="Posizione lavorativa" 
+			widgetVar="detailPosizioneDialogWidget" 
+			modal="true"
+			showEffect="fade" 
+			hideEffect="fade"> 
+					
+			<p:messages id="messages" globalOnly="false" showSummary="false" showDetail="true" closable="true"/>
+			
+			<p:panelGrid id="panel" styleClass="form-panel">
+							
+				<p:row>
+					<p:column colspan="2" styleClass="form-header">
+						<h:outputText value="Il pannello permette di immettere le informazioni di dettaglio relative alla posizione lavorativa dell'addetto."/>
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>
+						<p:outputLabel for="codiceTipoContratto" value="Tipo di contratto:" />
+					</p:column>
+					<p:column>
+						<p:selectOneMenu
+							id="codiceTipoContratto" 
+							value="#{dettaglioAddettoPosizioni.codiceTipoContratto}"
+							required="true"
+							requiredMessage="Il campo tipo di contratto è obbligatorio"
+							effect="fade">
+							<f:selectItem itemLabel="Selezionare un tipo di contratto" itemValue="" />
+							<f:selectItems 
+								value="#{dettaglioAddettoPosizioni.listTipoContratto}" var="item"
+								itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+						</p:selectOneMenu>	
+						<p:tooltip for="codiceTipoContratto" showEffect="fade" value="Tipo di contratto dell'addetto" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>
+						<p:outputLabel for="codiceCcnl" value="CCNL:" />
+					</p:column>
+					<p:column>
+						<p:selectOneMenu
+							id="codiceCcnl" 
+							value="#{dettaglioAddettoPosizioni.codiceCcnl}"
+							required="true"
+							requiredMessage="Il camnpo CCNL è obbligatorio"
+							effect="fade">
+							<f:selectItem itemLabel="Selezionare un CCNL" itemValue="" />
+							<f:selectItems 
+								value="#{dettaglioAddettoPosizioni.listCcnl}" var="item"
+								itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+						</p:selectOneMenu>	
+						<p:tooltip for="codiceCcnl" showEffect="fade" value="CCNL dell'addetto" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>
+						<p:outputLabel for="codiceAzienda" value="Azienda:" />
+					</p:column>
+					<p:column>
+						<p:selectOneMenu
+							id="codiceAzienda" 
+							value="#{dettaglioAddettoPosizioni.codiceAzienda}"
+							required="true"
+							requiredMessage="Il campo azienda è obbligatorio"
+							effect="fade">
+							<f:selectItem itemLabel="Selezionare un'azienda" itemValue="" />
+							<f:selectItems 
+								value="#{dettaglioAddettoPosizioni.listAzienda}" var="item"
+								itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+						</p:selectOneMenu>	
+						<p:tooltip for="codiceAzienda" showEffect="fade" value="Azienda dell'addetto" />
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>
+						<p:outputLabel for="durataContratto" value="Durata del contratto:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioAddettoPosizioni.durataContratto}" id="durataContratto"
+							converter="integerConverter" converterMessage="Il campo durata contratto non rappresenta un numero valido"/>
+						<p:watermark for="durataContratto" value="Durata del contratto (mesi)" />  
+						<p:tooltip for="durataContratto" showEffect="fade" value="Durata del contratto in mesi" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="dataAssunzione" value="Data assunzione:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioAddettoPosizioni.dataAssunzione}" id="dataAssunzione"
+							required="true"
+							requiredMessage="Il campo data assunzione è obbligatorio"
+							pattern="dd/MM/yyyy"/>
+						<p:watermark for="dataAssunzione" value="Data assunzione" />  
+						<p:tooltip for="dataAssunzione" showEffect="fade" value="Data assunzione" />
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>
+						<p:outputLabel for="durataProva" value="Durata del periodo di prova:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioAddettoPosizioni.durataProva}" id="durataProva"
+							converter="integerConverter" converterMessage="Il campo durata del periodo di prova non rappresenta un numero valido"/>
+						<p:watermark for="durataProva" value="Durata del periodo di prova (mesi)" />  
+						<p:tooltip for="durataProva" showEffect="fade" value="Durata del periodo di prova in mesi" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="dataPrimoGiorno" value="Data primo giorno:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioAddettoPosizioni.dataPrimoGiorno}" id="dataPrimoGiorno"
+							pattern="dd/MM/yyyy"/>
+						<p:watermark for="dataPrimoGiorno" value="Data primo giorno" />  
+						<p:tooltip for="dataPrimoGiorno" showEffect="fade" value="Data primo giorno" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="dataFineProva" value="Data fine prova:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioAddettoPosizioni.dataFineProva}" id="dataFineProva"
+							pattern="dd/MM/yyyy"/>
+						<p:watermark for="dataFineProva" value="Data fine prova" />  
+						<p:tooltip for="dataFineProva" showEffect="fade" value="Data fine prova" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="dataCessazione" value="Data cessazione:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioAddettoPosizioni.dataCessazione}" id="dataCessazione"
+							pattern="dd/MM/yyyy"/>
+						<p:watermark for="dataCessazione" value="Data cessazione" />  
+						<p:tooltip for="dataCessazione" showEffect="fade" value="Data cessazione" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="dataFineContratto" value="Data fine contratto:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioAddettoPosizioni.dataFineContratto}" id="dataFineContratto"
+							pattern="dd/MM/yyyy"/>
+						<p:watermark for="dataFineContratto" value="Data fine contratto" />  
+						<p:tooltip for="dataFineContratto" showEffect="fade" value="Data fine contratto" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="motivoDimissioni" value="Motivo dimissioni:" />
+					</p:column>
+					<p:column>
+						<p:inputTextarea value="#{dettaglioAddettoPosizioni.motivoDimissioni}" id="motivoDimissioni"/>
+						<p:watermark for="motivoDimissioni" value="Motivo dimissioni" />  
+						<p:tooltip for="motivoDimissioni" showEffect="fade" value="Motivo dimissioni" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column colspan="2" styleClass="form-footer">
+						<p:commandButton value="Salva"
+							id="saveButton"
+							actionListener="#{dettaglioAddettoPosizioni.doSave}" 
+							update="detailPosizioneView:messages,detailPosizioneView:panel,:detailForm:tabView:lavoroAccordion:posizioniTable,:detailForm:growl"
+							process="detailPosizioneView:detailPosizioneDialog"
+							oncomplete="if(args.ok) { detailPosizioneDialogWidget.hide(); }"/>
+						<p:commandButton value="Annulla"
+							type="button"
+							onclick="detailPosizioneDialogWidget.hide();" />
+					</p:column>
+				</p:row>
+				
+			</p:panelGrid>
+	
+			<p:defaultCommand target="saveButton" scope="detailPosizioneDialog"/>
+			
+		</p:dialog>
+	
+	</f:subview>
+	
+	
+	<p:confirmDialog 
+		id="deletePosizioneDialog"
+		header="Elimina posizione lavorativa" 
+		widgetVar="deletePosizioneDialogWidget"
+		message="Si conferma l'eliminazione della posizione lavorativa selezionata? L'operazione non può essere annullata."
+		showEffect="fade" 
+		hideEffect="fade">
+		
+		<p:commandButton 
+			value="Elimina"
+			update=":detailForm:tabView:lavoroAccordion:posizioniTable,:detailForm:tabView:lavoroAccordion:posizioniButtons,:detailForm:growl"
+			process="@this" 
+			oncomplete="deletePosizioneDialogWidget.hide()"  
+            actionListener="#{dettaglioAddettoPosizioni.doDelete}" />
+              
+        <p:commandButton 
+        	value="Annulla" 
+        	onclick="deletePosizioneDialogWidget.hide()" 
+        	type="button" />
+        	   
+	</p:confirmDialog>
+
+</html>

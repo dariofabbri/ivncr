@@ -35,6 +35,10 @@ public class IntegerConverter implements Converter {
 	@Override
 	public Object getAsObject(FacesContext context, UIComponent component, String value) {
 
+		if(value == null) {
+			return null;
+		}
+
 		// If a regex pattern has been specified, apply it.
 		//
 		if(!pattern.matcher(value).matches()) {
