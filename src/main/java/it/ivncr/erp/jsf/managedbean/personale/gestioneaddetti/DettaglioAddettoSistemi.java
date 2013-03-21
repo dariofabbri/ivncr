@@ -1,13 +1,11 @@
 package it.ivncr.erp.jsf.managedbean.personale.gestioneaddetti;
 
 import it.ivncr.erp.jsf.managedbean.accesso.session.LoginInfo;
-import it.ivncr.erp.model.personale.AddettoReparto;
-import it.ivncr.erp.model.personale.Reparto;
-import it.ivncr.erp.model.personale.RuoloAziendale;
+import it.ivncr.erp.model.personale.SistemaLavoro;
+import it.ivncr.erp.model.personale.TipoSistemaLavoro;
 import it.ivncr.erp.service.ServiceFactory;
-import it.ivncr.erp.service.addettoreparto.AddettoRepartoService;
 import it.ivncr.erp.service.lut.LUTService;
-import it.ivncr.erp.service.reparto.RepartoService;
+import it.ivncr.erp.service.sistemalavoro.SistemaLavoroService;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -26,9 +24,9 @@ import org.slf4j.LoggerFactory;
 
 @ManagedBean
 @ViewScoped
-public class DettaglioAddettoReparti implements Serializable {
+public class DettaglioAddettoSistemi implements Serializable {
 
-	private static final Logger logger = LoggerFactory.getLogger(DettaglioAddettoReparti.class);
+	private static final Logger logger = LoggerFactory.getLogger(DettaglioAddettoSistemi.class);
 
 	private static final long serialVersionUID = 1L;
 
@@ -39,47 +37,41 @@ public class DettaglioAddettoReparti implements Serializable {
     private LoginInfo loginInfo;
 
 	private Integer id;
-	private Integer codiceReparto;
-	private Integer codiceRuolo;
+	private Integer codiceTipoSistemaLavoro;
 	private Date validoDa;
 	private Date validoA;
 
-	private List<Reparto> listReparto;
-	private List<RuoloAziendale> listRuoloAziendale;
+	private List<TipoSistemaLavoro> listTipoSistemaLavoro;
 
-	private List<AddettoReparto> listReparti;
+	private List<SistemaLavoro> listSistemi;
 
-	private AddettoReparto selected;
+	private SistemaLavoro selected;
 
 
 	@PostConstruct
 	public void init() {
 
+		LUTService lutService = ServiceFactory.createService("LUT");
+
 		// Load ruolo aziendale LUT.
 		//
-		LUTService lutService = ServiceFactory.createService("LUT");
-		listRuoloAziendale = lutService.listItems("RuoloAziendale");
-
-		// Load values for reparto filtering by current azienda.
-		//
-		RepartoService rs = ServiceFactory.createService("Reparto");
-		listReparto = rs.listByAzienda(loginInfo.getCodiceAzienda());
+		listTipoSistemaLavoro = lutService.listItems("TipoSistemaLavoro");
 
 		// Load list for data table.
 		//
-		loadReparti();
+		loadSistemi();
 
 		logger.debug("Initialization performed.");
 	}
 
 
-	public void loadReparti() {
+	public void loadSistemi() {
 
 		if(addettoId == null)
 			return;
 
-		AddettoRepartoService as = ServiceFactory.createService("AddettoReparto");
-		listReparti = as.listByAddetto(addettoId);
+		SistemaLavoroService ss = ServiceFactory.createService("SistemaLavoro");
+		listSistemi = ss.listByAddetto(addettoId);
 	}
 
 
@@ -90,12 +82,11 @@ public class DettaglioAddettoReparti implements Serializable {
 		// Reloading the entity is required to be sure that the value has not changed since it was
 		// read in the data table list of values.
 		//
-		AddettoRepartoService as = ServiceFactory.createService("AddettoReparto");
-		selected = as.retrieveDeep(selected.getId());
+		SistemaLavoroService ss = ServiceFactory.createService("SistemaLavoro");
+		selected = ss.retrieveDeep(selected.getId());
 
 		id = selected.getId();
-		codiceReparto = selected.getReparto() != null ? selected.getReparto().getId() : null;
-		codiceRuolo = selected.getRuolo() != null ? selected.getRuolo().getId() : null;
+		codiceTipoSistemaLavoro = selected.getTipoSistemaLavoro() != null ? selected.getTipoSistemaLavoro().getId() : null;
 		validoDa = selected.getValidoDa();
 		validoA = selected.getValidoA();
 	}
@@ -106,8 +97,7 @@ public class DettaglioAddettoReparti implements Serializable {
 		logger.debug("Entering startCreate() method.");
 
 		id = null;
-		codiceReparto = null;
-		codiceRuolo = null;
+		codiceTipoSistemaLavoro = null;
 		validoDa = null;
 		validoA = null;
 	}
@@ -122,19 +112,18 @@ public class DettaglioAddettoReparti implements Serializable {
 
 		// Create service to persist data.
 		//
-		AddettoRepartoService as = ServiceFactory.createService("AddettoReparto");
+		SistemaLavoroService ss = ServiceFactory.createService("SistemaLavoro");
 
 		try {
-			AddettoReparto entity = null;
+			SistemaLavoro entity = null;
 
 			// If the record already exists, just update it.
 			//
 			if(id != null) {
 
-				entity = as.update(
+				entity = ss.update(
 						id,
-						codiceReparto,
-						codiceRuolo,
+						codiceTipoSistemaLavoro,
 						validoDa,
 						validoA);
 				logger.debug("Entity successfully updated.");
@@ -144,10 +133,9 @@ public class DettaglioAddettoReparti implements Serializable {
 			//
 			else {
 
-				entity = as.create(
+				entity = ss.create(
 						addettoId,
-						codiceReparto,
-						codiceRuolo,
+						codiceTipoSistemaLavoro,
 						validoDa,
 						validoA);
 				id = entity.getId();
@@ -165,7 +153,7 @@ public class DettaglioAddettoReparti implements Serializable {
 
 			// Refresh list.
 			//
-			loadReparti();
+			loadSistemi();
 
 			// Signal to modal dialog that everything went fine.
 			//
@@ -188,10 +176,10 @@ public class DettaglioAddettoReparti implements Serializable {
 
 		// Create service to delete record.
 		//
-		AddettoRepartoService as = ServiceFactory.createService("AddettoReparto");
+		SistemaLavoroService ss = ServiceFactory.createService("SistemaLavoro");
 
 		try {
-			as.delete(selected.getId());
+			ss.delete(selected.getId());
 
 			// Everything went fine.
 			//
@@ -207,7 +195,7 @@ public class DettaglioAddettoReparti implements Serializable {
 
 			// Refresh list.
 			//
-			loadReparti();
+			loadSistemi();
 
 		} catch(Exception e) {
 
@@ -256,20 +244,12 @@ public class DettaglioAddettoReparti implements Serializable {
 		this.id = id;
 	}
 
-	public Integer getCodiceReparto() {
-		return codiceReparto;
+	public Integer getCodiceTipoSistemaLavoro() {
+		return codiceTipoSistemaLavoro;
 	}
 
-	public void setCodiceReparto(Integer codiceReparto) {
-		this.codiceReparto = codiceReparto;
-	}
-
-	public Integer getCodiceRuolo() {
-		return codiceRuolo;
-	}
-
-	public void setCodiceRuolo(Integer codiceRuolo) {
-		this.codiceRuolo = codiceRuolo;
+	public void setCodiceTipoSistemaLavoro(Integer codiceTipoSistemaLavoro) {
+		this.codiceTipoSistemaLavoro = codiceTipoSistemaLavoro;
 	}
 
 	public Date getValidoDa() {
@@ -288,35 +268,28 @@ public class DettaglioAddettoReparti implements Serializable {
 		this.validoA = validoA;
 	}
 
-	public List<Reparto> getListReparto() {
-		return listReparto;
+	public List<TipoSistemaLavoro> getListTipoSistemaLavoro() {
+		return listTipoSistemaLavoro;
 	}
 
-	public void setListReparto(List<Reparto> listReparto) {
-		this.listReparto = listReparto;
+	public void setListTipoSistemaLavoro(
+			List<TipoSistemaLavoro> listTipoSistemaLavoro) {
+		this.listTipoSistemaLavoro = listTipoSistemaLavoro;
 	}
 
-	public List<RuoloAziendale> getListRuoloAziendale() {
-		return listRuoloAziendale;
+	public List<SistemaLavoro> getListSistemi() {
+		return listSistemi;
 	}
 
-	public void setListRuoloAziendale(List<RuoloAziendale> listRuoloAziendale) {
-		this.listRuoloAziendale = listRuoloAziendale;
+	public void setListSistemi(List<SistemaLavoro> listSistemi) {
+		this.listSistemi = listSistemi;
 	}
 
-	public List<AddettoReparto> getListReparti() {
-		return listReparti;
-	}
-
-	public void setListReparti(List<AddettoReparto> listReparti) {
-		this.listReparti = listReparti;
-	}
-
-	public AddettoReparto getSelected() {
+	public SistemaLavoro getSelected() {
 		return selected;
 	}
 
-	public void setSelected(AddettoReparto selected) {
+	public void setSelected(SistemaLavoro selected) {
 		this.selected = selected;
 	}
 }

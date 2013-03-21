@@ -1,0 +1,201 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:custom="http://java.sun.com/jsf/composite/components/custom">
+			
+	<p:panelGrid styleClass="form-panel">
+					
+		<p:row>
+			<p:column colspan="2" styleClass="form-header">
+				<h:outputText value="Elenco storico dei sistemi di lavoro dell'addetto."/>
+			</p:column>
+		</p:row>
+		
+		<p:row>
+		
+			<p:column>
+								
+				<p:dataTable
+					id="sistemiTable"
+					var="sistema"
+					value="#{dettaglioAddettoSistemi.listSistemi}"
+					selectionMode="single"
+					selection="#{dettaglioAddettoSistemi.selected}"
+					rowKey="#{sistema.id}"
+					sortBy="#{sistema.validoDa}"
+					sortOrder="descending"
+					emptyMessage="Nessun record trovato" 
+					styleClass="small-datatable">
+
+					<p:ajax event="rowSelect" update=":detailForm:tabView:lavoroAccordion:sistemiButtons"/>
+	
+					<p:ajax event="rowUnselect" update=":detailForm:tabView:lavoroAccordion:sistemiButtons"/>
+
+					<p:column headerText="Tipo sistema" sortBy="#{sistema.tipoSistemaLavoro.descrizione}">
+						<h:outputText value="#{sistema.tipoSistemaLavoro.descrizione}" />
+					</p:column>
+
+					<p:column headerText="Valido da" sortBy="#{sistema.validoDa}">
+						<h:outputText value="#{sistema.validoDa}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Valido a" sortBy="#{sistema.validoA}">
+						<h:outputText value="#{sistema.validoA}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+																		
+				</p:dataTable>
+			
+			</p:column>
+			
+		</p:row>
+		
+		<p:row>
+			<p:column>
+				
+				<p:outputPanel id="sistemiButtons">
+					
+					<p:commandButton value="Nuovo"
+						oncomplete="detailSistemaDialogWidget.show()"
+						actionListener="#{dettaglioAddettoSistemi.startCreate}"
+						process="@this"
+						update=":detailForm:tabView:lavoroAccordion:detailSistemaView:detailSistemaDialog"/>
+
+					<p:commandButton value="Modifica"
+						disabled="#{empty dettaglioAddettoSistemi.selected}"
+						oncomplete="detailSistemaDialogWidget.show()"
+						actionListener="#{dettaglioAddettoSistemi.startUpdate}"
+						process="@this"
+						update=":detailForm:tabView:lavoroAccordion:detailSistemaView:detailSistemaDialog"/>
+
+					<p:commandButton value="Elimina"
+						disabled="#{empty dettaglioAddettoSistemi.selected}"
+						type="button"
+						onclick="deleteSistemaDialogWidget.show()"/>
+					
+				</p:outputPanel>
+				
+			</p:column>
+		</p:row>
+		
+	</p:panelGrid>
+
+	
+	
+	<f:subview id="detailSistemaView">
+	
+		<p:dialog 
+			id="detailSistemaDialog"
+			header="Sistema di lavoro" 
+			widgetVar="detailSistemaDialogWidget" 
+			modal="true"
+			showEffect="fade" 
+			hideEffect="fade"> 
+					
+			<p:messages id="messages" globalOnly="false" showSummary="false" showDetail="true" closable="true"/>
+			
+			<p:panelGrid id="panel" styleClass="form-panel">
+							
+				<p:row>
+					<p:column colspan="2" styleClass="form-header">
+						<h:outputText value="Il pannello permette di immettere le informazioni di dettaglio relative al sistema di lavoro dell'addetto."/>
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>
+						<p:outputLabel for="codiceTipoSistemaLavoro" value="Sistema di lavoro:" />
+					</p:column>
+					<p:column>
+						<p:selectOneMenu
+							id="codiceTipoSistemaLavoro" 
+							value="#{dettaglioAddettoSistemi.codiceTipoSistemaLavoro}"
+							required="true"
+							requiredMessage="Il campo sistema di lavoro è obbligatorio"
+							effect="fade">
+							<f:selectItem itemLabel="Selezionare un sistema di lavoro" itemValue="" />
+							<f:selectItems 
+								value="#{dettaglioAddettoSistemi.listTipoSistemaLavoro}" var="item"
+								itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+						</p:selectOneMenu>	
+						<p:tooltip for="codiceTipoSistemaLavoro" showEffect="fade" value="Sistema di lavoro dell'addetto" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="validoDa" value="Valido da:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioAddettoSistemi.validoDa}" id="validoDa"
+							required="true"
+							requiredMessage="Il campo valido da è obbligatorio"
+							pattern="dd/MM/yyyy"/>
+						<p:watermark for="validoDa" value="Valido da" />  
+						<p:tooltip for="validoDa" showEffect="fade" value="Valido da" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="validoA" value="Valido a:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioAddettoSistemi.validoA}" id="validoA"
+							pattern="dd/MM/yyyy"/>
+						<p:watermark for="validoA" value="Valido a" />  
+						<p:tooltip for="validoA" showEffect="fade" value="Valido a" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column colspan="2" styleClass="form-footer">
+						<p:commandButton value="Salva"
+							id="saveButton"
+							actionListener="#{dettaglioAddettoSistemi.doSave}" 
+							update="detailSistemaView:messages,detailSistemaView:panel,:detailForm:tabView:lavoroAccordion:sistemiTable,:detailForm:growl"
+							process="detailSistemaView:detailSistemaDialog"
+							oncomplete="if(args.ok) { detailSistemaDialogWidget.hide(); }"/>
+						<p:commandButton value="Annulla"
+							type="button"
+							onclick="detailSistemaDialogWidget.hide();" />
+					</p:column>
+				</p:row>
+				
+			</p:panelGrid>
+	
+			<p:defaultCommand target="saveButton" scope="detailSistemaDialog"/>
+			
+		</p:dialog>
+	
+	</f:subview>
+	
+	
+	<p:confirmDialog 
+		id="deleteSistemaDialog"
+		header="Elimina sistema di lavoro" 
+		widgetVar="deleteSistemaDialogWidget"
+		message="Si conferma l'eliminazione del sistema di lavoro selezionato? L'operazione non può essere annullata."
+		showEffect="fade" 
+		hideEffect="fade">
+		
+		<p:commandButton 
+			value="Elimina"
+			update=":detailForm:tabView:lavoroAccordion:sistemiTable,:detailForm:tabView:lavoroAccordion:sistemiButtons,:detailForm:growl"
+			process="@this" 
+			oncomplete="deleteSistemaDialogWidget.hide()"  
+            actionListener="#{dettaglioAddettoSistemi.doDelete}" />
+              
+        <p:commandButton 
+        	value="Annulla" 
+        	onclick="deleteSistemaDialogWidget.hide()" 
+        	type="button" />
+        	   
+	</p:confirmDialog>
+
+</html>

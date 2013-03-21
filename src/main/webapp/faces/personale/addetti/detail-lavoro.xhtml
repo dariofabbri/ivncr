@@ -5,14 +5,14 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:custom="http://java.sun.com/jsf/composite/components/custom">
 	
-	<p:accordionPanel id="lavoroAccordion">
+	<p:accordionPanel id="lavoroAccordion" dynamic="true">
 	
 		<p:tab title="Reparto">
 			<ui:include src="detail-lavoro-reparti.xhtml"/>
 		</p:tab>
 		
 		<p:tab title="Sistema lavoro">
-<!-- 			<ui:include src="detail-lavoro-sistemi.xhtml"/> -->
+			<ui:include src="detail-lavoro-sistemi.xhtml"/>
 		</p:tab>
 		
 		<p:tab title="Posizione lavorativa">
