@@ -1,0 +1,225 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:custom="http://java.sun.com/jsf/composite/components/custom">
+			
+	<p:panelGrid styleClass="form-panel">
+					
+		<p:row>
+			<p:column colspan="2" styleClass="form-header">
+				<h:outputText value="Elenco storico degli avanzamenti di carriera dell'addetto."/>
+			</p:column>
+		</p:row>
+		
+		<p:row>
+		
+			<p:column>
+								
+				<p:dataTable
+					id="avanzamentiTable"
+					var="avanzamento"
+					value="#{dettaglioAddettoAvanzamenti.listAvanzamenti}"
+					selectionMode="single"
+					selection="#{dettaglioAddettoAvanzamenti.selected}"
+					rowKey="#{avanzamento.id}"
+					sortBy="#{avanzamento.validoDa}"
+					sortOrder="descending"
+					emptyMessage="Nessun record trovato" 
+					styleClass="small-datatable">
+
+					<p:ajax event="rowSelect" update=":detailForm:tabView:lavoroAccordion:avanzamentiButtons"/>
+	
+					<p:ajax event="rowUnselect" update=":detailForm:tabView:lavoroAccordion:avanzamentiButtons"/>
+
+					<p:column headerText="Qualifica" sortBy="#{avanzamento.qualifica.descrizione}">
+						<h:outputText value="#{avanzamento.qualifica.descrizione}" />
+					</p:column>
+
+					<p:column headerText="Livello CCNL" sortBy="#{avanzamento.livelloCcnl.descrizione}">
+						<h:outputText value="#{avanzamento.livelloCcnl.descrizione}" />
+					</p:column>
+
+					<p:column headerText="Valido da" sortBy="#{avanzamento.validoDa}">
+						<h:outputText value="#{avanzamento.validoDa}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Valido a" sortBy="#{avanzamento.validoA}">
+						<h:outputText value="#{avanzamento.validoA}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+																		
+				</p:dataTable>
+			
+			</p:column>
+			
+		</p:row>
+		
+		<p:row>
+			<p:column>
+				
+				<p:outputPanel id="avanzamentiButtons">
+					
+					<p:commandButton value="Nuovo"
+						oncomplete="detailAvanzamentoDialogWidget.show()"
+						actionListener="#{dettaglioAddettoAvanzamenti.startCreate}"
+						process="@this"
+						update=":detailForm:tabView:lavoroAccordion:detailAvanzamentoView:detailAvanzamentoDialog"/>
+
+					<p:commandButton value="Modifica"
+						disabled="#{empty dettaglioAddettoAvanzamenti.selected}"
+						oncomplete="detailAvanzamentoDialogWidget.show()"
+						actionListener="#{dettaglioAddettoAvanzamenti.startUpdate}"
+						process="@this"
+						update=":detailForm:tabView:lavoroAccordion:detailAvanzamentoView:detailAvanzamentoDialog"/>
+
+					<p:commandButton value="Elimina"
+						disabled="#{empty dettaglioAddettoAvanzamenti.selected}"
+						type="button"
+						onclick="deleteAvanzamentoDialogWidget.show()"/>
+					
+				</p:outputPanel>
+				
+			</p:column>
+		</p:row>
+		
+	</p:panelGrid>
+
+	
+	
+	<f:subview id="detailAvanzamentoView">
+	
+		<p:dialog 
+			id="detailAvanzamentoDialog"
+			header="Avanzamento di carriera" 
+			widgetVar="detailAvanzamentoDialogWidget" 
+			modal="true"
+			showEffect="fade" 
+			hideEffect="fade"> 
+					
+			<p:messages id="messages" globalOnly="false" showSummary="false" showDetail="true" closable="true"/>
+			
+			<p:panelGrid id="panel" styleClass="form-panel">
+							
+				<p:row>
+					<p:column colspan="2" styleClass="form-header">
+						<h:outputText value="Il pannello permette di immettere le informazioni di dettaglio dell'avanzamento di carriera dell'addetto."/>
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>
+						<p:outputLabel for="codiceQualifica" value="Qualifica:" />
+					</p:column>
+					<p:column>
+						<p:selectOneMenu
+							id="codiceQualifica" 
+							value="#{dettaglioAddettoAvanzamenti.codiceQualifica}"
+							required="true"
+							requiredMessage="Il campo qualifica è obbligatorio"
+							effect="fade">
+							<f:selectItem itemLabel="Selezionare una qualifica" itemValue="" />
+							<f:selectItems 
+								value="#{dettaglioAddettoAvanzamenti.listQualifica}" var="item"
+								itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+						</p:selectOneMenu>	
+						<p:tooltip for="codiceQualifica" showEffect="fade" value="Qualifica dell'addetto" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>
+						<p:outputLabel for="codiceLivelloCcnl" value="Livello CCNL:" />
+					</p:column>
+					<p:column>
+						<p:selectOneMenu
+							id="codiceLivelloCcnl" 
+							value="#{dettaglioAddettoAvanzamenti.codiceLivelloCcnl}"
+							required="true"
+							requiredMessage="Il campo livello CCNL è obbligatorio"
+							effect="fade">
+							<f:selectItem itemLabel="Selezionare un livello CCNL" itemValue="" />
+							<f:selectItems 
+								value="#{dettaglioAddettoAvanzamenti.listLivelloCcnl}" var="item"
+								itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+						</p:selectOneMenu>	
+						<p:tooltip for="codiceLivelloCcnl" showEffect="fade" value="Livello CCNL dell'addetto" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="validoDa" value="Valido da:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioAddettoAvanzamenti.validoDa}" id="validoDa"
+							required="true"
+							requiredMessage="Il campo valido da è obbligatorio"
+							pattern="dd/MM/yyyy"/>
+						<p:watermark for="validoDa" value="Valido da" />  
+						<p:tooltip for="validoDa" showEffect="fade" value="Valido da" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="validoA" value="Valido a:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioAddettoAvanzamenti.validoA}" id="validoA"
+							pattern="dd/MM/yyyy"/>
+						<p:watermark for="validoA" value="Valido a" />  
+						<p:tooltip for="validoA" showEffect="fade" value="Valido a" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column colspan="2" styleClass="form-footer">
+						<p:commandButton value="Salva"
+							id="saveButton"
+							actionListener="#{dettaglioAddettoAvanzamenti.doSave}" 
+							update="detailAvanzamentoView:messages,detailAvanzamentoView:panel,:detailForm:tabView:lavoroAccordion:avanzamentiTable,:detailForm:growl"
+							process="detailAvanzamentoView:detailAvanzamentoDialog"
+							oncomplete="if(args.ok) { detailAvanzamentoDialogWidget.hide(); }"/>
+						<p:commandButton value="Annulla"
+							type="button"
+							onclick="detailAvanzamentoDialogWidget.hide();" />
+					</p:column>
+				</p:row>
+				
+			</p:panelGrid>
+	
+			<p:defaultCommand target="saveButton" scope="detailAvanzamentoDialog"/>
+			
+		</p:dialog>
+	
+	</f:subview>
+	
+	
+	<p:confirmDialog 
+		id="deleteAvanzamentoDialog"
+		header="Elimina avanzamento di carriera" 
+		widgetVar="deleteAvanzamentoDialogWidget"
+		message="Si conferma l'eliminazione dell'avanzamento di carriera selezionato? L'operazione non può essere annullata."
+		showEffect="fade" 
+		hideEffect="fade">
+		
+		<p:commandButton 
+			value="Elimina"
+			update=":detailForm:tabView:lavoroAccordion:avanzamentiTable,:detailForm:tabView:lavoroAccordion:avanzamentiButtons,:detailForm:growl"
+			process="@this" 
+			oncomplete="deleteAvanzamentoDialogWidget.hide()"  
+            actionListener="#{dettaglioAddettoAvanzamenti.doDelete}" />
+              
+        <p:commandButton 
+        	value="Annulla" 
+        	onclick="deleteAvanzamentoDialogWidget.hide()" 
+        	type="button" />
+        	   
+	</p:confirmDialog>
+
+</html>
