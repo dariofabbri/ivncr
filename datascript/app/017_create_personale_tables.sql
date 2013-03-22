@@ -114,6 +114,7 @@ INSERT INTO app.per_grado (id, descrizione) VALUES (16, 'Soldato semplice');
 INSERT INTO app.per_grado (id, descrizione) VALUES (17, 'Sottocapo');
 INSERT INTO app.per_grado (id, descrizione) VALUES (18, 'Tenente');
 INSERT INTO app.per_grado (id, descrizione) VALUES (19, 'Vice sovrintendente');
+INSERT INTO app.per_grado (id, descrizione) VALUES (20, 'Nessuno');
 SELECT setval('app.per_grado_id_seq', (SELECT MAX(id) FROM app.per_grado));
 
 
@@ -130,7 +131,7 @@ INSERT INTO app.per_sigla_sindacale (id, descrizione) VALUES (3, 'FISASCAT CISL'
 INSERT INTO app.per_sigla_sindacale (id, descrizione) VALUES (4, 'SAVIP');
 INSERT INTO app.per_sigla_sindacale (id, descrizione) VALUES (5, 'SINALV CISAL');
 INSERT INTO app.per_sigla_sindacale (id, descrizione) VALUES (6, 'UGL');
-INSERT INTO app.per_sigla_sindacale (id, descrizione) VALUES (7, 'UIL TuCS UIL');
+INSERT INTO app.per_sigla_sindacale (id, descrizione) VALUES (7, 'UILTuCS UIL');
 SELECT setval('app.per_sigla_sindacale_id_seq', (SELECT MAX(id) FROM app.per_sigla_sindacale));
 
 
@@ -140,10 +141,11 @@ CREATE TABLE app.per_carica_sindacale
   descrizione VARCHAR(255) NOT NULL
 );
 
-INSERT INTO app.per_carica_sindacale (id, descrizione) VALUES (1, 'Dirigente sindacale');
-INSERT INTO app.per_carica_sindacale (id, descrizione) VALUES (2, 'Rappresentante sindacale');
+INSERT INTO app.per_carica_sindacale (id, descrizione) VALUES (1, 'DS - Dirigente sindacale');
+INSERT INTO app.per_carica_sindacale (id, descrizione) VALUES (2, 'Rappresentante Sindacale');
 INSERT INTO app.per_carica_sindacale (id, descrizione) VALUES (3, 'RSA');
-INSERT INTO app.per_carica_sindacale (id, descrizione) VALUES (4, 'RSA e dirigente sindacale');
+INSERT INTO app.per_carica_sindacale (id, descrizione) VALUES (4, 'RSA e Dirigente Sindacale');
+INSERT INTO app.per_carica_sindacale (id, descrizione) VALUES (5, 'Nessuna');
 SELECT setval('app.per_carica_sindacale_id_seq', (SELECT MAX(id) FROM app.per_carica_sindacale));
 
 
@@ -176,6 +178,10 @@ INSERT INTO app.per_tipo_posizione_militare (id, descrizione) VALUES (2, 'Dispen
 INSERT INTO app.per_tipo_posizione_militare (id, descrizione) VALUES (3, 'Esonerato');
 INSERT INTO app.per_tipo_posizione_militare (id, descrizione) VALUES (4, 'Non assolto');
 INSERT INTO app.per_tipo_posizione_militare (id, descrizione) VALUES (5, 'Riformato');
+INSERT INTO app.per_tipo_posizione_militare (id, descrizione) VALUES (6, 'Nessuno');
+INSERT INTO app.per_tipo_posizione_militare (id, descrizione) VALUES (7, 'ASSOLTO             ');
+INSERT INTO app.per_tipo_posizione_militare (id, descrizione) VALUES (8, 'NON ASSOLTO');
+INSERT INTO app.per_tipo_posizione_militare (id, descrizione) VALUES (9, 'RIFORMATO           ');
 SELECT setval('app.per_tipo_posizione_militare_id_seq', (SELECT MAX(id) FROM app.per_tipo_posizione_militare));
 
 
