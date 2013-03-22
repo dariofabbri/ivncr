@@ -1,0 +1,225 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:custom="http://java.sun.com/jsf/composite/components/custom">
+			
+	<p:panelGrid styleClass="form-panel">
+					
+		<p:row>
+			<p:column colspan="2" styleClass="form-header">
+				<h:outputText value="Elenco delle informazioni sindacali dell'addetto."/>
+			</p:column>
+		</p:row>
+		
+		<p:row>
+		
+			<p:column>
+								
+				<p:dataTable
+					id="infoSindacaliTable"
+					var="infoSindacale"
+					value="#{dettaglioAddettoInfoSindacali.listInfoSindacali}"
+					selectionMode="single"
+					selection="#{dettaglioAddettoInfoSindacali.selected}"
+					rowKey="#{infoSindacale.id}"
+					sortBy="#{infoSindacale.validoDa}"
+					sortOrder="descending"
+					emptyMessage="Nessun record trovato" 
+					styleClass="small-datatable">
+
+					<p:ajax event="rowSelect" update=":detailForm:tabView:lavoroAccordion:infoSindacaliButtons"/>
+	
+					<p:ajax event="rowUnselect" update=":detailForm:tabView:lavoroAccordion:infoSindacaliButtons"/>
+
+					<p:column headerText="Sigla sindacale" sortBy="#{infoSindacale.siglaSindacale.descrizione}">
+						<h:outputText value="#{infoSindacale.siglaSindacale.descrizione}" />
+					</p:column>
+
+					<p:column headerText="Carica sindacale" sortBy="#{infoSindacale.caricaSindacale.descrizione}">
+						<h:outputText value="#{infoSindacale.caricaSindacale.descrizione}" />
+					</p:column>
+
+					<p:column headerText="Valido da" sortBy="#{infoSindacale.validoDa}">
+						<h:outputText value="#{infoSindacale.validoDa}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Valido a" sortBy="#{infoSindacale.validoA}">
+						<h:outputText value="#{infoSindacale.validoA}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+																		
+				</p:dataTable>
+			
+			</p:column>
+			
+		</p:row>
+		
+		<p:row>
+			<p:column>
+				
+				<p:outputPanel id="infoSindacaliButtons">
+					
+					<p:commandButton value="Nuovo"
+						oncomplete="detailInfoSindacaleDialogWidget.show()"
+						actionListener="#{dettaglioAddettoInfoSindacali.startCreate}"
+						process="@this"
+						update=":detailForm:tabView:lavoroAccordion:detailInfoSindacaleView:detailInfoSindacaleDialog"/>
+
+					<p:commandButton value="Modifica"
+						disabled="#{empty dettaglioAddettoInfoSindacali.selected}"
+						oncomplete="detailInfoSindacaleDialogWidget.show()"
+						actionListener="#{dettaglioAddettoInfoSindacali.startUpdate}"
+						process="@this"
+						update=":detailForm:tabView:lavoroAccordion:detailInfoSindacaleView:detailInfoSindacaleDialog"/>
+
+					<p:commandButton value="Elimina"
+						disabled="#{empty dettaglioAddettoInfoSindacali.selected}"
+						type="button"
+						onclick="deleteInfoSindacaleDialogWidget.show()"/>
+					
+				</p:outputPanel>
+				
+			</p:column>
+		</p:row>
+		
+	</p:panelGrid>
+
+	
+	
+	<f:subview id="detailInfoSindacaleView">
+	
+		<p:dialog 
+			id="detailInfoSindacaleDialog"
+			header="Informazioni sindacali" 
+			widgetVar="detailInfoSindacaleDialogWidget" 
+			modal="true"
+			showEffect="fade" 
+			hideEffect="fade"> 
+					
+			<p:messages id="messages" globalOnly="false" showSummary="false" showDetail="true" closable="true"/>
+			
+			<p:panelGrid id="panel" styleClass="form-panel">
+							
+				<p:row>
+					<p:column colspan="2" styleClass="form-header">
+						<h:outputText value="Il pannello permette di immettere le informazioni sindacali dell'addetto."/>
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>
+						<p:outputLabel for="codiceSiglaSindacale" value="Sigla sindacale:" />
+					</p:column>
+					<p:column>
+						<p:selectOneMenu
+							id="codiceSiglaSindacale" 
+							value="#{dettaglioAddettoInfoSindacali.codiceSiglaSindacale}"
+							required="true"
+							requiredMessage="Il campo sigla sindacale è obbligatorio"
+							effect="fade">
+							<f:selectItem itemLabel="Selezionare una sigla sindacale" itemValue="" />
+							<f:selectItems 
+								value="#{dettaglioAddettoInfoSindacali.listSiglaSindacale}" var="item"
+								itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+						</p:selectOneMenu>	
+						<p:tooltip for="codiceSiglaSindacale" showEffect="fade" value="Sigla sindacale dell'addetto" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column>
+						<p:outputLabel for="codiceCaricaSindacale" value="Carica sindacale:" />
+					</p:column>
+					<p:column>
+						<p:selectOneMenu
+							id="codiceCaricaSindacale" 
+							value="#{dettaglioAddettoInfoSindacali.codiceCaricaSindacale}"
+							required="true"
+							requiredMessage="Il campo carica sindacale è obbligatorio"
+							effect="fade">
+							<f:selectItem itemLabel="Selezionare una carica sindacale" itemValue="" />
+							<f:selectItems 
+								value="#{dettaglioAddettoInfoSindacali.listCaricaSindacale}" var="item"
+								itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+						</p:selectOneMenu>	
+						<p:tooltip for="codiceCaricaSindacale" showEffect="fade" value="Carica sindacale dell'addetto" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="validoDa" value="Valido da:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioAddettoInfoSindacali.validoDa}" id="validoDa"
+							required="true"
+							requiredMessage="Il campo valido da è obbligatorio"
+							pattern="dd/MM/yyyy"/>
+						<p:watermark for="validoDa" value="Valido da" />  
+						<p:tooltip for="validoDa" showEffect="fade" value="Valido da" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="validoA" value="Valido a:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioAddettoInfoSindacali.validoA}" id="validoA"
+							pattern="dd/MM/yyyy"/>
+						<p:watermark for="validoA" value="Valido a" />  
+						<p:tooltip for="validoA" showEffect="fade" value="Valido a" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column colspan="2" styleClass="form-footer">
+						<p:commandButton value="Salva"
+							id="saveButton"
+							actionListener="#{dettaglioAddettoInfoSindacali.doSave}" 
+							update="detailInfoSindacaleView:messages,detailInfoSindacaleView:panel,:detailForm:tabView:lavoroAccordion:infoSindacaliTable,:detailForm:growl"
+							process="detailInfoSindacaleView:detailInfoSindacaleDialog"
+							oncomplete="if(args.ok) { detailInfoSindacaleDialogWidget.hide(); }"/>
+						<p:commandButton value="Annulla"
+							type="button"
+							onclick="detailInfoSindacaleDialogWidget.hide();" />
+					</p:column>
+				</p:row>
+				
+			</p:panelGrid>
+	
+			<p:defaultCommand target="saveButton" scope="detailInfoSindacaleDialog"/>
+			
+		</p:dialog>
+	
+	</f:subview>
+	
+	
+	<p:confirmDialog 
+		id="deleteInfoSindacaleDialog"
+		header="Elimina informazione sindacale" 
+		widgetVar="deleteInfoSindacaleDialogWidget"
+		message="Si conferma l'eliminazione delle informazioni sindacali selezionate? L'operazione non può essere annullata."
+		showEffect="fade" 
+		hideEffect="fade">
+		
+		<p:commandButton 
+			value="Elimina"
+			update=":detailForm:tabView:lavoroAccordion:infoSindacaliTable,:detailForm:tabView:lavoroAccordion:infoSindacaliButtons,:detailForm:growl"
+			process="@this" 
+			oncomplete="deleteInfoSindacaleDialogWidget.hide()"  
+            actionListener="#{dettaglioAddettoInfoSindacali.doDelete}" />
+              
+        <p:commandButton 
+        	value="Annulla" 
+        	onclick="deleteInfoSindacaleDialogWidget.hide()" 
+        	type="button" />
+        	   
+	</p:confirmDialog>
+
+</html>
