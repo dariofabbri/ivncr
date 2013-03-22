@@ -51,4 +51,6 @@ public interface AddettoService extends EntityService<Addetto> {
 	String retrieveNextMatricola(Integer codiceAzienda);
 
 	void setFoto(Integer id, byte[] foto);
+
+	Addetto setNote(Integer id, String note);
 }

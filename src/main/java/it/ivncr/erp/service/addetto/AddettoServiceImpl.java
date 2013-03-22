@@ -283,4 +283,33 @@ public class AddettoServiceImpl extends AbstractService implements AddettoServic
 		//
 		AuditUtil.log(Operation.Update, Snapshot.Destination, addetto);
 	}
+
+
+	@Override
+	public Addetto setNote(Integer id, String note) {
+
+		Addetto addetto = retrieve(id);
+		if(addetto == null) {
+			String message = String.format("It has not been possible to retrieve specified entity: %d", id);
+			logger.info(message);
+			throw new NotFoundException(message);
+		}
+
+		// Audit call for the update operation.
+		//
+		AuditUtil.log(Operation.Update, Snapshot.Source, addetto);
+
+		// Update the record.
+		//
+		Date now = new Date();
+		addetto.setNote(note);
+		addetto.setUltimaModifica(now);
+		session.update(addetto);
+
+		// Audit call for the update operation.
+		//
+		AuditUtil.log(Operation.Update, Snapshot.Destination, addetto);
+
+		return addetto;
+	}
 }

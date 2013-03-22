@@ -4,7 +4,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 
-	<f:subview id="noteView">
+	<f:subview id="detailNoteView">
  	
 		<p:panelGrid styleClass="form-panel">
 
@@ -12,15 +12,15 @@
 			
 			<p:row>
 				<p:column>
-					<p:inputTextarea id="note" value="#{dettaglioClienteNote.note}" rows="20" style="width:800px;"/>
+					<p:inputTextarea id="note" value="#{dettaglioAddettoNote.note}" rows="20" style="width:800px;"/>
   				</p:column>
   			</p:row>  
   						
 			<p:row>
 				<p:column styleClass="form-footer">
 					<p:commandButton value="Salva"
-						actionListener="#{dettaglioClienteNote.doSave}"
-						process="noteView"
+						actionListener="#{dettaglioAddettoNote.doSave}"
+						process="detailNoteView"
 						update=":detailForm:growl"/> 
 				</p:column>
 			</p:row>
