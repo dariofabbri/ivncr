@@ -1,5 +1,7 @@
 \encoding UTF8;
 
+SET client_min_messages TO WARNING;
+
 CREATE TABLE app.gen_paese
 (
 	id SERIAL NOT NULL PRIMARY KEY,

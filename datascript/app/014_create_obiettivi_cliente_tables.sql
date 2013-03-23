@@ -1,5 +1,7 @@
 \encoding UTF8;
 
+SET client_min_messages TO WARNING;
+
 CREATE TABLE app.com_obiettivo_servizio
 (
 	id serial NOT NULL PRIMARY KEY,

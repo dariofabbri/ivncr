@@ -1,5 +1,7 @@
 \encoding UTF8;
 
+SET client_min_messages TO WARNING;
+
 INSERT INTO app.acc_utente (
 	  username,
 	  nome,

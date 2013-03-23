@@ -1,5 +1,7 @@
 \encoding UTF8;
 
+SET client_min_messages TO WARNING;
+
 CREATE TABLE app.gen_contatore
 (
 	id serial NOT NULL PRIMARY KEY,

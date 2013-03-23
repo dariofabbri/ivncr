@@ -1,4 +1,5 @@
 \encoding UTF8;
+SET client_min_messages TO WARNING;
 
 CREATE TABLE app.con_tipo_provenienza
 (
@@ -159,10 +160,10 @@ CREATE TABLE app.con_specifica_servizio
 	descrizione VARCHAR(255) NOT NULL
 );
 
-INSERT INTO app.con_specifica_servizio (id, descrizione) VALUES (1, 1, 'Vigilanza');
-INSERT INTO app.con_specifica_servizio (id, descrizione) VALUES (2, 1, 'Portierato');
-INSERT INTO app.con_specifica_servizio (id, descrizione) VALUES (3, 2, 'Interna');
-INSERT INTO app.con_specifica_servizio (id, descrizione) VALUES (4, 2, 'Esterna');
+INSERT INTO app.con_specifica_servizio (id, tipo_servizio_id, descrizione) VALUES (1, 1, 'Vigilanza');
+INSERT INTO app.con_specifica_servizio (id, tipo_servizio_id, descrizione) VALUES (2, 1, 'Portierato');
+INSERT INTO app.con_specifica_servizio (id, tipo_servizio_id, descrizione) VALUES (3, 2, 'Interna');
+INSERT INTO app.con_specifica_servizio (id, tipo_servizio_id, descrizione) VALUES (4, 2, 'Esterna');
 SELECT setval('app.con_specifica_servizio_id_seq', (SELECT MAX(id) FROM app.con_specifica_servizio));
 
 
@@ -263,7 +264,7 @@ CREATE TABLE app.con_contratto
 	giorni_periodo_rinnovo INTEGER,
 	mesi_periodo_rinnovo INTEGER,
 	anni_periodo_rinnovo INTEGER,
-	giorni_preavviso_scadenza INTEGER
+	giorni_preavviso_scadenza INTEGER,
 	note VARCHAR(4000),
 	creazione_ts TIMESTAMP WITH TIME ZONE,
 	ultima_modifica_ts TIMESTAMP WITH TIME ZONE
@@ -321,7 +322,7 @@ CREATE TABLE app.con_canone
 	specifica_servizio_id INTEGER NOT NULL REFERENCES app.con_specifica_servizio(id),
 	obiettivo_servizio_id INTEGER NOT NULL REFERENCES app.com_obiettivo_servizio(id),
 	data_inizio_validita DATE NOT NULL,
-	raggruppamento_fatturazione_id INTEGER REFERENCES app.com_raggruppamento_fatturazione(id),
+	raggruppamento_fatturazione_id INTEGER REFERENCES app.con_raggruppamento_fatturazione(id),
 	importo_mensile NUMERIC(18, 4) NOT NULL,
 	tipo_fatturazione_id INTEGER NOT NULL REFERENCES app.con_tipo_fatturazione(id),
 	data_cessazione DATE,
@@ -342,7 +343,7 @@ CREATE TABLE app.con_tariffa
 	costo_fisso_una_tantum NUMERIC(18, 4),
 	data_inizio_validita DATE NOT NULL,
 	tipo_frazionamento_fatturazione_id INTEGER NOT NULL REFERENCES app.con_tipo_frazionamento_fatturazione(id),
-	raggruppamento_fatturazione_id INTEGER REFERENCES app.com_raggruppamento_fatturazione(id),
+	raggruppamento_fatturazione_id INTEGER REFERENCES app.con_raggruppamento_fatturazione(id),
 	tipo_fatturazione_id INTEGER NOT NULL REFERENCES app.con_tipo_fatturazione(id),
 	data_cessazione DATE,
 	note VARCHAR(4000)
@@ -399,7 +400,7 @@ CREATE TABLE app.con_documenti_contratti
 	contratto_id INTEGER NOT NULL REFERENCES app.con_contratto(id),
 	descrizione VARCHAR(255),
 	filename VARCHAR(255),
-	mime_type VACRHAR(255),
+	mime_type VARCHAR(255),
 	data_caricamento TIMESTAMP WITH TIME ZONE,
 	documento OID,
 	note VARCHAR(4000)

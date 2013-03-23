@@ -1,5 +1,7 @@
 \encoding UTF8;
 
+SET client_min_messages TO WARNING;
+
 CREATE TABLE app.com_gruppo_cliente
 (
 	id SERIAL NOT NULL PRIMARY KEY,

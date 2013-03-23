@@ -1,5 +1,7 @@
 \encoding UTF8;
 
+SET client_min_messages TO WARNING;
+
 insert into app.acc_permesso (permesso, descrizione) values ('lut:*', 'Accesso alle tabelle di lookup');
 insert into app.acc_permesso (permesso, descrizione) values ('permesso:*', 'Gestione permessi completa');
 insert into app.acc_permesso (permesso, descrizione) values ('permesso:create', 'Creazione permessi');

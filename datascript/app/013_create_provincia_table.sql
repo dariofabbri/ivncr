@@ -1,5 +1,7 @@
 \encoding UTF8;
 
+SET client_min_messages TO WARNING;
+
 CREATE TABLE app.gen_provincia
 (
 	id SERIAL NOT NULL PRIMARY KEY,

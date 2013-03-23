@@ -1,5 +1,7 @@
 \encoding UTF8;
 
+SET client_min_messages TO WARNING;
+
 INSERT INTO app.com_gruppo_cliente (id, descrizione) VALUES (1, 'Grande utenza');
 INSERT INTO app.com_gruppo_cliente (id, descrizione) VALUES (2, 'Piccola utenza');
 INSERT INTO app.com_gruppo_cliente (id, descrizione) VALUES (3, 'Media utenza');

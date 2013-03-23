@@ -1,5 +1,7 @@
 \encoding UTF8;
 
+SET client_min_messages TO WARNING;
+
 CREATE TABLE app.per_tipo_indirizzo
 (
 	id SERIAL NOT NULL PRIMARY KEY,
@@ -726,7 +728,7 @@ INSERT INTO app.per_reparto (id, azienda_id, descrizione) VALUES(18, 1, 'Pattugl
 INSERT INTO app.per_reparto (id, azienda_id, descrizione) VALUES(19, 1, 'Pattuglie Pomezia');
 INSERT INTO app.per_reparto (id, azienda_id, descrizione) VALUES(20, 1, 'Pattuglie Guidonia');
 INSERT INTO app.per_reparto (id, azienda_id, descrizione) VALUES(21, 1, 'Ospedali');
-SELECT setval('app.per_reparto', (SELECT MAX(id) FROM app.per_reparto));
+SELECT setval('app.per_reparto_id_seq', (SELECT MAX(id) FROM app.per_reparto));
 
 
 CREATE TABLE app.per_sistema_lavoro
