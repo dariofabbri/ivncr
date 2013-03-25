@@ -206,6 +206,17 @@ INSERT INTO app.con_tipo_apparecchiatura_tecnologica (id, descrizione) VALUES (4
 SELECT setval('app.con_tipo_apparecchiatura_tecnologica_id_seq', (SELECT MAX(id) FROM app.con_tipo_apparecchiatura_tecnologica));
 
 
+CREATE TABLE app.con_tipo_rinnovo_contrattuale
+(
+	id SERIAL NOT NULL PRIMARY KEY,
+	descrizione VARCHAR(255) NOT NULL
+);
+
+INSERT INTO app.con_tipo_rinnovo_contrattuale (id, descrizione) VALUES (1, 'Automatico');
+INSERT INTO app.con_tipo_rinnovo_contrattuale (id, descrizione) VALUES (2, 'Manuale');
+SELECT setval('app.con_tipo_rinnovo_contrattuale_id_seq', (SELECT MAX(id) FROM app.con_tipo_rinnovo_contrattuale));
+
+
 CREATE TABLE app.con_gestore_contratto
 (
 	id SERIAL NOT NULL PRIMARY KEY,
@@ -260,6 +271,7 @@ CREATE TABLE app.con_contratto
 	data_contratto DATE NOT NULL,
 	data_decorrenza DATE NOT NULL,
 	data_termine DATE,
+	data_cessazione DATE,
 	tacito_rinnovo BOOLEAN,
 	giorni_periodo_rinnovo INTEGER,
 	mesi_periodo_rinnovo INTEGER,
@@ -270,6 +282,15 @@ CREATE TABLE app.con_contratto
 	ultima_modifica_ts TIMESTAMP WITH TIME ZONE
 );
 
+
+CREATE TABLE app.con_rinnovo_contrattuale
+(
+	id SERIAL NOT NULL PRIMARY KEY,
+	contratto_id INTEGER NOT NULL REFERENCES app.con_contratto(id),
+	data_decorrenza DATE NOT NULL,
+	data_termine DATE,
+	tipo_rinnovo_contrattuale_id INTEGER NOT NULL REFERENCES app.con_tipo_rinnovo_contrattuale(id)
+);
 
 CREATE TABLE app.con_contratto_contatto
 (
@@ -342,10 +363,22 @@ CREATE TABLE app.con_tariffa
 	numero_franchigie INTEGER,
 	costo_fisso_una_tantum NUMERIC(18, 4),
 	data_inizio_validita DATE NOT NULL,
-	tipo_frazionamento_fatturazione_id INTEGER NOT NULL REFERENCES app.con_tipo_frazionamento_fatturazione(id),
 	raggruppamento_fatturazione_id INTEGER REFERENCES app.con_raggruppamento_fatturazione(id),
 	tipo_fatturazione_id INTEGER NOT NULL REFERENCES app.con_tipo_fatturazione(id),
 	data_cessazione DATE,
+	note VARCHAR(4000)
+);
+
+
+CREATE TABLE app.con_servizio_oneroso
+(
+	id SERIAL NOT NULL PRIMARY KEY,
+	contratto_id INTEGER NOT NULL REFERENCES app.con_contratto(id),
+	descrizione VARCHAR(255) NOT NULL,
+	tipo_servizio_id INTEGER NOT NULL REFERENCES app.con_tipo_servizio(id),
+	specifica_servizio_id INTEGER NOT NULL REFERENCES app.con_specifica_servizio(id),
+	obiettivo_servizio_id INTEGER NOT NULL REFERENCES app.com_obiettivo_servizio(id),
+	data_inizio_validita DATE NOT NULL,
 	note VARCHAR(4000)
 );
 
@@ -380,7 +413,9 @@ CREATE TABLE app.con_apparecchiature_tecnologiche
 	tipo_apparecchiatura_id INTEGER NOT NULL REFERENCES app.con_tipo_apparecchiatura_tecnologica(id),
 	comodato_uso BOOLEAN NOT NULL,
 	data_installazione DATE,
+	data_fatturazione DATE,
 	data_ritiro DATE,
+	costo_una_tantum NUMERIC(18, 4),
 	numero_telecamere INTEGER,
 	numero_periferiche INTEGER,
 	numero_sensori INTEGER,
