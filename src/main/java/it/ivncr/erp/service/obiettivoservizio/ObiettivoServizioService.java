@@ -1,6 +1,6 @@
 package it.ivncr.erp.service.obiettivoservizio;
 
-import it.ivncr.erp.model.commerciale.ObiettivoServizio;
+import it.ivncr.erp.model.commerciale.cliente.ObiettivoServizio;
 import it.ivncr.erp.service.EntityService;
 import it.ivncr.erp.service.QueryResult;
 

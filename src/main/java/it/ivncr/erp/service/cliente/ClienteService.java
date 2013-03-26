@@ -1,6 +1,6 @@
 package it.ivncr.erp.service.cliente;
 
-import it.ivncr.erp.model.commerciale.Cliente;
+import it.ivncr.erp.model.commerciale.cliente.Cliente;
 import it.ivncr.erp.service.EntityService;
 import it.ivncr.erp.service.QueryResult;
 

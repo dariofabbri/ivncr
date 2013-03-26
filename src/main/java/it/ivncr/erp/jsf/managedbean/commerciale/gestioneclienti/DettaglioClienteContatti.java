@@ -2,8 +2,8 @@ package it.ivncr.erp.jsf.managedbean.commerciale.gestioneclienti;
 
 
 import it.ivncr.erp.jsf.RobustLazyDataModel;
-import it.ivncr.erp.model.commerciale.Contatto;
-import it.ivncr.erp.model.commerciale.TipoContatto;
+import it.ivncr.erp.model.commerciale.cliente.Contatto;
+import it.ivncr.erp.model.commerciale.cliente.TipoContatto;
 import it.ivncr.erp.service.QueryResult;
 import it.ivncr.erp.service.ServiceFactory;
 import it.ivncr.erp.service.SortDirection;

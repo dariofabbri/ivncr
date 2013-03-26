@@ -1,6 +1,6 @@
 package it.ivncr.erp.service.indirizzo;
 
-import it.ivncr.erp.model.commerciale.Indirizzo;
+import it.ivncr.erp.model.commerciale.cliente.Indirizzo;
 import it.ivncr.erp.service.Query;
 
 import org.hibernate.Session;

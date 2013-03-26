@@ -1,4 +1,4 @@
-package it.ivncr.erp.model.commerciale;
+package it.ivncr.erp.model.commerciale.cliente;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,16 +13,16 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 
 @Entity
-@Table(name = "com_tipo_business_partner")
-public class TipoBusinessPartner {
+@Table(name = "com_tipo_contatto")
+public class TipoContatto {
 
-	public static final Integer SOCIETA = 1;
-	public static final Integer PRIVATO = 2;
-	public static final Integer ENTE = 3;
+	public static final Integer REFERENTE_COMMERCIALE = 1;
+	public static final Integer REFERENTE_AMMINISTRATIVO = 2;
+	public static final Integer REFERENTE_OPERATIVO = 3;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "com_tipo_business_partner_id_seq")
-	@SequenceGenerator(name = "com_tipo_business_partner_id_seq", sequenceName = "com_tipo_business_partner_id_seq")
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "com_tipo_contatto_id_seq")
+	@SequenceGenerator(name = "com_tipo_contatto_id_seq", sequenceName = "com_tipo_contatto_id_seq")
 	@Column(name="id")
 	private Integer id;
 

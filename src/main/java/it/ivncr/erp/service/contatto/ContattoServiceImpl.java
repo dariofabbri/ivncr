@@ -1,8 +1,8 @@
 package it.ivncr.erp.service.contatto;
 
-import it.ivncr.erp.model.commerciale.Cliente;
-import it.ivncr.erp.model.commerciale.Contatto;
-import it.ivncr.erp.model.commerciale.TipoContatto;
+import it.ivncr.erp.model.commerciale.cliente.Cliente;
+import it.ivncr.erp.model.commerciale.cliente.Contatto;
+import it.ivncr.erp.model.commerciale.cliente.TipoContatto;
 import it.ivncr.erp.service.AbstractService;
 import it.ivncr.erp.service.NotFoundException;
 import it.ivncr.erp.service.QueryResult;

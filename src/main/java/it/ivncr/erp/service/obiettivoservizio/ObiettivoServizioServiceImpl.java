@@ -1,7 +1,7 @@
 package it.ivncr.erp.service.obiettivoservizio;
 
-import it.ivncr.erp.model.commerciale.Cliente;
-import it.ivncr.erp.model.commerciale.ObiettivoServizio;
+import it.ivncr.erp.model.commerciale.cliente.Cliente;
+import it.ivncr.erp.model.commerciale.cliente.ObiettivoServizio;
 import it.ivncr.erp.service.AbstractService;
 import it.ivncr.erp.service.NotFoundException;
 import it.ivncr.erp.service.QueryResult;

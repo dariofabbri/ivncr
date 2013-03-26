@@ -2,7 +2,7 @@ package it.ivncr.erp.jsf.managedbean.commerciale.gestioneclienti;
 
 
 import it.ivncr.erp.jsf.RobustLazyDataModel;
-import it.ivncr.erp.model.commerciale.ObiettivoServizio;
+import it.ivncr.erp.model.commerciale.cliente.ObiettivoServizio;
 import it.ivncr.erp.model.generale.Provincia;
 import it.ivncr.erp.service.QueryResult;
 import it.ivncr.erp.service.ServiceFactory;

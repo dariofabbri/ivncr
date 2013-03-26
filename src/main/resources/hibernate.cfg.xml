@@ -33,15 +33,15 @@
 		<mapping class="it.ivncr.erp.model.accesso.Utente" />
 		<mapping class="it.ivncr.erp.model.accesso.UtenteAzienda" />
 
-		<mapping class="it.ivncr.erp.model.commerciale.Cliente" />
-		<mapping class="it.ivncr.erp.model.commerciale.Contatto" />
-		<mapping class="it.ivncr.erp.model.commerciale.Divisa" />
-		<mapping class="it.ivncr.erp.model.commerciale.GruppoCliente" />
-		<mapping class="it.ivncr.erp.model.commerciale.Indirizzo" />
-		<mapping class="it.ivncr.erp.model.commerciale.ObiettivoServizio" />
-		<mapping class="it.ivncr.erp.model.commerciale.TipoBusinessPartner" />
-		<mapping class="it.ivncr.erp.model.commerciale.TipoContatto" />
-		<mapping class="it.ivncr.erp.model.commerciale.TipoIndirizzo" />
+		<mapping class="it.ivncr.erp.model.commerciale.cliente.Cliente" />
+		<mapping class="it.ivncr.erp.model.commerciale.cliente.Contatto" />
+		<mapping class="it.ivncr.erp.model.commerciale.cliente.Divisa" />
+		<mapping class="it.ivncr.erp.model.commerciale.cliente.GruppoCliente" />
+		<mapping class="it.ivncr.erp.model.commerciale.cliente.Indirizzo" />
+		<mapping class="it.ivncr.erp.model.commerciale.cliente.ObiettivoServizio" />
+		<mapping class="it.ivncr.erp.model.commerciale.cliente.TipoBusinessPartner" />
+		<mapping class="it.ivncr.erp.model.commerciale.cliente.TipoContatto" />
+		<mapping class="it.ivncr.erp.model.commerciale.cliente.TipoIndirizzo" />
 
 		<mapping class="it.ivncr.erp.model.generale.Azienda" />
 		<mapping class="it.ivncr.erp.model.generale.Contatore" />

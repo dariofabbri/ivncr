@@ -3,9 +3,9 @@ package it.ivncr.erp.util;
 import it.ivncr.erp.model.accesso.Permesso;
 import it.ivncr.erp.model.accesso.Ruolo;
 import it.ivncr.erp.model.accesso.Utente;
-import it.ivncr.erp.model.commerciale.Cliente;
-import it.ivncr.erp.model.commerciale.Divisa;
-import it.ivncr.erp.model.commerciale.Indirizzo;
+import it.ivncr.erp.model.commerciale.cliente.Cliente;
+import it.ivncr.erp.model.commerciale.cliente.Divisa;
+import it.ivncr.erp.model.commerciale.cliente.Indirizzo;
 import it.ivncr.erp.util.AuditUtil.Operation;
 import it.ivncr.erp.util.AuditUtil.Snapshot;
 

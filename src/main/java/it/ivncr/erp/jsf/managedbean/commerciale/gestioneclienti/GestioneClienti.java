@@ -2,7 +2,7 @@ package it.ivncr.erp.jsf.managedbean.commerciale.gestioneclienti;
 
 import it.ivncr.erp.jsf.RobustLazyDataModel;
 import it.ivncr.erp.jsf.managedbean.accesso.session.LoginInfo;
-import it.ivncr.erp.model.commerciale.Cliente;
+import it.ivncr.erp.model.commerciale.cliente.Cliente;
 import it.ivncr.erp.service.QueryResult;
 import it.ivncr.erp.service.ServiceFactory;
 import it.ivncr.erp.service.SortDirection;

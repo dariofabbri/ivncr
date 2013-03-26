@@ -1,7 +1,7 @@
 package it.ivncr.erp.jsf.managedbean.commerciale.gestioneclienti;
 
 
-import it.ivncr.erp.model.commerciale.Cliente;
+import it.ivncr.erp.model.commerciale.cliente.Cliente;
 import it.ivncr.erp.service.ServiceFactory;
 import it.ivncr.erp.service.cliente.ClienteService;
 

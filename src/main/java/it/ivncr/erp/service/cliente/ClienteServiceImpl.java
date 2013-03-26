@@ -1,9 +1,9 @@
 package it.ivncr.erp.service.cliente;
 
-import it.ivncr.erp.model.commerciale.Cliente;
-import it.ivncr.erp.model.commerciale.Divisa;
-import it.ivncr.erp.model.commerciale.GruppoCliente;
-import it.ivncr.erp.model.commerciale.TipoBusinessPartner;
+import it.ivncr.erp.model.commerciale.cliente.Cliente;
+import it.ivncr.erp.model.commerciale.cliente.Divisa;
+import it.ivncr.erp.model.commerciale.cliente.GruppoCliente;
+import it.ivncr.erp.model.commerciale.cliente.TipoBusinessPartner;
 import it.ivncr.erp.model.generale.Azienda;
 import it.ivncr.erp.model.generale.Contatore;
 import it.ivncr.erp.service.AbstractService;

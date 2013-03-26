@@ -1,4 +1,4 @@
-package it.ivncr.erp.model.commerciale;
+package it.ivncr.erp.model.commerciale.contratto;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,32 +13,32 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 
 @Entity
-@Table(name = "com_tipo_indirizzo")
-public class TipoIndirizzo {
+@Table(name = "con_tipo_rinnovo_contrattuale")
+public class TipoRinnovoContrattuale {
 
-	public static final Integer SEDE_LEGALE = 1;
-	public static final Integer SEDE_OPERATIVA = 2;
-	public static final Integer SPEDIZIONE_FATTURE = 3;
+	public static final Integer AUTOMATICO = 1;
+	public static final Integer MANUALE = 2;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "com_tipo_indirizzo_id_seq")
-	@SequenceGenerator(name = "com_tipo_indirizzo_id_seq", sequenceName = "com_tipo_indirizzo_id_seq")
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "con_tipo_rinnovo_contrattuale_id_seq")
+	@SequenceGenerator(name = "con_tipo_rinnovo_contrattuale_id_seq", sequenceName = "con_tipo_rinnovo_contrattuale_id_seq")
 	@Column(name="id")
 	private Integer id;
 
 	@Column(name="descrizione")
 	private String descrizione;
 
-	
+
+	@Override
 	public String toString() {
-		
+
 		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
 			.append("id", id)
 			.append("descrizione", descrizione)
 			.toString();
 	}
 
-	
+
 	public Integer getId() {
 		return id;
 	}

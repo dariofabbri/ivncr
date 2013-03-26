@@ -1,4 +1,4 @@
-package it.ivncr.erp.model.commerciale;
+package it.ivncr.erp.model.commerciale.cliente;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

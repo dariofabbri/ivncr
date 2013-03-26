@@ -1,6 +1,6 @@
 package it.ivncr.erp.service;
 
-import it.ivncr.erp.model.commerciale.Divisa;
+import it.ivncr.erp.model.commerciale.cliente.Divisa;
 import it.ivncr.erp.service.lut.LUTService;
 
 import java.util.List;

@@ -2,8 +2,8 @@ package it.ivncr.erp.jsf.managedbean.commerciale.gestioneclienti;
 
 
 import it.ivncr.erp.jsf.RobustLazyDataModel;
-import it.ivncr.erp.model.commerciale.Indirizzo;
-import it.ivncr.erp.model.commerciale.TipoIndirizzo;
+import it.ivncr.erp.model.commerciale.cliente.Indirizzo;
+import it.ivncr.erp.model.commerciale.cliente.TipoIndirizzo;
 import it.ivncr.erp.model.generale.Provincia;
 import it.ivncr.erp.service.QueryResult;
 import it.ivncr.erp.service.ServiceFactory;

@@ -1,4 +1,4 @@
-package it.ivncr.erp.model.commerciale;
+package it.ivncr.erp.model.commerciale.cliente;
 
 import it.ivncr.erp.model.generale.Azienda;
 

@@ -1,6 +1,6 @@
 package it.ivncr.erp.jsf.managedbean.personale.gestioneaddetti;
 
-import it.ivncr.erp.model.commerciale.TipoIndirizzo;
+import it.ivncr.erp.model.commerciale.cliente.TipoIndirizzo;
 import it.ivncr.erp.model.generale.Provincia;
 import it.ivncr.erp.model.personale.IndirizzoAddetto;
 import it.ivncr.erp.service.ServiceFactory;

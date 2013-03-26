@@ -1,6 +1,6 @@
 package it.ivncr.erp.service.contatto;
 
-import it.ivncr.erp.model.commerciale.Contatto;
+import it.ivncr.erp.model.commerciale.cliente.Contatto;
 import it.ivncr.erp.service.EntityService;
 import it.ivncr.erp.service.QueryResult;
 

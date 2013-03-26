@@ -1,4 +1,4 @@
-package it.ivncr.erp.model.commerciale;
+package it.ivncr.erp.model.commerciale.cliente;
 
 import java.util.ArrayList;
 import java.util.List;

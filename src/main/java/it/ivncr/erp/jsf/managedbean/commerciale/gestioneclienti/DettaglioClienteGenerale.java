@@ -1,11 +1,11 @@
 package it.ivncr.erp.jsf.managedbean.commerciale.gestioneclienti;
 
 import it.ivncr.erp.jsf.managedbean.accesso.session.LoginInfo;
-import it.ivncr.erp.model.commerciale.Cliente;
-import it.ivncr.erp.model.commerciale.Contatto;
-import it.ivncr.erp.model.commerciale.Divisa;
-import it.ivncr.erp.model.commerciale.GruppoCliente;
-import it.ivncr.erp.model.commerciale.TipoBusinessPartner;
+import it.ivncr.erp.model.commerciale.cliente.Cliente;
+import it.ivncr.erp.model.commerciale.cliente.Contatto;
+import it.ivncr.erp.model.commerciale.cliente.Divisa;
+import it.ivncr.erp.model.commerciale.cliente.GruppoCliente;
+import it.ivncr.erp.model.commerciale.cliente.TipoBusinessPartner;
 import it.ivncr.erp.service.ServiceFactory;
 import it.ivncr.erp.service.cliente.ClienteService;
 import it.ivncr.erp.service.contatto.ContattoService;

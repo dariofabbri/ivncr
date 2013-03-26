@@ -1,8 +1,8 @@
 package it.ivncr.erp.service.indirizzo;
 
-import it.ivncr.erp.model.commerciale.Cliente;
-import it.ivncr.erp.model.commerciale.Indirizzo;
-import it.ivncr.erp.model.commerciale.TipoIndirizzo;
+import it.ivncr.erp.model.commerciale.cliente.Cliente;
+import it.ivncr.erp.model.commerciale.cliente.Indirizzo;
+import it.ivncr.erp.model.commerciale.cliente.TipoIndirizzo;
 import it.ivncr.erp.service.AbstractService;
 import it.ivncr.erp.service.NotFoundException;
 import it.ivncr.erp.service.QueryResult;

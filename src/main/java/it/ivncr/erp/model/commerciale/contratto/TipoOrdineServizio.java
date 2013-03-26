@@ -1,4 +1,4 @@
-package it.ivncr.erp.model.commerciale;
+package it.ivncr.erp.model.commerciale.contratto;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,32 +13,34 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 
 @Entity
-@Table(name = "com_tipo_contatto")
-public class TipoContatto {
+@Table(name = "con_tipo_ordine_servizio")
+public class TipoOrdineServizio {
 
-	public static final Integer REFERENTE_COMMERCIALE = 1;
-	public static final Integer REFERENTE_AMMINISTRATIVO = 2;
-	public static final Integer REFERENTE_OPERATIVO = 3;
+	public static final Integer NUOVA_ATTIVAZIONE = 1;
+	public static final Integer VAR_EXTRA = 2;
+	public static final Integer VAR_OCCASIONALE = 3;
+	public static final Integer VAR_CONTRATTUALE = 4;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "com_tipo_contatto_id_seq")
-	@SequenceGenerator(name = "com_tipo_contatto_id_seq", sequenceName = "com_tipo_contatto_id_seq")
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "con_tipo_ordine_servizio_id_seq")
+	@SequenceGenerator(name = "con_tipo_ordine_servizio_id_seq", sequenceName = "con_tipo_ordine_servizio_id_seq")
 	@Column(name="id")
 	private Integer id;
 
 	@Column(name="descrizione")
 	private String descrizione;
 
-	
+
+	@Override
 	public String toString() {
-		
+
 		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
 			.append("id", id)
 			.append("descrizione", descrizione)
 			.toString();
 	}
 
-	
+
 	public Integer getId() {
 		return id;
 	}
