@@ -296,8 +296,8 @@ CREATE TABLE app.con_contratto_contatto
 (
 	contratto_id INTEGER NOT NULL REFERENCES app.con_contratto(id),
 	contatto_id INTEGER NOT NULL REFERENCES app.com_contatto(id),
-	valido_da TIMESTAMP WITH TIME ZONE,
-	valido_a TIMESTAMP WITH TIME ZONE
+  valido_da DATE,
+  valido_a DATE
 );
 
 
@@ -305,8 +305,8 @@ CREATE TABLE app.con_contratto_gestore
 (
 	contratto_id INTEGER NOT NULL REFERENCES app.con_contratto(id),
 	gestore_contratto_id INTEGER NOT NULL REFERENCES app.con_gestore_contratto(id),
-	valido_da TIMESTAMP WITH TIME ZONE,
-	valido_a TIMESTAMP WITH TIME ZONE
+  valido_da DATE,
+  valido_a DATE
 );
 
 
@@ -314,8 +314,8 @@ CREATE TABLE app.con_contratto_esattore
 (
 	contratto_id INTEGER NOT NULL REFERENCES app.con_contratto(id),
 	esattore_id INTEGER NOT NULL REFERENCES app.con_esattore(id),
-	valido_da TIMESTAMP WITH TIME ZONE,
-	valido_a TIMESTAMP WITH TIME ZONE
+  valido_da DATE,
+  valido_a DATE
 );
 
 
@@ -329,8 +329,8 @@ CREATE TABLE app.con_dettaglio_fatturazione
 	metodo_pagamento_id INTEGER NOT NULL REFERENCES app.con_metodo_pagamento(id),
     indirizzo_id INTEGER NOT NULL REFERENCES app.com_indirizzo(id),
 	layout_stampa_id INTEGER NOT NULL REFERENCES app.con_layout_stampa(id),
-	valido_da TIMESTAMP WITH TIME ZONE,
-	valido_a TIMESTAMP WITH TIME ZONE
+  valido_da DATE,
+  valido_a DATE
 );
 
 
@@ -436,7 +436,7 @@ CREATE TABLE app.con_documenti_contratti
 	descrizione VARCHAR(255),
 	filename VARCHAR(255),
 	mime_type VARCHAR(255),
-	data_caricamento TIMESTAMP WITH TIME ZONE,
+	caricamento_ts TIMESTAMP WITH TIME ZONE,
 	documento OID,
 	note VARCHAR(4000)
 );

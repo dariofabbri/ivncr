@@ -136,6 +136,8 @@ public class DettaglioClienteGenerale implements Serializable {
 			bloccatoAl = cliente.getBloccatoAl();
 			bloccatoNote = cliente.getBloccatoNote();
 
+			saldoContabile = cliente.getSaldoContabile();
+
 			// Load contact summary data.
 			//
 			loadRiepilogoContatto();

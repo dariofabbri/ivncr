@@ -209,7 +209,9 @@
 											<h:outputText value="Saldo contabile:" />
 										</p:column>
 										<p:column>
-											<h:outputText value="#{dettaglioClienteGenerale.saldoContabile}" styleClass="info-label"/>
+											<h:outputText value="#{dettaglioClienteGenerale.saldoContabile}" styleClass="info-label">
+												<f:converter converterId="currencyConverter"/>
+											</h:outputText>
 										</p:column>
 									</p:row>
 								

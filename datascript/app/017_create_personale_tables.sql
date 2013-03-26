@@ -736,8 +736,8 @@ CREATE TABLE app.per_sistema_lavoro
   id SERIAL NOT NULL PRIMARY KEY,
   addetto_id INTEGER NOT NULL REFERENCES app.per_addetto(id),
   tipo_sistema_lavoro_id INTEGER NOT NULL REFERENCES app.per_tipo_sistema_lavoro(id),
-  valido_da TIMESTAMP WITH TIME ZONE,
-  valido_a TIMESTAMP WITH TIME ZONE
+  valido_da DATE,
+  valido_a DATE
 );
 
 
@@ -747,8 +747,8 @@ CREATE TABLE app.per_addetto_reparto
   addetto_id INTEGER NOT NULL REFERENCES app.per_addetto(id),
   reparto_id INTEGER NOT NULL REFERENCES app.per_reparto(id),
   ruolo_id INTEGER NOT NULL REFERENCES app.per_ruolo(id),
-  valido_da TIMESTAMP WITH TIME ZONE,
-  valido_a TIMESTAMP WITH TIME ZONE
+  valido_da DATE,
+  valido_a DATE
 );
 
 
@@ -776,8 +776,8 @@ CREATE TABLE app.per_info_sindacali
   addetto_id INTEGER NOT NULL REFERENCES app.per_addetto(id),
   sigla_sindacale_id INTEGER NOT NULL REFERENCES app.per_sigla_sindacale(id),
   carica_sindacale_id INTEGER NOT NULL REFERENCES app.per_carica_sindacale(id),
-  valido_da TIMESTAMP WITH TIME ZONE,
-  valido_a TIMESTAMP WITH TIME ZONE
+  valido_da DATE,
+  valido_a DATE
 );
 
 
@@ -787,8 +787,8 @@ CREATE TABLE app.per_avanzamento_carriera
   addetto_id INTEGER NOT NULL REFERENCES app.per_addetto(id),
   qualifica_id INTEGER NOT NULL REFERENCES app.per_qualifica(id),
   livello_ccnl_id INTEGER NOT NULL REFERENCES app.per_livello_ccnl(id),
-  valido_da TIMESTAMP WITH TIME ZONE,
-  valido_a TIMESTAMP WITH TIME ZONE
+  valido_da DATE,
+  valido_a DATE
 );
 
 
@@ -806,8 +806,8 @@ CREATE TABLE app.per_indirizzo
   cap VARCHAR(50),
   provincia VARCHAR(50),
   paese VARCHAR(255),
-  valido_da TIMESTAMP WITH TIME ZONE,
-  valido_a TIMESTAMP WITH TIME ZONE
+  valido_da DATE,
+  valido_a DATE
 );
 
 
@@ -857,8 +857,8 @@ CREATE TABLE app.per_stato_famiglia
   nome VARCHAR(255) NOT NULL,
   grado_parentela_id INTEGER REFERENCES app.per_grado_parentela(id),
   data_nascita DATE,
-  valido_da TIMESTAMP WITH TIME ZONE,
-  valido_a TIMESTAMP WITH TIME ZONE
+  valido_da DATE,
+  valido_a DATE
 );
 
 
@@ -872,8 +872,8 @@ CREATE TABLE app.per_dati_sanitari
   indirizzo_asl VARCHAR(255),
   comune VARCHAR(255),
   provincia VARCHAR(255),
-  valido_da TIMESTAMP WITH TIME ZONE,
-  valido_a TIMESTAMP WITH TIME ZONE
+  valido_da DATE,
+  valido_a DATE
 );
 
 

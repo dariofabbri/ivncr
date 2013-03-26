@@ -94,7 +94,7 @@ public class Addetto {
 			.append("luogoNascita", luogoNascita)
 			.append("codiceFiscale", codiceFiscale)
 			.append("sesso", sesso)
-			.append("foto", foto)
+			.append("foto", foto, false)
 			.append("note", note)
 			.append("fittizio", fittizio)
 			.append("attivo", attivo)
