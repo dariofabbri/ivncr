@@ -1,0 +1,56 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<ui:composition template="/WEB-INF/templates/main.xhtml">
+	
+		<ui:define name="container">
+		
+			<h:form id="detailForm">
+	
+				<p:panel id="detailPanel" header="Contratto">
+				
+					<f:facet name="actions">
+						<p:button
+							styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default"
+							value="Indietro"
+							href="index.xhtml"
+							icon="ui-icon-arrowthick-1-w"/>
+					</f:facet>
+	
+					<p:focus/>
+	
+					<p:messages id="messages" globalOnly="false" showSummary="false" showDetail="true" severity="error" closable="true"/>
+					
+					<p:growl id="growl" globalOnly="false" showSummary="false" showDetail="true" life="3000"/>
+	
+					<ui:include src="detail-testata.xhtml"/>			
+	
+					<p:tabView 
+						id="tabView" 
+						effect="fade" 
+						effectDuration="normal"
+						dynamic="true" 
+						rendered="#{not empty dettaglioContrattoGenerale.id}">
+	
+						<p:tab id="generalTab" title="Generale">
+<!-- 							<ui:include src="detail-generale.xhtml"/> -->
+						</p:tab>
+					
+						<p:tab id="noteTab" title="Note">
+<!-- 							<ui:include src="detail-note.xhtml"/> -->
+						</p:tab>
+					
+					</p:tabView>
+					
+				</p:panel>
+			
+			</h:form>
+			
+		</ui:define>
+	
+	</ui:composition>
+
+</html>
