@@ -296,8 +296,8 @@ CREATE TABLE app.con_contratto_contatto
 (
 	contratto_id INTEGER NOT NULL REFERENCES app.con_contratto(id),
 	contatto_id INTEGER NOT NULL REFERENCES app.com_contatto(id),
-  valido_da DATE,
-  valido_a DATE
+	valido_da DATE,
+	valido_a DATE
 );
 
 
@@ -305,8 +305,8 @@ CREATE TABLE app.con_contratto_gestore
 (
 	contratto_id INTEGER NOT NULL REFERENCES app.con_contratto(id),
 	gestore_contratto_id INTEGER NOT NULL REFERENCES app.con_gestore_contratto(id),
-  valido_da DATE,
-  valido_a DATE
+	valido_da DATE,
+	valido_a DATE
 );
 
 
@@ -314,8 +314,8 @@ CREATE TABLE app.con_contratto_esattore
 (
 	contratto_id INTEGER NOT NULL REFERENCES app.con_contratto(id),
 	esattore_id INTEGER NOT NULL REFERENCES app.con_esattore(id),
-  valido_da DATE,
-  valido_a DATE
+	valido_da DATE,
+	valido_a DATE
 );
 
 
@@ -327,10 +327,10 @@ CREATE TABLE app.con_dettaglio_fatturazione
 	tipo_frazionamento_fatturazione_id INTEGER NOT NULL REFERENCES app.con_tipo_frazionamento_fatturazione(id),
 	condizioni_pagamento_id INTEGER NOT NULL REFERENCES app.con_condizioni_pagamento(id),
 	metodo_pagamento_id INTEGER NOT NULL REFERENCES app.con_metodo_pagamento(id),
-    indirizzo_id INTEGER NOT NULL REFERENCES app.com_indirizzo(id),
+	indirizzo_id INTEGER NOT NULL REFERENCES app.com_indirizzo(id),
 	layout_stampa_id INTEGER NOT NULL REFERENCES app.con_layout_stampa(id),
-  valido_da DATE,
-  valido_a DATE
+	valido_da DATE,
+	valido_a DATE
 );
 
 
@@ -429,7 +429,7 @@ CREATE TABLE app.con_apparecchiature_tecnologiche
 );
 
 
-CREATE TABLE app.con_documenti_contratti
+CREATE TABLE app.con_documento_contratto
 (
 	id SERIAL NOT NULL PRIMARY KEY,
 	contratto_id INTEGER NOT NULL REFERENCES app.con_contratto(id),
