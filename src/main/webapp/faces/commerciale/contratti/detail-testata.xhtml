@@ -20,6 +20,15 @@
 							<p:inputText value="#{dettaglioContrattoGenerale.cliente}" id="cliente" disabled="true"/>
 							<p:watermark for="codice" value="Cliente del contratto" />  
 							<p:tooltip for="codice" showEffect="fade" value="Cliente del contratto" />
+														
+							<p:commandButton 
+								value="..."
+								process="@this"
+								update="selectCodiceDialog"
+								actionListener="#{dettaglioContrattoGenerale.startSelectCliente}"
+								oncomplete="selectClientDialogWidget.show();"
+								disabled="#{not empty dettaglioContrattoGenerale.id}"/>
+							
 						</p:column>
 					</p:row>
 					
