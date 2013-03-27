@@ -17,16 +17,15 @@
 							<p:outputLabel for="cliente" value="Cliente:" />
 						</p:column>
 						<p:column>
-							<p:inputText value="#{dettaglioContrattoGenerale.cliente}" id="cliente" disabled="true"/>
+							<p:inputText value="#{dettaglioContrattoGenerale.cliente.ragioneSociale}" id="cliente" disabled="true"/>
 							<p:watermark for="codice" value="Cliente del contratto" />  
 							<p:tooltip for="codice" showEffect="fade" value="Cliente del contratto" />
 														
 							<p:commandButton 
 								value="..."
 								process="@this"
-								update="selectCodiceDialog"
-								actionListener="#{dettaglioContrattoGenerale.startSelectCliente}"
-								oncomplete="selectClientDialogWidget.show();"
+								update="selectClienteDialog"
+								oncomplete="selectClienteDialogWidget.show();"
 								disabled="#{not empty dettaglioContrattoGenerale.id}"/>
 							
 						</p:column>
@@ -37,12 +36,20 @@
 							<p:outputLabel for="codice" value="Codice:" />
 						</p:column>
 						<p:column>
-							<p:inputText value="#{dettaglioContrattoGenerale.codice}" id="codice"
-								required="true" requiredMessage="Il campo codice è obbligatorio"
-								validator="codiceContrattoValidator" validatorMessage="Il codice contratto non rispetta la struttura ammessa nnn/aaaa (es. 123/2001)"
-								disabled="#{not empty dettaglioContrattoGenerale.id}"/>
+							<p:inputText value="#{dettaglioContrattoGenerale.codice}" id="codice" disabled="true"/>
 							<p:watermark for="codice" value="Codice identificativo del contratto" />  
-							<p:tooltip for="codice" showEffect="fade" value="Il codice rappresenta univocamente il contratto" />
+							<p:tooltip for="codice" showEffect="fade" value="Il codice rappresenta univocamente il contratto ed è generato automaticamente dal sistema" />
+						</p:column>
+					</p:row>
+					
+					<p:row>
+						<p:column>							
+							<p:outputLabel for="alias" value="Alias:" />
+						</p:column>
+						<p:column>
+							<p:inputText value="#{dettaglioContrattoGenerale.alias}" id="alias" />
+							<p:watermark for="alias" value="Alias identificativo del contratto" />  
+							<p:tooltip for="alias" showEffect="fade" value="Alias identificativo del contratto" />
 						</p:column>
 					</p:row>
 					
@@ -51,94 +58,60 @@
 							<p:outputLabel for="ragioneSociale" value="Ragione sociale:" />
 						</p:column>
 						<p:column>
-							<p:inputText value="#{dettaglioClienteGenerale.ragioneSociale}" id="ragioneSociale"
+							<p:inputText value="#{dettaglioContrattoGenerale.ragioneSociale}" id="ragioneSociale"
 								required="true" requiredMessage="Il campo ragione sociale è obbligatorio"/>
-							<p:watermark for="ragioneSociale" value="Ragione sociale del cliente" />  
-							<p:tooltip for="ragioneSociale" showEffect="fade" value="Campo ragione sociale del cliente" />
+							<p:watermark for="ragioneSociale" value="Ragione sociale del contratto" />  
+							<p:tooltip for="ragioneSociale" showEffect="fade" value="Campo ragione sociale del contratto" />
 						</p:column>
 					</p:row>
 					
 					<p:row>
-						<p:column>
-							<p:outputLabel for="partitaIva" value="Partita IVA:" />
+						<p:column>							
+							<p:outputLabel for="dataContratto" value="Data contratto:" />
 						</p:column>
 						<p:column>
-							<p:inputText value="#{dettaglioClienteGenerale.partitaIva}" id="partitaIva"
-								validator="partitaIvaValidator" validatorMessage="Il codice di partita IVA inserito non è valido"/>
-							<p:watermark for="partitaIva" value="Partita IVA del cliente" />  
-							<p:tooltip for="partitaIva" showEffect="fade" value="Partita IVA del cliente" />
-						</p:column>
-					</p:row>
-
-					<p:row>
-						<p:column>				
-							<p:outputLabel for="codiceFiscale" value="Codice fiscale:" />
-						</p:column>
-						<p:column>
-							<p:inputText value="#{dettaglioClienteGenerale.codiceFiscale}" id="codiceFiscale"
-								validator="codiceFiscaleValidator" validatorMessage="Il codice fiscale inserito non è valido"/>
-							<p:watermark for="codiceFiscale" value="Codice fiscale del cliente" />  
-							<p:tooltip for="codiceFiscale" showEffect="fade" value="Codice fiscale del cliente" />
-						</p:column>
-					</p:row>
-
-					<p:row>
-						<p:column>
-							<p:outputLabel for="codiceGruppoCliente" value="Gruppo cliente:" />
-						</p:column>
-						<p:column>
-							<p:selectOneMenu
-								required="true" 
-								requiredMessage="Il campo gruppo cliente è obbligatorio"
-								id="codiceGruppoCliente" 
-								value="#{dettaglioClienteGenerale.codiceGruppoCliente}"
-								effect="fade">
-								<f:selectItem itemLabel="Selezionare un gruppo" itemValue="" />
-								<f:selectItems 
-									value="#{dettaglioClienteGenerale.listGruppoCliente}" var="item"
-									itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
-							</p:selectOneMenu>	
-							<p:tooltip for="codiceGruppoCliente" showEffect="fade" value="Gruppo cliente" />
+							<p:calendar value="#{dettaglioContrattoGenerale.dataContratto}" id="dataContratto"
+								required="true" requiredMessage="Il campo data contratto è obbligatorio"
+								pattern="dd/MM/yyyy"/>
+							<p:watermark for="dataContratto" value="Data del contratto" />  
+							<p:tooltip for="dataContratto" showEffect="fade" value="Campo data del contratto" />
 						</p:column>
 					</p:row>
 					
 					<p:row>
-						<p:column>
-							<p:outputLabel for="codiceDivisa" value="Divisa:" />
+						<p:column>							
+							<p:outputLabel for="dataDecorrenza" value="Data decorrenza:" />
 						</p:column>
 						<p:column>
-							<p:selectOneMenu
-								required="true" 
-								requiredMessage="Il campo divisa è obbligatorio"
-								id="codiceDivisa" 
-								value="#{dettaglioClienteGenerale.codiceDivisa}"
-								effect="fade">
-								<f:selectItem itemLabel="Selezionare una divisa" itemValue="" />
-								<f:selectItems 
-									value="#{dettaglioClienteGenerale.listDivisa}" var="item"
-									itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
-							</p:selectOneMenu>			 		 
-							<p:tooltip for="codiceDivisa" showEffect="fade" value="Divisa" />
+							<p:calendar value="#{dettaglioContrattoGenerale.dataDecorrenza}" id="dataDecorrenza"
+								required="true" requiredMessage="Il campo data decorrenza è obbligatorio"
+								pattern="dd/MM/yyyy"/>
+							<p:watermark for="dataDecorrenza" value="Decorrenza del contratto" />  
+							<p:tooltip for="dataDecorrenza" showEffect="fade" value="Campo data di decorrenza del contratto" />
 						</p:column>
-					</p:row>	
-		
+					</p:row>
+					
 					<p:row>
-						<p:column>
-							<p:outputLabel for="codiceTipoBusinessPartner" value="Tipo business partner:" />
+						<p:column>							
+							<p:outputLabel for="dataTermine" value="Data termine:" />
 						</p:column>
 						<p:column>
-							<p:selectOneMenu
-								id="codiceTipoBusinessPartner"
-								required="true" 
-								requiredMessage="Il campo tipo business partner è obbligatorio"
-								value="#{dettaglioClienteGenerale.codiceTipoBusinessPartner}"
-								effect="fade">
-								<f:selectItem itemLabel="Selezionare un tipo" itemValue="" />
-								<f:selectItems 
-									value="#{dettaglioClienteGenerale.listTipoBusinessPartner}" var="item"
-									itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
-							</p:selectOneMenu>
-							<p:tooltip for="codiceTipoBusinessPartner" showEffect="fade" value="Tipologia di business partner" />
+							<p:calendar value="#{dettaglioContrattoGenerale.dataTermine}" id="dataTermine"
+								pattern="dd/MM/yyyy"/>
+							<p:watermark for="dataTermine" value="Data di termine del contratto" />  
+							<p:tooltip for="dataTermine" showEffect="fade" value="Campo data di termine del contratto" />
+						</p:column>
+					</p:row>
+					
+					<p:row>
+						<p:column>							
+							<p:outputLabel for="dataCessazione" value="Data cessazione:" />
+						</p:column>
+						<p:column>
+							<p:calendar value="#{dettaglioContrattoGenerale.dataCessazione}" id="dataCessazione"
+								pattern="dd/MM/yyyy"/>
+							<p:watermark for="dataCessazione" value="Data di cessazione del contratto" />  
+							<p:tooltip for="dataCessazione" showEffect="fade" value="Campo data di cessazione del contratto" />
 						</p:column>
 					</p:row>
 
@@ -146,92 +119,66 @@
 				
 			</p:column>
 			
-			<p:column rendered="#{not empty dettaglioClienteGenerale.id}">							
+			<p:column>							
 		
 				<p:panelGrid styleClass="form-panel">
-				
+					
 					<p:row>
-					
-						<p:column>
-							
-							<p:fieldset 
-								id="contattoPrincipale" 
-								legend="Contatto principale" 
-								collapsed="true" 
-								toggleable="true" 
-								toggleSpeed="500"> 
-					
-								<p:panelGrid styleClass="form-panel">
-								
-									<p:row>
-										<p:column>
-											<h:outputText value="Nome:" />
-										</p:column>
-										<p:column>
-											<h:outputText value="#{dettaglioClienteGenerale.contattoPrincipaleNome}" styleClass="info-label"/>
-										</p:column>
-									</p:row>
-								
-									<p:row>
-										<p:column>
-											<h:outputText value="Telefoni:" />
-										</p:column>
-										<p:column>
-											<h:outputText value="#{dettaglioClienteGenerale.contattoPrincipaleTelefoni}" styleClass="info-label"/>
-										</p:column>
-									</p:row>
-								
-									<p:row>
-										<p:column>
-											<h:outputText value="Fax:" />
-										</p:column>
-										<p:column>
-											<h:outputText value="#{dettaglioClienteGenerale.contattoPrincipaleFax}" styleClass="info-label"/>
-										</p:column>
-									</p:row>
-								
-									<p:row>
-										<p:column>
-											<h:outputText value="Email:" />
-										</p:column>
-										<p:column>
-											<h:outputText value="#{dettaglioClienteGenerale.contattoPrincipaleEmail}" styleClass="info-label"/>
-										</p:column>
-									</p:row>
-								
-								</p:panelGrid>
-								
-							</p:fieldset>
-							
+						<p:column>							
+							<p:outputLabel for="tacitoRinnovo" value="Tacito rinnovo:" />
 						</p:column>
-					
+						<p:column>
+							<p:selectBooleanCheckbox value="#{dettaglioContrattoGenerale.tacitoRinnovo}" id="tacitoRinnovo"/>
+							<p:tooltip for="tacitoRinnovo" showEffect="fade" value="Indica se il contratto è soggetto o meno al tacito rinnovo" />
+						</p:column>
 					</p:row>
-					
+						
 					<p:row>
-					
 						<p:column>
-				
-							<p:fieldset legend="Altre informazioni" collapsed="true" toggleable="true" toggleSpeed="500"> 
-					
-								<p:panelGrid styleClass="form-panel">
-									
-									<p:row>
-										<p:column>
-											<h:outputText value="Saldo contabile:" />
-										</p:column>
-										<p:column>
-											<h:outputText value="#{dettaglioClienteGenerale.saldoContabile}" styleClass="info-label">
-												<f:converter converterId="currencyConverter"/>
-											</h:outputText>
-										</p:column>
-									</p:row>
-								
-								</p:panelGrid>
-								
-							</p:fieldset>
-						
+							<p:outputLabel for="giorniPeriodoRinnovo" value="Giorni periodo rinnovo:" />
 						</p:column>
+						<p:column>
+							<p:inputText value="#{dettaglioContrattoGenerale.giorniPeriodoRinnovo}" id="giorniPeriodoRinnovo"
+								converter="integerConverter" converterMessage="Il campo giorni periodo rinnovo non rappresenta un numero valido"/>
+							<p:watermark for="giorniPeriodoRinnovo" value="Giorni del periodo di rinnovo" />  
+							<p:tooltip for="giorniPeriodoRinnovo" showEffect="fade" value="Giorni del periodo di rinnovo" />
+						</p:column>
+					</p:row>
 						
+					<p:row>
+						<p:column>
+							<p:outputLabel for="mesiPeriodoRinnovo" value="Mesi periodo rinnovo:" />
+						</p:column>
+						<p:column>
+							<p:inputText value="#{dettaglioContrattoGenerale.mesiPeriodoRinnovo}" id="mesiPeriodoRinnovo"
+								converter="integerConverter" converterMessage="Il campo mesi periodo rinnovo non rappresenta un numero valido"/>
+							<p:watermark for="mesiPeriodoRinnovo" value="Mesi del periodo di rinnovo" />  
+							<p:tooltip for="mesiPeriodoRinnovo" showEffect="fade" value="Mesi del periodo di rinnovo" />
+						</p:column>
+					</p:row>
+						
+					<p:row>
+						<p:column>
+							<p:outputLabel for="anniPeriodoRinnovo" value="Anni periodo rinnovo:" />
+						</p:column>
+						<p:column>
+							<p:inputText value="#{dettaglioContrattoGenerale.anniPeriodoRinnovo}" id="anniPeriodoRinnovo"
+								converter="integerConverter" converterMessage="Il campo anni periodo rinnovo non rappresenta un numero valido"/>
+							<p:watermark for="anniPeriodoRinnovo" value="Anni del periodo di rinnovo" />  
+							<p:tooltip for="anniPeriodoRinnovo" showEffect="fade" value="Anni del periodo di rinnovo" />
+						</p:column>
+					</p:row>
+						
+					<p:row>
+						<p:column>
+							<p:outputLabel for="giorniPreavvisoScadenza" value="Giorni preavviso scadenza:" />
+						</p:column>
+						<p:column>
+							<p:inputText value="#{dettaglioContrattoGenerale.giorniPreavvisoScadenza}" id="giorniPreavvisoScadenza"
+								converter="integerConverter" converterMessage="Il campo giorni preavviso scadenza non rappresenta un numero valido"/>
+							<p:watermark for="giorniPreavvisoScadenza" value="Giorni del preavviso di scadenza" />  
+							<p:tooltip for="giorniPreavvisoScadenza" showEffect="fade" value="Giorni del preavviso di scadenza" />
+						</p:column>
 					</p:row>
 					
 				</p:panelGrid>
@@ -246,14 +193,13 @@
 				<p:commandButton
 					id="saveButton"
 					value="Salva"
-					actionListener="#{dettaglioClienteGenerale.doSave}"
+					actionListener="#{dettaglioContrattoGenerale.doSave}"
 					update="@form"
-					process="testataPanel,:detailForm:tabView:generalePanel"
-					oncomplete="if(args.conflict) { conflictManagementDialogWidget.show(); }"
+					process="testataPanel"
 					icon="ui-icon-star"/>
 				<p:tooltip 
 					for="saveButton" 
-					value="Salva i dati del cliente" 
+					value="Salva i dati del contratto" 
 					showEffect="fade" 
 					hideEffect="fade"/>
 			</p:column>
@@ -261,60 +207,99 @@
 		</p:row>
 
 	</p:panelGrid>
-
 	
-	<p:dialog 
-		id="conflictManagementDialog"
-		header="Conflitto individuato" 
-		widgetVar="conflictManagementDialogWidget" 
+	
+	<p:dialog
+		id="selectClienteDialog"
+		header="Selezione cliente" 
+		widgetVar="selectClienteDialogWidget" 
 		modal="true"
 		showEffect="fade" 
-		hideEffect="fade">
-					
+		hideEffect="fade"> 
+			
 		<p:panelGrid styleClass="form-panel">
 						
 			<p:row>
 				<p:column styleClass="form-header">
-					<h:outputText value="
-						Sono stati individuati seguenti clienti 
-						già definiti per l'azienda corrente ed aventi 
-						partita IVA o codice fiscale in conflitto con il record salvato. 
-						E' possibile annullare per modificare i dati inseriti oppure procedere
-						forzando il salvataggio con i valori immessi."/>
-				</p:column>
-			</p:row>
-
-			<p:row>
-				<p:column>	
-					<p:dataList 
-						value="#{dettaglioClienteGenerale.conflicting}" 
-						var="cliente"
-						itemType="disc">
-						  
-						#{cliente.ragioneSociale}, C.F.: #{cliente.codiceFiscale}, P.IVA #{cliente.partitaIva}
-						
-					</p:dataList>
+					<h:outputText value="Selezionare il cliente per il quale si intende creare il contratto."/>
 				</p:column>
 			</p:row>
 			
 			<p:row>
+			
+				<p:column>
+				
+					<p:dataTable
+						var="cliente" 
+						value="#{dettaglioContrattoGenerale.clienteModel}"
+						paginator="true"
+						paginatorPosition="bottom" rows="10"
+						paginatorTemplate="{CurrentPageReport} {RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+						currentPageReportTemplate="Trovati {totalRecords} record - Pagina {currentPage} di {totalPages}"
+						rowsPerPageTemplate="5,10,50" 
+						pageLinks="10"
+						emptyMessage="Nessun record trovato" 
+						selectionMode="single"
+						selection="#{dettaglioContrattoGenerale.cliente}"
+						sortBy="#{cliente.codice}"
+						id="clientiTable" 
+						lazy="true"
+						styleClass="small-datatable">
+	
+						<p:ajax event="rowSelect" update=":detailForm:selectClienteDialogButtons"/>
+		
+						<p:ajax event="rowUnselect" update=":detailForm:selectClienteDialogButtons"/>
+
+						<p:column headerText="Codice" sortBy="#{cliente.codice}"
+							filterBy="#{cliente.codice}">
+							<h:outputText value="#{cliente.codice}" />
+						</p:column>
+		
+						<p:column headerText="Ragione sociale" sortBy="#{cliente.ragioneSociale}"
+							filterBy="#{cliente.ragioneSociale}">
+							<h:outputText value="#{cliente.ragioneSociale}" />
+						</p:column>
+						
+						<p:column headerText="Partita IVA" sortBy="#{cliente.partitaIva}"
+							filterBy="#{cliente.partitaIva}">
+							<h:outputText value="#{cliente.partitaIva}" />
+						</p:column>
+						
+						<p:column headerText="Codice fiscale" sortBy="#{cliente.codiceFiscale}"
+							filterBy="#{cliente.codiceFiscale}">
+							<h:outputText value="#{cliente.codiceFiscale}" />
+						</p:column>
+																			
+					</p:dataTable>
+					
+				</p:column>
+				
+			</p:row>
+
+			<p:row>
+			
 				<p:column styleClass="form-footer">
 				
-					<p:commandButton value="Annulla"
-						oncomplete="conflictManagementDialogWidget.hide();" />
+					<p:outputPanel id="selectClienteDialogButtons">
 						
-					<p:commandButton value="Forza"
-						actionListener="#{dettaglioClienteGenerale.doSaveForce}"
-						update="@form" 
-						oncomplete="conflictManagementDialogWidget.hide();"/>
-						
+						<p:commandButton 
+							value="Annulla"
+							type="button"
+							onclick="selectClienteDialogWidget.hide();" />
+							
+						<p:commandButton value="Seleziona"
+							disabled="#{empty dettaglioContrattoGenerale.cliente}"
+							process="@this"
+							update="@form" 
+							oncomplete="selectClienteDialogWidget.hide();"/>
+							
+					</p:outputPanel>
+							
 				</p:column>
 			</p:row>
 			
 		</p:panelGrid>
 
 	</p:dialog>
-	
-	<ui:include src="detail-select-codice.xhtml"/>
 	
 </html>
