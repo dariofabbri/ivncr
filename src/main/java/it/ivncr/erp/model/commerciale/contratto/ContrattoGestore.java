@@ -5,10 +5,12 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -16,22 +18,13 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
 @Table(name = "con_contratto_gestore")
-@IdClass(ContrattoGestoreId.class)
 public class ContrattoGestore {
 
 	@Id
-	@Column(name="contratto_id", insertable=false, updatable=false)
-	private Integer contrattoId;
-
-	@Id
-	@Column(name="gestore_contratto_id", insertable=false, updatable=false)
-	private Integer gestoreId;
-
-	@Column(name="valido_da")
-	private Date validoDa;
-
-	@Column(name="valido_a")
-	private Date validoA;
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "con_contratto_gestore_id_seq")
+	@SequenceGenerator(name = "con_contratto_gestore_id_seq", sequenceName = "con_contratto_gestore_id_seq")
+	@Column(name="id")
+	private Integer id;
 
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="contratto_id", referencedColumnName="id")
@@ -41,11 +34,18 @@ public class ContrattoGestore {
 	@JoinColumn(name="gestore_contratto_id", referencedColumnName="id")
 	GestoreContratto gestore;
 
+	@Column(name="valido_da")
+	private Date validoDa;
+
+	@Column(name="valido_a")
+	private Date validoA;
+
 
 	@Override
 	public String toString() {
 
 		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+			.append("id", id)
 			.append("contratto", contratto, false)
 			.append("gestore", gestore, false)
 			.append("validoDa", validoDa)
@@ -54,36 +54,12 @@ public class ContrattoGestore {
 	}
 
 
-	public Integer getContrattoId() {
-		return contrattoId;
+	public Integer getId() {
+		return id;
 	}
 
-	public void setContrattoId(Integer contrattoId) {
-		this.contrattoId = contrattoId;
-	}
-
-	public Integer getGestoreId() {
-		return gestoreId;
-	}
-
-	public void setGestoreId(Integer gestoreId) {
-		this.gestoreId = gestoreId;
-	}
-
-	public Date getValidoDa() {
-		return validoDa;
-	}
-
-	public void setValidoDa(Date validoDa) {
-		this.validoDa = validoDa;
-	}
-
-	public Date getValidoA() {
-		return validoA;
-	}
-
-	public void setValidoA(Date validoA) {
-		this.validoA = validoA;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public Contratto getContratto() {
@@ -100,5 +76,21 @@ public class ContrattoGestore {
 
 	public void setGestore(GestoreContratto gestore) {
 		this.gestore = gestore;
+	}
+
+	public Date getValidoDa() {
+		return validoDa;
+	}
+
+	public void setValidoDa(Date validoDa) {
+		this.validoDa = validoDa;
+	}
+
+	public Date getValidoA() {
+		return validoA;
+	}
+
+	public void setValidoA(Date validoA) {
+		this.validoA = validoA;
 	}
 }

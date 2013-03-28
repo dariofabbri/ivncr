@@ -292,8 +292,10 @@ CREATE TABLE app.con_rinnovo_contrattuale
 	tipo_rinnovo_contrattuale_id INTEGER NOT NULL REFERENCES app.con_tipo_rinnovo_contrattuale(id)
 );
 
+
 CREATE TABLE app.con_contratto_contatto
 (
+	id SERIAL NOT NULL PRIMARY KEY,
 	contratto_id INTEGER NOT NULL REFERENCES app.con_contratto(id),
 	contatto_id INTEGER NOT NULL REFERENCES app.com_contatto(id),
 	valido_da DATE,
@@ -303,6 +305,7 @@ CREATE TABLE app.con_contratto_contatto
 
 CREATE TABLE app.con_contratto_gestore
 (
+	id SERIAL NOT NULL PRIMARY KEY,
 	contratto_id INTEGER NOT NULL REFERENCES app.con_contratto(id),
 	gestore_contratto_id INTEGER NOT NULL REFERENCES app.con_gestore_contratto(id),
 	valido_da DATE,
@@ -312,6 +315,7 @@ CREATE TABLE app.con_contratto_gestore
 
 CREATE TABLE app.con_contratto_esattore
 (
+	id SERIAL NOT NULL PRIMARY KEY,
 	contratto_id INTEGER NOT NULL REFERENCES app.con_contratto(id),
 	esattore_id INTEGER NOT NULL REFERENCES app.con_esattore(id),
 	valido_da DATE,

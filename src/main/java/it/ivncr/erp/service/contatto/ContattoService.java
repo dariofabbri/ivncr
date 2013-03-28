@@ -51,4 +51,8 @@ public interface ContattoService extends EntityService<Contatto> {
 	void setDefault(Integer clienteId, Integer contattoId);
 
 	Contatto getDefault(Integer clienteId, boolean fallback);
+
+	List<Contatto> listDisponibiliPerContratto(Integer contrattoId);
+
+	List<Contatto> listDisponibiliPerContratto(Integer contrattoId, Integer contattoId);
 }

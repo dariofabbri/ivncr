@@ -48,11 +48,8 @@
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.CondizioniPagamento" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.Contratto" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.ContrattoContatto" />
-		<mapping class="it.ivncr.erp.model.commerciale.contratto.ContrattoContattoId" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.ContrattoEsattore" />
-		<mapping class="it.ivncr.erp.model.commerciale.contratto.ContrattoEsattoreId" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.ContrattoGestore" />
-		<mapping class="it.ivncr.erp.model.commerciale.contratto.ContrattoGestoreId" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.DettaglioFatturazione" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.DocumentoContratto" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.Esattore" />

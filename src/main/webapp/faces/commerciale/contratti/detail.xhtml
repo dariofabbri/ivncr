@@ -35,8 +35,36 @@
 						dynamic="true" 
 						rendered="#{not empty dettaglioContrattoGenerale.id}">
 	
-						<p:tab id="generalTab" title="Generale">
-<!-- 							<ui:include src="detail-generale.xhtml"/> -->
+						<p:tab id="responsabiliTab" title="Responsabili contratto">
+							<ui:include src="detail-responsabili.xhtml"/>
+						</p:tab>
+	
+						<p:tab id="fatturazioneTab" title="Dettagli fatturazione">
+<!-- 							<ui:include src="detail-fatturazione.xhtml"/> -->
+						</p:tab>
+	
+						<p:tab id="tariffeTab" title="Tariffe">
+<!-- 							<ui:include src="detail-tariffe.xhtml"/> -->
+						</p:tab>
+	
+						<p:tab id="canoniTab" title="Canoni">
+<!-- 							<ui:include src="detail-canoni.xhtml"/> -->
+						</p:tab>
+	
+						<p:tab id="orariTab" title="Orari">
+<!-- 							<ui:include src="detail-orari.xhtml"/> -->
+						</p:tab>
+	
+						<p:tab id="apparecchiatureTab" title="Apparecchiature">
+<!-- 							<ui:include src="detail-apparecchiature.xhtml"/> -->
+						</p:tab>
+	
+						<p:tab id="odsTab" title="Ordine di servizio">
+<!-- 							<ui:include src="detail-ods.xhtml"/> -->
+						</p:tab>
+	
+						<p:tab id="documentiTab" title="Documenti">
+<!-- 							<ui:include src="detail-documenti.xhtml"/> -->
 						</p:tab>
 					
 						<p:tab id="noteTab" title="Note">

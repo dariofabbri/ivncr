@@ -1,0 +1,235 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:custom="http://java.sun.com/jsf/composite/components/custom">
+			
+	<p:panelGrid styleClass="form-panel">
+					
+		<p:row>
+			<p:column colspan="2" styleClass="form-header">
+				<h:outputText value="Elenco dei contatti del cliente associati al contratto."/>
+			</p:column>
+		</p:row>
+		
+		<p:row>
+		
+			<p:column>
+								
+				<p:dataTable
+					id="contattiTable"
+					var="contatto"
+					value="#{dettaglioContrattoContatti.listContatti}"
+					selectionMode="single"
+					selection="#{dettaglioContrattoContatti.selected}"
+					rowKey="#{contatto.id}"
+					sortBy="#{contatto.validoDa}"
+					sortOrder="descending"
+					emptyMessage="Nessun record trovato" 
+					styleClass="small-datatable">
+
+					<p:ajax event="rowSelect" update=":detailForm:tabView:responsabiliAccordion:contattiButtons"/>
+	
+					<p:ajax event="rowUnselect" update=":detailForm:tabView:responsabiliAccordion:contattiButtons"/>
+
+					<p:column headerText="Contatto" sortBy="#{contatto.contatto.nome}">
+						<h:outputText value="#{contatto.contatto.nome}" />
+					</p:column>
+
+					<p:column headerText="Valido da" sortBy="#{contatto.validoDa}">
+						<h:outputText value="#{contatto.validoDa}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Valido a" sortBy="#{contatto.validoA}">
+						<h:outputText value="#{contatto.validoA}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+																		
+				</p:dataTable>
+			
+			</p:column>
+			
+		</p:row>
+		
+		<p:row>
+			<p:column>
+				
+				<p:outputPanel id="contattiButtons">
+					
+					<p:commandButton value="Aggiungi"
+						oncomplete="detailContattoDialogWidget.show()"
+						actionListener="#{dettaglioContrattoContatti.startCreate}"
+						process="@this"
+						update=":detailForm:tabView:responsabiliAccordion:detailContattoView:detailContattoDialog"/>
+
+					<p:commandButton value="Modifica"
+						disabled="#{empty dettaglioContrattoContatti.selected}"
+						oncomplete="detailContattoDialogWidget.show()"
+						actionListener="#{dettaglioContrattoContatti.startUpdate}"
+						process="@this"
+						update=":detailForm:tabView:responsabiliAccordion:detailContattoView:detailContattoDialog"/>
+
+					<p:commandButton value="Elimina"
+						disabled="#{empty dettaglioContrattoContatti.selected}"
+						type="button"
+						onclick="deleteContattoDialogWidget.show()"/>
+					
+				</p:outputPanel>
+				
+			</p:column>
+		</p:row>
+		
+	</p:panelGrid>
+
+	
+	
+	<f:subview id="detailContattoView">
+	
+		<p:dialog 
+			id="detailContattoDialog"
+			header="Dettagli del contatto" 
+			widgetVar="detailContattoDialogWidget" 
+			modal="true"
+			showEffect="fade" 
+			hideEffect="fade"> 
+					
+			<p:messages id="messages" globalOnly="false" showSummary="false" showDetail="true" closable="true"/>
+			
+			<p:panelGrid id="panel" styleClass="form-panel">
+							
+				<p:row>
+					<p:column colspan="2" styleClass="form-header">
+						<h:outputText value="Il pannello permette di selezionare un contatto e di impostarne il periodo di validità."/>
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column colspan="2">
+														
+						<p:dataTable
+							id="contattiTable"
+							var="contatto"
+							value="#{dettaglioContrattoContatti.listContattiDisponibili}"
+							paginator="true" 
+							paginatorPosition="bottom" rows="10"
+							paginatorTemplate="{CurrentPageReport} {RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+							currentPageReportTemplate="Trovati {totalRecords} record - Pagina {currentPage} di {totalPages}"
+							pageLinks="5"
+							selectionMode="single"
+							selection="#{dettaglioContrattoContatti.selectedContatto}"
+							rowKey="#{contatto.id}"
+							sortBy="#{contatto.tipoContatto.descrizione}"
+							sortOrder="ascending"
+							emptyMessage="Nessun record trovato" 
+							styleClass="small-datatable">
+		
+							<p:ajax event="rowSelect" update=":detailForm:tabView:responsabiliAccordion:detailContattoView:buttons"/>
+			
+							<p:ajax event="rowUnselect" update=":detailForm:tabView:responsabiliAccordion:detailContattoView:buttons"/>
+		
+							<p:column headerText="Tipo" sortBy="#{contatto.tipoContatto.descrizione}">
+								<h:outputText value="#{contatto.tipoContatto.descrizione}" />
+							</p:column>
+		
+							<p:column headerText="Contatto" sortBy="#{contatto.nome}">
+								<h:outputText value="#{contatto.nome}" />
+							</p:column>
+		
+							<p:column headerText="Telefoni" sortBy="#{contatto.aggregatoTelefoni}">
+								<h:outputText value="#{contatto.aggregatoTelefoni}" />
+							</p:column>
+		
+							<p:column headerText="Email" sortBy="#{contatto.email}">
+								<h:outputText value="#{contatto.email}" />
+							</p:column>
+																				
+						</p:dataTable>
+						
+					</p:column>
+				</p:row>
+				
+				<p:row>
+					<p:column colspan="2">
+						<p:spacer height="20px"/>
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="validoDa" value="Valido da:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioContrattoContatti.validoDa}" id="validoDa"
+							pattern="dd/MM/yyyy"
+							required="true" 
+							requiredMessage="Il campo valido da è obbligatorio"/>
+						<p:watermark for="validoDa" value="Data di inizio validità" />  
+						<p:tooltip for="validoDa" showEffect="fade" value="Data di inizio validità" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="validoA" value="Valido a:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioContrattoContatti.validoA}" id="validoA"
+							pattern="dd/MM/yyyy"/>
+						<p:watermark for="validoA" value="Data di fine validità" />  
+						<p:tooltip for="validoA" showEffect="fade" value="Data di fine validità" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column colspan="2" styleClass="form-footer">
+						<p:outputPanel id="buttons">
+							<p:commandButton value="Salva"
+								id="saveButton"
+								actionListener="#{dettaglioContrattoContatti.doSave}" 
+								update="detailContattoView:messages,detailContattoView:panel,:detailForm:tabView:responsabiliAccordion:contattiTable,:detailForm:growl"
+								process="detailContattoView:detailContattoDialog"
+								disabled="#{empty dettaglioContrattoContatti.selectedContatto}"
+								oncomplete="if(args.ok) { detailContattoDialogWidget.hide(); }"/>
+							<p:commandButton value="Annulla"
+								type="button"
+								onclick="detailContattoDialogWidget.hide();" />
+						</p:outputPanel>
+					</p:column>
+				</p:row>
+				
+			</p:panelGrid>
+	
+			<p:defaultCommand target="saveButton" scope="detailContattoDialog"/>
+			
+		</p:dialog>
+	
+	</f:subview>
+	
+	
+	<p:confirmDialog 
+		id="deleteContattoDialog"
+		header="Rimuovi contatto" 
+		widgetVar="deleteContattoDialogWidget"
+		message="Si conferma la rimozione del contatto selezionato dal contratto corrente? L'operazione non può essere annullata."
+		showEffect="fade" 
+		hideEffect="fade">
+		
+		<p:commandButton 
+			value="Elimina"
+			update=":detailForm:tabView:responsabiliAccordion:contattiTable,:detailForm:tabView:responsabiliAccordion:contattiButtons,:detailForm:growl"
+			process="@this" 
+			oncomplete="deleteContattoDialogWidget.hide()"  
+            actionListener="#{dettaglioContrattoContatti.doDelete}" />
+              
+        <p:commandButton 
+        	value="Annulla" 
+        	onclick="deleteContattoDialogWidget.hide()" 
+        	type="button" />
+        	   
+	</p:confirmDialog>
+
+</html>

@@ -306,4 +306,45 @@ public class ContattoServiceImpl extends AbstractService implements ContattoServ
 
 		return contatto;
 	}
+
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Contatto> listDisponibiliPerContratto(Integer contrattoId) {
+
+		String hql =
+				"from Contatto con " +
+				"left join fetch con.tipoContatto tco " +
+				"where con.cliente.id = " +
+				"(select cli.id from Contratto cnt left join cnt.cliente cli where cnt.id = :contrattoId) " +
+				"and con.id not in " +
+				"(select coc.contatto.id from ContrattoContatto coc where coc.contratto.id = :contrattoId) ";
+		Query query = session.createQuery(hql);
+		query.setParameter("contrattoId", contrattoId);
+		List<Contatto> result = query.list();
+		logger.debug("Query returned: " + result);
+
+		return result;
+	}
+
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Contatto> listDisponibiliPerContratto(Integer contrattoId, Integer contattoId) {
+
+		String hql =
+				"from Contatto con " +
+				"left join fetch con.tipoContatto tco " +
+				"where con.cliente.id = " +
+				"(select cli.id from Contratto cnt left join cnt.cliente cli where cnt.id = :contrattoId) " +
+				"and con.id not in " +
+				"(select coc.contatto.id from ContrattoContatto coc where coc.contratto.id = :contrattoId and coc.contatto.id <> :contattoId) ";
+		Query query = session.createQuery(hql);
+		query.setParameter("contrattoId", contrattoId);
+		query.setParameter("contattoId", contattoId);
+		List<Contatto> result = query.list();
+		logger.debug("Query returned: " + result);
+
+		return result;
+	}
 }
