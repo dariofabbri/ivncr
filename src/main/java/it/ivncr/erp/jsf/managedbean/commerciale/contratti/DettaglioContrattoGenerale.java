@@ -11,14 +11,18 @@ import it.ivncr.erp.service.cliente.ClienteService;
 import it.ivncr.erp.service.contratto.ContrattoService;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
@@ -112,12 +116,13 @@ public class DettaglioContrattoGenerale implements Serializable {
 	@PostConstruct
 	public void init() {
 
+		ContrattoService cs = ServiceFactory.createService("Contratto");
+
 		// If we are editing an existing record, it is time to fetch
 		// it from the database and fill in the bean fields.
 		//
 		if(id != null) {
 
-			ContrattoService cs = ServiceFactory.createService("Contratto");
 			Contratto contratto = cs.retrieveDeep(id);
 
 			cliente = contratto.getCliente();
@@ -135,8 +140,128 @@ public class DettaglioContrattoGenerale implements Serializable {
 			mesiPeriodoRinnovo = contratto.getMesiPeriodoRinnovo();
 			anniPeriodoRinnovo = contratto.getAnniPeriodoRinnovo();
 			giorniPreavvisoScadenza = contratto.getGiorniPreavvisoScadenza();
+
+			logger.debug("Initialization loaded contratto details.");
+		}
+
+		// If this is a new record, the codice field gets initialized peeking the
+		// next value in contatore table.
+		//
+		else {
+
+			GregorianCalendar now = new GregorianCalendar();
+			Integer anno = now.get(Calendar.YEAR);
+			codice = cs.peekNextCodice(loginInfo.getCodiceAzienda(), anno);
 		}
 	}
+
+
+	public void doSelectCliente() {
+
+		if(cliente == null) {
+			logger.error("Unexpected empty cliente after selection from picker dialog.");
+			return;
+		}
+
+		ragioneSociale = cliente.getRagioneSociale();
+	}
+
+
+	public void doSave() {
+
+		// Apply form-level validations.
+		//
+		if(!formValidations())
+			return;
+
+		// Create service to persist data.
+		//
+		ContrattoService cs = ServiceFactory.createService("Contratto");
+
+		try {
+			Contratto contratto = null;
+
+			// If the record already exists, just update it.
+			//
+			if(id != null) {
+
+				contratto = cs.update(
+						id,
+						alias,
+						ragioneSociale,
+						dataContratto,
+						dataDecorrenza,
+						dataTermine,
+						dataCessazione,
+						tacitoRinnovo,
+						giorniPeriodoRinnovo,
+						mesiPeriodoRinnovo,
+						anniPeriodoRinnovo,
+						giorniPreavvisoScadenza);
+
+				logger.debug("Entity successfully updated.");
+			}
+
+			// Otherwise create a new record.
+			//
+			else {
+
+				contratto = cs.create(
+						cliente.getId(),
+						alias,
+						ragioneSociale,
+						dataContratto,
+						dataDecorrenza,
+						dataTermine,
+						dataCessazione);
+				id = contratto.getId();
+				codice = contratto.getCodice();
+
+				logger.debug("Entity successfully created.");
+
+			}
+
+			// Everything went fine.
+			//
+			FacesMessage message = new FacesMessage(
+					FacesMessage.SEVERITY_INFO,
+					"Successo",
+					"Il salvataggio dei dati si è concluso con successo.");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+
+		} catch(Exception e) {
+
+			logger.warn("Exception caught while saving entity.", e);
+
+			FacesMessage message = new FacesMessage(
+					FacesMessage.SEVERITY_ERROR,
+					"Errore di sistema",
+					"Si è verificato un errore in fase di salvataggio del record.");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+		}
+	}
+
+
+	private boolean formValidations() {
+
+		// Normalize fields.
+		//
+
+		// Check that a cliente has been selected.
+		//
+		if(cliente == null) {
+
+			FacesMessage message = new FacesMessage(
+					FacesMessage.SEVERITY_ERROR,
+					"Il campo cliente è obbligatorio",
+					"E' obbligatorio selezionare un cliente.");
+			FacesContext.getCurrentInstance().addMessage("cliente", message);
+			return false;
+		}
+
+		return true;
+	}
+
 
 	public LoginInfo getLoginInfo() {
 		return loginInfo;

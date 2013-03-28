@@ -119,69 +119,78 @@
 				
 			</p:column>
 			
-			<p:column>							
+			<p:column rendered="#{not empty dettaglioContrattoGenerale.id}">
+					
+				<p:fieldset 
+					id="informazioniRinnovoAutomatico" 
+					legend="Rinnovo" 
+					collapsed="false" 
+					toggleable="true" 
+					toggleSpeed="500">
 		
-				<p:panelGrid styleClass="form-panel">
+					<p:panelGrid styleClass="form-panel">
+						
+						<p:row>
+							<p:column>							
+								<p:outputLabel for="tacitoRinnovo" value="Tacito rinnovo:" />
+							</p:column>
+							<p:column>
+								<p:selectBooleanCheckbox value="#{dettaglioContrattoGenerale.tacitoRinnovo}" id="tacitoRinnovo"/>
+								<p:tooltip for="tacitoRinnovo" showEffect="fade" value="Indica se il contratto è soggetto o meno al tacito rinnovo" />
+							</p:column>
+						</p:row>
+							
+						<p:row>
+							<p:column>
+								<p:outputLabel for="giorniPeriodoRinnovo" value="Giorni periodo rinnovo:" />
+							</p:column>
+							<p:column>
+								<p:inputText value="#{dettaglioContrattoGenerale.giorniPeriodoRinnovo}" id="giorniPeriodoRinnovo"
+									converter="integerConverter" converterMessage="Il campo giorni periodo rinnovo non rappresenta un numero valido"/>
+								<p:watermark for="giorniPeriodoRinnovo" value="Giorni del periodo di rinnovo" />  
+								<p:tooltip for="giorniPeriodoRinnovo" showEffect="fade" value="Giorni del periodo di rinnovo" />
+							</p:column>
+						</p:row>
+							
+						<p:row>
+							<p:column>
+								<p:outputLabel for="mesiPeriodoRinnovo" value="Mesi periodo rinnovo:" />
+							</p:column>
+							<p:column>
+								<p:inputText value="#{dettaglioContrattoGenerale.mesiPeriodoRinnovo}" id="mesiPeriodoRinnovo"
+									converter="integerConverter" converterMessage="Il campo mesi periodo rinnovo non rappresenta un numero valido"/>
+								<p:watermark for="mesiPeriodoRinnovo" value="Mesi del periodo di rinnovo" />  
+								<p:tooltip for="mesiPeriodoRinnovo" showEffect="fade" value="Mesi del periodo di rinnovo" />
+							</p:column>
+						</p:row>
+
+						<p:row>
+							<p:column>
+								<p:outputLabel for="anniPeriodoRinnovo" value="Anni periodo rinnovo:" />
+							</p:column>
+							<p:column>
+								<p:inputText value="#{dettaglioContrattoGenerale.anniPeriodoRinnovo}" id="anniPeriodoRinnovo"
+									converter="integerConverter" converterMessage="Il campo anni periodo rinnovo non rappresenta un numero valido"/>
+								<p:watermark for="anniPeriodoRinnovo" value="Anni del periodo di rinnovo" />  
+								<p:tooltip for="anniPeriodoRinnovo" showEffect="fade" value="Anni del periodo di rinnovo" />
+							</p:column>
+						</p:row>
+
+						<p:row>
+							<p:column>
+								<p:outputLabel for="giorniPreavvisoScadenza" value="Giorni preavviso scadenza:" />
+							</p:column>
+							<p:column>
+								<p:inputText value="#{dettaglioContrattoGenerale.giorniPreavvisoScadenza}" id="giorniPreavvisoScadenza"
+									converter="integerConverter" converterMessage="Il campo giorni preavviso scadenza non rappresenta un numero valido"/>
+								<p:watermark for="giorniPreavvisoScadenza" value="Giorni del preavviso di scadenza" />  
+								<p:tooltip for="giorniPreavvisoScadenza" showEffect="fade" value="Giorni del preavviso di scadenza" />
+							</p:column>
+						</p:row>
+						
+					</p:panelGrid>
 					
-					<p:row>
-						<p:column>							
-							<p:outputLabel for="tacitoRinnovo" value="Tacito rinnovo:" />
-						</p:column>
-						<p:column>
-							<p:selectBooleanCheckbox value="#{dettaglioContrattoGenerale.tacitoRinnovo}" id="tacitoRinnovo"/>
-							<p:tooltip for="tacitoRinnovo" showEffect="fade" value="Indica se il contratto è soggetto o meno al tacito rinnovo" />
-						</p:column>
-					</p:row>
-						
-					<p:row>
-						<p:column>
-							<p:outputLabel for="giorniPeriodoRinnovo" value="Giorni periodo rinnovo:" />
-						</p:column>
-						<p:column>
-							<p:inputText value="#{dettaglioContrattoGenerale.giorniPeriodoRinnovo}" id="giorniPeriodoRinnovo"
-								converter="integerConverter" converterMessage="Il campo giorni periodo rinnovo non rappresenta un numero valido"/>
-							<p:watermark for="giorniPeriodoRinnovo" value="Giorni del periodo di rinnovo" />  
-							<p:tooltip for="giorniPeriodoRinnovo" showEffect="fade" value="Giorni del periodo di rinnovo" />
-						</p:column>
-					</p:row>
-						
-					<p:row>
-						<p:column>
-							<p:outputLabel for="mesiPeriodoRinnovo" value="Mesi periodo rinnovo:" />
-						</p:column>
-						<p:column>
-							<p:inputText value="#{dettaglioContrattoGenerale.mesiPeriodoRinnovo}" id="mesiPeriodoRinnovo"
-								converter="integerConverter" converterMessage="Il campo mesi periodo rinnovo non rappresenta un numero valido"/>
-							<p:watermark for="mesiPeriodoRinnovo" value="Mesi del periodo di rinnovo" />  
-							<p:tooltip for="mesiPeriodoRinnovo" showEffect="fade" value="Mesi del periodo di rinnovo" />
-						</p:column>
-					</p:row>
-						
-					<p:row>
-						<p:column>
-							<p:outputLabel for="anniPeriodoRinnovo" value="Anni periodo rinnovo:" />
-						</p:column>
-						<p:column>
-							<p:inputText value="#{dettaglioContrattoGenerale.anniPeriodoRinnovo}" id="anniPeriodoRinnovo"
-								converter="integerConverter" converterMessage="Il campo anni periodo rinnovo non rappresenta un numero valido"/>
-							<p:watermark for="anniPeriodoRinnovo" value="Anni del periodo di rinnovo" />  
-							<p:tooltip for="anniPeriodoRinnovo" showEffect="fade" value="Anni del periodo di rinnovo" />
-						</p:column>
-					</p:row>
-						
-					<p:row>
-						<p:column>
-							<p:outputLabel for="giorniPreavvisoScadenza" value="Giorni preavviso scadenza:" />
-						</p:column>
-						<p:column>
-							<p:inputText value="#{dettaglioContrattoGenerale.giorniPreavvisoScadenza}" id="giorniPreavvisoScadenza"
-								converter="integerConverter" converterMessage="Il campo giorni preavviso scadenza non rappresenta un numero valido"/>
-							<p:watermark for="giorniPreavvisoScadenza" value="Giorni del preavviso di scadenza" />  
-							<p:tooltip for="giorniPreavvisoScadenza" showEffect="fade" value="Giorni del preavviso di scadenza" />
-						</p:column>
-					</p:row>
-					
-				</p:panelGrid>
+				</p:fieldset>
 				
 			</p:column>
 			
@@ -289,6 +298,7 @@
 							
 						<p:commandButton value="Seleziona"
 							disabled="#{empty dettaglioContrattoGenerale.cliente}"
+							actionListener="#{dettaglioContrattoGenerale.doSelectCliente}"
 							process="@this"
 							update="@form" 
 							oncomplete="selectClienteDialogWidget.hide();"/>

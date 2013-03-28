@@ -2,6 +2,8 @@ package it.ivncr.erp.service.contratto;
 
 import it.ivncr.erp.model.commerciale.cliente.Cliente;
 import it.ivncr.erp.model.commerciale.contratto.Contratto;
+import it.ivncr.erp.model.generale.Azienda;
+import it.ivncr.erp.model.generale.Contatore;
 import it.ivncr.erp.service.AbstractService;
 import it.ivncr.erp.service.NotFoundException;
 import it.ivncr.erp.service.QueryResult;
@@ -10,7 +12,9 @@ import it.ivncr.erp.util.AuditUtil;
 import it.ivncr.erp.util.AuditUtil.Operation;
 import it.ivncr.erp.util.AuditUtil.Snapshot;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Map;
 
 import org.hibernate.Query;
@@ -96,7 +100,7 @@ public class ContrattoServiceImpl extends AbstractService implements ContrattoSe
 		String hql =
 				"from Contratto con " +
 				"left join fetch con.cliente cli " +
-				"where cli.id = :id ";
+				"where con.id = :id ";
 		Query query = session.createQuery(hql);
 		query.setParameter("id", id);
 		Contratto contratto = (Contratto)query.uniqueResult();
@@ -108,7 +112,6 @@ public class ContrattoServiceImpl extends AbstractService implements ContrattoSe
 	@Override
 	public Contratto create(
 			Integer codiceCliente,
-			String codice,
 			String alias,
 			String ragioneSociale,
 			Date dataContratto,
@@ -125,6 +128,12 @@ public class ContrattoServiceImpl extends AbstractService implements ContrattoSe
 		// Create the new entity.
 		//
 		Contratto contratto = new Contratto();
+
+		// Retrieve next codice.
+		//
+		GregorianCalendar gc = new GregorianCalendar();
+		gc.setTime(now);
+		String codice = retrieveNextCodice(cliente.getAzienda().getId(), gc.get(Calendar.YEAR));
 
 		// Set entity fields.
 		//
@@ -234,5 +243,79 @@ public class ContrattoServiceImpl extends AbstractService implements ContrattoSe
 		AuditUtil.log(Operation.Update, Snapshot.Destination, contratto);
 
 		return contratto;
+	}
+
+
+	@Override
+	public String peekNextCodice(Integer codiceAzienda, Integer anno) {
+
+		return getNextCodice(codiceAzienda, anno, false);
+
+	}
+
+
+	@Override
+	public String retrieveNextCodice(Integer codiceAzienda, Integer anno) {
+
+		return getNextCodice(codiceAzienda, anno, true);
+
+	}
+
+
+	private String getNextCodice(Integer codiceAzienda, Integer anno, boolean increment) {
+
+		// Prepare key for specified year.
+		//
+		String key = String.format("CODICE_CONTRATTO_%04d", anno);
+
+		// Retrieve next available number from counters table.
+		//
+		String hql =
+				"from Contatore con " +
+				"where con.codice = :codice " +
+				"and con.azienda.id = :codiceAzienda ";
+		Query query = session.createQuery(hql);
+		query.setParameter("codice", key);
+		query.setParameter("codiceAzienda", codiceAzienda);
+		Contatore contatore = (Contatore)query.uniqueResult();
+
+		// If no row has been found, just create a new one
+		// and initialize the counter to 1.
+		//
+		if(contatore == null) {
+
+			String descrizione = String.format("Contatore per la generazione dei codici contratto per l'anno %04d", anno);
+
+			// Fetch azienda using specified code.
+			//
+			Azienda azienda = (Azienda)session.get(Azienda.class, codiceAzienda);
+
+			contatore = new Contatore();
+			contatore.setAzienda(azienda);
+			contatore.setCodice(key);
+			contatore.setDescrizione(descrizione);
+			contatore.setContatore(1);
+			session.save(contatore);
+		}
+
+		// Format found number and generate the required code.
+		//
+		String codice = makeCodiceFromNumericAndYear(contatore.getContatore(), anno);
+
+		// If requested, increment the counter.
+		//
+		if(increment) {
+
+			contatore.incrementContatore();
+			session.update(contatore);
+		}
+
+		return codice;
+	}
+
+
+	private String makeCodiceFromNumericAndYear(Integer numeric, Integer year) {
+
+		return String.format("%d/%04d", numeric, year);
 	}
 }

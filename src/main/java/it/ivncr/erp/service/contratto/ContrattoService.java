@@ -22,7 +22,6 @@ public interface ContrattoService extends EntityService<Contratto> {
 
 	Contratto create(
 			Integer codiceCliente,
-			String codice,
 			String alias,
 			String ragioneSociale,
 			Date dataContratto,
@@ -45,4 +44,7 @@ public interface ContrattoService extends EntityService<Contratto> {
 			Integer giorniPreavvisoScadenza);
 
 	Contratto setNote(Integer id, String note);
+
+	String peekNextCodice(Integer codiceAzienda, Integer anno);
+	String retrieveNextCodice(Integer codiceAzienda, Integer anno);
 }
