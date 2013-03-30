@@ -233,6 +233,7 @@ CREATE TABLE app.con_gestore_contratto
 
 CREATE TABLE app.con_gestore_contratto_azienda
 (
+	id SERIAL NOT NULL PRIMARY KEY,
 	gestore_contratto_id INTEGER NOT NULL REFERENCES app.con_gestore_contratto(id),
 	azienda_id INTEGER NOT NULL REFERENCES app.gen_azienda(id),
 	attivo BOOLEAN
@@ -255,6 +256,7 @@ CREATE TABLE app.con_esattore
 
 CREATE TABLE app.con_esattore_azienda
 (
+	id SERIAL NOT NULL PRIMARY KEY,
 	esattore_id INTEGER NOT NULL REFERENCES app.con_esattore(id),
 	azienda_id INTEGER NOT NULL REFERENCES app.gen_azienda(id),
 	attivo BOOLEAN

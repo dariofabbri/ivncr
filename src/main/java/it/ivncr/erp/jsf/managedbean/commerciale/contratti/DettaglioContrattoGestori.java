@@ -1,10 +1,10 @@
 package it.ivncr.erp.jsf.managedbean.commerciale.contratti;
 
-import it.ivncr.erp.model.commerciale.cliente.Contatto;
-import it.ivncr.erp.model.commerciale.contratto.ContrattoContatto;
+import it.ivncr.erp.model.commerciale.contratto.ContrattoGestore;
+import it.ivncr.erp.model.commerciale.contratto.GestoreContratto;
 import it.ivncr.erp.service.ServiceFactory;
-import it.ivncr.erp.service.contatto.ContattoService;
-import it.ivncr.erp.service.contrattocontatto.ContrattoContattoService;
+import it.ivncr.erp.service.contrattogestore.ContrattoGestoreService;
+import it.ivncr.erp.service.gestorecontratto.GestoreContrattoService;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -23,9 +23,9 @@ import org.slf4j.LoggerFactory;
 
 @ManagedBean
 @ViewScoped
-public class DettaglioContrattoContatti implements Serializable {
+public class DettaglioContrattoGestori implements Serializable {
 
-	private static final Logger logger = LoggerFactory.getLogger(DettaglioContrattoContatti.class);
+	private static final Logger logger = LoggerFactory.getLogger(DettaglioContrattoGestori.class);
 
 	private static final long serialVersionUID = 1L;
 
@@ -36,11 +36,11 @@ public class DettaglioContrattoContatti implements Serializable {
 	private Date validoDa;
 	private Date validoA;
 
-	private List<ContrattoContatto> listContatti;
-	private ContrattoContatto selected;
+	private List<ContrattoGestore> listGestori;
+	private ContrattoGestore selected;
 
-	private List<Contatto> listContattiDisponibili;
-	private Contatto selectedContatto;
+	private List<GestoreContratto> listGestoriDisponibili;
+	private GestoreContratto selectedGestore;
 
 
 	@PostConstruct
@@ -48,19 +48,19 @@ public class DettaglioContrattoContatti implements Serializable {
 
 		// Load list for data table.
 		//
-		loadContatti();
+		loadGestori();
 
 		logger.debug("Initialization performed.");
 	}
 
 
-	public void loadContatti() {
+	public void loadGestori() {
 
 		if(dettaglioContrattoGenerale.getId() == null)
 			return;
 
-		ContrattoContattoService cs = ServiceFactory.createService("ContrattoContatto");
-		listContatti = cs.listByContratto(dettaglioContrattoGenerale.getId());
+		ContrattoGestoreService cgs = ServiceFactory.createService("ContrattoGestore");
+		listGestori = cgs.listByContratto(dettaglioContrattoGenerale.getId());
 	}
 
 
@@ -71,21 +71,21 @@ public class DettaglioContrattoContatti implements Serializable {
 		// Reloading the entity is required to be sure that the value has not changed since it was
 		// read in the data table list of values.
 		//
-		ContrattoContattoService ccs = ServiceFactory.createService("ContrattoContatto");
-		selected = ccs.retrieveDeep(selected.getId());
+		ContrattoGestoreService cgs = ServiceFactory.createService("ContrattoGestore");
+		selected = cgs.retrieveDeep(selected.getId());
 
 		id = selected.getId();
 
-		selectedContatto = selected.getContatto();
+		selectedGestore = selected.getGestore();
 		validoDa = selected.getValidoDa();
 		validoA = selected.getValidoA();
 
 		// Load list of available contatti records.
 		//
-		ContattoService cs = ServiceFactory.createService("Contatto");
-		listContattiDisponibili = cs.listDisponibiliPerContratto(
+		GestoreContrattoService gcs = ServiceFactory.createService("GestoreContratto");
+		listGestoriDisponibili = gcs.listDisponibiliPerContratto(
 				dettaglioContrattoGenerale.getId(),
-				selectedContatto.getId());
+				selectedGestore.getId());
 	}
 
 
@@ -94,14 +94,14 @@ public class DettaglioContrattoContatti implements Serializable {
 		logger.debug("Entering startCreate() method.");
 
 		id = null;
-		selectedContatto = null;
+		selectedGestore = null;
 		validoDa = null;
 		validoA = null;
 
 		// Load list of available contatti records.
 		//
-		ContattoService cs = ServiceFactory.createService("Contatto");
-		listContattiDisponibili = cs.listDisponibiliPerContratto(
+		GestoreContrattoService gcs = ServiceFactory.createService("GestoreContratto");
+		listGestoriDisponibili = gcs.listDisponibiliPerContratto(
 				dettaglioContrattoGenerale.getId());
 	}
 
@@ -115,18 +115,18 @@ public class DettaglioContrattoContatti implements Serializable {
 
 		// Create service to persist data.
 		//
-		ContrattoContattoService cs = ServiceFactory.createService("ContrattoContatto");
+		ContrattoGestoreService cgs = ServiceFactory.createService("ContrattoGestore");
 
 		try {
-			ContrattoContatto entity = null;
+			ContrattoGestore entity = null;
 
 			// If the record already exists, just update it.
 			//
 			if(id != null) {
 
-				entity = cs.update(
+				entity = cgs.update(
 						id,
-						selectedContatto.getId(),
+						selectedGestore.getId(),
 						validoDa,
 						validoA);
 
@@ -137,9 +137,9 @@ public class DettaglioContrattoContatti implements Serializable {
 			//
 			else {
 
-				entity = cs.create(
+				entity = cgs.create(
 						dettaglioContrattoGenerale.getId(),
-						selectedContatto.getId(),
+						selectedGestore.getId(),
 						validoDa,
 						validoA);
 				id = entity.getId();
@@ -158,7 +158,7 @@ public class DettaglioContrattoContatti implements Serializable {
 
 			// Refresh list.
 			//
-			loadContatti();
+			loadGestori();
 
 			// Signal to modal dialog that everything went fine.
 			//
@@ -181,10 +181,10 @@ public class DettaglioContrattoContatti implements Serializable {
 
 		// Create service to persist data.
 		//
-		ContrattoContattoService cs = ServiceFactory.createService("ContrattoContatto");
+		ContrattoGestoreService cgs = ServiceFactory.createService("ContrattoGestore");
 
 		try {
-			cs.delete(selected.getId());
+			cgs.delete(selected.getId());
 
 			// Everything went fine.
 			//
@@ -200,7 +200,7 @@ public class DettaglioContrattoContatti implements Serializable {
 
 			// Refresh list.
 			//
-			loadContatti();
+			loadGestori();
 
 		} catch(Exception e) {
 
@@ -223,7 +223,6 @@ public class DettaglioContrattoContatti implements Serializable {
 
 		return true;
 	}
-
 
 
 	public DettaglioContrattoGenerale getDettaglioContrattoGenerale() {
@@ -259,36 +258,37 @@ public class DettaglioContrattoContatti implements Serializable {
 		this.validoA = validoA;
 	}
 
-	public List<ContrattoContatto> getListContatti() {
-		return listContatti;
+	public List<ContrattoGestore> getListGestori() {
+		return listGestori;
 	}
 
-	public void setListContatti(List<ContrattoContatto> listContatti) {
-		this.listContatti = listContatti;
+	public void setListGestori(List<ContrattoGestore> listGestori) {
+		this.listGestori = listGestori;
 	}
 
-	public ContrattoContatto getSelected() {
+	public ContrattoGestore getSelected() {
 		return selected;
 	}
 
-	public void setSelected(ContrattoContatto selected) {
+	public void setSelected(ContrattoGestore selected) {
 		this.selected = selected;
 	}
 
-	public List<Contatto> getListContattiDisponibili() {
-		return listContattiDisponibili;
+	public List<GestoreContratto> getListGestoriDisponibili() {
+		return listGestoriDisponibili;
 	}
 
-	public void setListContattiDisponibili(
-			List<Contatto> listContattiDisponibili) {
-		this.listContattiDisponibili = listContattiDisponibili;
+	public void setListGestoriDisponibili(
+			List<GestoreContratto> listGestoriDisponibili) {
+		this.listGestoriDisponibili = listGestoriDisponibili;
 	}
 
-	public Contatto getSelectedContatto() {
-		return selectedContatto;
+	public GestoreContratto getSelectedGestore() {
+		return selectedGestore;
 	}
 
-	public void setSelectedContatto(Contatto selectedContatto) {
-		this.selectedContatto = selectedContatto;
+	public void setSelectedGestore(GestoreContratto selectedGestore) {
+		this.selectedGestore = selectedGestore;
 	}
+
 }

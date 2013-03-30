@@ -1,0 +1,237 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:custom="http://java.sun.com/jsf/composite/components/custom">
+			
+	<p:panelGrid styleClass="form-panel">
+					
+		<p:row>
+			<p:column colspan="2" styleClass="form-header">
+				<h:outputText value="Elenco dei gestori associati al contratto."/>
+			</p:column>
+		</p:row>
+		
+		<p:row>
+		
+			<p:column>
+								
+				<p:dataTable
+					id="gestoriTable"
+					var="gestore"
+					value="#{dettaglioContrattoGestori.listGestori}"
+					selectionMode="single"
+					selection="#{dettaglioContrattoGestori.selected}"
+					rowKey="#{gestore.id}"
+					sortBy="#{gestore.validoDa}"
+					sortOrder="descending"
+					emptyMessage="Nessun record trovato" 
+					styleClass="small-datatable">
+		
+					<p:ajax event="rowSelect" update=":detailForm:tabView:responsabiliAccordion:gestoriButtons"/>
+	
+					<p:ajax event="rowUnselect" update=":detailForm:tabView:responsabiliAccordion:gestoriButtons"/>
+
+					<p:column headerText="Cognome" sortBy="#{gestore.gestore.cognome}">
+						<h:outputText value="#{gestore.gestore.cognome}" />
+					</p:column>
+
+					<p:column headerText="Valido da" sortBy="#{gestore.validoDa}">
+						<h:outputText value="#{gestore.validoDa}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Valido a" sortBy="#{gestore.validoA}">
+						<h:outputText value="#{gestore.validoA}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+				
+				</p:dataTable>
+			
+			</p:column>
+			
+		</p:row>
+		
+		<p:row>
+			<p:column>
+				
+				<p:outputPanel id="gestoriButtons">
+					
+					<p:commandButton value="Aggiungi"
+						oncomplete="detailGestoreDialogWidget.show()"
+						actionListener="#{dettaglioContrattoGestori.startCreate}"
+						process="@this"
+						update=":detailForm:tabView:responsabiliAccordion:detailGestoreView:detailGestoreDialog"/>
+
+					<p:commandButton value="Modifica"
+						disabled="#{empty dettaglioContrattoGestori.selected}"
+						oncomplete="detailGestoreDialogWidget.show()"
+						actionListener="#{dettaglioContrattoGestori.startUpdate}"
+						process="@this"
+						update=":detailForm:tabView:responsabiliAccordion:detailGestoreView:detailGestoreDialog"/>
+
+					<p:commandButton value="Elimina"
+						disabled="#{empty dettaglioContrattoGestori.selected}"
+						type="button"
+						onclick="deleteGestoreDialogWidget.show()"/>
+					
+				</p:outputPanel>
+				
+			</p:column>
+		</p:row>
+		
+	</p:panelGrid>
+
+	
+	
+	<f:subview id="detailGestoreView">
+	
+		<p:dialog 
+			id="detailGestoreDialog"
+			header="Dettagli del gestore" 
+			widgetVar="detailGestoreDialogWidget" 
+			modal="true"
+			showEffect="fade" 
+			hideEffect="fade"> 
+					
+			<p:messages id="messages" globalOnly="false" showSummary="false" showDetail="true" closable="true"/>
+			
+			<p:panelGrid id="panel" styleClass="form-panel">
+							
+				<p:row>
+					<p:column colspan="2" styleClass="form-header">
+						<h:outputText value="Il pannello permette di selezionare un gestore e di impostarne il periodo di validità per il contratto."/>
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column colspan="2">
+														
+						<p:dataTable
+							id="gestoriTable"
+							var="gestore"
+							value="#{dettaglioContrattoGestori.listGestoriDisponibili}"
+							paginator="true" 
+							paginatorPosition="bottom" rows="10"
+							paginatorTemplate="{CurrentPageReport} {RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+							currentPageReportTemplate="Trovati {totalRecords} record - Pagina {currentPage} di {totalPages}"
+							pageLinks="5"
+							selectionMode="single"
+							selection="#{dettaglioContrattoGestori.selectedGestore}"
+							rowKey="#{gestore.id}"
+							sortBy="#{gestore.cognome}"
+							sortOrder="ascending"
+							emptyMessage="Nessun record trovato" 
+							styleClass="small-datatable">
+		
+							<p:ajax event="rowSelect" update=":detailForm:tabView:responsabiliAccordion:detailGestoreView:buttons"/>
+			
+							<p:ajax event="rowUnselect" update=":detailForm:tabView:responsabiliAccordion:detailGestoreView:buttons"/>
+		
+							<p:column headerText="Cognome" sortBy="#{gestore.cognome}">
+								<h:outputText value="#{gestore.cognome}" />
+							</p:column>
+		
+							<p:column headerText="Nome" sortBy="#{gestore.nome}">
+								<h:outputText value="#{gestore.nome}" />
+							</p:column>
+
+							<p:column headerText="Data nascita" sortBy="#{gestore.dataNascita}">
+								<h:outputText value="#{gestore.dataNascita}">
+									<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+								</h:outputText>
+							</p:column>
+		
+							<p:column headerText="Codice fiscale" sortBy="#{gestore.codiceFiscale}">
+								<h:outputText value="#{gestore.codiceFiscale}" />
+							</p:column>
+																				
+						</p:dataTable>
+						
+					</p:column>
+				</p:row>
+				
+				<p:row>
+					<p:column colspan="2">
+						<p:spacer height="20px"/>
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="validoDa" value="Valido da:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioContrattoGestori.validoDa}" id="validoDa"
+							pattern="dd/MM/yyyy"
+							required="true" 
+							requiredMessage="Il campo valido da è obbligatorio"/>
+						<p:watermark for="validoDa" value="Data di inizio validità" />  
+						<p:tooltip for="validoDa" showEffect="fade" value="Data di inizio validità" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="validoA" value="Valido a:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioContrattoGestori.validoA}" id="validoA"
+							pattern="dd/MM/yyyy"/>
+						<p:watermark for="validoA" value="Data di fine validità" />  
+						<p:tooltip for="validoA" showEffect="fade" value="Data di fine validità" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column colspan="2" styleClass="form-footer">
+						<p:outputPanel id="buttons">
+							<p:commandButton value="Salva"
+								id="saveButton"
+								actionListener="#{dettaglioContrattoGestori.doSave}" 
+								update="detailGestoreView:messages,detailGestoreView:panel,:detailForm:tabView:responsabiliAccordion:gestoriTable,:detailForm:growl"
+								process="detailGestoreView:detailGestoreDialog"
+								disabled="#{empty dettaglioContrattoGestori.selectedGestore}"
+								oncomplete="if(args.ok) { detailGestoreDialogWidget.hide(); }"/>
+							<p:commandButton value="Annulla"
+								type="button"
+								onclick="detailGestoreDialogWidget.hide();" />
+						</p:outputPanel>
+					</p:column>
+				</p:row>
+				
+			</p:panelGrid>
+	
+			<p:defaultCommand target="saveButton" scope="detailGestoreDialog"/>
+			
+		</p:dialog>
+	
+	</f:subview>
+	
+	
+	<p:confirmDialog 
+		id="deleteGestoreDialog"
+		header="Rimuovi gestore" 
+		widgetVar="deleteGestoreDialogWidget"
+		message="Si conferma la rimozione del gestore selezionato dal contratto corrente? L'operazione non può essere annullata."
+		showEffect="fade" 
+		hideEffect="fade">
+		
+		<p:commandButton 
+			value="Elimina"
+			update=":detailForm:tabView:responsabiliAccordion:gestoriTable,:detailForm:tabView:responsabiliAccordion:gestoriButtons,:detailForm:growl"
+			process="@this" 
+			oncomplete="deleteGestoreDialogWidget.hide()"  
+            actionListener="#{dettaglioContrattoGestori.doDelete}" />
+              
+        <p:commandButton 
+        	value="Annulla" 
+        	onclick="deleteGestoreDialogWidget.hide()" 
+        	type="button" />
+        	   
+	</p:confirmDialog>
+
+</html>
