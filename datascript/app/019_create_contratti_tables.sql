@@ -366,8 +366,7 @@ CREATE TABLE app.con_tariffa
 	costo_orario NUMERIC(18, 4),
 	numero_franchigie INTEGER,
 	costo_fisso_una_tantum NUMERIC(18, 4),
-	data_inizio_validita DATE NOT NULL,
-	raggruppamento_fatturazione_id INTEGER REFERENCES app.con_raggruppamento_fatturazione(id),
+	data_inizio_validita DATE NOT NULL,	
 	tipo_fatturazione_id INTEGER NOT NULL REFERENCES app.con_tipo_fatturazione(id),
 	data_cessazione DATE,
 	note VARCHAR(4000)
@@ -395,6 +394,7 @@ CREATE TABLE app.con_ordine_servizio
 	data_termine DATE NOT NULL,
 	obiettivo_servizio_id INTEGER NOT NULL REFERENCES app.com_obiettivo_servizio(id),
 	tipo_ordine_servizio_id INTEGER NOT NULL REFERENCES app.con_tipo_ordine_servizio(id),
+	raggruppamento_fatturazione_id INTEGER REFERENCES app.con_raggruppamento_fatturazione(id),
 	numero INTEGER NOT NULL,
 	orario_inizio TIME WITH TIME ZONE NOT NULL,
 	orario_fine TIME WITH TIME ZONE NOT NULL,
