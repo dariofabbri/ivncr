@@ -31,52 +31,23 @@ public class ServizioOneroso {
     @JoinColumn(name="contratto_id")
     private Contratto contratto;
 
-	@Column(name="data_decorrenza")
-	private Date dataDecorrenza;
+	@Column(name="descrizione")
+	private String descrizione;
 
-	@Column(name="data_termine")
-	private Date dataTermine;
+    @ManyToOne
+    @JoinColumn(name="tipo_servizio_id")
+    private TipoServizio tipoServizio;
+
+    @ManyToOne
+    @JoinColumn(name="specifica_servizio_id")
+    private SpecificaServizio specificaServizio;
 
     @ManyToOne
     @JoinColumn(name="obiettivo_servizio_id")
     private ObiettivoServizio obiettivoServizio;
 
-    @ManyToOne
-    @JoinColumn(name="tipo_ordine_servizio_id")
-    private TipoOrdineServizio tipoOrdineServizio;
-
-	@Column(name="numero")
-	private Integer numero;
-
-	@Column(name="orario_inizio")
-	private Date orarioInizio;
-
-	@Column(name="orario_fine")
-	private Date orarioFine;
-
-	@Column(name="lunedi")
-	private Boolean lunedi;
-
-	@Column(name="martedi")
-	private Boolean martedi;
-
-	@Column(name="mercoledi")
-	private Boolean mercoledi;
-
-	@Column(name="giovedi")
-	private Boolean giovedi;
-
-	@Column(name="venerdi")
-	private Boolean venerdi;
-
-	@Column(name="sabato")
-	private Boolean sabato;
-
-	@Column(name="domenica")
-	private Boolean domenica;
-
-	@Column(name="festivi")
-	private Boolean festivi;
+	@Column(name="data_inizio_validita")
+	private Date dataInizioValidita;
 
 	@Column(name="note")
 	private String note;
@@ -88,21 +59,11 @@ public class ServizioOneroso {
 		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
 			.append("id", id)
 			.append("contratto", contratto, false)
-			.append("dataDecorrenza", dataDecorrenza)
-			.append("dataTermine", dataTermine)
+			.append("descrizione", descrizione)
+			.append("tipoServizio", tipoServizio, false)
+			.append("specificaServizio", specificaServizio, false)
 			.append("obiettivoServizio", obiettivoServizio, false)
-			.append("tipoOrdineServizio", tipoOrdineServizio, false)
-			.append("numero", numero)
-			.append("orarioInizio", orarioInizio)
-			.append("orarioFine", orarioFine)
-			.append("lunedi", lunedi)
-			.append("martedi", martedi)
-			.append("mercoledi", mercoledi)
-			.append("giovedi", giovedi)
-			.append("venerdi", venerdi)
-			.append("sabato", sabato)
-			.append("domenica", domenica)
-			.append("festivi", festivi)
+			.append("dataInizioValidita", dataInizioValidita)
 			.append("note", note)
 			.toString();
 	}
@@ -124,20 +85,28 @@ public class ServizioOneroso {
 		this.contratto = contratto;
 	}
 
-	public Date getDataDecorrenza() {
-		return dataDecorrenza;
+	public String getDescrizione() {
+		return descrizione;
 	}
 
-	public void setDataDecorrenza(Date dataDecorrenza) {
-		this.dataDecorrenza = dataDecorrenza;
+	public void setDescrizione(String descrizione) {
+		this.descrizione = descrizione;
 	}
 
-	public Date getDataTermine() {
-		return dataTermine;
+	public TipoServizio getTipoServizio() {
+		return tipoServizio;
 	}
 
-	public void setDataTermine(Date dataTermine) {
-		this.dataTermine = dataTermine;
+	public void setTipoServizio(TipoServizio tipoServizio) {
+		this.tipoServizio = tipoServizio;
+	}
+
+	public SpecificaServizio getSpecificaServizio() {
+		return specificaServizio;
+	}
+
+	public void setSpecificaServizio(SpecificaServizio specificaServizio) {
+		this.specificaServizio = specificaServizio;
 	}
 
 	public ObiettivoServizio getObiettivoServizio() {
@@ -148,100 +117,12 @@ public class ServizioOneroso {
 		this.obiettivoServizio = obiettivoServizio;
 	}
 
-	public TipoOrdineServizio getTipoOrdineServizio() {
-		return tipoOrdineServizio;
+	public Date getDataInizioValidita() {
+		return dataInizioValidita;
 	}
 
-	public void setTipoOrdineServizio(TipoOrdineServizio tipoOrdineServizio) {
-		this.tipoOrdineServizio = tipoOrdineServizio;
-	}
-
-	public Integer getNumero() {
-		return numero;
-	}
-
-	public void setNumero(Integer numero) {
-		this.numero = numero;
-	}
-
-	public Date getOrarioInizio() {
-		return orarioInizio;
-	}
-
-	public void setOrarioInizio(Date orarioInizio) {
-		this.orarioInizio = orarioInizio;
-	}
-
-	public Date getOrarioFine() {
-		return orarioFine;
-	}
-
-	public void setOrarioFine(Date orarioFine) {
-		this.orarioFine = orarioFine;
-	}
-
-	public Boolean getLunedi() {
-		return lunedi;
-	}
-
-	public void setLunedi(Boolean lunedi) {
-		this.lunedi = lunedi;
-	}
-
-	public Boolean getMartedi() {
-		return martedi;
-	}
-
-	public void setMartedi(Boolean martedi) {
-		this.martedi = martedi;
-	}
-
-	public Boolean getMercoledi() {
-		return mercoledi;
-	}
-
-	public void setMercoledi(Boolean mercoledi) {
-		this.mercoledi = mercoledi;
-	}
-
-	public Boolean getGiovedi() {
-		return giovedi;
-	}
-
-	public void setGiovedi(Boolean giovedi) {
-		this.giovedi = giovedi;
-	}
-
-	public Boolean getVenerdi() {
-		return venerdi;
-	}
-
-	public void setVenerdi(Boolean venerdi) {
-		this.venerdi = venerdi;
-	}
-
-	public Boolean getSabato() {
-		return sabato;
-	}
-
-	public void setSabato(Boolean sabato) {
-		this.sabato = sabato;
-	}
-
-	public Boolean getDomenica() {
-		return domenica;
-	}
-
-	public void setDomenica(Boolean domenica) {
-		this.domenica = domenica;
-	}
-
-	public Boolean getFestivi() {
-		return festivi;
-	}
-
-	public void setFestivi(Boolean festivi) {
-		this.festivi = festivi;
+	public void setDataInizioValidita(Date dataInizioValidita) {
+		this.dataInizioValidita = dataInizioValidita;
 	}
 
 	public String getNote() {

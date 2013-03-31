@@ -60,10 +60,6 @@ public class Tariffa {
 	private Date dataInizioValidita;
 
     @ManyToOne
-    @JoinColumn(name="raggruppamento_fatturazione_id")
-    private RaggruppamentoFatturazione raggruppamentoFatturazione;
-
-    @ManyToOne
     @JoinColumn(name="tipo_fatturazione_id")
     private TipoFatturazione tipoFatturazione;
 
@@ -88,7 +84,6 @@ public class Tariffa {
 			.append("numeroFranchigie", numeroFranchigie)
 			.append("costoFissoUnaTantum", costoFissoUnaTantum)
 			.append("dataInizioValidita", dataInizioValidita)
-			.append("raggruppamentoFatturazione", raggruppamentoFatturazione, false)
 			.append("tipoFatturazione", tipoFatturazione, false)
 			.append("dataCessazione", dataCessazione)
 			.append("note", note)
@@ -174,15 +169,6 @@ public class Tariffa {
 
 	public void setDataInizioValidita(Date dataInizioValidita) {
 		this.dataInizioValidita = dataInizioValidita;
-	}
-
-	public RaggruppamentoFatturazione getRaggruppamentoFatturazione() {
-		return raggruppamentoFatturazione;
-	}
-
-	public void setRaggruppamentoFatturazione(
-			RaggruppamentoFatturazione raggruppamentoFatturazione) {
-		this.raggruppamentoFatturazione = raggruppamentoFatturazione;
 	}
 
 	public TipoFatturazione getTipoFatturazione() {

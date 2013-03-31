@@ -58,6 +58,7 @@
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.GestoreContrattoAzienda" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.LayoutStampa" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.MetodoPagamento" />
+		<mapping class="it.ivncr.erp.model.commerciale.contratto.OrdineServizio" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.RaggruppamentoFatturazione" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.RinnovoContrattuale" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.ServizioOneroso" />
