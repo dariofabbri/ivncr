@@ -29,6 +29,7 @@ public class GestoreContrattoServiceImpl extends AbstractService implements Gest
 	public List<GestoreContratto> listDisponibiliPerContratto(Integer contrattoId) {
 
 		String hql =
+				"select distinct gco " +
 				"from GestoreContratto gco " +
 				"left join gco.aziende azi " +
 				"where azi.azienda.id = " +
@@ -55,6 +56,7 @@ public class GestoreContrattoServiceImpl extends AbstractService implements Gest
 
 
 		String hql =
+				"select distinct gco " +
 				"from GestoreContratto gco " +
 				"left join gco.aziende azi " +
 				"where azi.azienda.id = " +

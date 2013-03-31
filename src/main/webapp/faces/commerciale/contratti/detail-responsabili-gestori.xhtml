@@ -37,6 +37,10 @@
 						<h:outputText value="#{gestore.gestore.cognome}" />
 					</p:column>
 
+					<p:column headerText="Nome" sortBy="#{gestore.gestore.nome}">
+						<h:outputText value="#{gestore.gestore.nome}" />
+					</p:column>
+
 					<p:column headerText="Valido da" sortBy="#{gestore.validoDa}">
 						<h:outputText value="#{gestore.validoDa}">
 							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
@@ -111,8 +115,8 @@
 					<p:column colspan="2">
 														
 						<p:dataTable
-							id="gestoriTable"
-							var="gestore"
+							id="gestoriDisponibiliTable"
+							var="gestoreDisponibile"
 							value="#{dettaglioContrattoGestori.listGestoriDisponibili}"
 							paginator="true" 
 							paginatorPosition="bottom" rows="10"
@@ -121,8 +125,8 @@
 							pageLinks="5"
 							selectionMode="single"
 							selection="#{dettaglioContrattoGestori.selectedGestore}"
-							rowKey="#{gestore.id}"
-							sortBy="#{gestore.cognome}"
+							rowKey="#{gestoreDisponibile.id}"
+							sortBy="#{gestoreDisponibile.cognome}"
 							sortOrder="ascending"
 							emptyMessage="Nessun record trovato" 
 							styleClass="small-datatable">
@@ -131,22 +135,22 @@
 			
 							<p:ajax event="rowUnselect" update=":detailForm:tabView:responsabiliAccordion:detailGestoreView:buttons"/>
 		
-							<p:column headerText="Cognome" sortBy="#{gestore.cognome}">
-								<h:outputText value="#{gestore.cognome}" />
+							<p:column headerText="Cognome" sortBy="#{gestoreDisponibile.cognome}">
+								<h:outputText value="#{gestoreDisponibile.cognome}" />
 							</p:column>
 		
-							<p:column headerText="Nome" sortBy="#{gestore.nome}">
-								<h:outputText value="#{gestore.nome}" />
+							<p:column headerText="Nome" sortBy="#{gestoreDisponibile.nome}">
+								<h:outputText value="#{gestoreDisponibile.nome}" />
 							</p:column>
 
-							<p:column headerText="Data nascita" sortBy="#{gestore.dataNascita}">
-								<h:outputText value="#{gestore.dataNascita}">
+							<p:column headerText="Data nascita" sortBy="#{gestoreDisponibile.dataNascita}">
+								<h:outputText value="#{gestoreDisponibile.dataNascita}">
 									<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
 								</h:outputText>
 							</p:column>
 		
-							<p:column headerText="Codice fiscale" sortBy="#{gestore.codiceFiscale}">
-								<h:outputText value="#{gestore.codiceFiscale}" />
+							<p:column headerText="Codice fiscale" sortBy="#{gestoreDisponibile.codiceFiscale}">
+								<h:outputText value="#{gestoreDisponibile.codiceFiscale}" />
 							</p:column>
 																				
 						</p:dataTable>

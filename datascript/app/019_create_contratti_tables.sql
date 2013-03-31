@@ -238,6 +238,7 @@ CREATE TABLE app.con_gestore_contratto_azienda
 	azienda_id INTEGER NOT NULL REFERENCES app.gen_azienda(id),
 	attivo BOOLEAN
 );
+ALTER TABLE app.con_gestore_contratto_azienda ADD CONSTRAINT con_gestore_contratto_azienda_unique_gestore_contratto_id_azienda_id UNIQUE(gestore_contratto_id, azienda_id);
 
 
 CREATE TABLE app.con_esattore
@@ -261,6 +262,7 @@ CREATE TABLE app.con_esattore_azienda
 	azienda_id INTEGER NOT NULL REFERENCES app.gen_azienda(id),
 	attivo BOOLEAN
 );
+ALTER TABLE app.con_esattore_azienda ADD CONSTRAINT con_esattore_azienda_unique_esattore_id_azienda_id UNIQUE(esattore_id, azienda_id);
 
 
 CREATE TABLE app.con_contratto
@@ -303,6 +305,7 @@ CREATE TABLE app.con_contratto_contatto
 	valido_da DATE,
 	valido_a DATE
 );
+ALTER TABLE app.con_contratto_contatto ADD CONSTRAINT con_contratto_contatto_unique_contratto_id_contatto_id UNIQUE(contratto_id, contatto_id);
 
 
 CREATE TABLE app.con_contratto_gestore
@@ -313,6 +316,7 @@ CREATE TABLE app.con_contratto_gestore
 	valido_da DATE,
 	valido_a DATE
 );
+ALTER TABLE app.con_contratto_gestore ADD CONSTRAINT con_contratto_gestore_unique_contratto_id_gestore_id UNIQUE(contratto_id, gestore_id);
 
 
 CREATE TABLE app.con_contratto_esattore
@@ -323,6 +327,7 @@ CREATE TABLE app.con_contratto_esattore
 	valido_da DATE,
 	valido_a DATE
 );
+ALTER TABLE app.con_contratto_esattore ADD CONSTRAINT con_contratto_esattore_unique_contratto_id_esattore_id UNIQUE(contratto_id, esattore_id);
 
 
 CREATE TABLE app.con_dettaglio_fatturazione
