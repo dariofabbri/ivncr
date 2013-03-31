@@ -1,6 +1,6 @@
-package it.ivncr.erp.service.gestorecontratto;
+package it.ivncr.erp.service.esattore;
 
-import it.ivncr.erp.model.commerciale.contratto.GestoreContratto;
+import it.ivncr.erp.model.commerciale.contratto.Esattore;
 import it.ivncr.erp.service.AbstractService;
 import it.ivncr.erp.service.QueryResult;
 import it.ivncr.erp.service.SortDirection;
@@ -10,10 +10,10 @@ import java.util.Map;
 
 import org.hibernate.Query;
 
-public class GestoreContrattoServiceImpl extends AbstractService implements GestoreContrattoService {
+public class EsattoreServiceImpl extends AbstractService implements EsattoreService {
 
 	@Override
-	public QueryResult<GestoreContratto> list(
+	public QueryResult<Esattore> list(
 			int first,
 			int pageSize,
 			String sortCriteria,
@@ -26,24 +26,24 @@ public class GestoreContrattoServiceImpl extends AbstractService implements Gest
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<GestoreContratto> listDisponibiliPerContratto(Integer contrattoId) {
+	public List<Esattore> listDisponibiliPerContratto(Integer contrattoId) {
 
 		String hql =
-				"select distinct gco " +
-				"from GestoreContratto gco " +
-				"left join gco.aziende azi " +
+				"select distinct esa " +
+				"from Esattore esa " +
+				"left join esa.aziende azi " +
 				"where azi.azienda.id = " +
 				"(select azi.id from Contratto cnt " +
 				"left join cnt.cliente cli " +
 				"left join cli.azienda azi " +
 				"where cnt.id = :contrattoId) " +
 				"and azi.attivo = true " +
-				"and gco.id not in " +
-				"(select cog.gestore.id from ContrattoGestore cog " +
-				"where cog.contratto.id = :contrattoId) ";
+				"and esa.id not in " +
+				"(select coe.esattore.id from ContrattoEsattore coe " +
+				"where coe.contratto.id = :contrattoId) ";
 		Query query = session.createQuery(hql);
 		query.setParameter("contrattoId", contrattoId);
-		List<GestoreContratto> result = query.list();
+		List<Esattore> result = query.list();
 		logger.debug("Query returned: " + result);
 
 		return result;
@@ -52,27 +52,27 @@ public class GestoreContrattoServiceImpl extends AbstractService implements Gest
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<GestoreContratto> listDisponibiliPerContratto(Integer contrattoId, Integer gestoreId) {
+	public List<Esattore> listDisponibiliPerContratto(Integer contrattoId, Integer esattoreId) {
 
 
 		String hql =
-				"select distinct gco " +
-				"from GestoreContratto gco " +
-				"left join gco.aziende azi " +
+				"select distinct esa " +
+				"from Esattore esa " +
+				"left join esa.aziende azi " +
 				"where azi.azienda.id = " +
 				"(select azi.id from Contratto cnt " +
 				"left join cnt.cliente cli " +
 				"left join cli.azienda azi " +
 				"where cnt.id = :contrattoId) " +
 				"and azi.attivo = true " +
-				"and gco.id not in " +
-				"(select cog.gestore.id from ContrattoGestore cog " +
-				"where cog.contratto.id = :contrattoId " +
-				"and cog.gestore.id <> :gestoreId) ";
+				"and esa.id not in " +
+				"(select coe.esattore.id from ContrattoEsattore coe " +
+				"where coe.contratto.id = :contrattoId " +
+				"and coe.esattore.id <> :esattoreId) ";
 		Query query = session.createQuery(hql);
 		query.setParameter("contrattoId", contrattoId);
-		query.setParameter("gestoreId", gestoreId);
-		List<GestoreContratto> result = query.list();
+		query.setParameter("esattoreId", esattoreId);
+		List<Esattore> result = query.list();
 		logger.debug("Query returned: " + result);
 
 		return result;

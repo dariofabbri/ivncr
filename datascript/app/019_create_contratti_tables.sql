@@ -316,7 +316,7 @@ CREATE TABLE app.con_contratto_gestore
 	valido_da DATE,
 	valido_a DATE
 );
-ALTER TABLE app.con_contratto_gestore ADD CONSTRAINT con_contratto_gestore_unique_contratto_id_gestore_id UNIQUE(contratto_id, gestore_id);
+ALTER TABLE app.con_contratto_gestore ADD CONSTRAINT con_contratto_gestore_unique_contratto_id_gestore_contratto_id UNIQUE(contratto_id, gestore_contratto_id);
 
 
 CREATE TABLE app.con_contratto_esattore
