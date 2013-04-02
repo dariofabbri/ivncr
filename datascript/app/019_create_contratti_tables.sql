@@ -167,6 +167,29 @@ INSERT INTO app.con_specifica_servizio (id, tipo_servizio_id, descrizione) VALUE
 SELECT setval('app.con_specifica_servizio_id_seq', (SELECT MAX(id) FROM app.con_specifica_servizio));
 
 
+CREATE TABLE app.con_tipo_tariffa
+(
+	id SERIAL NOT NULL PRIMARY KEY,
+	descrizione VARCHAR(255) NOT NULL
+);
+
+INSERT INTO app.con_tipo_tariffa (id, descrizione) VALUES (1, 'Costo Fisso Totale');
+INSERT INTO app.con_tipo_tariffa (id, descrizione) VALUES (2, 'Costo Fisso a Tempo');
+INSERT INTO app.con_tipo_tariffa (id, descrizione) VALUES (3, 'Costo Fisso ad Operazione');
+INSERT INTO app.con_tipo_tariffa (id, descrizione) VALUES (4, 'Costo Orario');
+INSERT INTO app.con_tipo_tariffa (id, descrizione) VALUES (5, 'Costo Percentuale');
+INSERT INTO app.con_tipo_tariffa (id, descrizione) VALUES (6, 'Costo Permillare');
+INSERT INTO app.con_tipo_tariffa (id, descrizione) VALUES (7, 'Franchigie Totali');
+INSERT INTO app.con_tipo_tariffa (id, descrizione) VALUES (8, 'Franchigie a Tempo');
+INSERT INTO app.con_tipo_tariffa (id, descrizione) VALUES (9, 'Ritenuta di garanzia');
+INSERT INTO app.con_tipo_tariffa (id, descrizione) VALUES (10, 'Supplemento Fisso');
+INSERT INTO app.con_tipo_tariffa (id, descrizione) VALUES (11, 'Supplemento Giornaliero');
+INSERT INTO app.con_tipo_tariffa (id, descrizione) VALUES (12, 'Supplemento Km');
+INSERT INTO app.con_tipo_tariffa (id, descrizione) VALUES (13, 'Supplemento Materiali');
+INSERT INTO app.con_tipo_tariffa (id, descrizione) VALUES (14, 'Supplemento Orario');
+SELECT setval('app.con_tipo_tariffa_id_seq', (SELECT MAX(id) FROM app.con_tipo_tariffa));
+
+
 CREATE TABLE app.con_raggruppamento_fatturazione
 (
 	id SERIAL NOT NULL PRIMARY KEY,
@@ -204,17 +227,6 @@ INSERT INTO app.con_tipo_apparecchiatura_tecnologica (id, descrizione) VALUES (2
 INSERT INTO app.con_tipo_apparecchiatura_tecnologica (id, descrizione) VALUES (3, 'Periferica');
 INSERT INTO app.con_tipo_apparecchiatura_tecnologica (id, descrizione) VALUES (4, 'Apparati di controllo');
 SELECT setval('app.con_tipo_apparecchiatura_tecnologica_id_seq', (SELECT MAX(id) FROM app.con_tipo_apparecchiatura_tecnologica));
-
-
-CREATE TABLE app.con_tipo_rinnovo_contrattuale
-(
-	id SERIAL NOT NULL PRIMARY KEY,
-	descrizione VARCHAR(255) NOT NULL
-);
-
-INSERT INTO app.con_tipo_rinnovo_contrattuale (id, descrizione) VALUES (1, 'Automatico');
-INSERT INTO app.con_tipo_rinnovo_contrattuale (id, descrizione) VALUES (2, 'Manuale');
-SELECT setval('app.con_tipo_rinnovo_contrattuale_id_seq', (SELECT MAX(id) FROM app.con_tipo_rinnovo_contrattuale));
 
 
 CREATE TABLE app.con_gestore_contratto
@@ -293,7 +305,7 @@ CREATE TABLE app.con_rinnovo_contrattuale
 	contratto_id INTEGER NOT NULL REFERENCES app.con_contratto(id),
 	data_decorrenza DATE NOT NULL,
 	data_termine DATE,
-	tipo_rinnovo_contrattuale_id INTEGER NOT NULL REFERENCES app.con_tipo_rinnovo_contrattuale(id)
+	note VARCHAR(4000)
 );
 
 
@@ -370,9 +382,9 @@ CREATE TABLE app.con_tariffa
 	tipo_servizio_id INTEGER NOT NULL REFERENCES app.con_tipo_servizio(id),
 	specifica_servizio_id INTEGER NOT NULL REFERENCES app.con_specifica_servizio(id),
 	obiettivo_servizio_id INTEGER NOT NULL REFERENCES app.com_obiettivo_servizio(id),
-	costo_orario NUMERIC(18, 4),
-	numero_franchigie INTEGER,
-	costo_fisso_una_tantum NUMERIC(18, 4),
+	tipo_tariffa_id INTEGER NOT NULL REFERENCES app.con_tipo_tariffa(id),
+	costo NUMERIC(18, 4),
+	numero INTEGER,
 	data_inizio_validita DATE NOT NULL,	
 	tipo_fatturazione_id INTEGER NOT NULL REFERENCES app.con_tipo_fatturazione(id),
 	data_cessazione DATE,

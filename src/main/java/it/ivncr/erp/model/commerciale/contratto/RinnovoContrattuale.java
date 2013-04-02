@@ -35,9 +35,8 @@ public class RinnovoContrattuale {
 	@Column(name="data_termine")
 	private Date dataTermine;
 
-    @ManyToOne
-    @JoinColumn(name="tipo_rinnovo_contrattuale_id")
-    private TipoRinnovoContrattuale tipoRinnovoContrattuale;
+	@Column(name="note")
+	private String note;
 
 
 	@Override
@@ -48,7 +47,7 @@ public class RinnovoContrattuale {
 			.append("contratto", contratto, false)
 			.append("dataDecorrenza", dataDecorrenza)
 			.append("dataTermine", dataTermine)
-			.append("tipoRinnovoContrattuale", tipoRinnovoContrattuale, false)
+			.append("note", note)
 			.toString();
 	}
 
@@ -83,14 +82,5 @@ public class RinnovoContrattuale {
 
 	public void setDataTermine(Date dataTermine) {
 		this.dataTermine = dataTermine;
-	}
-
-	public TipoRinnovoContrattuale getTipoRinnovoContrattuale() {
-		return tipoRinnovoContrattuale;
-	}
-
-	public void setTipoRinnovoContrattuale(
-			TipoRinnovoContrattuale tipoRinnovoContrattuale) {
-		this.tipoRinnovoContrattuale = tipoRinnovoContrattuale;
 	}
 }

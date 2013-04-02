@@ -75,8 +75,8 @@
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.TipoFrazionamentoFatturazione" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.TipoOrdineServizio" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.TipoProvenienza" />
-		<mapping class="it.ivncr.erp.model.commerciale.contratto.TipoRinnovoContrattuale" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.TipoServizio" />
+		<mapping class="it.ivncr.erp.model.commerciale.contratto.TipoTariffa" />
 		
 		<mapping class="it.ivncr.erp.model.generale.Azienda" />
 		<mapping class="it.ivncr.erp.model.generale.Contatore" />

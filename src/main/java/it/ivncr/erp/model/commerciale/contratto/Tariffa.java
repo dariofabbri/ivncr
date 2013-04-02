@@ -47,14 +47,15 @@ public class Tariffa {
     @JoinColumn(name="obiettivo_servizio_id")
     private ObiettivoServizio obiettivoServizio;
 
-	@Column(name="costo_orario")
-	private BigDecimal costoOrario;
+    @ManyToOne
+    @JoinColumn(name="tipo_tariffa_id")
+    private TipoTariffa tipoTariffa;
 
-	@Column(name="numero_franchigie")
-	private Integer numeroFranchigie;
+	@Column(name="costo")
+	private BigDecimal costo;
 
-	@Column(name="costo_fisso_una_tantum")
-	private BigDecimal costoFissoUnaTantum;
+	@Column(name="numero")
+	private Integer numero;
 
 	@Column(name="data_inizio_validita")
 	private Date dataInizioValidita;
@@ -80,9 +81,9 @@ public class Tariffa {
 			.append("tipoServizio", tipoServizio, false)
 			.append("specificaServizio", specificaServizio, false)
 			.append("obiettivoServizio", obiettivoServizio, false)
-			.append("costoOrario", costoOrario)
-			.append("numeroFranchigie", numeroFranchigie)
-			.append("costoFissoUnaTantum", costoFissoUnaTantum)
+			.append("tipoTariffa", tipoTariffa, false)
+			.append("costo", costo)
+			.append("numero", numero)
 			.append("dataInizioValidita", dataInizioValidita)
 			.append("tipoFatturazione", tipoFatturazione, false)
 			.append("dataCessazione", dataCessazione)
@@ -139,28 +140,28 @@ public class Tariffa {
 		this.obiettivoServizio = obiettivoServizio;
 	}
 
-	public BigDecimal getCostoOrario() {
-		return costoOrario;
+	public TipoTariffa getTipoTariffa() {
+		return tipoTariffa;
 	}
 
-	public void setCostoOrario(BigDecimal costoOrario) {
-		this.costoOrario = costoOrario;
+	public void setTipoTariffa(TipoTariffa tipoTariffa) {
+		this.tipoTariffa = tipoTariffa;
 	}
 
-	public Integer getNumeroFranchigie() {
-		return numeroFranchigie;
+	public BigDecimal getCosto() {
+		return costo;
 	}
 
-	public void setNumeroFranchigie(Integer numeroFranchigie) {
-		this.numeroFranchigie = numeroFranchigie;
+	public void setCosto(BigDecimal costo) {
+		this.costo = costo;
 	}
 
-	public BigDecimal getCostoFissoUnaTantum() {
-		return costoFissoUnaTantum;
+	public Integer getNumero() {
+		return numero;
 	}
 
-	public void setCostoFissoUnaTantum(BigDecimal costoFissoUnaTantum) {
-		this.costoFissoUnaTantum = costoFissoUnaTantum;
+	public void setNumero(Integer numero) {
+		this.numero = numero;
 	}
 
 	public Date getDataInizioValidita() {

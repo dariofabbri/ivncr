@@ -13,15 +13,12 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 
 @Entity
-@Table(name = "con_tipo_rinnovo_contrattuale")
-public class TipoRinnovoContrattuale {
-
-	public static final Integer AUTOMATICO = 1;
-	public static final Integer MANUALE = 2;
+@Table(name = "con_tipo_tariffa")
+public class TipoTariffa {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "con_tipo_rinnovo_contrattuale_id_seq")
-	@SequenceGenerator(name = "con_tipo_rinnovo_contrattuale_id_seq", sequenceName = "con_tipo_rinnovo_contrattuale_id_seq")
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "con_tipo_tariffa_id_seq")
+	@SequenceGenerator(name = "con_tipo_tariffa_id_seq", sequenceName = "con_tipo_tariffa_id_seq")
 	@Column(name="id")
 	private Integer id;
 
