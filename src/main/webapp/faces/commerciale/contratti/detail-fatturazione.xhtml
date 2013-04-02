@@ -1,0 +1,347 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<f:subview id="listDettaglioFatturazioneView">
+	
+		<p:outputPanel id="buttons" style="display: block; margin-top: 2em; margin-bottom: 2em;">
+	
+			<p:commandButton
+				id="createButton"
+				value="Crea"
+				actionListener="#{dettaglioContrattoFatturazione.startCreate}"
+				process="@this"
+				update=":detailForm:tabView:detailDettaglioFatturazioneView:detailDettaglioFatturazioneDialog"
+				oncomplete="detailDettaglioFatturazioneDialogWidget.show();"
+				icon="ui-icon-star"/>
+			<p:tooltip 
+				for="createButton" 
+				value="Crea un nuovo dettaglio di fatturazione" 
+				showEffect="fade" 
+				hideEffect="fade"/>
+	
+			<p:commandButton
+				id="deleteButton"
+				value="Elimina"
+				disabled="#{dettaglioContrattoFatturazione.selected == null}"
+				process="@this"
+				update=":detailForm:tabView:deleteDettaglioFatturazioneView:deleteDettaglioFatturazioneDialog"
+				oncomplete="deleteDettaglioFatturazioneDialogWidget.show();"
+				icon="ui-icon-trash" />
+			<p:tooltip 
+				for="deleteButton" 
+				value="Elimina il dettaglio di fatturazione selezionato" 
+				showEffect="fade" 
+				hideEffect="fade"/>
+	
+			<p:commandButton
+				id="updateButton" 
+				value="Modifica"
+				disabled="#{dettaglioContrattoFatturazione.selected == null}"
+				actionListener="#{dettaglioContrattoFatturazione.startUpdate}"
+				process="@this"
+				update=":detailForm:tabView:detailDettaglioFatturazioneView:detailDettaglioFatturazioneDialog"
+				oncomplete="detailDettaglioFatturazioneDialogWidget.show();"
+				icon="ui-icon-pencil" />
+			<p:tooltip 
+				for="updateButton" 
+				value="Modifica il dettaglio di fatturazione selezionato" 
+				showEffect="fade" 
+				hideEffect="fade"/>
+	
+		</p:outputPanel>
+
+		<p:dataTable 
+			id="dettagliFatturazioneTable" 
+			var="dettaglioFatturazione" 
+			value="#{dettaglioContrattoFatturazione.model}"
+			paginator="true" 
+			paginatorPosition="bottom" rows="10"
+			paginatorTemplate="{CurrentPageReport} {RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+			currentPageReportTemplate="Trovati {totalRecords} record - Pagina {currentPage} di {totalPages}"
+			rowsPerPageTemplate="5,10,50" 
+			pageLinks="10"
+			emptyMessage="Nessun record trovato" 
+			selectionMode="single"
+			selection="#{dettaglioContrattoFatturazione.selected}"
+			lazy="true">
+	
+			<p:ajax event="rowSelect" process="@this" update=":detailForm:tabView:listDettaglioFatturazioneView:buttons"/>
+			<p:ajax event="rowUnselect" process="@this" update=":detailForm:tabView:listDettaglioFatturazioneView:buttons"/>
+	      		
+			<f:facet name="header">
+		    	Lista dei dettagli di fatturazione
+		    </f:facet>
+	
+			<p:column headerText="Tipo fatturazione" sortBy="#{dettaglioFatturazione.tipoFatturazione.descrizione}"
+				filterBy="#{dettaglioFatturazione.tipoFatturazione.descrizione}">
+				<h:outputText value="#{dettaglioFatturazione.tipoFatturazione.descrizione}" />
+			</p:column>
+	
+			<p:column headerText="Frazionamento" sortBy="#{dettaglioFatturazione.tipoFrazionamentoFatturazione.descrizione}"
+				filterBy="#{dettaglioFatturazione.tipoFrazionamentoFatturazione.descrizione}">
+				<h:outputText value="#{dettaglioFatturazione.tipoFrazionamentoFatturazione.descrizione}" />
+			</p:column>
+	
+			<p:column headerText="Condizioni pagamento" sortBy="#{dettaglioFatturazione.condizioniPagamento.descrizione}"
+				filterBy="#{dettaglioFatturazione.condizioniPagamento.descrizione}">
+				<h:outputText value="#{dettaglioFatturazione.condizioniPagamento.descrizione}" />
+			</p:column>
+	
+			<p:column headerText="Metodo pagamento" sortBy="#{dettaglioFatturazione.metodoPagamento.descrizione}"
+				filterBy="#{dettaglioFatturazione.metodoPagamento.descrizione}">
+				<h:outputText value="#{dettaglioFatturazione.metodoPagamento.descrizione}" />
+			</p:column>
+	
+			<p:column headerText="Indirizzo" sortBy="#{dettaglioFatturazione.indirizzo.indirizzoComposto}"
+				filterBy="#{dettaglioFatturazione.indirizzo.indirizzoComposto}">
+				<h:outputText value="#{dettaglioFatturazione.indirizzo.indirizzoComposto}" />
+			</p:column>
+
+			<p:column headerText="Valido da" sortBy="#{dettaglioFatturazione.validoDa}">
+				<h:outputText value="#{dettaglioFatturazione.validoDa}">
+					<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+				</h:outputText>
+			</p:column>
+
+			<p:column headerText="Valido a" sortBy="#{dettaglioFatturazione.validoA}">
+				<h:outputText value="#{dettaglioFatturazione.validoA}">
+					<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+				</h:outputText>
+			</p:column>
+	
+		</p:dataTable>
+
+	</f:subview>
+
+
+	<f:subview id="detailDettaglioFatturazioneView">
+		
+		<p:dialog
+			id="detailDettaglioFatturazioneDialog"
+			header="Dati del dettaglio fatturazione" 
+			widgetVar="detailDettaglioFatturazioneDialogWidget" 
+			modal="true"
+			showEffect="fade" 
+			hideEffect="fade"> 
+
+			<p:messages id="messages" globalOnly="false" showSummary="false" showDetail="true" severity="error" closable="true"/>
+	
+			<p:panelGrid id="wrapper" styleClass="form-panel">
+
+				<p:focus for="codiceTipoFatturazione"/>
+				
+				<p:row>
+					<p:column>
+						<p:outputLabel for="codiceTipoFatturazione" value="Tipo fatturazione:" />
+					</p:column>
+					<p:column>
+						<p:selectOneMenu
+							required="true" 
+							requiredMessage="Il campo tipo fatturazione è obbligatorio"
+							id="codiceTipoFatturazione" 
+							value="#{dettaglioContrattoFatturazione.codiceTipoFatturazione}"
+							effect="fade">
+							<f:selectItem itemLabel="Selezionare un tipo di fatturazione" itemValue="" />
+							<f:selectItems 
+								value="#{dettaglioContrattoFatturazione.listTipoFatturazione}" var="item"
+								itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+						</p:selectOneMenu>	
+						<p:tooltip for="codiceTipoFatturazione" showEffect="fade" value="Tipo di fatturazione" />
+					</p:column>
+				</p:row>
+				
+				<p:row>
+					<p:column>
+						<p:outputLabel for="codiceTipoFrazionamentoFatturazione" value="Frazionamento fatturazione:" />
+					</p:column>
+					<p:column>
+						<p:selectOneMenu
+							required="true" 
+							requiredMessage="Il campo frazionamento fatturazione è obbligatorio"
+							id="codiceTipoFrazionamentoFatturazione" 
+							value="#{dettaglioContrattoFatturazione.codiceTipoFrazionamentoFatturazione}"
+							effect="fade">
+							<f:selectItem itemLabel="Selezionare un frazionamento di fatturazione" itemValue="" />
+							<f:selectItems 
+								value="#{dettaglioContrattoFatturazione.listTipoFrazionamentoFatturazione}" var="item"
+								itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+						</p:selectOneMenu>	
+						<p:tooltip for="codiceTipoFrazionamentoFatturazione" showEffect="fade" value="Tipo di frazionamento della fatturazione" />
+					</p:column>
+				</p:row>
+				
+				<p:row>
+					<p:column>
+						<p:outputLabel for="codiceCondizioniPagamento" value="Condizioni di pagamento:" />
+					</p:column>
+					<p:column>
+						<p:selectOneMenu
+							required="true" 
+							requiredMessage="Il campo condizioni di pagamento è obbligatorio"
+							id="codiceCondizioniPagamento" 
+							value="#{dettaglioContrattoFatturazione.codiceCondizioniPagamento}"
+							effect="fade">
+							<f:selectItem itemLabel="Selezionare una condizione di pagamento" itemValue="" />
+							<f:selectItems 
+								value="#{dettaglioContrattoFatturazione.listCondizioniPagamento}" var="item"
+								itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+						</p:selectOneMenu>	
+						<p:tooltip for="codiceCondizioniPagamento" showEffect="fade" value="Condizioni di pagamento" />
+					</p:column>
+				</p:row>
+				
+				<p:row>
+					<p:column>
+						<p:outputLabel for="codiceMetodoPagamento" value="Metodo di pagamento:" />
+					</p:column>
+					<p:column>
+						<p:selectOneMenu
+							required="true" 
+							requiredMessage="Il campo metodo di pagamento è obbligatorio"
+							id="codiceMetodoPagamento" 
+							value="#{dettaglioContrattoFatturazione.codiceMetodoPagamento}"
+							effect="fade">
+							<f:selectItem itemLabel="Selezionare un metodo di pagamento" itemValue="" />
+							<f:selectItems 
+								value="#{dettaglioContrattoFatturazione.listMetodoPagamento}" var="item"
+								itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+						</p:selectOneMenu>	
+						<p:tooltip for="codiceMetodoPagamento" showEffect="fade" value="Metodo di pagamento" />
+					</p:column>
+				</p:row>
+				
+				<p:row>
+					<p:column>
+						<p:outputLabel for="codiceIndirizzo" value="Indirizzo:" />
+					</p:column>
+					<p:column>
+						<p:selectOneMenu
+							required="true" 
+							requiredMessage="Il campo indirizzo è obbligatorio"
+							id="codiceIndirizzo" 
+							value="#{dettaglioContrattoFatturazione.codiceIndirizzo}"
+							effect="fade">
+							<f:selectItem itemLabel="Selezionare un indirizzo" itemValue="" />
+							<f:selectItems 
+								value="#{dettaglioContrattoFatturazione.listIndirizzo}" var="item"
+								itemLabel="#{item.indirizzoComposto}" itemValue="#{item.id}" />
+						</p:selectOneMenu>	
+						<p:tooltip for="codiceIndirizzo" showEffect="fade" value="Indirizzo" />
+					</p:column>
+				</p:row>
+				
+				<p:row>
+					<p:column>
+						<p:outputLabel for="codiceLayoutStampa" value="Layout di stampa:" />
+					</p:column>
+					<p:column>
+						<p:selectOneMenu
+							required="true" 
+							requiredMessage="Il campo layout di stampa è obbligatorio"
+							id="codiceLayoutStampa" 
+							value="#{dettaglioContrattoFatturazione.codiceLayoutStampa}"
+							effect="fade">
+							<f:selectItem itemLabel="Selezionare un layout di stampa" itemValue="" />
+							<f:selectItems 
+								value="#{dettaglioContrattoFatturazione.listLayoutStampa}" var="item"
+								itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+						</p:selectOneMenu>	
+						<p:tooltip for="codiceLayoutStampa" showEffect="fade" value="Layout di stampa" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="validoDa" value="Valido da:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioContrattoFatturazione.validoDa}" id="validoDa"
+							pattern="dd/MM/yyyy"
+							required="true" 
+							requiredMessage="Il campo valido da è obbligatorio"/>
+						<p:watermark for="validoDa" value="Data di inizio validità" />  
+						<p:tooltip for="validoDa" showEffect="fade" value="Data di inizio validità" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="validoA" value="Valido a:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioContrattoFatturazione.validoA}" id="validoA"
+							pattern="dd/MM/yyyy"/>
+						<p:watermark for="validoA" value="Data di fine validità" />  
+						<p:tooltip for="validoA" showEffect="fade" value="Data di fine validità" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column colspan="2" styleClass="form-footer">
+
+						<p:commandButton value="Salva"
+							actionListener="#{dettaglioContrattoFatturazione.doSave}"
+							process="detailDettaglioFatturazioneDialog"
+							update=":detailForm:tabView:listDettaglioFatturazioneView:dettagliFatturazioneTable,:detailForm:tabView:listDettaglioFatturazioneView:buttons,:detailForm:tabView:detailDettaglioFatturazioneView:messages,:detailForm:tabView:detailDettaglioFatturazioneView:wrapper,:detailForm:growl" 
+							oncomplete="if(args.ok) { detailDettaglioFatturazioneDialogWidget.hide(); }"/>
+		
+						<p:commandButton value="Annulla"
+							type="button"
+							onclick="detailDettaglioFatturazioneDialogWidget.hide();" />
+
+					</p:column>
+				</p:row>
+									
+			</p:panelGrid>
+					
+		</p:dialog>
+		
+	</f:subview>
+	
+	
+	<f:subview id="deleteDettaglioFatturazioneView">
+		
+		<p:dialog
+			id="deleteDettaglioFatturazioneDialog" 
+			header="Eliminazione dettaglio fatturazione" 
+			widgetVar="deleteDettaglioFatturazioneDialogWidget" 
+			modal="true"
+			showEffect="fade" 
+			hideEffect="fade"> 
+				
+			<p:messages id="messages" globalOnly="false" showSummary="false" showDetail="true" severity="error" closable="true"/>
+			
+			<p:panelGrid styleClass="form-panel">
+				
+				<p:row>
+					<p:column>		
+						<h:outputText value="Si conferma l'eliminazione del dettaglio fatturazione selezionato?"/>
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column styleClass="form-footer">		
+
+						<p:commandButton value="Elimina"
+							actionListener="#{dettaglioContrattoFatturazione.doDelete}"
+							process="@this"
+							update=":detailForm:tabView:listDettaglioFatturazioneView:dettagliFatturazioneTable,:detailForm:tabView:listDettaglioFatturazioneView:buttons,:detailForm:tabView:deleteDettaglioFatturazioneView:messages,:detailForm:growl" 
+							oncomplete="if(args.ok) { deleteDettaglioFatturazioneDialogWidget.hide(); }"/>
+		
+						<p:commandButton value="Annulla"
+							type="button"
+							onclick="deleteDettaglioFatturazioneDialogWidget.hide();" />
+							
+					</p:column>
+				</p:row>
+				
+			</p:panelGrid>
+			
+		</p:dialog>
+		
+	</f:subview>
+		
+</html>

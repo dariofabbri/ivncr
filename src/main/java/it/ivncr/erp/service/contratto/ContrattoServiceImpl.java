@@ -1,6 +1,7 @@
 package it.ivncr.erp.service.contratto;
 
 import it.ivncr.erp.model.commerciale.cliente.Cliente;
+import it.ivncr.erp.model.commerciale.cliente.Indirizzo;
 import it.ivncr.erp.model.commerciale.contratto.Contratto;
 import it.ivncr.erp.model.generale.Azienda;
 import it.ivncr.erp.model.generale.Contatore;
@@ -15,6 +16,7 @@ import it.ivncr.erp.util.AuditUtil.Snapshot;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Map;
 
 import org.hibernate.Query;
@@ -260,6 +262,25 @@ public class ContrattoServiceImpl extends AbstractService implements ContrattoSe
 		return getNextCodice(codiceAzienda, anno, true);
 
 	}
+
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Indirizzo> listAvailableIndirizzi(Integer codiceContratto) {
+
+		String hql =
+				"from Indirizzo ind " +
+				"where ind.cliente.id in " +
+				"(select con.cliente.id from Contratto con where con.id = :codiceContratto) ";
+		Query query = session.createQuery(hql);
+		query.setParameter("codiceContratto", codiceContratto);
+
+		List<Indirizzo> result = query.list();
+		logger.debug("Query result: " + result);
+
+		return result;
+	}
+
 
 
 	private String getNextCodice(Integer codiceAzienda, Integer anno, boolean increment) {

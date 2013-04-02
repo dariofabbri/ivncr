@@ -1,10 +1,12 @@
 package it.ivncr.erp.service.contratto;
 
+import it.ivncr.erp.model.commerciale.cliente.Indirizzo;
 import it.ivncr.erp.model.commerciale.contratto.Contratto;
 import it.ivncr.erp.service.EntityService;
 import it.ivncr.erp.service.QueryResult;
 
 import java.util.Date;
+import java.util.List;
 
 public interface ContrattoService extends EntityService<Contratto> {
 
@@ -47,4 +49,6 @@ public interface ContrattoService extends EntityService<Contratto> {
 
 	String peekNextCodice(Integer codiceAzienda, Integer anno);
 	String retrieveNextCodice(Integer codiceAzienda, Integer anno);
+
+	List<Indirizzo> listAvailableIndirizzi(Integer id);
 }
