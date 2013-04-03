@@ -1,6 +1,7 @@
 package it.ivncr.erp.service.contratto;
 
 import it.ivncr.erp.model.commerciale.cliente.Indirizzo;
+import it.ivncr.erp.model.commerciale.cliente.ObiettivoServizio;
 import it.ivncr.erp.model.commerciale.contratto.Contratto;
 import it.ivncr.erp.service.EntityService;
 import it.ivncr.erp.service.QueryResult;
@@ -51,4 +52,6 @@ public interface ContrattoService extends EntityService<Contratto> {
 	String retrieveNextCodice(Integer codiceAzienda, Integer anno);
 
 	List<Indirizzo> listAvailableIndirizzi(Integer id);
+
+	List<ObiettivoServizio> listAvailableObiettiviServizio(Integer id);
 }

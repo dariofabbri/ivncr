@@ -215,7 +215,7 @@ public class DettaglioClienteObiettivi implements Serializable {
 						interno,
 						localita,
 						cap,
-						provincia.getSigla(),
+						provincia != null ? provincia.getSigla() : null,
 						paese,
 						note);
 				logger.debug("Entity successfully created.");
@@ -242,7 +242,7 @@ public class DettaglioClienteObiettivi implements Serializable {
 						interno,
 						localita,
 						cap,
-						provincia.getSigla(),
+						provincia != null ? provincia.getSigla() : null,
 						paese,
 						note);
 				logger.debug("Entity successfully updated.");

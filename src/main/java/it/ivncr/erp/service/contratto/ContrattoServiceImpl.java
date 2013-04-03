@@ -2,6 +2,7 @@ package it.ivncr.erp.service.contratto;
 
 import it.ivncr.erp.model.commerciale.cliente.Cliente;
 import it.ivncr.erp.model.commerciale.cliente.Indirizzo;
+import it.ivncr.erp.model.commerciale.cliente.ObiettivoServizio;
 import it.ivncr.erp.model.commerciale.contratto.Contratto;
 import it.ivncr.erp.model.generale.Azienda;
 import it.ivncr.erp.model.generale.Contatore;
@@ -281,6 +282,23 @@ public class ContrattoServiceImpl extends AbstractService implements ContrattoSe
 		return result;
 	}
 
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ObiettivoServizio> listAvailableObiettiviServizio(Integer codiceContratto) {
+
+		String hql =
+				"from ObiettivoServizio ose " +
+				"where ose.cliente.id in " +
+				"(select con.cliente.id from Contratto con where con.id = :codiceContratto) ";
+		Query query = session.createQuery(hql);
+		query.setParameter("codiceContratto", codiceContratto);
+
+		List<ObiettivoServizio> result = query.list();
+		logger.debug("Query result: " + result);
+
+		return result;
+	}
 
 
 	private String getNextCodice(Integer codiceAzienda, Integer anno, boolean increment) {
