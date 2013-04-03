@@ -3,17 +3,17 @@ package it.ivncr.erp.jsf.managedbean.commerciale.contratti;
 
 import it.ivncr.erp.jsf.RobustLazyDataModel;
 import it.ivncr.erp.model.commerciale.cliente.ObiettivoServizio;
+import it.ivncr.erp.model.commerciale.contratto.Canone;
+import it.ivncr.erp.model.commerciale.contratto.RaggruppamentoFatturazione;
 import it.ivncr.erp.model.commerciale.contratto.SpecificaServizio;
-import it.ivncr.erp.model.commerciale.contratto.Tariffa;
 import it.ivncr.erp.model.commerciale.contratto.TipoFatturazione;
 import it.ivncr.erp.model.commerciale.contratto.TipoServizio;
-import it.ivncr.erp.model.commerciale.contratto.TipoTariffa;
 import it.ivncr.erp.service.QueryResult;
 import it.ivncr.erp.service.ServiceFactory;
 import it.ivncr.erp.service.SortDirection;
+import it.ivncr.erp.service.canone.CanoneService;
 import it.ivncr.erp.service.contratto.ContrattoService;
 import it.ivncr.erp.service.lut.LUTService;
-import it.ivncr.erp.service.tariffa.TariffaService;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -37,27 +37,26 @@ import org.slf4j.LoggerFactory;
 
 @ManagedBean
 @ViewScoped
-public class DettaglioContrattoTariffe implements Serializable {
+public class DettaglioContrattoCanoni implements Serializable {
 
-	private static final Logger logger = LoggerFactory.getLogger(DettaglioContrattoTariffe.class);
+	private static final Logger logger = LoggerFactory.getLogger(DettaglioContrattoCanoni.class);
 
 	private static final long serialVersionUID = 1L;
 
 	@ManagedProperty("#{dettaglioContrattoGenerale}")
 	private DettaglioContrattoGenerale dettaglioContrattoGenerale;
 
-	private LazyDataModel<Tariffa> model;
-	private Tariffa selected;
+	private LazyDataModel<Canone> model;
+	private Canone selected;
 
 	private Integer id;
 	private String descrizione;
 	private Integer codiceTipoServizio;
 	private Integer codiceSpecificaServizio;
 	private Integer codiceObiettivoServizio;
-	private Integer codiceTipoTariffa;
-	private BigDecimal costo;
-	private Integer numero;
 	private Date dataInizioValidita;
+	private Integer codiceRaggruppamentoFatturazione;
+	private BigDecimal importoMensile;
 	private Integer codiceTipoFatturazione;
 	private Date dataCessazione;
 	private String note;
@@ -65,18 +64,18 @@ public class DettaglioContrattoTariffe implements Serializable {
 	private List<TipoServizio> listTipoServizio;
 	private List<SpecificaServizio> listSpecificaServizio;
 	private List<ObiettivoServizio> listObiettivoServizio;
-	private List<TipoTariffa> listTipoTariffa;
+	private List<RaggruppamentoFatturazione> listRaggruppamentoFatturazione;
 	private List<TipoFatturazione> listTipoFatturazione;
 
 
-	public DettaglioContrattoTariffe() {
+	public DettaglioContrattoCanoni() {
 
-		model = new RobustLazyDataModel<Tariffa>() {
+		model = new RobustLazyDataModel<Canone>() {
 
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public List<Tariffa> load(
+			public List<Canone> load(
 					int first,
 					int pageSize,
 					String sortField,
@@ -93,8 +92,8 @@ public class DettaglioContrattoTariffe implements Serializable {
 				//
 				filters.put("codiceContratto", Integer.toString(dettaglioContrattoGenerale.getId()));
 
-				TariffaService ts = ServiceFactory.createService("Tariffa");
-				QueryResult<Tariffa> result = ts.list(
+				CanoneService cs = ServiceFactory.createService("Canone");
+				QueryResult<Canone> result = cs.list(
 						first,
 						pageSize,
 						sortField,
@@ -107,17 +106,17 @@ public class DettaglioContrattoTariffe implements Serializable {
 			}
 
 			@Override
-			public Object getRowKey(Tariffa tariffa) {
+			public Object getRowKey(Canone canone) {
 
-				return tariffa == null ? null : tariffa.getId();
+				return canone == null ? null : canone.getId();
 			}
 
 			@Override
-			public Tariffa getRowData(String rowKey) {
+			public Canone getRowData(String rowKey) {
 
-				TariffaService ts = ServiceFactory.createService("Tariffa");
-				Tariffa tariffa = ts.retrieveDeep(Integer.decode(rowKey));
-				return tariffa;
+				CanoneService cs = ServiceFactory.createService("Canone");
+				Canone canone = cs.retrieveDeep(Integer.decode(rowKey));
+				return canone;
 			}
 		};
 	}
@@ -131,15 +130,15 @@ public class DettaglioContrattoTariffe implements Serializable {
 		//
 		listTipoServizio = lutService.listItems("TipoServizio");
 
-		// Load tipo tariffa LUT.
-		//
-		listTipoTariffa = lutService.listItems("TipoTariffa");
-
 		// Load tipo fatturazione LUT.
 		//
 		listTipoFatturazione = lutService.listItems("TipoFatturazione");
 
-		// Load available obiettivo servizio.
+		// Load raggruppamento fatturazione LUT.
+		//
+		listRaggruppamentoFatturazione = lutService.listItems("RaggruppamentoFatturazione");
+
+		// Load available obiettivi servizio.
 		//
 		ContrattoService cs = ServiceFactory.createService("Contratto");
 		listObiettivoServizio = cs.listAvailableObiettiviServizio(dettaglioContrattoGenerale.getId());
@@ -156,10 +155,9 @@ public class DettaglioContrattoTariffe implements Serializable {
 		codiceTipoServizio = null;
 		codiceSpecificaServizio = null;
 		codiceObiettivoServizio = null;
-		codiceTipoTariffa = null;
-		costo = null;
-		numero = null;
 		dataInizioValidita = null;
+		codiceRaggruppamentoFatturazione = null;
+		importoMensile = null;
 		codiceTipoFatturazione = null;
 		dataCessazione = null;
 		note = null;
@@ -199,18 +197,17 @@ public class DettaglioContrattoTariffe implements Serializable {
 		// Reloading the entity is required to be sure that the value has not changed since it was
 		// read in the data table list of values.
 		//
-		TariffaService ts = ServiceFactory.createService("Tariffa");
-		selected = ts.retrieveDeep(selected.getId());
+		CanoneService cs = ServiceFactory.createService("Canone");
+		selected = cs.retrieveDeep(selected.getId());
 
 		id = selected.getId();
 		descrizione = selected.getDescrizione();
 		codiceTipoServizio = selected.getTipoServizio() != null ? selected.getTipoServizio().getId() : null;
 		codiceSpecificaServizio = selected.getSpecificaServizio() != null ? selected.getSpecificaServizio().getId() : null;
 		codiceObiettivoServizio = selected.getObiettivoServizio() != null ? selected.getObiettivoServizio().getId() : null;
-		codiceTipoTariffa = selected.getTipoTariffa() != null ? selected.getTipoTariffa().getId() : null;
-		costo = selected.getCosto();
-		numero = selected.getNumero();
 		dataInizioValidita = selected.getDataInizioValidita();
+		codiceRaggruppamentoFatturazione = selected.getRaggruppamentoFatturazione() != null ? selected.getRaggruppamentoFatturazione().getId() : null;
+		importoMensile = selected.getImportoMensile();
 		codiceTipoFatturazione = selected.getTipoFatturazione() != null ? selected.getTipoFatturazione().getId() : null;
 		dataCessazione = selected.getDataCessazione();
 		note = selected.getNote();
@@ -226,19 +223,18 @@ public class DettaglioContrattoTariffe implements Serializable {
 		// Save the entity.
 		//
 		try {
-			TariffaService ts = ServiceFactory.createService("Tariffa");
+			CanoneService cs = ServiceFactory.createService("Canone");
 
 			if(id == null) {
-				ts.create(
+				cs.create(
 						dettaglioContrattoGenerale.getId(),
 						descrizione,
 						codiceTipoServizio,
 						codiceSpecificaServizio,
 						codiceObiettivoServizio,
-						codiceTipoTariffa,
-						costo,
-						numero,
 						dataInizioValidita,
+						codiceRaggruppamentoFatturazione,
+						importoMensile,
 						codiceTipoFatturazione,
 						dataCessazione,
 						note);
@@ -249,21 +245,20 @@ public class DettaglioContrattoTariffe implements Serializable {
 				FacesMessage message = new FacesMessage(
 						FacesMessage.SEVERITY_INFO,
 						"Record creato",
-						"La creazione della nuova tariffa si è conclusa con successo.");
+						"La creazione del nuovo canone si è conclusa con successo.");
 				FacesContext.getCurrentInstance().addMessage(null, message);
 
 			} else {
 
-				ts.update(
+				cs.update(
 						id,
 						descrizione,
 						codiceTipoServizio,
 						codiceSpecificaServizio,
 						codiceObiettivoServizio,
-						codiceTipoTariffa,
-						costo,
-						numero,
 						dataInizioValidita,
+						codiceRaggruppamentoFatturazione,
+						importoMensile,
 						codiceTipoFatturazione,
 						dataCessazione,
 						note);
@@ -274,7 +269,7 @@ public class DettaglioContrattoTariffe implements Serializable {
 				FacesMessage message = new FacesMessage(
 						FacesMessage.SEVERITY_INFO,
 						"Record aggiornato",
-						"La modifica della tariffa si è conclusa con successo.");
+						"La modifica del canone si è conclusa con successo.");
 				FacesContext.getCurrentInstance().addMessage(null, message);
 			}
 
@@ -306,8 +301,8 @@ public class DettaglioContrattoTariffe implements Serializable {
 		// Delete the entity.
 		//
 		try {
-			TariffaService ts = ServiceFactory.createService("Tariffa");
-			ts.delete(selected.getId());
+			CanoneService cs = ServiceFactory.createService("Canone");
+			cs.delete(selected.getId());
 
 			logger.debug("Entity successfully deleted.");
 
@@ -316,7 +311,7 @@ public class DettaglioContrattoTariffe implements Serializable {
 			FacesMessage message = new FacesMessage(
 					FacesMessage.SEVERITY_INFO,
 					"Record eliminato",
-					"L'eliminazione della tariffa si è conclusa con successo.");
+					"L'eliminazione del canone si è conclusa con successo.");
 			FacesContext.getCurrentInstance().addMessage(null, message);
 
 			// Signal to modal dialog that everything went fine.
@@ -344,19 +339,19 @@ public class DettaglioContrattoTariffe implements Serializable {
 		this.dettaglioContrattoGenerale = dettaglioContrattoGenerale;
 	}
 
-	public LazyDataModel<Tariffa> getModel() {
+	public LazyDataModel<Canone> getModel() {
 		return model;
 	}
 
-	public void setModel(LazyDataModel<Tariffa> model) {
+	public void setModel(LazyDataModel<Canone> model) {
 		this.model = model;
 	}
 
-	public Tariffa getSelected() {
+	public Canone getSelected() {
 		return selected;
 	}
 
-	public void setSelected(Tariffa selected) {
+	public void setSelected(Canone selected) {
 		this.selected = selected;
 	}
 
@@ -400,36 +395,29 @@ public class DettaglioContrattoTariffe implements Serializable {
 		this.codiceObiettivoServizio = codiceObiettivoServizio;
 	}
 
-	public Integer getCodiceTipoTariffa() {
-		return codiceTipoTariffa;
-	}
-
-	public void setCodiceTipoTariffa(Integer codiceTipoTariffa) {
-		this.codiceTipoTariffa = codiceTipoTariffa;
-	}
-
-	public BigDecimal getCosto() {
-		return costo;
-	}
-
-	public void setCosto(BigDecimal costo) {
-		this.costo = costo;
-	}
-
-	public Integer getNumero() {
-		return numero;
-	}
-
-	public void setNumero(Integer numero) {
-		this.numero = numero;
-	}
-
 	public Date getDataInizioValidita() {
 		return dataInizioValidita;
 	}
 
 	public void setDataInizioValidita(Date dataInizioValidita) {
 		this.dataInizioValidita = dataInizioValidita;
+	}
+
+	public Integer getCodiceRaggruppamentoFatturazione() {
+		return codiceRaggruppamentoFatturazione;
+	}
+
+	public void setCodiceRaggruppamentoFatturazione(
+			Integer codiceRaggruppamentoFatturazione) {
+		this.codiceRaggruppamentoFatturazione = codiceRaggruppamentoFatturazione;
+	}
+
+	public BigDecimal getImportoMensile() {
+		return importoMensile;
+	}
+
+	public void setImportoMensile(BigDecimal importoMensile) {
+		this.importoMensile = importoMensile;
 	}
 
 	public Integer getCodiceTipoFatturazione() {
@@ -482,12 +470,13 @@ public class DettaglioContrattoTariffe implements Serializable {
 		this.listObiettivoServizio = listObiettivoServizio;
 	}
 
-	public List<TipoTariffa> getListTipoTariffa() {
-		return listTipoTariffa;
+	public List<RaggruppamentoFatturazione> getListRaggruppamentoFatturazione() {
+		return listRaggruppamentoFatturazione;
 	}
 
-	public void setListTipoTariffa(List<TipoTariffa> listTipoTariffa) {
-		this.listTipoTariffa = listTipoTariffa;
+	public void setListRaggruppamentoFatturazione(
+			List<RaggruppamentoFatturazione> listRaggruppamentoFatturazione) {
+		this.listRaggruppamentoFatturazione = listRaggruppamentoFatturazione;
 	}
 
 	public List<TipoFatturazione> getListTipoFatturazione() {

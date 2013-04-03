@@ -35,6 +35,10 @@ public class CurrencyConverter implements Converter {
 	@Override
 	public Object getAsObject(FacesContext context, UIComponent component, String value) {
 
+		if(value == null) {
+			return null;
+		}
+
 		// If a regex pattern has been specified, apply it.
 		//
 		if(!pattern.matcher(value).matches()) {
@@ -57,6 +61,10 @@ public class CurrencyConverter implements Converter {
 
 	@Override
 	public String getAsString(FacesContext context, UIComponent component, Object object) {
+
+		if(object == null) {
+			return null;
+		}
 
 		return outputDf.format(object);
 
