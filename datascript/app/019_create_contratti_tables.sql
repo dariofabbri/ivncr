@@ -1,6 +1,24 @@
 \encoding UTF8;
 SET client_min_messages TO WARNING;
 
+
+CREATE TABLE app.gen_giorno_settimana
+(
+	id SERIAL NOT NULL PRIMARY KEY,
+	descrizione VARCHAR(255) NOT NULL
+);
+
+INSERT INTO app.gen_giorno_settimana (id, descrizione) VALUES (1, 'Lunedì');
+INSERT INTO app.gen_giorno_settimana (id, descrizione) VALUES (2, 'Martedì');
+INSERT INTO app.gen_giorno_settimana (id, descrizione) VALUES (3, 'Mercoledì');
+INSERT INTO app.gen_giorno_settimana (id, descrizione) VALUES (4, 'Giovedì');
+INSERT INTO app.gen_giorno_settimana (id, descrizione) VALUES (5, 'Venerdì');
+INSERT INTO app.gen_giorno_settimana (id, descrizione) VALUES (6, 'Sabato');
+INSERT INTO app.gen_giorno_settimana (id, descrizione) VALUES (7, 'Domenica');
+INSERT INTO app.gen_giorno_settimana (id, descrizione) VALUES (8, 'Festivi');
+SELECT setval('app.gen_giorno_settimana_id_seq', (SELECT MAX(id) FROM app.gen_giorno_settimana));
+
+
 CREATE TABLE app.con_tipo_provenienza
 (
 	id SERIAL NOT NULL PRIMARY KEY,
@@ -12,29 +30,6 @@ INSERT INTO app.con_tipo_provenienza (id, descrizione) VALUES (2, 'Email del cli
 INSERT INTO app.con_tipo_provenienza (id, descrizione) VALUES (3, 'Commerciale');
 INSERT INTO app.con_tipo_provenienza (id, descrizione) VALUES (4, 'Produttore');
 SELECT setval('app.con_tipo_provenienza_id_seq', (SELECT MAX(id) FROM app.con_tipo_provenienza));
-
-
-CREATE TABLE app.con_tipo_fatturazione
-(
-	id SERIAL NOT NULL PRIMARY KEY,
-	descrizione VARCHAR(255) NOT NULL
-);
-
-INSERT INTO app.con_tipo_fatturazione (id, descrizione) VALUES (1, 'Anticipata');
-INSERT INTO app.con_tipo_fatturazione (id, descrizione) VALUES (2, 'Posticipata');
-SELECT setval('app.con_tipo_fatturazione_id_seq', (SELECT MAX(id) FROM app.con_tipo_fatturazione));
-
-
-CREATE TABLE app.con_tipo_frazionamento_fatturazione
-(
-	id SERIAL NOT NULL PRIMARY KEY,
-	descrizione VARCHAR(255) NOT NULL
-);
-
-INSERT INTO app.con_tipo_frazionamento_fatturazione (id, descrizione) VALUES (1, 'Mensile');
-INSERT INTO app.con_tipo_frazionamento_fatturazione (id, descrizione) VALUES (2, 'Bimestrale');
-INSERT INTO app.con_tipo_frazionamento_fatturazione (id, descrizione) VALUES (3, 'Trimestrale');
-SELECT setval('app.con_tipo_frazionamento_fatturazione_id_seq', (SELECT MAX(id) FROM app.con_tipo_frazionamento_fatturazione));
 
 
 CREATE TABLE app.con_condizioni_pagamento
@@ -165,29 +160,6 @@ INSERT INTO app.con_specifica_servizio (id, tipo_servizio_id, descrizione) VALUE
 INSERT INTO app.con_specifica_servizio (id, tipo_servizio_id, descrizione) VALUES (3, 2, 'Interna');
 INSERT INTO app.con_specifica_servizio (id, tipo_servizio_id, descrizione) VALUES (4, 2, 'Esterna');
 SELECT setval('app.con_specifica_servizio_id_seq', (SELECT MAX(id) FROM app.con_specifica_servizio));
-
-
-CREATE TABLE app.con_tipo_tariffa
-(
-	id SERIAL NOT NULL PRIMARY KEY,
-	descrizione VARCHAR(255) NOT NULL
-);
-
-INSERT INTO app.con_tipo_tariffa (id, descrizione) VALUES (1, 'Costo Fisso Totale');
-INSERT INTO app.con_tipo_tariffa (id, descrizione) VALUES (2, 'Costo Fisso a Tempo');
-INSERT INTO app.con_tipo_tariffa (id, descrizione) VALUES (3, 'Costo Fisso ad Operazione');
-INSERT INTO app.con_tipo_tariffa (id, descrizione) VALUES (4, 'Costo Orario');
-INSERT INTO app.con_tipo_tariffa (id, descrizione) VALUES (5, 'Costo Percentuale');
-INSERT INTO app.con_tipo_tariffa (id, descrizione) VALUES (6, 'Costo Permillare');
-INSERT INTO app.con_tipo_tariffa (id, descrizione) VALUES (7, 'Franchigie Totali');
-INSERT INTO app.con_tipo_tariffa (id, descrizione) VALUES (8, 'Franchigie a Tempo');
-INSERT INTO app.con_tipo_tariffa (id, descrizione) VALUES (9, 'Ritenuta di garanzia');
-INSERT INTO app.con_tipo_tariffa (id, descrizione) VALUES (10, 'Supplemento Fisso');
-INSERT INTO app.con_tipo_tariffa (id, descrizione) VALUES (11, 'Supplemento Giornaliero');
-INSERT INTO app.con_tipo_tariffa (id, descrizione) VALUES (12, 'Supplemento Km');
-INSERT INTO app.con_tipo_tariffa (id, descrizione) VALUES (13, 'Supplemento Materiali');
-INSERT INTO app.con_tipo_tariffa (id, descrizione) VALUES (14, 'Supplemento Orario');
-SELECT setval('app.con_tipo_tariffa_id_seq', (SELECT MAX(id) FROM app.con_tipo_tariffa));
 
 
 CREATE TABLE app.con_raggruppamento_fatturazione
@@ -346,8 +318,6 @@ CREATE TABLE app.con_dettaglio_fatturazione
 (
 	id SERIAL NOT NULL PRIMARY KEY,
 	contratto_id INTEGER NOT NULL REFERENCES app.con_contratto(id),
-	tipo_fatturazione_id INTEGER NOT NULL REFERENCES app.con_tipo_fatturazione(id),
-	tipo_frazionamento_fatturazione_id INTEGER NOT NULL REFERENCES app.con_tipo_frazionamento_fatturazione(id),
 	condizioni_pagamento_id INTEGER NOT NULL REFERENCES app.con_condizioni_pagamento(id),
 	metodo_pagamento_id INTEGER NOT NULL REFERENCES app.con_metodo_pagamento(id),
 	indirizzo_id INTEGER NOT NULL REFERENCES app.com_indirizzo(id),
@@ -361,15 +331,16 @@ CREATE TABLE app.con_canone
 (
 	id SERIAL NOT NULL PRIMARY KEY,
 	contratto_id INTEGER NOT NULL REFERENCES app.con_contratto(id),
-	descrizione VARCHAR(255) NOT NULL,
+	alias VARCHAR(255) NOT NULL,
 	tipo_servizio_id INTEGER NOT NULL REFERENCES app.con_tipo_servizio(id),
 	specifica_servizio_id INTEGER NOT NULL REFERENCES app.con_specifica_servizio(id),
-	obiettivo_servizio_id INTEGER NOT NULL REFERENCES app.com_obiettivo_servizio(id),
 	data_inizio_validita DATE NOT NULL,
-	raggruppamento_fatturazione_id INTEGER REFERENCES app.con_raggruppamento_fatturazione(id),
-	importo_mensile NUMERIC(18, 4) NOT NULL,
-	tipo_fatturazione_id INTEGER NOT NULL REFERENCES app.con_tipo_fatturazione(id),
 	data_cessazione DATE,
+	fattura_minimo_un_mese BOOLEAN,
+	fatturazione_anticipata BOOLEAN,
+	valida_solo_extra BOOLEAN,
+	fattura_ogni_mesi INTEGER,	
+	canone_mensile NUMERIC(18, 4) NOT NULL,
 	note VARCHAR(4000)
 );
 
@@ -378,16 +349,27 @@ CREATE TABLE app.con_tariffa
 (
 	id SERIAL NOT NULL PRIMARY KEY,
 	contratto_id INTEGER NOT NULL REFERENCES app.con_contratto(id),
-	descrizione VARCHAR(255) NOT NULL,
+	alias VARCHAR(255) NOT NULL,
 	tipo_servizio_id INTEGER NOT NULL REFERENCES app.con_tipo_servizio(id),
 	specifica_servizio_id INTEGER NOT NULL REFERENCES app.con_specifica_servizio(id),
-	obiettivo_servizio_id INTEGER NOT NULL REFERENCES app.com_obiettivo_servizio(id),
-	tipo_tariffa_id INTEGER NOT NULL REFERENCES app.con_tipo_tariffa(id),
-	costo NUMERIC(18, 4),
-	numero INTEGER,
+	costo_orario NUMERIC(18, 4),
+	costo_operazione NUMERIC(18, 4),
+	costo_fisso_una_tantum NUMERIC(18, 4),
+	costo_fisso_a_tempo NUMERIC(18, 4),
+	costo_fisso_mesi INTEGER,
+	franchigie_totali INTEGER,
+	franchigie_a_tempo INTEGER,
+	franchigie_mesi INTEGER,
+	ritenuta_garanzia NUMERIC(5, 2),
+	ritenuta_garanzia_giorni INTEGER,	
 	data_inizio_validita DATE NOT NULL,	
-	tipo_fatturazione_id INTEGER NOT NULL REFERENCES app.con_tipo_fatturazione(id),
 	data_cessazione DATE,
+	valida_solo_extra BOOLEAN,
+	fatturazione_anticipata BOOLEAN,
+	extra_fatturato_a_parte BOOLEAN,
+	fattura_spezzata BOOLEAN,
+	fattura_ogni_mesi INTEGER,
+	fattura_minimo_un_mese BOOLEAN,
 	note VARCHAR(4000)
 );
 
@@ -409,23 +391,69 @@ CREATE TABLE app.con_ordine_servizio
 (
 	id SERIAL NOT NULL PRIMARY KEY,
 	contratto_id INTEGER NOT NULL REFERENCES app.con_contratto(id),
-	data_decorrenza DATE NOT NULL,
-	data_termine DATE NOT NULL,
-	obiettivo_servizio_id INTEGER NOT NULL REFERENCES app.com_obiettivo_servizio(id),
 	tipo_ordine_servizio_id INTEGER NOT NULL REFERENCES app.con_tipo_ordine_servizio(id),
+	padre_id INTEGER REFERENCES app.con_ordine_servizio(id),
+	nuova_attivazione_id INTEGER REFERENCES app.con_ordine_servizio(id),
+	codice VARCHAR(255) NOT NULL,
+	alias VARCHAR(255),
+	data_decorrenza DATE NOT NULL,
+	data_termine DATE,
+	data_fine_validita DATE,
+	orario_fine_validita TIME WITH TIME ZONE,
+	tipo_servizio_id INTEGER NOT NULL REFERENCES app.con_tipo_servizio(id),
+	specifica_servizio_id INTEGER NOT NULL REFERENCES app.con_specifica_servizio(id),
+	obiettivo_servizio_id INTEGER NOT NULL REFERENCES app.com_obiettivo_servizio(id),
 	raggruppamento_fatturazione_id INTEGER REFERENCES app.con_raggruppamento_fatturazione(id),
-	numero INTEGER NOT NULL,
-	orario_inizio TIME WITH TIME ZONE NOT NULL,
-	orario_fine TIME WITH TIME ZONE NOT NULL,
-	lunedi BOOLEAN,
-	martedi BOOLEAN,
-	mercoledi BOOLEAN,
-	giovedi BOOLEAN,
-	venerdi BOOLEAN,
-	sabato BOOLEAN,
-	domenica BOOLEAN,
-	festivi BOOLEAN,
-	note VARCHAR(4000)
+	tariffa_id INTEGER REFERENCES app.con_tariffa(id),
+	canone_id INTEGER REFERENCES app.con_canone(id),
+	cessato BOOLEAN,
+	note VARCHAR(4000),
+	modalita_operative VARCHAR(4000)
+);
+
+
+CREATE TABLE app.con_ods_frazionamento
+(
+	id SERIAL NOT NULL PRIMARY KEY,
+	ordine_servizio_id INTEGER NOT NULL REFERENCES app.con_ordine_servizio(id),
+	cliente_id INTEGER NOT NULL REFERENCES app.com_cliente(id),
+	quota NUMERIC(5, 2) NOT NULL,
+	esclusione_ritenuta_garanzia BOOLEAN
+);
+
+
+CREATE TABLE app.con_ods_orari_ricorrenti
+(
+	id SERIAL NOT NULL PRIMARY KEY,
+	ordine_servizio_id INTEGER NOT NULL REFERENCES app.con_ordine_servizio(id),
+	giorno_settimana_id INTEGER NOT NULL REFERENCES app.gen_giorno_settimana(id),
+	escluso_festivo BOOLEAN,
+	quantita_1 INTEGER,
+	orario_inizio_1 TIME WITH TIME ZONE,
+	orario_fine_1 TIME WITH TIME ZONE,
+	quantita_2 INTEGER,
+	orario_inizio_2 TIME WITH TIME ZONE,
+	orario_fine_2 TIME WITH TIME ZONE,
+	quantita_3 INTEGER,
+	orario_inizio_3 TIME WITH TIME ZONE,
+	orario_fine_3 TIME WITH TIME ZONE
+);
+
+
+CREATE TABLE app.con_ods_orari_calendario
+(
+	id SERIAL NOT NULL PRIMARY KEY,
+	ordine_servizio_id INTEGER NOT NULL REFERENCES app.con_ordine_servizio(id),
+	data_servizio DATE NOT NULL,
+	quantita_1 INTEGER,
+	orario_inizio_1 TIME WITH TIME ZONE,
+	orario_fine_1 TIME WITH TIME ZONE,
+	quantita_2 INTEGER,
+	orario_inizio_2 TIME WITH TIME ZONE,
+	orario_fine_2 TIME WITH TIME ZONE,
+	quantita_3 INTEGER,
+	orario_inizio_3 TIME WITH TIME ZONE,
+	orario_fine_3 TIME WITH TIME ZONE
 );
 
 
