@@ -188,16 +188,49 @@ INSERT INTO app.con_tipo_ordine_servizio (id, descrizione) VALUES (4, 'Var. cont
 SELECT setval('app.con_tipo_ordine_servizio_id_seq', (SELECT MAX(id) FROM app.con_tipo_ordine_servizio));
 
 
-CREATE TABLE app.con_tipo_apparecchiatura_tecnologica
+CREATE TABLE app.con_gruppo_apparecchiatura_tecnologica
 (
 	id SERIAL NOT NULL PRIMARY KEY,
 	descrizione VARCHAR(255) NOT NULL
 );
 
-INSERT INTO app.con_tipo_apparecchiatura_tecnologica (id, descrizione) VALUES (1, 'Allarme');
-INSERT INTO app.con_tipo_apparecchiatura_tecnologica (id, descrizione) VALUES (2, 'TVCC');
-INSERT INTO app.con_tipo_apparecchiatura_tecnologica (id, descrizione) VALUES (3, 'Periferica');
-INSERT INTO app.con_tipo_apparecchiatura_tecnologica (id, descrizione) VALUES (4, 'Apparati di controllo');
+INSERT INTO app.con_gruppo_apparecchiatura_tecnologica (id, descrizione) VALUES (1, 'Allarme');
+INSERT INTO app.con_gruppo_apparecchiatura_tecnologica (id, descrizione) VALUES (2, 'TVCC');
+INSERT INTO app.con_gruppo_apparecchiatura_tecnologica (id, descrizione) VALUES (3, 'Periferica');
+INSERT INTO app.con_gruppo_apparecchiatura_tecnologica (id, descrizione) VALUES (4, 'Apparati di controllo');
+SELECT setval('app.con_gruppo_apparecchiatura_tecnologica_id_seq', (SELECT MAX(id) FROM app.con_gruppo_apparecchiatura_tecnologica));
+
+
+CREATE TABLE app.con_tipo_apparecchiatura_tecnologica
+(
+	id SERIAL NOT NULL PRIMARY KEY,
+	gruppo_apparecchiatura_id INTEGER NOT NULL REFERENCES app.con_gruppo_apparecchiatura_tecnologica(id),
+	descrizione VARCHAR(255) NOT NULL
+);
+
+INSERT INTO app.con_tipo_apparecchiatura_tecnologica (id, gruppo_apparecchiatura_id, descrizione) VALUES (1, 1, 'Sensore');
+INSERT INTO app.con_tipo_apparecchiatura_tecnologica (id, gruppo_apparecchiatura_id, descrizione) VALUES (2, 1, 'Contatto');
+INSERT INTO app.con_tipo_apparecchiatura_tecnologica (id, gruppo_apparecchiatura_id, descrizione) VALUES (3, 1, 'Telecomando');
+INSERT INTO app.con_tipo_apparecchiatura_tecnologica (id, gruppo_apparecchiatura_id, descrizione) VALUES (4, 1, 'Centralina');
+INSERT INTO app.con_tipo_apparecchiatura_tecnologica (id, gruppo_apparecchiatura_id, descrizione) VALUES (5, 1, 'Sirena');
+INSERT INTO app.con_tipo_apparecchiatura_tecnologica (id, gruppo_apparecchiatura_id, descrizione) VALUES (6, 1, 'Tastiera');
+INSERT INTO app.con_tipo_apparecchiatura_tecnologica (id, gruppo_apparecchiatura_id, descrizione) VALUES (7, 1, 'Colonnina perimetrale');
+
+INSERT INTO app.con_tipo_apparecchiatura_tecnologica (id, gruppo_apparecchiatura_id, descrizione) VALUES (8, 2, 'Telecamera fissa');
+INSERT INTO app.con_tipo_apparecchiatura_tecnologica (id, gruppo_apparecchiatura_id, descrizione) VALUES (9, 2, 'Dome');
+INSERT INTO app.con_tipo_apparecchiatura_tecnologica (id, gruppo_apparecchiatura_id, descrizione) VALUES (10, 2, 'Videoregistratore');
+INSERT INTO app.con_tipo_apparecchiatura_tecnologica (id, gruppo_apparecchiatura_id, descrizione) VALUES (11, 2, 'Monitor');
+
+INSERT INTO app.con_tipo_apparecchiatura_tecnologica (id, gruppo_apparecchiatura_id, descrizione) VALUES (12, 3, 'Mono');
+INSERT INTO app.con_tipo_apparecchiatura_tecnologica (id, gruppo_apparecchiatura_id, descrizione) VALUES (13, 3, 'Bidi');
+INSERT INTO app.con_tipo_apparecchiatura_tecnologica (id, gruppo_apparecchiatura_id, descrizione) VALUES (14, 3, 'Telefonico');
+INSERT INTO app.con_tipo_apparecchiatura_tecnologica (id, gruppo_apparecchiatura_id, descrizione) VALUES (15, 3, 'GSM');
+INSERT INTO app.con_tipo_apparecchiatura_tecnologica (id, gruppo_apparecchiatura_id, descrizione) VALUES (16, 3, 'GPRS');
+INSERT INTO app.con_tipo_apparecchiatura_tecnologica (id, gruppo_apparecchiatura_id, descrizione) VALUES (17, 3, 'Arcvision');
+
+INSERT INTO app.con_tipo_apparecchiatura_tecnologica (id, gruppo_apparecchiatura_id, descrizione) VALUES (18, 4, 'Orologio');
+INSERT INTO app.con_tipo_apparecchiatura_tecnologica (id, gruppo_apparecchiatura_id, descrizione) VALUES (19, 4, 'Datix');
+INSERT INTO app.con_tipo_apparecchiatura_tecnologica (id, gruppo_apparecchiatura_id, descrizione) VALUES (20, 4, 'Metal detector');
 SELECT setval('app.con_tipo_apparecchiatura_tecnologica_id_seq', (SELECT MAX(id) FROM app.con_tipo_apparecchiatura_tecnologica));
 
 
@@ -338,7 +371,6 @@ CREATE TABLE app.con_canone
 	data_cessazione DATE,
 	fattura_minimo_un_mese BOOLEAN,
 	fatturazione_anticipata BOOLEAN,
-	valida_solo_extra BOOLEAN,
 	fattura_ogni_mesi INTEGER,	
 	canone_mensile NUMERIC(18, 4) NOT NULL,
 	note VARCHAR(4000)
@@ -364,12 +396,40 @@ CREATE TABLE app.con_tariffa
 	ritenuta_garanzia_giorni INTEGER,	
 	data_inizio_validita DATE NOT NULL,	
 	data_cessazione DATE,
-	valida_solo_extra BOOLEAN,
 	fatturazione_anticipata BOOLEAN,
 	extra_fatturato_a_parte BOOLEAN,
 	fattura_spezzata BOOLEAN,
 	fattura_ogni_mesi INTEGER,
 	fattura_minimo_un_mese BOOLEAN,
+	note VARCHAR(4000)
+);
+
+
+CREATE TABLE app.con_apparecchiatura_tecnologica
+(
+	id SERIAL NOT NULL PRIMARY KEY,
+	contratto_id INTEGER NOT NULL REFERENCES app.con_contratto(id),
+	tipo_apparecchiatura_id INTEGER NOT NULL REFERENCES app.con_tipo_apparecchiatura_tecnologica(id),
+	descrizione VARCHAR(255),
+	matricola VARCHAR(255),
+	comodato_uso BOOLEAN,
+	data_installazione DATE,
+	data_fatturazione DATE,
+	data_ritiro DATE,
+	costo_una_tantum NUMERIC(18, 4),
+	note VARCHAR(4000)
+);
+
+
+CREATE TABLE app.con_documento_contratto
+(
+	id SERIAL NOT NULL PRIMARY KEY,
+	contratto_id INTEGER NOT NULL REFERENCES app.con_contratto(id),
+	descrizione VARCHAR(255),
+	filename VARCHAR(255),
+	mime_type VARCHAR(255),
+	caricamento_ts TIMESTAMP WITH TIME ZONE,
+	documento OID,
 	note VARCHAR(4000)
 );
 
@@ -403,12 +463,13 @@ CREATE TABLE app.con_ordine_servizio
 	tipo_servizio_id INTEGER NOT NULL REFERENCES app.con_tipo_servizio(id),
 	specifica_servizio_id INTEGER NOT NULL REFERENCES app.con_specifica_servizio(id),
 	obiettivo_servizio_id INTEGER NOT NULL REFERENCES app.com_obiettivo_servizio(id),
-	raggruppamento_fatturazione_id INTEGER REFERENCES app.con_raggruppamento_fatturazione(id),
 	tariffa_id INTEGER REFERENCES app.con_tariffa(id),
 	canone_id INTEGER REFERENCES app.con_canone(id),
+	raggruppamento_fatturazione_id INTEGER REFERENCES app.con_raggruppamento_fatturazione(id),
 	cessato BOOLEAN,
 	note VARCHAR(4000),
-	modalita_operative VARCHAR(4000)
+	modalita_operative VARCHAR(4000),
+	osservazioni_fattura VARCHAR(4000)
 );
 
 
@@ -457,37 +518,9 @@ CREATE TABLE app.con_ods_orari_calendario
 );
 
 
-CREATE TABLE app.con_apparecchiature_tecnologiche
+CREATE TABLE app.con_ods_apparecchiatura
 (
 	id SERIAL NOT NULL PRIMARY KEY,
-	contratto_id INTEGER NOT NULL REFERENCES app.con_contratto(id),
-	tipo_apparecchiatura_id INTEGER NOT NULL REFERENCES app.con_tipo_apparecchiatura_tecnologica(id),
-	comodato_uso BOOLEAN NOT NULL,
-	data_installazione DATE,
-	data_fatturazione DATE,
-	data_ritiro DATE,
-	costo_una_tantum NUMERIC(18, 4),
-	numero_telecamere INTEGER,
-	numero_periferiche INTEGER,
-	numero_sensori INTEGER,
-	numero_centrali INTEGER,
-	numero_telecomandi INTEGER,
-	numero_tastiere INTEGER,
-	numero_videoregistratori INTEGER,
-	numero_datix INTEGER,
-	numero_metal_detector INTEGER,
-	note VARCHAR(4000)
-);
-
-
-CREATE TABLE app.con_documento_contratto
-(
-	id SERIAL NOT NULL PRIMARY KEY,
-	contratto_id INTEGER NOT NULL REFERENCES app.con_contratto(id),
-	descrizione VARCHAR(255),
-	filename VARCHAR(255),
-	mime_type VARCHAR(255),
-	caricamento_ts TIMESTAMP WITH TIME ZONE,
-	documento OID,
-	note VARCHAR(4000)
+	ordine_servizio_id INTEGER NOT NULL REFERENCES app.con_ordine_servizio(id),
+	apparecchiatura_tecnologica_id INTEGER NOT NULL REFERENCES app.con_apparecchiatura_tecnologica(id)
 );
