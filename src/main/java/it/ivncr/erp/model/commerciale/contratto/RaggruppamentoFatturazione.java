@@ -16,11 +16,6 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 @Table(name = "con_raggruppamento_fatturazione")
 public class RaggruppamentoFatturazione {
 
-	public static final Integer GRUPPO_A = 1;
-	public static final Integer GRUPPO_B = 2;
-	public static final Integer GRUPPO_C = 3;
-	public static final Integer GRUPPO_D = 4;
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "con_raggruppamento_fatturazione_id_seq")
 	@SequenceGenerator(name = "con_raggruppamento_fatturazione_id_seq", sequenceName = "con_raggruppamento_fatturazione_id_seq")

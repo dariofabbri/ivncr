@@ -32,14 +32,6 @@ public class DettaglioFatturazione {
     private Contratto contratto;
 
     @ManyToOne
-    @JoinColumn(name="tipo_fatturazione_id")
-    private TipoFatturazione tipoFatturazione;
-
-    @ManyToOne
-    @JoinColumn(name="tipo_frazionamento_fatturazione_id")
-    private TipoFrazionamentoFatturazione tipoFrazionamentoFatturazione;
-
-    @ManyToOne
     @JoinColumn(name="condizioni_pagamento_id")
     private CondizioniPagamento condizioniPagamento;
 
@@ -68,8 +60,6 @@ public class DettaglioFatturazione {
 		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
 			.append("id", id)
 			.append("contratto", contratto, false)
-			.append("tipoFatturazione", tipoFatturazione, false)
-			.append("tipoFrazionamentoFatturazione", tipoFrazionamentoFatturazione, false)
 			.append("condizioniPagamento", condizioniPagamento, false)
 			.append("metodoPagamento", metodoPagamento, false)
 			.append("indirizzo", indirizzo, false)
@@ -94,23 +84,6 @@ public class DettaglioFatturazione {
 
 	public void setContratto(Contratto contratto) {
 		this.contratto = contratto;
-	}
-
-	public TipoFatturazione getTipoFatturazione() {
-		return tipoFatturazione;
-	}
-
-	public void setTipoFatturazione(TipoFatturazione tipoFatturazione) {
-		this.tipoFatturazione = tipoFatturazione;
-	}
-
-	public TipoFrazionamentoFatturazione getTipoFrazionamentoFatturazione() {
-		return tipoFrazionamentoFatturazione;
-	}
-
-	public void setTipoFrazionamentoFatturazione(
-			TipoFrazionamentoFatturazione tipoFrazionamentoFatturazione) {
-		this.tipoFrazionamentoFatturazione = tipoFrazionamentoFatturazione;
 	}
 
 	public CondizioniPagamento getCondizioniPagamento() {

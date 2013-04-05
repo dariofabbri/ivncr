@@ -1,4 +1,4 @@
-package it.ivncr.erp.model.commerciale.contratto;
+package it.ivncr.erp.model.generale;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,12 +13,21 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 
 @Entity
-@Table(name = "con_tipo_tariffa")
-public class TipoTariffa {
+@Table(name = "gen_giorno_settimana")
+public class GiornoSettimana {
+
+	public static final Integer LUNEDI = 1;
+	public static final Integer MARTEDI = 2;
+	public static final Integer MERCOLEDI = 3;
+	public static final Integer GIOVEDI = 4;
+	public static final Integer VENERDI = 5;
+	public static final Integer SABATO = 6;
+	public static final Integer DOMENICA = 7;
+	public static final Integer FESTIVI = 8;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "con_tipo_tariffa_id_seq")
-	@SequenceGenerator(name = "con_tipo_tariffa_id_seq", sequenceName = "con_tipo_tariffa_id_seq")
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "gen_giorno_settimana_id_seq")
+	@SequenceGenerator(name = "gen_giorno_settimana_id_seq", sequenceName = "gen_giorno_settimana_id_seq")
 	@Column(name="id")
 	private Integer id;
 

@@ -17,12 +17,12 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
-@Table(name = "con_apparecchiature_tecnologiche")
-public class ApparecchiatureTecnologiche {
+@Table(name = "con_apparecchiatura_tecnologica")
+public class ApparecchiaturaTecnologica {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "con_apparecchiature_tecnologiche_id_seq")
-	@SequenceGenerator(name = "con_apparecchiature_tecnologiche_id_seq", sequenceName = "con_apparecchiature_tecnologiche_id_seq")
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "con_apparecchiatura_tecnologica_id_seq")
+	@SequenceGenerator(name = "con_apparecchiatura_tecnologica_id_seq", sequenceName = "con_apparecchiatura_tecnologica_id_seq")
 	@Column(name="id")
 	private Integer id;
 
@@ -33,6 +33,12 @@ public class ApparecchiatureTecnologiche {
     @ManyToOne
     @JoinColumn(name="tipo_apparecchiatura_id")
     private TipoApparecchiaturaTecnologica tipoApparecchiaturaTecnologica;
+
+	@Column(name="descrizione")
+	private String descrizione;
+
+	@Column(name="matricola")
+	private String matricola;
 
 	@Column(name="comodato_uso")
 	private Boolean comodatoUso;
@@ -49,33 +55,6 @@ public class ApparecchiatureTecnologiche {
 	@Column(name="costo_una_tantum")
 	private BigDecimal costoUnaTantum;
 
-	@Column(name="numero_telecamere")
-	private Integer numeroTelecamere;
-
-	@Column(name="numero_periferiche")
-	private Integer numeroPeriferiche;
-
-	@Column(name="numero_sensori")
-	private Integer numeroSensori;
-
-	@Column(name="numero_centrali")
-	private Integer numeroCentrali;
-
-	@Column(name="numero_telecomandi")
-	private Integer numeroTelecomandi;
-
-	@Column(name="numero_tastiere")
-	private Integer numeroTastiere;
-
-	@Column(name="numero_videoregistratori")
-	private Integer numeroVideoregistratori;
-
-	@Column(name="numero_datix")
-	private Integer numeroDatix;
-
-	@Column(name="numero_metal_detector")
-	private Integer numeroMetalDetector;
-
 	@Column(name="note")
 	private String note;
 
@@ -87,20 +66,13 @@ public class ApparecchiatureTecnologiche {
 			.append("id", id)
 			.append("contratto", contratto, false)
 			.append("tipoApparecchiaturaTecnologica", tipoApparecchiaturaTecnologica, false)
+			.append("descrizione", descrizione)
+			.append("matricola", matricola)
 			.append("comodatoUso", comodatoUso)
 			.append("dataInstallazione", dataInstallazione)
 			.append("dataFatturazione", dataFatturazione)
 			.append("dataRitiro", dataRitiro)
 			.append("costoUnaTantum", costoUnaTantum)
-			.append("numeroTelecamere", numeroTelecamere)
-			.append("numeroPeriferiche", numeroPeriferiche)
-			.append("numeroSensori", numeroSensori)
-			.append("numeroCentrali", numeroCentrali)
-			.append("numeroTelecomandi", numeroTelecomandi)
-			.append("numeroTastiere", numeroTastiere)
-			.append("numeroVideoregistratori", numeroVideoregistratori)
-			.append("numeroDatix", numeroDatix)
-			.append("numeroMetalDetector", numeroMetalDetector)
 			.append("note", note)
 			.toString();
 	}
@@ -129,6 +101,22 @@ public class ApparecchiatureTecnologiche {
 	public void setTipoApparecchiaturaTecnologica(
 			TipoApparecchiaturaTecnologica tipoApparecchiaturaTecnologica) {
 		this.tipoApparecchiaturaTecnologica = tipoApparecchiaturaTecnologica;
+	}
+
+	public String getDescrizione() {
+		return descrizione;
+	}
+
+	public void setDescrizione(String descrizione) {
+		this.descrizione = descrizione;
+	}
+
+	public String getMatricola() {
+		return matricola;
+	}
+
+	public void setMatricola(String matricola) {
+		this.matricola = matricola;
 	}
 
 	public Boolean getComodatoUso() {
@@ -169,78 +157,6 @@ public class ApparecchiatureTecnologiche {
 
 	public void setCostoUnaTantum(BigDecimal costoUnaTantum) {
 		this.costoUnaTantum = costoUnaTantum;
-	}
-
-	public Integer getNumeroTelecamere() {
-		return numeroTelecamere;
-	}
-
-	public void setNumeroTelecamere(Integer numeroTelecamere) {
-		this.numeroTelecamere = numeroTelecamere;
-	}
-
-	public Integer getNumeroPeriferiche() {
-		return numeroPeriferiche;
-	}
-
-	public void setNumeroPeriferiche(Integer numeroPeriferiche) {
-		this.numeroPeriferiche = numeroPeriferiche;
-	}
-
-	public Integer getNumeroSensori() {
-		return numeroSensori;
-	}
-
-	public void setNumeroSensori(Integer numeroSensori) {
-		this.numeroSensori = numeroSensori;
-	}
-
-	public Integer getNumeroCentrali() {
-		return numeroCentrali;
-	}
-
-	public void setNumeroCentrali(Integer numeroCentrali) {
-		this.numeroCentrali = numeroCentrali;
-	}
-
-	public Integer getNumeroTelecomandi() {
-		return numeroTelecomandi;
-	}
-
-	public void setNumeroTelecomandi(Integer numeroTelecomandi) {
-		this.numeroTelecomandi = numeroTelecomandi;
-	}
-
-	public Integer getNumeroTastiere() {
-		return numeroTastiere;
-	}
-
-	public void setNumeroTastiere(Integer numeroTastiere) {
-		this.numeroTastiere = numeroTastiere;
-	}
-
-	public Integer getNumeroVideoregistratori() {
-		return numeroVideoregistratori;
-	}
-
-	public void setNumeroVideoregistratori(Integer numeroVideoregistratori) {
-		this.numeroVideoregistratori = numeroVideoregistratori;
-	}
-
-	public Integer getNumeroDatix() {
-		return numeroDatix;
-	}
-
-	public void setNumeroDatix(Integer numeroDatix) {
-		this.numeroDatix = numeroDatix;
-	}
-
-	public Integer getNumeroMetalDetector() {
-		return numeroMetalDetector;
-	}
-
-	public void setNumeroMetalDetector(Integer numeroMetalDetector) {
-		this.numeroMetalDetector = numeroMetalDetector;
 	}
 
 	public String getNote() {

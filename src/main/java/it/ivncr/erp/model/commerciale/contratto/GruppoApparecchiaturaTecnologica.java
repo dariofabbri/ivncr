@@ -13,15 +13,17 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 
 @Entity
-@Table(name = "con_tipo_fatturazione")
-public class TipoFatturazione {
+@Table(name = "con_gruppo_apparecchiatura_tecnologica")
+public class GruppoApparecchiaturaTecnologica {
 
-	public static final Integer ANTICIPATA = 1;
-	public static final Integer POSTICIPATA = 2;
+	public static final Integer ALLARME = 1;
+	public static final Integer TVCC = 2;
+	public static final Integer PERIFERICA = 3;
+	public static final Integer APPARATI_DI_CONTROLLO = 4;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "con_tipo_fatturazione_id_seq")
-	@SequenceGenerator(name = "con_tipo_fatturazione_id_seq", sequenceName = "con_tipo_fatturazione_id_seq")
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "con_gruppo_apparecchiatura_tecnologica_id_seq")
+	@SequenceGenerator(name = "con_gruppo_apparecchiatura_tecnologica_id_seq", sequenceName = "con_gruppo_apparecchiatura_tecnologica_id_seq")
 	@Column(name="id")
 	private Integer id;
 

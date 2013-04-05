@@ -1,7 +1,5 @@
 package it.ivncr.erp.model.commerciale.contratto;
 
-import it.ivncr.erp.model.commerciale.cliente.ObiettivoServizio;
-
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -32,8 +30,8 @@ public class Tariffa {
     @JoinColumn(name="contratto_id")
     private Contratto contratto;
 
-	@Column(name="descrizione")
-	private String descrizione;
+	@Column(name="alias")
+	private String alias;
 
     @ManyToOne
     @JoinColumn(name="tipo_servizio_id")
@@ -43,29 +41,56 @@ public class Tariffa {
     @JoinColumn(name="specifica_servizio_id")
     private SpecificaServizio specificaServizio;
 
-    @ManyToOne
-    @JoinColumn(name="obiettivo_servizio_id")
-    private ObiettivoServizio obiettivoServizio;
+	@Column(name="costo_orario")
+	private BigDecimal costoOrario;
 
-    @ManyToOne
-    @JoinColumn(name="tipo_tariffa_id")
-    private TipoTariffa tipoTariffa;
+	@Column(name="costo_operazione")
+	private BigDecimal costoOperazione;
 
-	@Column(name="costo")
-	private BigDecimal costo;
+	@Column(name="costo_fisso_una_tantum")
+	private BigDecimal costoFissoUnaTantum;
 
-	@Column(name="numero")
-	private Integer numero;
+	@Column(name="costo_fisso_a_tempo")
+	private BigDecimal costoFissoATempo;
+
+	@Column(name="costo_fisso_mesi")
+	private Integer costoFissoMesi;
+
+	@Column(name="franchigie_totali")
+	private Integer franchigieTotali;
+
+	@Column(name="franchigie_a_tempo")
+	private Integer franchigieATempo;
+
+	@Column(name="franchigie_mesi")
+	private Integer franchigieMesi;
+
+	@Column(name="ritenuta_garanzia")
+	private BigDecimal ritenutaGaranzia;
+
+	@Column(name="ritenuta_garanzia_giorni")
+	private Integer ritenutaGaranziaGiorni;
 
 	@Column(name="data_inizio_validita")
 	private Date dataInizioValidita;
 
-    @ManyToOne
-    @JoinColumn(name="tipo_fatturazione_id")
-    private TipoFatturazione tipoFatturazione;
-
 	@Column(name="data_cessazione")
 	private Date dataCessazione;
+
+	@Column(name="fatturazione_anticipata")
+	private Boolean fatturazioneAnticipata;
+
+	@Column(name="extra_fatturato_a_parte")
+	private Boolean extraFatturatoAParte;
+
+	@Column(name="fattura_spezzata")
+	private Boolean fatturaSpezzata;
+
+	@Column(name="fattura_ogni_mesi")
+	private Integer fatturaOgniMesi;
+
+	@Column(name="fattura_minimo_un_mese")
+	private Boolean fatturaMinimoUnMese;
 
 	@Column(name="note")
 	private String note;
@@ -77,16 +102,26 @@ public class Tariffa {
 		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
 			.append("id", id)
 			.append("contratto", contratto, false)
-			.append("descrizione", descrizione)
+			.append("alias", alias)
 			.append("tipoServizio", tipoServizio, false)
 			.append("specificaServizio", specificaServizio, false)
-			.append("obiettivoServizio", obiettivoServizio, false)
-			.append("tipoTariffa", tipoTariffa, false)
-			.append("costo", costo)
-			.append("numero", numero)
+			.append("costoOrario", costoOrario)
+			.append("costoOperazione", costoOperazione)
+			.append("costoFissoUnaTantum", costoFissoUnaTantum)
+			.append("costoFissoATempo", costoFissoATempo)
+			.append("costoFissoMesi", costoFissoMesi)
+			.append("franchigieTotali", franchigieTotali)
+			.append("franchigieATempo", franchigieATempo)
+			.append("franchigieMesi", franchigieMesi)
+			.append("ritenutaGaranzia", ritenutaGaranzia)
+			.append("ritenutaGaranziaGiorni", ritenutaGaranziaGiorni)
 			.append("dataInizioValidita", dataInizioValidita)
-			.append("tipoFatturazione", tipoFatturazione, false)
 			.append("dataCessazione", dataCessazione)
+			.append("fatturazioneAnticipata", fatturazioneAnticipata)
+			.append("extraFatturatoAParte", extraFatturatoAParte)
+			.append("fatturaSpezzata", fatturaSpezzata)
+			.append("fatturaOgniMesi", fatturaOgniMesi)
+			.append("fatturaMinimoUnMese", fatturaMinimoUnMese)
 			.append("note", note)
 			.toString();
 	}
@@ -108,12 +143,12 @@ public class Tariffa {
 		this.contratto = contratto;
 	}
 
-	public String getDescrizione() {
-		return descrizione;
+	public String getAlias() {
+		return alias;
 	}
 
-	public void setDescrizione(String descrizione) {
-		this.descrizione = descrizione;
+	public void setAlias(String alias) {
+		this.alias = alias;
 	}
 
 	public TipoServizio getTipoServizio() {
@@ -132,36 +167,84 @@ public class Tariffa {
 		this.specificaServizio = specificaServizio;
 	}
 
-	public ObiettivoServizio getObiettivoServizio() {
-		return obiettivoServizio;
+	public BigDecimal getCostoOrario() {
+		return costoOrario;
 	}
 
-	public void setObiettivoServizio(ObiettivoServizio obiettivoServizio) {
-		this.obiettivoServizio = obiettivoServizio;
+	public void setCostoOrario(BigDecimal costoOrario) {
+		this.costoOrario = costoOrario;
 	}
 
-	public TipoTariffa getTipoTariffa() {
-		return tipoTariffa;
+	public BigDecimal getCostoOperazione() {
+		return costoOperazione;
 	}
 
-	public void setTipoTariffa(TipoTariffa tipoTariffa) {
-		this.tipoTariffa = tipoTariffa;
+	public void setCostoOperazione(BigDecimal costoOperazione) {
+		this.costoOperazione = costoOperazione;
 	}
 
-	public BigDecimal getCosto() {
-		return costo;
+	public BigDecimal getCostoFissoUnaTantum() {
+		return costoFissoUnaTantum;
 	}
 
-	public void setCosto(BigDecimal costo) {
-		this.costo = costo;
+	public void setCostoFissoUnaTantum(BigDecimal costoFissoUnaTantum) {
+		this.costoFissoUnaTantum = costoFissoUnaTantum;
 	}
 
-	public Integer getNumero() {
-		return numero;
+	public BigDecimal getCostoFissoATempo() {
+		return costoFissoATempo;
 	}
 
-	public void setNumero(Integer numero) {
-		this.numero = numero;
+	public void setCostoFissoATempo(BigDecimal costoFissoATempo) {
+		this.costoFissoATempo = costoFissoATempo;
+	}
+
+	public Integer getCostoFissoMesi() {
+		return costoFissoMesi;
+	}
+
+	public void setCostoFissoMesi(Integer costoFissoMesi) {
+		this.costoFissoMesi = costoFissoMesi;
+	}
+
+	public Integer getFranchigieTotali() {
+		return franchigieTotali;
+	}
+
+	public void setFranchigieTotali(Integer franchigieTotali) {
+		this.franchigieTotali = franchigieTotali;
+	}
+
+	public Integer getFranchigieATempo() {
+		return franchigieATempo;
+	}
+
+	public void setFranchigieATempo(Integer franchigieATempo) {
+		this.franchigieATempo = franchigieATempo;
+	}
+
+	public Integer getFranchigieMesi() {
+		return franchigieMesi;
+	}
+
+	public void setFranchigieMesi(Integer franchigieMesi) {
+		this.franchigieMesi = franchigieMesi;
+	}
+
+	public BigDecimal getRitenutaGaranzia() {
+		return ritenutaGaranzia;
+	}
+
+	public void setRitenutaGaranzia(BigDecimal ritenutaGaranzia) {
+		this.ritenutaGaranzia = ritenutaGaranzia;
+	}
+
+	public Integer getRitenutaGaranziaGiorni() {
+		return ritenutaGaranziaGiorni;
+	}
+
+	public void setRitenutaGaranziaGiorni(Integer ritenutaGaranziaGiorni) {
+		this.ritenutaGaranziaGiorni = ritenutaGaranziaGiorni;
 	}
 
 	public Date getDataInizioValidita() {
@@ -172,20 +255,52 @@ public class Tariffa {
 		this.dataInizioValidita = dataInizioValidita;
 	}
 
-	public TipoFatturazione getTipoFatturazione() {
-		return tipoFatturazione;
-	}
-
-	public void setTipoFatturazione(TipoFatturazione tipoFatturazione) {
-		this.tipoFatturazione = tipoFatturazione;
-	}
-
 	public Date getDataCessazione() {
 		return dataCessazione;
 	}
 
 	public void setDataCessazione(Date dataCessazione) {
 		this.dataCessazione = dataCessazione;
+	}
+
+	public Boolean getFatturazioneAnticipata() {
+		return fatturazioneAnticipata;
+	}
+
+	public void setFatturazioneAnticipata(Boolean fatturazioneAnticipata) {
+		this.fatturazioneAnticipata = fatturazioneAnticipata;
+	}
+
+	public Boolean getExtraFatturatoAParte() {
+		return extraFatturatoAParte;
+	}
+
+	public void setExtraFatturatoAParte(Boolean extraFatturatoAParte) {
+		this.extraFatturatoAParte = extraFatturatoAParte;
+	}
+
+	public Boolean getFatturaSpezzata() {
+		return fatturaSpezzata;
+	}
+
+	public void setFatturaSpezzata(Boolean fatturaSpezzata) {
+		this.fatturaSpezzata = fatturaSpezzata;
+	}
+
+	public Integer getFatturaOgniMesi() {
+		return fatturaOgniMesi;
+	}
+
+	public void setFatturaOgniMesi(Integer fatturaOgniMesi) {
+		this.fatturaOgniMesi = fatturaOgniMesi;
+	}
+
+	public Boolean getFatturaMinimoUnMese() {
+		return fatturaMinimoUnMese;
+	}
+
+	public void setFatturaMinimoUnMese(Boolean fatturaMinimoUnMese) {
+		this.fatturaMinimoUnMese = fatturaMinimoUnMese;
 	}
 
 	public String getNote() {

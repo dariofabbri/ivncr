@@ -1,7 +1,5 @@
 package it.ivncr.erp.model.commerciale.contratto;
 
-import it.ivncr.erp.model.commerciale.cliente.ObiettivoServizio;
-
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -32,8 +30,8 @@ public class Canone {
     @JoinColumn(name="contratto_id")
     private Contratto contratto;
 
-	@Column(name="descrizione")
-	private String descrizione;
+	@Column(name="alias")
+	private String alias;
 
     @ManyToOne
     @JoinColumn(name="tipo_servizio_id")
@@ -43,26 +41,23 @@ public class Canone {
     @JoinColumn(name="specifica_servizio_id")
     private SpecificaServizio specificaServizio;
 
-    @ManyToOne
-    @JoinColumn(name="obiettivo_servizio_id")
-    private ObiettivoServizio obiettivoServizio;
-
 	@Column(name="data_inizio_validita")
 	private Date dataInizioValidita;
 
-    @ManyToOne
-    @JoinColumn(name="raggruppamento_fatturazione_id")
-    private RaggruppamentoFatturazione raggruppamentoFatturazione;
-
-	@Column(name="importo_mensile")
-	private BigDecimal importoMensile;
-
-    @ManyToOne
-    @JoinColumn(name="tipo_fatturazione_id")
-    private TipoFatturazione tipoFatturazione;
-
 	@Column(name="data_cessazione")
 	private Date dataCessazione;
+
+	@Column(name="fattura_minimo_un_mese")
+	private Boolean fatturaMinimoUnMese;
+
+	@Column(name="fatturazione_anticipata")
+	private Boolean fatturazioneAnticipata;
+
+	@Column(name="fattura_ogni_mesi")
+	private Integer fatturaOgniMesi;
+
+	@Column(name="canone_mensile")
+	private BigDecimal canoneMensile;
 
 	@Column(name="note")
 	private String note;
@@ -74,15 +69,15 @@ public class Canone {
 		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
 			.append("id", id)
 			.append("contratto", contratto, false)
-			.append("descrizione", descrizione)
+			.append("alias", alias)
 			.append("tipoServizio", tipoServizio, false)
 			.append("specificaServizio", specificaServizio, false)
-			.append("obiettivoServizio", obiettivoServizio, false)
 			.append("dataInizioValidita", dataInizioValidita)
-			.append("raggruppamentoFatturazione", raggruppamentoFatturazione, false)
-			.append("importoMensile", importoMensile)
-			.append("tipoFatturazione", tipoFatturazione, false)
 			.append("dataCessazione", dataCessazione)
+			.append("fatturaMinimoUnMese", fatturaMinimoUnMese)
+			.append("fatturazioneAnticipata", fatturazioneAnticipata)
+			.append("fatturaOgniMesi", fatturaOgniMesi)
+			.append("canoneMensile", canoneMensile)
 			.append("note", note)
 			.toString();
 	}
@@ -104,12 +99,12 @@ public class Canone {
 		this.contratto = contratto;
 	}
 
-	public String getDescrizione() {
-		return descrizione;
+	public String getAlias() {
+		return alias;
 	}
 
-	public void setDescrizione(String descrizione) {
-		this.descrizione = descrizione;
+	public void setAlias(String alias) {
+		this.alias = alias;
 	}
 
 	public TipoServizio getTipoServizio() {
@@ -128,14 +123,6 @@ public class Canone {
 		this.specificaServizio = specificaServizio;
 	}
 
-	public ObiettivoServizio getObiettivoServizio() {
-		return obiettivoServizio;
-	}
-
-	public void setObiettivoServizio(ObiettivoServizio obiettivoServizio) {
-		this.obiettivoServizio = obiettivoServizio;
-	}
-
 	public Date getDataInizioValidita() {
 		return dataInizioValidita;
 	}
@@ -144,37 +131,44 @@ public class Canone {
 		this.dataInizioValidita = dataInizioValidita;
 	}
 
-	public RaggruppamentoFatturazione getRaggruppamentoFatturazione() {
-		return raggruppamentoFatturazione;
-	}
-
-	public void setRaggruppamentoFatturazione(
-			RaggruppamentoFatturazione raggruppamentoFatturazione) {
-		this.raggruppamentoFatturazione = raggruppamentoFatturazione;
-	}
-
-	public BigDecimal getImportoMensile() {
-		return importoMensile;
-	}
-
-	public void setImportoMensile(BigDecimal importoMensile) {
-		this.importoMensile = importoMensile;
-	}
-
-	public TipoFatturazione getTipoFatturazione() {
-		return tipoFatturazione;
-	}
-
-	public void setTipoFatturazione(TipoFatturazione tipoFatturazione) {
-		this.tipoFatturazione = tipoFatturazione;
-	}
-
 	public Date getDataCessazione() {
 		return dataCessazione;
 	}
 
 	public void setDataCessazione(Date dataCessazione) {
 		this.dataCessazione = dataCessazione;
+	}
+
+	public Boolean getFatturaMinimoUnMese() {
+		return fatturaMinimoUnMese;
+	}
+
+	public void setFatturaMinimoUnMese(Boolean fatturaMinimoUnMese) {
+		this.fatturaMinimoUnMese = fatturaMinimoUnMese;
+	}
+
+	public Boolean getFatturazioneAnticipata() {
+		return fatturazioneAnticipata;
+	}
+
+	public void setFatturazioneAnticipata(Boolean fatturazioneAnticipata) {
+		this.fatturazioneAnticipata = fatturazioneAnticipata;
+	}
+
+	public Integer getFatturaOgniMesi() {
+		return fatturaOgniMesi;
+	}
+
+	public void setFatturaOgniMesi(Integer fatturaOgniMesi) {
+		this.fatturaOgniMesi = fatturaOgniMesi;
+	}
+
+	public BigDecimal getCanoneMensile() {
+		return canoneMensile;
+	}
+
+	public void setCanoneMensile(BigDecimal canoneMensile) {
+		this.canoneMensile = canoneMensile;
 	}
 
 	public String getNote() {

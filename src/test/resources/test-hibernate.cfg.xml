@@ -34,22 +34,22 @@
 
 		<!-- Entities mappings -->
 		<mapping class="it.ivncr.erp.model.accesso.AccountEmail" />
-        <mapping class="it.ivncr.erp.model.accesso.Permesso" />
-        <mapping class="it.ivncr.erp.model.accesso.Ruolo" />
-        <mapping class="it.ivncr.erp.model.accesso.Utente" />
-        <mapping class="it.ivncr.erp.model.accesso.UtenteAzienda" />
-        
-        <mapping class="it.ivncr.erp.model.commerciale.cliente.Cliente" />
-        <mapping class="it.ivncr.erp.model.commerciale.cliente.Contatto" />
-        <mapping class="it.ivncr.erp.model.commerciale.cliente.Divisa" />
-        <mapping class="it.ivncr.erp.model.commerciale.cliente.GruppoCliente" />
-        <mapping class="it.ivncr.erp.model.commerciale.cliente.Indirizzo" />
-        <mapping class="it.ivncr.erp.model.commerciale.cliente.ObiettivoServizio" />
-        <mapping class="it.ivncr.erp.model.commerciale.cliente.TipoBusinessPartner" />
-        <mapping class="it.ivncr.erp.model.commerciale.cliente.TipoContatto" />
-        <mapping class="it.ivncr.erp.model.commerciale.cliente.TipoIndirizzo" />
+		<mapping class="it.ivncr.erp.model.accesso.Permesso" />
+		<mapping class="it.ivncr.erp.model.accesso.Ruolo" />
+		<mapping class="it.ivncr.erp.model.accesso.Utente" />
+		<mapping class="it.ivncr.erp.model.accesso.UtenteAzienda" />
 
-		<mapping class="it.ivncr.erp.model.commerciale.contratto.ApparecchiatureTecnologiche" />
+		<mapping class="it.ivncr.erp.model.commerciale.cliente.Cliente" />
+		<mapping class="it.ivncr.erp.model.commerciale.cliente.Contatto" />
+		<mapping class="it.ivncr.erp.model.commerciale.cliente.Divisa" />
+		<mapping class="it.ivncr.erp.model.commerciale.cliente.GruppoCliente" />
+		<mapping class="it.ivncr.erp.model.commerciale.cliente.Indirizzo" />
+		<mapping class="it.ivncr.erp.model.commerciale.cliente.ObiettivoServizio" />
+		<mapping class="it.ivncr.erp.model.commerciale.cliente.TipoBusinessPartner" />
+		<mapping class="it.ivncr.erp.model.commerciale.cliente.TipoContatto" />
+		<mapping class="it.ivncr.erp.model.commerciale.cliente.TipoIndirizzo" />
+	
+		<mapping class="it.ivncr.erp.model.commerciale.contratto.ApparecchiaturaTecnologica" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.Canone" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.CondizioniPagamento" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.Contratto" />
@@ -62,8 +62,13 @@
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.EsattoreAzienda" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.GestoreContratto" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.GestoreContrattoAzienda" />
+		<mapping class="it.ivncr.erp.model.commerciale.contratto.GruppoApparecchiaturaTecnologica" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.LayoutStampa" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.MetodoPagamento" />
+		<mapping class="it.ivncr.erp.model.commerciale.contratto.OdsApparecchiatura" />
+		<mapping class="it.ivncr.erp.model.commerciale.contratto.OdsFrazionamento" />
+		<mapping class="it.ivncr.erp.model.commerciale.contratto.OdsOrariCalendario" />
+		<mapping class="it.ivncr.erp.model.commerciale.contratto.OdsOrariRicorrenti" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.OrdineServizio" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.RaggruppamentoFatturazione" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.RinnovoContrattuale" />
@@ -71,15 +76,13 @@
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.SpecificaServizio" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.Tariffa" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.TipoApparecchiaturaTecnologica" />
-		<mapping class="it.ivncr.erp.model.commerciale.contratto.TipoFatturazione" />
-		<mapping class="it.ivncr.erp.model.commerciale.contratto.TipoFrazionamentoFatturazione" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.TipoOrdineServizio" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.TipoProvenienza" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.TipoServizio" />
-		<mapping class="it.ivncr.erp.model.commerciale.contratto.TipoTariffa" />
-		
+
 		<mapping class="it.ivncr.erp.model.generale.Azienda" />
 		<mapping class="it.ivncr.erp.model.generale.Contatore" />
+		<mapping class="it.ivncr.erp.model.generale.GiornoSettimana" />
 		<mapping class="it.ivncr.erp.model.generale.Paese" />
 		<mapping class="it.ivncr.erp.model.generale.Provincia" />
 

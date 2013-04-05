@@ -31,59 +31,71 @@ public class OrdineServizio {
     @JoinColumn(name="contratto_id")
     private Contratto contratto;
 
+    @ManyToOne
+    @JoinColumn(name="tipo_ordine_servizio_id")
+    private TipoOrdineServizio tipoOrdineServizio;
+
+    @ManyToOne
+    @JoinColumn(name="padre_id")
+    private OrdineServizio padre;
+
+    @ManyToOne
+    @JoinColumn(name="nuova_attivazione_id")
+    private OrdineServizio nuovaAttivazione;
+
+    @Column(name="codice")
+	private String codice;
+
+    @Column(name="alias")
+	private String alias;
+
 	@Column(name="data_decorrenza")
 	private Date dataDecorrenza;
 
 	@Column(name="data_termine")
 	private Date dataTermine;
 
+	@Column(name="data_fine_validita")
+	private Date dataFineValidita;
+
+	@Column(name="orario_fine_validita")
+	private Date orarioFineValidita;
+
+    @ManyToOne
+    @JoinColumn(name="tipo_servizio_id")
+    private TipoServizio tipoServizio;
+
+    @ManyToOne
+    @JoinColumn(name="specifica_servizio_id")
+    private SpecificaServizio specificaServizio;
+
     @ManyToOne
     @JoinColumn(name="obiettivo_servizio_id")
     private ObiettivoServizio obiettivoServizio;
 
     @ManyToOne
-    @JoinColumn(name="tipo_ordine_servizio_id")
-    private TipoOrdineServizio tipoOrdineServizio;
+    @JoinColumn(name="tariffa_id")
+    private Tariffa tariffa;
+
+    @ManyToOne
+    @JoinColumn(name="canone_id")
+    private Canone canone;
 
     @ManyToOne
     @JoinColumn(name="raggruppamento_fatturazione_id")
     private RaggruppamentoFatturazione raggruppamentoFatturazione;
 
-	@Column(name="numero")
-	private Integer numero;
-
-	@Column(name="orario_inizio")
-	private Date orarioInizio;
-
-	@Column(name="orario_fine")
-	private Date orarioFine;
-
-	@Column(name="lunedi")
-	private Boolean lunedi;
-
-	@Column(name="martedi")
-	private Boolean martedi;
-
-	@Column(name="mercoledi")
-	private Boolean mercoledi;
-
-	@Column(name="giovedi")
-	private Boolean giovedi;
-
-	@Column(name="venerdi")
-	private Boolean venerdi;
-
-	@Column(name="sabato")
-	private Boolean sabato;
-
-	@Column(name="domenica")
-	private Boolean domenica;
-
-	@Column(name="festivi")
-	private Boolean festivi;
+	@Column(name="cessato")
+	private Boolean cessato;
 
 	@Column(name="note")
 	private String note;
+
+	@Column(name="modalita_operative")
+	private String modalitaOperative;
+
+	@Column(name="osservazioni_fattura")
+	private String osservazioniFattura;
 
 
 	@Override
@@ -92,23 +104,25 @@ public class OrdineServizio {
 		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
 			.append("id", id)
 			.append("contratto", contratto, false)
+			.append("tipoOrdineServizio", tipoOrdineServizio, false)
+			.append("padre", padre, false)
+			.append("nuovaAttivazione", nuovaAttivazione, false)
+			.append("codice", codice)
+			.append("alias", alias)
 			.append("dataDecorrenza", dataDecorrenza)
 			.append("dataTermine", dataTermine)
+			.append("dataFineValidita", dataFineValidita)
+			.append("orarioFineValidita", orarioFineValidita)
+			.append("tipoServizio", tipoServizio, false)
+			.append("specificaServizio", specificaServizio, false)
 			.append("obiettivoServizio", obiettivoServizio, false)
-			.append("tipoOrdineServizio", tipoOrdineServizio, false)
+			.append("tariffa", tariffa, false)
+			.append("canone", canone, false)
 			.append("raggruppamentoFatturazione", raggruppamentoFatturazione, false)
-			.append("numero", numero)
-			.append("orarioInizio", orarioInizio)
-			.append("orarioFine", orarioFine)
-			.append("lunedi", lunedi)
-			.append("martedi", martedi)
-			.append("mercoledi", mercoledi)
-			.append("giovedi", giovedi)
-			.append("venerdi", venerdi)
-			.append("sabato", sabato)
-			.append("domenica", domenica)
-			.append("festivi", festivi)
+			.append("cessato", cessato)
 			.append("note", note)
+			.append("modalitaOperative", modalitaOperative)
+			.append("osservazioniFattura", osservazioniFattura)
 			.toString();
 	}
 
@@ -129,6 +143,46 @@ public class OrdineServizio {
 		this.contratto = contratto;
 	}
 
+	public TipoOrdineServizio getTipoOrdineServizio() {
+		return tipoOrdineServizio;
+	}
+
+	public void setTipoOrdineServizio(TipoOrdineServizio tipoOrdineServizio) {
+		this.tipoOrdineServizio = tipoOrdineServizio;
+	}
+
+	public OrdineServizio getPadre() {
+		return padre;
+	}
+
+	public void setPadre(OrdineServizio padre) {
+		this.padre = padre;
+	}
+
+	public OrdineServizio getNuovaAttivazione() {
+		return nuovaAttivazione;
+	}
+
+	public void setNuovaAttivazione(OrdineServizio nuovaAttivazione) {
+		this.nuovaAttivazione = nuovaAttivazione;
+	}
+
+	public String getCodice() {
+		return codice;
+	}
+
+	public void setCodice(String codice) {
+		this.codice = codice;
+	}
+
+	public String getAlias() {
+		return alias;
+	}
+
+	public void setAlias(String alias) {
+		this.alias = alias;
+	}
+
 	public Date getDataDecorrenza() {
 		return dataDecorrenza;
 	}
@@ -145,6 +199,38 @@ public class OrdineServizio {
 		this.dataTermine = dataTermine;
 	}
 
+	public Date getDataFineValidita() {
+		return dataFineValidita;
+	}
+
+	public void setDataFineValidita(Date dataFineValidita) {
+		this.dataFineValidita = dataFineValidita;
+	}
+
+	public Date getOrarioFineValidita() {
+		return orarioFineValidita;
+	}
+
+	public void setOrarioFineValidita(Date orarioFineValidita) {
+		this.orarioFineValidita = orarioFineValidita;
+	}
+
+	public TipoServizio getTipoServizio() {
+		return tipoServizio;
+	}
+
+	public void setTipoServizio(TipoServizio tipoServizio) {
+		this.tipoServizio = tipoServizio;
+	}
+
+	public SpecificaServizio getSpecificaServizio() {
+		return specificaServizio;
+	}
+
+	public void setSpecificaServizio(SpecificaServizio specificaServizio) {
+		this.specificaServizio = specificaServizio;
+	}
+
 	public ObiettivoServizio getObiettivoServizio() {
 		return obiettivoServizio;
 	}
@@ -153,12 +239,20 @@ public class OrdineServizio {
 		this.obiettivoServizio = obiettivoServizio;
 	}
 
-	public TipoOrdineServizio getTipoOrdineServizio() {
-		return tipoOrdineServizio;
+	public Tariffa getTariffa() {
+		return tariffa;
 	}
 
-	public void setTipoOrdineServizio(TipoOrdineServizio tipoOrdineServizio) {
-		this.tipoOrdineServizio = tipoOrdineServizio;
+	public void setTariffa(Tariffa tariffa) {
+		this.tariffa = tariffa;
+	}
+
+	public Canone getCanone() {
+		return canone;
+	}
+
+	public void setCanone(Canone canone) {
+		this.canone = canone;
 	}
 
 	public RaggruppamentoFatturazione getRaggruppamentoFatturazione() {
@@ -170,92 +264,12 @@ public class OrdineServizio {
 		this.raggruppamentoFatturazione = raggruppamentoFatturazione;
 	}
 
-	public Integer getNumero() {
-		return numero;
+	public Boolean getCessato() {
+		return cessato;
 	}
 
-	public void setNumero(Integer numero) {
-		this.numero = numero;
-	}
-
-	public Date getOrarioInizio() {
-		return orarioInizio;
-	}
-
-	public void setOrarioInizio(Date orarioInizio) {
-		this.orarioInizio = orarioInizio;
-	}
-
-	public Date getOrarioFine() {
-		return orarioFine;
-	}
-
-	public void setOrarioFine(Date orarioFine) {
-		this.orarioFine = orarioFine;
-	}
-
-	public Boolean getLunedi() {
-		return lunedi;
-	}
-
-	public void setLunedi(Boolean lunedi) {
-		this.lunedi = lunedi;
-	}
-
-	public Boolean getMartedi() {
-		return martedi;
-	}
-
-	public void setMartedi(Boolean martedi) {
-		this.martedi = martedi;
-	}
-
-	public Boolean getMercoledi() {
-		return mercoledi;
-	}
-
-	public void setMercoledi(Boolean mercoledi) {
-		this.mercoledi = mercoledi;
-	}
-
-	public Boolean getGiovedi() {
-		return giovedi;
-	}
-
-	public void setGiovedi(Boolean giovedi) {
-		this.giovedi = giovedi;
-	}
-
-	public Boolean getVenerdi() {
-		return venerdi;
-	}
-
-	public void setVenerdi(Boolean venerdi) {
-		this.venerdi = venerdi;
-	}
-
-	public Boolean getSabato() {
-		return sabato;
-	}
-
-	public void setSabato(Boolean sabato) {
-		this.sabato = sabato;
-	}
-
-	public Boolean getDomenica() {
-		return domenica;
-	}
-
-	public void setDomenica(Boolean domenica) {
-		this.domenica = domenica;
-	}
-
-	public Boolean getFestivi() {
-		return festivi;
-	}
-
-	public void setFestivi(Boolean festivi) {
-		this.festivi = festivi;
+	public void setCessato(Boolean cessato) {
+		this.cessato = cessato;
 	}
 
 	public String getNote() {
@@ -264,5 +278,21 @@ public class OrdineServizio {
 
 	public void setNote(String note) {
 		this.note = note;
+	}
+
+	public String getModalitaOperative() {
+		return modalitaOperative;
+	}
+
+	public void setModalitaOperative(String modalitaOperative) {
+		this.modalitaOperative = modalitaOperative;
+	}
+
+	public String getOsservazioniFattura() {
+		return osservazioniFattura;
+	}
+
+	public void setOsservazioniFattura(String osservazioniFattura) {
+		this.osservazioniFattura = osservazioniFattura;
 	}
 }
