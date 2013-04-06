@@ -405,7 +405,7 @@ CREATE TABLE app.con_tariffa
 );
 
 
-CREATE TABLE app.con_ricavi_extra_vigilanza
+CREATE TABLE app.con_ricavo_extra_vigilanza
 (
 	id SERIAL NOT NULL PRIMARY KEY,
 	contratto_id INTEGER NOT NULL REFERENCES app.con_contratto(id),

@@ -65,8 +65,8 @@
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.OdsOrariRicorrenti" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.OrdineServizio" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.RaggruppamentoFatturazione" />
+		<mapping class="it.ivncr.erp.model.commerciale.contratto.RicavoExtraVigilanza" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.RinnovoContrattuale" />
-		<mapping class="it.ivncr.erp.model.commerciale.contratto.ServizioOneroso" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.SpecificaServizio" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.Tariffa" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.TipoApparecchiaturaTecnologica" />

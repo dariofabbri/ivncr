@@ -81,6 +81,9 @@ public class OrdineServizio {
     @JoinColumn(name="canone_id")
     private Canone canone;
 
+	@Column(name="oneroso")
+	private Boolean oneroso;
+
     @ManyToOne
     @JoinColumn(name="raggruppamento_fatturazione_id")
     private RaggruppamentoFatturazione raggruppamentoFatturazione;
@@ -96,6 +99,12 @@ public class OrdineServizio {
 
 	@Column(name="osservazioni_fattura")
 	private String osservazioniFattura;
+
+	@Column(name="creazione_ts")
+	private Date creazione;
+
+	@Column(name="ultima_modifica_ts")
+	private Date ultimaModifica;
 
 
 	@Override
@@ -118,11 +127,14 @@ public class OrdineServizio {
 			.append("obiettivoServizio", obiettivoServizio, false)
 			.append("tariffa", tariffa, false)
 			.append("canone", canone, false)
+			.append("oneroso", oneroso)
 			.append("raggruppamentoFatturazione", raggruppamentoFatturazione, false)
 			.append("cessato", cessato)
 			.append("note", note)
 			.append("modalitaOperative", modalitaOperative)
 			.append("osservazioniFattura", osservazioniFattura)
+			.append("creazione", creazione)
+			.append("ultimaModifica", ultimaModifica)
 			.toString();
 	}
 
@@ -255,6 +267,14 @@ public class OrdineServizio {
 		this.canone = canone;
 	}
 
+	public Boolean getOneroso() {
+		return oneroso;
+	}
+
+	public void setOneroso(Boolean oneroso) {
+		this.oneroso = oneroso;
+	}
+
 	public RaggruppamentoFatturazione getRaggruppamentoFatturazione() {
 		return raggruppamentoFatturazione;
 	}
@@ -294,5 +314,21 @@ public class OrdineServizio {
 
 	public void setOsservazioniFattura(String osservazioniFattura) {
 		this.osservazioniFattura = osservazioniFattura;
+	}
+
+	public Date getCreazione() {
+		return creazione;
+	}
+
+	public void setCreazione(Date creazione) {
+		this.creazione = creazione;
+	}
+
+	public Date getUltimaModifica() {
+		return ultimaModifica;
+	}
+
+	public void setUltimaModifica(Date ultimaModifica) {
+		this.ultimaModifica = ultimaModifica;
 	}
 }
