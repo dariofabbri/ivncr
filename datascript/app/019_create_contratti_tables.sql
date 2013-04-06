@@ -405,6 +405,24 @@ CREATE TABLE app.con_tariffa
 );
 
 
+CREATE TABLE app.con_ricavi_extra_vigilanza
+(
+	id SERIAL NOT NULL PRIMARY KEY,
+	contratto_id INTEGER NOT NULL REFERENCES app.con_contratto(id),
+	alias VARCHAR(255) NOT NULL,
+	tipo_servizio_id INTEGER NOT NULL REFERENCES app.con_tipo_servizio(id),
+	specifica_servizio_id INTEGER NOT NULL REFERENCES app.con_specifica_servizio(id),
+	raggruppamento_fatturazione_id INTEGER REFERENCES app.con_raggruppamento_fatturazione(id),
+	data_inizio_validita DATE NOT NULL,
+	data_cessazione DATE,
+	fattura_minimo_un_mese BOOLEAN,
+	fatturazione_anticipata BOOLEAN,
+	fattura_ogni_mesi INTEGER,	
+	canone_mensile NUMERIC(18, 4) NOT NULL,
+	note VARCHAR(4000)
+);
+
+
 CREATE TABLE app.con_apparecchiatura_tecnologica
 (
 	id SERIAL NOT NULL PRIMARY KEY,
@@ -434,19 +452,6 @@ CREATE TABLE app.con_documento_contratto
 );
 
 
-CREATE TABLE app.con_servizio_oneroso
-(
-	id SERIAL NOT NULL PRIMARY KEY,
-	contratto_id INTEGER NOT NULL REFERENCES app.con_contratto(id),
-	descrizione VARCHAR(255) NOT NULL,
-	tipo_servizio_id INTEGER NOT NULL REFERENCES app.con_tipo_servizio(id),
-	specifica_servizio_id INTEGER NOT NULL REFERENCES app.con_specifica_servizio(id),
-	obiettivo_servizio_id INTEGER NOT NULL REFERENCES app.com_obiettivo_servizio(id),
-	data_inizio_validita DATE NOT NULL,
-	note VARCHAR(4000)
-);
-
-
 CREATE TABLE app.con_ordine_servizio
 (
 	id SERIAL NOT NULL PRIMARY KEY,
@@ -465,11 +470,14 @@ CREATE TABLE app.con_ordine_servizio
 	obiettivo_servizio_id INTEGER NOT NULL REFERENCES app.com_obiettivo_servizio(id),
 	tariffa_id INTEGER REFERENCES app.con_tariffa(id),
 	canone_id INTEGER REFERENCES app.con_canone(id),
+	oneroso BOOLEAN,
 	raggruppamento_fatturazione_id INTEGER REFERENCES app.con_raggruppamento_fatturazione(id),
 	cessato BOOLEAN,
 	note VARCHAR(4000),
 	modalita_operative VARCHAR(4000),
-	osservazioni_fattura VARCHAR(4000)
+	osservazioni_fattura VARCHAR(4000),
+	creazione_ts TIMESTAMP WITH TIME ZONE,
+	ultima_modifica_ts TIMESTAMP WITH TIME ZONE
 );
 
 
