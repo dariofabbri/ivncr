@@ -1,12 +1,9 @@
 package it.ivncr.erp.service.tariffa;
 
-import it.ivncr.erp.model.commerciale.cliente.ObiettivoServizio;
 import it.ivncr.erp.model.commerciale.contratto.Contratto;
 import it.ivncr.erp.model.commerciale.contratto.SpecificaServizio;
 import it.ivncr.erp.model.commerciale.contratto.Tariffa;
-import it.ivncr.erp.model.commerciale.contratto.TipoFatturazione;
 import it.ivncr.erp.model.commerciale.contratto.TipoServizio;
-import it.ivncr.erp.model.commerciale.contratto.TipoTariffa;
 import it.ivncr.erp.service.AbstractService;
 import it.ivncr.erp.service.NotFoundException;
 import it.ivncr.erp.service.QueryResult;
@@ -31,27 +28,21 @@ public class TariffaServiceImpl extends AbstractService implements TariffaServic
 			SortDirection sortDirection,
 			Map<String, String> filters) {
 
-		QueryByCodiceContrattoDescrizioneTipoServizioSpecificaServizioObiettivoServizioTipoTariffaTipoFatturazione q =
-				new QueryByCodiceContrattoDescrizioneTipoServizioSpecificaServizioObiettivoServizioTipoTariffaTipoFatturazione(session);
+		QueryByCodiceContrattoAliasTipoServizioSpecificaServizio q =
+				new QueryByCodiceContrattoAliasTipoServizioSpecificaServizio(session);
 
 		Integer codiceContratto = null;
 		if(filters.get("codiceContratto") != null)
 			codiceContratto = Integer.decode(filters.get("codiceContratto"));
 
-		String descrizione = filters.get("descrizione");
+		String alias = filters.get("alias");
 		String tipoServizio = filters.get("tipoServizio.descrizione");
 		String specificaServizio = filters.get("specificaServizio.descrizione");
-		String obiettivoServizio = filters.get("obiettivoServizio.alias");
-		String tipoTariffa = filters.get("tipoTariffa.descrizione");
-		String tipoFatturazione = filters.get("tipoFatturazione.descrizione");
 
 		q.setCodiceContratto(codiceContratto);
-		q.setDescrizione(descrizione);
+		q.setAlias(alias);
 		q.setTipoServizio(tipoServizio);
 		q.setSpecificaServizio(specificaServizio);
-		q.setObiettivoServizio(obiettivoServizio);
-		q.setTipoTariffa(tipoTariffa);
-		q.setTipoFatturazione(tipoFatturazione);
 
 		q.setSortCriteria(sortCriteria);
 		q.setSortDirection(sortDirection);
@@ -65,25 +56,19 @@ public class TariffaServiceImpl extends AbstractService implements TariffaServic
 	@Override
 	public QueryResult<Tariffa> list(
 			Integer codiceContratto,
-			String descrizione,
+			String alias,
 			String tipoServizio,
 			String specificaServizio,
-			String obiettivoServizio,
-			String tipoTariffa,
-			String tipoFatturazione,
 			Integer offset,
 			Integer limit) {
 
-		QueryByCodiceContrattoDescrizioneTipoServizioSpecificaServizioObiettivoServizioTipoTariffaTipoFatturazione q =
-				new QueryByCodiceContrattoDescrizioneTipoServizioSpecificaServizioObiettivoServizioTipoTariffaTipoFatturazione(session);
+		QueryByCodiceContrattoAliasTipoServizioSpecificaServizio q =
+				new QueryByCodiceContrattoAliasTipoServizioSpecificaServizio(session);
 
 		q.setCodiceContratto(codiceContratto);
-		q.setDescrizione(descrizione);
+		q.setAlias(alias);
 		q.setTipoServizio(tipoServizio);
 		q.setSpecificaServizio(specificaServizio);
-		q.setObiettivoServizio(obiettivoServizio);
-		q.setTipoTariffa(tipoTariffa);
-		q.setTipoFatturazione(tipoFatturazione);
 
 		q.setOffset(offset);
 		q.setLimit(limit);
@@ -112,9 +97,6 @@ public class TariffaServiceImpl extends AbstractService implements TariffaServic
 				"from Tariffa tar " +
 				"left join fetch tar.tipoServizio tse " +
 				"left join fetch tar.specificaServizio sse " +
-				"left join fetch tar.obiettivoServizio ose " +
-				"left join fetch tar.tipoTariffa tta " +
-				"left join fetch tar.tipoFatturazione tfa " +
 				"where tar.id = :id ";
 		Query query = session.createQuery(hql);
 		query.setParameter("id", id);
@@ -128,16 +110,26 @@ public class TariffaServiceImpl extends AbstractService implements TariffaServic
 	@Override
 	public Tariffa create(
 			Integer codiceContratto,
-			String descrizione,
+			String alias,
 			Integer codiceTipoServizio,
 			Integer codiceSpecificaServizio,
-			Integer codiceObiettivoServizio,
-			Integer codiceTipoTariffa,
-			BigDecimal costo,
-			Integer numero,
+			BigDecimal costoOrario,
+			BigDecimal costoOperazione,
+			BigDecimal costoFissoUnaTantum,
+			BigDecimal costoFissoATempo,
+			Integer costoFissoMesi,
+			Integer franchigieTotali,
+			Integer franchigieATempo,
+			Integer franchigieMesi,
+			BigDecimal ritenutaGaranzia,
+			Integer ritenutaGaranziaGiorni,
 			Date dataInizioValidita,
-			Integer codiceTipoFatturazione,
 			Date dataCessazione,
+			Boolean fatturazioneAnticipata,
+			Boolean extraFatturatoAParte,
+			Boolean fatturaSpezzata,
+			Integer fatturaOgniMesi,
+			Boolean fatturaMinimoUnMese,
 			String note) {
 
 		// Fetch referred entities.
@@ -145,9 +137,6 @@ public class TariffaServiceImpl extends AbstractService implements TariffaServic
 		Contratto contratto = (Contratto)session.get(Contratto.class, codiceContratto);
 		TipoServizio tipoServizio = (TipoServizio)session.get(TipoServizio.class, codiceTipoServizio);
 		SpecificaServizio specificaServizio = (SpecificaServizio)session.get(SpecificaServizio.class, codiceSpecificaServizio);
-		ObiettivoServizio obiettivoServizio = (ObiettivoServizio)session.get(ObiettivoServizio.class, codiceObiettivoServizio);
-		TipoTariffa tipoTariffa = (TipoTariffa)session.get(TipoTariffa.class, codiceTipoTariffa);
-		TipoFatturazione tipoFatturazione = (TipoFatturazione)session.get(TipoFatturazione.class, codiceTipoFatturazione);
 
 		// Create the new entity.
 		//
@@ -156,16 +145,25 @@ public class TariffaServiceImpl extends AbstractService implements TariffaServic
 		// Set entity fields.
 		//
 		entity.setContratto(contratto);
-		entity.setDescrizione(descrizione);
+		entity.setAlias(alias);
 		entity.setTipoServizio(tipoServizio);
 		entity.setSpecificaServizio(specificaServizio);
-		entity.setObiettivoServizio(obiettivoServizio);
-		entity.setTipoTariffa(tipoTariffa);
-		entity.setCosto(costo);
-		entity.setNumero(numero);
+		entity.setCostoOrario(costoOrario);
+		entity.setCostoOperazione(costoOperazione);
+		entity.setCostoFissoUnaTantum(costoFissoUnaTantum);
+		entity.setCostoFissoATempo(costoFissoATempo);
+		entity.setCostoFissoMesi(costoFissoMesi);
+		entity.setFranchigieTotali(franchigieTotali);
+		entity.setFranchigieATempo(franchigieATempo);
+		entity.setFranchigieMesi(franchigieMesi);
+		entity.setRitenutaGaranzia(ritenutaGaranzia);
 		entity.setDataInizioValidita(dataInizioValidita);
-		entity.setTipoFatturazione(tipoFatturazione);
 		entity.setDataCessazione(dataCessazione);
+		entity.setFatturazioneAnticipata(fatturazioneAnticipata);
+		entity.setExtraFatturatoAParte(extraFatturatoAParte);
+		entity.setFatturaSpezzata(fatturaSpezzata);
+		entity.setFatturaOgniMesi(fatturaOgniMesi);
+		entity.setFatturaMinimoUnMese(fatturaMinimoUnMese);
 		entity.setNote(note);
 
 		// Persist the entity to the database.
@@ -184,16 +182,26 @@ public class TariffaServiceImpl extends AbstractService implements TariffaServic
 	@Override
 	public Tariffa update(
 			Integer id,
-			String descrizione,
+			String alias,
 			Integer codiceTipoServizio,
 			Integer codiceSpecificaServizio,
-			Integer codiceObiettivoServizio,
-			Integer codiceTipoTariffa,
-			BigDecimal costo,
-			Integer numero,
+			BigDecimal costoOrario,
+			BigDecimal costoOperazione,
+			BigDecimal costoFissoUnaTantum,
+			BigDecimal costoFissoATempo,
+			Integer costoFissoMesi,
+			Integer franchigieTotali,
+			Integer franchigieATempo,
+			Integer franchigieMesi,
+			BigDecimal ritenutaGaranzia,
+			Integer ritenutaGaranziaGiorni,
 			Date dataInizioValidita,
-			Integer codiceTipoFatturazione,
 			Date dataCessazione,
+			Boolean fatturazioneAnticipata,
+			Boolean extraFatturatoAParte,
+			Boolean fatturaSpezzata,
+			Integer fatturaOgniMesi,
+			Boolean fatturaMinimoUnMese,
 			String note) {
 
 		Tariffa entity = retrieve(id);
@@ -211,22 +219,28 @@ public class TariffaServiceImpl extends AbstractService implements TariffaServic
 		//
 		TipoServizio tipoServizio = (TipoServizio)session.get(TipoServizio.class, codiceTipoServizio);
 		SpecificaServizio specificaServizio = (SpecificaServizio)session.get(SpecificaServizio.class, codiceSpecificaServizio);
-		ObiettivoServizio obiettivoServizio = (ObiettivoServizio)session.get(ObiettivoServizio.class, codiceObiettivoServizio);
-		TipoTariffa tipoTariffa = (TipoTariffa)session.get(TipoTariffa.class, codiceTipoTariffa);
-		TipoFatturazione tipoFatturazione = (TipoFatturazione)session.get(TipoFatturazione.class, codiceTipoFatturazione);
 
 		// Set entity fields.
 		//
-		entity.setDescrizione(descrizione);
+		entity.setAlias(alias);
 		entity.setTipoServizio(tipoServizio);
 		entity.setSpecificaServizio(specificaServizio);
-		entity.setObiettivoServizio(obiettivoServizio);
-		entity.setTipoTariffa(tipoTariffa);
-		entity.setCosto(costo);
-		entity.setNumero(numero);
+		entity.setCostoOrario(costoOrario);
+		entity.setCostoOperazione(costoOperazione);
+		entity.setCostoFissoUnaTantum(costoFissoUnaTantum);
+		entity.setCostoFissoATempo(costoFissoATempo);
+		entity.setCostoFissoMesi(costoFissoMesi);
+		entity.setFranchigieTotali(franchigieTotali);
+		entity.setFranchigieATempo(franchigieATempo);
+		entity.setFranchigieMesi(franchigieMesi);
+		entity.setRitenutaGaranzia(ritenutaGaranzia);
 		entity.setDataInizioValidita(dataInizioValidita);
-		entity.setTipoFatturazione(tipoFatturazione);
 		entity.setDataCessazione(dataCessazione);
+		entity.setFatturazioneAnticipata(fatturazioneAnticipata);
+		entity.setExtraFatturatoAParte(extraFatturatoAParte);
+		entity.setFatturaSpezzata(fatturaSpezzata);
+		entity.setFatturaOgniMesi(fatturaOgniMesi);
+		entity.setFatturaMinimoUnMese(fatturaMinimoUnMese);
 		entity.setNote(note);
 
 		session.update(entity);

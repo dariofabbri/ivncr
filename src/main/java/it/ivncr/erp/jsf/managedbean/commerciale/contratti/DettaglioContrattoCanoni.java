@@ -2,17 +2,13 @@ package it.ivncr.erp.jsf.managedbean.commerciale.contratti;
 
 
 import it.ivncr.erp.jsf.RobustLazyDataModel;
-import it.ivncr.erp.model.commerciale.cliente.ObiettivoServizio;
 import it.ivncr.erp.model.commerciale.contratto.Canone;
-import it.ivncr.erp.model.commerciale.contratto.RaggruppamentoFatturazione;
 import it.ivncr.erp.model.commerciale.contratto.SpecificaServizio;
-import it.ivncr.erp.model.commerciale.contratto.TipoFatturazione;
 import it.ivncr.erp.model.commerciale.contratto.TipoServizio;
 import it.ivncr.erp.service.QueryResult;
 import it.ivncr.erp.service.ServiceFactory;
 import it.ivncr.erp.service.SortDirection;
 import it.ivncr.erp.service.canone.CanoneService;
-import it.ivncr.erp.service.contratto.ContrattoService;
 import it.ivncr.erp.service.lut.LUTService;
 
 import java.io.Serializable;
@@ -50,22 +46,19 @@ public class DettaglioContrattoCanoni implements Serializable {
 	private Canone selected;
 
 	private Integer id;
-	private String descrizione;
+	private String alias;
 	private Integer codiceTipoServizio;
 	private Integer codiceSpecificaServizio;
-	private Integer codiceObiettivoServizio;
 	private Date dataInizioValidita;
-	private Integer codiceRaggruppamentoFatturazione;
-	private BigDecimal importoMensile;
-	private Integer codiceTipoFatturazione;
 	private Date dataCessazione;
+	private Boolean fatturaMinimoUnMese;
+	private Boolean fatturazioneAnticipata;
+	private Integer fatturaOgniMesi;
+	private BigDecimal canoneMensile;
 	private String note;
 
 	private List<TipoServizio> listTipoServizio;
 	private List<SpecificaServizio> listSpecificaServizio;
-	private List<ObiettivoServizio> listObiettivoServizio;
-	private List<RaggruppamentoFatturazione> listRaggruppamentoFatturazione;
-	private List<TipoFatturazione> listTipoFatturazione;
 
 
 	public DettaglioContrattoCanoni() {
@@ -130,19 +123,6 @@ public class DettaglioContrattoCanoni implements Serializable {
 		//
 		listTipoServizio = lutService.listItems("TipoServizio");
 
-		// Load tipo fatturazione LUT.
-		//
-		listTipoFatturazione = lutService.listItems("TipoFatturazione");
-
-		// Load raggruppamento fatturazione LUT.
-		//
-		listRaggruppamentoFatturazione = lutService.listItems("RaggruppamentoFatturazione");
-
-		// Load available obiettivi servizio.
-		//
-		ContrattoService cs = ServiceFactory.createService("Contratto");
-		listObiettivoServizio = cs.listAvailableObiettiviServizio(dettaglioContrattoGenerale.getId());
-
 		logger.debug("Initialization performed.");
 	}
 
@@ -151,15 +131,15 @@ public class DettaglioContrattoCanoni implements Serializable {
 		logger.debug("Cleaning form state.");
 
 		id = null;
-		descrizione = null;
+		alias = null;
 		codiceTipoServizio = null;
 		codiceSpecificaServizio = null;
-		codiceObiettivoServizio = null;
 		dataInizioValidita = null;
-		codiceRaggruppamentoFatturazione = null;
-		importoMensile = null;
-		codiceTipoFatturazione = null;
 		dataCessazione = null;
+		fatturaMinimoUnMese = null;
+		fatturazioneAnticipata = null;
+		fatturaOgniMesi = null;
+		canoneMensile = null;
 		note = null;
 	}
 
@@ -201,15 +181,15 @@ public class DettaglioContrattoCanoni implements Serializable {
 		selected = cs.retrieveDeep(selected.getId());
 
 		id = selected.getId();
-		descrizione = selected.getDescrizione();
+		alias = selected.getAlias();
 		codiceTipoServizio = selected.getTipoServizio() != null ? selected.getTipoServizio().getId() : null;
 		codiceSpecificaServizio = selected.getSpecificaServizio() != null ? selected.getSpecificaServizio().getId() : null;
-		codiceObiettivoServizio = selected.getObiettivoServizio() != null ? selected.getObiettivoServizio().getId() : null;
 		dataInizioValidita = selected.getDataInizioValidita();
-		codiceRaggruppamentoFatturazione = selected.getRaggruppamentoFatturazione() != null ? selected.getRaggruppamentoFatturazione().getId() : null;
-		importoMensile = selected.getImportoMensile();
-		codiceTipoFatturazione = selected.getTipoFatturazione() != null ? selected.getTipoFatturazione().getId() : null;
 		dataCessazione = selected.getDataCessazione();
+		fatturaMinimoUnMese = selected.getFatturaMinimoUnMese();
+		fatturazioneAnticipata = selected.getFatturazioneAnticipata();
+		fatturaOgniMesi = selected.getFatturaOgniMesi();
+		canoneMensile = selected.getCanoneMensile();
 		note = selected.getNote();
 
 		// After having loaded the entity, it is possible to populate the
@@ -228,15 +208,15 @@ public class DettaglioContrattoCanoni implements Serializable {
 			if(id == null) {
 				cs.create(
 						dettaglioContrattoGenerale.getId(),
-						descrizione,
+						alias,
 						codiceTipoServizio,
 						codiceSpecificaServizio,
-						codiceObiettivoServizio,
 						dataInizioValidita,
-						codiceRaggruppamentoFatturazione,
-						importoMensile,
-						codiceTipoFatturazione,
 						dataCessazione,
+						fatturaMinimoUnMese,
+						fatturazioneAnticipata,
+						fatturaOgniMesi,
+						canoneMensile,
 						note);
 				logger.debug("Entity successfully created.");
 
@@ -252,15 +232,15 @@ public class DettaglioContrattoCanoni implements Serializable {
 
 				cs.update(
 						id,
-						descrizione,
+						alias,
 						codiceTipoServizio,
 						codiceSpecificaServizio,
-						codiceObiettivoServizio,
 						dataInizioValidita,
-						codiceRaggruppamentoFatturazione,
-						importoMensile,
-						codiceTipoFatturazione,
 						dataCessazione,
+						fatturaMinimoUnMese,
+						fatturazioneAnticipata,
+						fatturaOgniMesi,
+						canoneMensile,
 						note);
 				logger.debug("Entity successfully updated.");
 
@@ -363,12 +343,12 @@ public class DettaglioContrattoCanoni implements Serializable {
 		this.id = id;
 	}
 
-	public String getDescrizione() {
-		return descrizione;
+	public String getAlias() {
+		return alias;
 	}
 
-	public void setDescrizione(String descrizione) {
-		this.descrizione = descrizione;
+	public void setAlias(String alias) {
+		this.alias = alias;
 	}
 
 	public Integer getCodiceTipoServizio() {
@@ -387,14 +367,6 @@ public class DettaglioContrattoCanoni implements Serializable {
 		this.codiceSpecificaServizio = codiceSpecificaServizio;
 	}
 
-	public Integer getCodiceObiettivoServizio() {
-		return codiceObiettivoServizio;
-	}
-
-	public void setCodiceObiettivoServizio(Integer codiceObiettivoServizio) {
-		this.codiceObiettivoServizio = codiceObiettivoServizio;
-	}
-
 	public Date getDataInizioValidita() {
 		return dataInizioValidita;
 	}
@@ -403,37 +375,44 @@ public class DettaglioContrattoCanoni implements Serializable {
 		this.dataInizioValidita = dataInizioValidita;
 	}
 
-	public Integer getCodiceRaggruppamentoFatturazione() {
-		return codiceRaggruppamentoFatturazione;
-	}
-
-	public void setCodiceRaggruppamentoFatturazione(
-			Integer codiceRaggruppamentoFatturazione) {
-		this.codiceRaggruppamentoFatturazione = codiceRaggruppamentoFatturazione;
-	}
-
-	public BigDecimal getImportoMensile() {
-		return importoMensile;
-	}
-
-	public void setImportoMensile(BigDecimal importoMensile) {
-		this.importoMensile = importoMensile;
-	}
-
-	public Integer getCodiceTipoFatturazione() {
-		return codiceTipoFatturazione;
-	}
-
-	public void setCodiceTipoFatturazione(Integer codiceTipoFatturazione) {
-		this.codiceTipoFatturazione = codiceTipoFatturazione;
-	}
-
 	public Date getDataCessazione() {
 		return dataCessazione;
 	}
 
 	public void setDataCessazione(Date dataCessazione) {
 		this.dataCessazione = dataCessazione;
+	}
+
+	public Boolean getFatturaMinimoUnMese() {
+		return fatturaMinimoUnMese;
+	}
+
+	public void setFatturaMinimoUnMese(Boolean fatturaMinimoUnMese) {
+		this.fatturaMinimoUnMese = fatturaMinimoUnMese;
+	}
+
+	public Boolean getFatturazioneAnticipata() {
+		return fatturazioneAnticipata;
+	}
+
+	public void setFatturazioneAnticipata(Boolean fatturazioneAnticipata) {
+		this.fatturazioneAnticipata = fatturazioneAnticipata;
+	}
+
+	public Integer getFatturaOgniMesi() {
+		return fatturaOgniMesi;
+	}
+
+	public void setFatturaOgniMesi(Integer fatturaOgniMesi) {
+		this.fatturaOgniMesi = fatturaOgniMesi;
+	}
+
+	public BigDecimal getCanoneMensile() {
+		return canoneMensile;
+	}
+
+	public void setCanoneMensile(BigDecimal canoneMensile) {
+		this.canoneMensile = canoneMensile;
 	}
 
 	public String getNote() {
@@ -459,31 +438,5 @@ public class DettaglioContrattoCanoni implements Serializable {
 	public void setListSpecificaServizio(
 			List<SpecificaServizio> listSpecificaServizio) {
 		this.listSpecificaServizio = listSpecificaServizio;
-	}
-
-	public List<ObiettivoServizio> getListObiettivoServizio() {
-		return listObiettivoServizio;
-	}
-
-	public void setListObiettivoServizio(
-			List<ObiettivoServizio> listObiettivoServizio) {
-		this.listObiettivoServizio = listObiettivoServizio;
-	}
-
-	public List<RaggruppamentoFatturazione> getListRaggruppamentoFatturazione() {
-		return listRaggruppamentoFatturazione;
-	}
-
-	public void setListRaggruppamentoFatturazione(
-			List<RaggruppamentoFatturazione> listRaggruppamentoFatturazione) {
-		this.listRaggruppamentoFatturazione = listRaggruppamentoFatturazione;
-	}
-
-	public List<TipoFatturazione> getListTipoFatturazione() {
-		return listTipoFatturazione;
-	}
-
-	public void setListTipoFatturazione(List<TipoFatturazione> listTipoFatturazione) {
-		this.listTipoFatturazione = listTipoFatturazione;
 	}
 }

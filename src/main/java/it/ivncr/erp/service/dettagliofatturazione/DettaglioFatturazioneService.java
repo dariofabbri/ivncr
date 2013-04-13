@@ -10,8 +10,6 @@ public interface DettaglioFatturazioneService extends EntityService<DettaglioFat
 
 	QueryResult<DettaglioFatturazione> list(
 			Integer codiceContratto,
-			String tipoFatturazione,
-			String tipoFrazionamentoFatturazione,
 			String condizioniPagamento,
 			String metodoPagamento,
 			String indirizzo,
@@ -23,8 +21,6 @@ public interface DettaglioFatturazioneService extends EntityService<DettaglioFat
 
 	DettaglioFatturazione create(
 			Integer codiceContratto,
-			Integer codiceTipoFatturazione,
-			Integer codiceTipoFrazionamentoFatturazione,
 			Integer codiceCondizioniPagamento,
 			Integer codiceMetodoPagamento,
 			Integer codiceIndirizzo,
@@ -34,8 +30,6 @@ public interface DettaglioFatturazioneService extends EntityService<DettaglioFat
 
 	DettaglioFatturazione update(
 			Integer id,
-			Integer codiceTipoFatturazione,
-			Integer codiceTipoFrazionamentoFatturazione,
 			Integer codiceCondizioniPagamento,
 			Integer codiceMetodoPagamento,
 			Integer codiceIndirizzo,

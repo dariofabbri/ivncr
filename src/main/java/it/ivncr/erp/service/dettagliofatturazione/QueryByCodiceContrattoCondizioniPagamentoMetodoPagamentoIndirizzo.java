@@ -5,17 +5,15 @@ import it.ivncr.erp.service.Query;
 
 import org.hibernate.Session;
 
-public class QueryByCodiceContrattoTipoFatturazioneTipoFrazionamentoFatturazioneCondizioniPagamentoMetodoPagamentoIndirizzo
+public class QueryByCodiceContrattoCondizioniPagamentoMetodoPagamentoIndirizzo
 	extends Query<DettaglioFatturazione> {
 
 	private Integer codiceContratto;
-	private String tipoFatturazione;
-	private String tipoFrazionamentoFatturazione;
 	private String condizioniPagamento;
 	private String metodoPagamento;
 	private String indirizzo;
 
-	public QueryByCodiceContrattoTipoFatturazioneTipoFrazionamentoFatturazioneCondizioniPagamentoMetodoPagamentoIndirizzo(Session session) {
+	public QueryByCodiceContrattoCondizioniPagamentoMetodoPagamentoIndirizzo(Session session) {
 
 		super(session);
 	}
@@ -26,23 +24,6 @@ public class QueryByCodiceContrattoTipoFatturazioneTipoFrazionamentoFatturazione
 
 	public void setCodiceContratto(Integer codiceContratto) {
 		this.codiceContratto = codiceContratto;
-	}
-
-	public String getTipoFatturazione() {
-		return tipoFatturazione;
-	}
-
-	public void setTipoFatturazione(String tipoFatturazione) {
-		this.tipoFatturazione = tipoFatturazione;
-	}
-
-	public String getTipoFrazionamentoFatturazione() {
-		return tipoFrazionamentoFatturazione;
-	}
-
-	public void setTipoFrazionamentoFatturazione(
-			String tipoFrazionamentoFatturazione) {
-		this.tipoFrazionamentoFatturazione = tipoFrazionamentoFatturazione;
 	}
 
 	public String getCondizioniPagamento() {
@@ -87,12 +68,6 @@ public class QueryByCodiceContrattoTipoFatturazioneTipoFrazionamentoFatturazione
 				"from DettaglioFatturazione dfa " +
 				"where dfa.contratto.id = :codiceContratto ";
 
-		if(tipoFatturazione != null)
-			hql += "and upper(dfa.tipoFatturazione.descrizione) like :tipoFatturazione ";
-
-		if(tipoFrazionamentoFatturazione != null)
-			hql += "and upper(dfa.tipoFrazionamentoFatturazione.descrizione) like :tipoFrazionamentoFatturazione ";
-
 		if(condizioniPagamento != null)
 			hql += "and upper(dfa.condizioniPagamento.descrizione) like :condizioniPagamento ";
 
@@ -111,12 +86,6 @@ public class QueryByCodiceContrattoTipoFatturazioneTipoFrazionamentoFatturazione
 		String hql =
 				"from DettaglioFatturazione dfa " +
 				"where dfa.contratto.id = :codiceContratto ";
-
-		if(tipoFatturazione != null)
-			hql += "and upper(dfa.tipoFatturazione.descrizione) like :tipoFatturazione ";
-
-		if(tipoFrazionamentoFatturazione != null)
-			hql += "and upper(dfa.tipoFrazionamentoFatturazione.descrizione) like :tipoFrazionamentoFatturazione ";
 
 		if(condizioniPagamento != null)
 			hql += "and upper(dfa.condizioniPagamento.descrizione) like :condizioniPagamento ";
@@ -147,12 +116,6 @@ public class QueryByCodiceContrattoTipoFatturazioneTipoFrazionamentoFatturazione
 
 			if (param.equals("codiceContratto"))
 				q.setParameter("codiceContratto", codiceContratto);
-
-			else if (param.equals("tipoFatturazione"))
-				q.setParameter("tipoFatturazione", "%" + tipoFatturazione.toUpperCase() + "%");
-
-			else if (param.equals("tipoFrazionamentoFatturazione"))
-				q.setParameter("tipoFrazionamentoFatturazione", "%" + tipoFrazionamentoFatturazione.toUpperCase() + "%");
 
 			else if (param.equals("condizioniPagamento"))
 				q.setParameter("condizioniPagamento", "%" + condizioniPagamento.toUpperCase() + "%");

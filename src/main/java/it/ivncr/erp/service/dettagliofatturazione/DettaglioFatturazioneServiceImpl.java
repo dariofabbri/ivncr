@@ -6,8 +6,6 @@ import it.ivncr.erp.model.commerciale.contratto.Contratto;
 import it.ivncr.erp.model.commerciale.contratto.DettaglioFatturazione;
 import it.ivncr.erp.model.commerciale.contratto.LayoutStampa;
 import it.ivncr.erp.model.commerciale.contratto.MetodoPagamento;
-import it.ivncr.erp.model.commerciale.contratto.TipoFatturazione;
-import it.ivncr.erp.model.commerciale.contratto.TipoFrazionamentoFatturazione;
 import it.ivncr.erp.service.AbstractService;
 import it.ivncr.erp.service.NotFoundException;
 import it.ivncr.erp.service.QueryResult;
@@ -31,22 +29,18 @@ public class DettaglioFatturazioneServiceImpl extends AbstractService implements
 			SortDirection sortDirection,
 			Map<String, String> filters) {
 
-		QueryByCodiceContrattoTipoFatturazioneTipoFrazionamentoFatturazioneCondizioniPagamentoMetodoPagamentoIndirizzo q =
-				new QueryByCodiceContrattoTipoFatturazioneTipoFrazionamentoFatturazioneCondizioniPagamentoMetodoPagamentoIndirizzo(session);
+		QueryByCodiceContrattoCondizioniPagamentoMetodoPagamentoIndirizzo q =
+				new QueryByCodiceContrattoCondizioniPagamentoMetodoPagamentoIndirizzo(session);
 
 		Integer codiceContratto = null;
 		if(filters.get("codiceContratto") != null)
 			codiceContratto = Integer.decode(filters.get("codiceContratto"));
 
-		String tipoFatturazione = filters.get("tipoFatturazione.descrizione");
-		String tipoFrazionamentoFatturazione = filters.get("tipoFrazionamentoFatturazione.dscrizione");
 		String condizioniPagamento = filters.get("condizioniPagamento.descrizione");
 		String metodoPagamento = filters.get("metodoPagamento.descrizione");
 		String indirizzo = filters.get("indirizzo.indirizzo");
 
 		q.setCodiceContratto(codiceContratto);
-		q.setTipoFatturazione(tipoFatturazione);
-		q.setTipoFrazionamentoFatturazione(tipoFrazionamentoFatturazione);
 		q.setCondizioniPagamento(condizioniPagamento);
 		q.setMetodoPagamento(metodoPagamento);
 		q.setIndirizzo(indirizzo);
@@ -63,20 +57,16 @@ public class DettaglioFatturazioneServiceImpl extends AbstractService implements
 	@Override
 	public QueryResult<DettaglioFatturazione> list(
 			Integer codiceContratto,
-			String tipoFatturazione,
-			String tipoFrazionamentoFatturazione,
 			String condizioniPagamento,
 			String metodoPagamento,
 			String indirizzo,
 			Integer offset,
 			Integer limit) {
 
-		QueryByCodiceContrattoTipoFatturazioneTipoFrazionamentoFatturazioneCondizioniPagamentoMetodoPagamentoIndirizzo q =
-				new QueryByCodiceContrattoTipoFatturazioneTipoFrazionamentoFatturazioneCondizioniPagamentoMetodoPagamentoIndirizzo(session);
+		QueryByCodiceContrattoCondizioniPagamentoMetodoPagamentoIndirizzo q =
+				new QueryByCodiceContrattoCondizioniPagamentoMetodoPagamentoIndirizzo(session);
 
 		q.setCodiceContratto(codiceContratto);
-		q.setTipoFatturazione(tipoFatturazione);
-		q.setTipoFrazionamentoFatturazione(tipoFrazionamentoFatturazione);
 		q.setCondizioniPagamento(condizioniPagamento);
 		q.setMetodoPagamento(metodoPagamento);
 		q.setIndirizzo(indirizzo);
@@ -106,8 +96,6 @@ public class DettaglioFatturazioneServiceImpl extends AbstractService implements
 
 		String hql =
 				"from DettaglioFatturazione dfa " +
-				"left join fetch dfa.tipoFatturazione tfa " +
-				"left join fetch dfa.tipoFrazionamentoFatturazione tff " +
 				"left join fetch dfa.condizioniPagamento cpa " +
 				"left join fetch dfa.metodoPagamento mpa " +
 				"left join fetch dfa.indirizzo ind " +
@@ -125,8 +113,6 @@ public class DettaglioFatturazioneServiceImpl extends AbstractService implements
 	@Override
 	public DettaglioFatturazione create(
 			Integer codiceContratto,
-			Integer codiceTipoFatturazione,
-			Integer codiceTipoFrazionamentoFatturazione,
 			Integer codiceCondizioniPagamento,
 			Integer codiceMetodoPagamento,
 			Integer codiceIndirizzo,
@@ -137,8 +123,6 @@ public class DettaglioFatturazioneServiceImpl extends AbstractService implements
 		// Fetch referred entities.
 		//
 		Contratto contratto = (Contratto)session.get(Contratto.class, codiceContratto);
-		TipoFatturazione tipoFatturazione = (TipoFatturazione)session.get(TipoFatturazione.class, codiceTipoFatturazione);
-		TipoFrazionamentoFatturazione tipoFrazionamentoFatturazione = (TipoFrazionamentoFatturazione)session.get(TipoFrazionamentoFatturazione.class, codiceTipoFrazionamentoFatturazione);
 		CondizioniPagamento condizioniPagamento = (CondizioniPagamento)session.get(CondizioniPagamento.class, codiceCondizioniPagamento);
 		MetodoPagamento metodoPagamento = (MetodoPagamento)session.get(MetodoPagamento.class, codiceMetodoPagamento);
 		Indirizzo indirizzo = (Indirizzo)session.get(Indirizzo.class, codiceIndirizzo);
@@ -151,8 +135,6 @@ public class DettaglioFatturazioneServiceImpl extends AbstractService implements
 		// Set entity fields.
 		//
 		entity.setContratto(contratto);
-		entity.setTipoFatturazione(tipoFatturazione);
-		entity.setTipoFrazionamentoFatturazione(tipoFrazionamentoFatturazione);
 		entity.setCondizioniPagamento(condizioniPagamento);
 		entity.setMetodoPagamento(metodoPagamento);
 		entity.setIndirizzo(indirizzo);
@@ -176,8 +158,6 @@ public class DettaglioFatturazioneServiceImpl extends AbstractService implements
 	@Override
 	public DettaglioFatturazione update(
 			Integer id,
-			Integer codiceTipoFatturazione,
-			Integer codiceTipoFrazionamentoFatturazione,
 			Integer codiceCondizioniPagamento,
 			Integer codiceMetodoPagamento,
 			Integer codiceIndirizzo,
@@ -198,8 +178,6 @@ public class DettaglioFatturazioneServiceImpl extends AbstractService implements
 
 		// Fetch referred entities.
 		//
-		TipoFatturazione tipoFatturazione = (TipoFatturazione)session.get(TipoFatturazione.class, codiceTipoFatturazione);
-		TipoFrazionamentoFatturazione tipoFrazionamentoFatturazione = (TipoFrazionamentoFatturazione)session.get(TipoFrazionamentoFatturazione.class, codiceTipoFrazionamentoFatturazione);
 		CondizioniPagamento condizioniPagamento = (CondizioniPagamento)session.get(CondizioniPagamento.class, codiceCondizioniPagamento);
 		MetodoPagamento metodoPagamento = (MetodoPagamento)session.get(MetodoPagamento.class, codiceMetodoPagamento);
 		Indirizzo indirizzo = (Indirizzo)session.get(Indirizzo.class, codiceIndirizzo);
@@ -207,8 +185,6 @@ public class DettaglioFatturazioneServiceImpl extends AbstractService implements
 
 		// Set entity fields.
 		//
-		entity.setTipoFatturazione(tipoFatturazione);
-		entity.setTipoFrazionamentoFatturazione(tipoFrazionamentoFatturazione);
 		entity.setCondizioniPagamento(condizioniPagamento);
 		entity.setMetodoPagamento(metodoPagamento);
 		entity.setIndirizzo(indirizzo);

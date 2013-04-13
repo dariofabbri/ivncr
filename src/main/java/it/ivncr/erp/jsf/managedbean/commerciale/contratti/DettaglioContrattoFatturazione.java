@@ -7,8 +7,6 @@ import it.ivncr.erp.model.commerciale.contratto.CondizioniPagamento;
 import it.ivncr.erp.model.commerciale.contratto.DettaglioFatturazione;
 import it.ivncr.erp.model.commerciale.contratto.LayoutStampa;
 import it.ivncr.erp.model.commerciale.contratto.MetodoPagamento;
-import it.ivncr.erp.model.commerciale.contratto.TipoFatturazione;
-import it.ivncr.erp.model.commerciale.contratto.TipoFrazionamentoFatturazione;
 import it.ivncr.erp.service.QueryResult;
 import it.ivncr.erp.service.ServiceFactory;
 import it.ivncr.erp.service.SortDirection;
@@ -50,8 +48,6 @@ public class DettaglioContrattoFatturazione implements Serializable {
 	private DettaglioFatturazione selected;
 
 	private Integer id;
-	private Integer codiceTipoFatturazione;
-	private Integer codiceTipoFrazionamentoFatturazione;
 	private Integer codiceCondizioniPagamento;
 	private Integer codiceMetodoPagamento;
 	private Integer codiceIndirizzo;
@@ -59,8 +55,6 @@ public class DettaglioContrattoFatturazione implements Serializable {
 	private Date validoDa;
 	private Date validoA;
 
-	private List<TipoFatturazione> listTipoFatturazione;
-	private List<TipoFrazionamentoFatturazione> listTipoFrazionamentoFatturazione;
 	private List<CondizioniPagamento> listCondizioniPagamento;
 	private List<MetodoPagamento> listMetodoPagamento;
 	private List<Indirizzo> listIndirizzo;
@@ -125,14 +119,6 @@ public class DettaglioContrattoFatturazione implements Serializable {
 
 		LUTService lutService = ServiceFactory.createService("LUT");
 
-		// Load tipo fatturazione LUT.
-		//
-		listTipoFatturazione = lutService.listItems("TipoFatturazione");
-
-		// Load tipo frazionamento fatturazione LUT.
-		//
-		listTipoFrazionamentoFatturazione = lutService.listItems("TipoFrazionamentoFatturazione");
-
 		// Load condizioni pagamento LUT.
 		//
 		listCondizioniPagamento = lutService.listItems("CondizioniPagamento");
@@ -158,8 +144,6 @@ public class DettaglioContrattoFatturazione implements Serializable {
 		logger.debug("Cleaning form state.");
 
 		id = null;
-		codiceTipoFatturazione = null;
-		codiceTipoFrazionamentoFatturazione = null;
 		codiceCondizioniPagamento = null;
 		codiceMetodoPagamento = null;
 		codiceIndirizzo = null;
@@ -192,8 +176,6 @@ public class DettaglioContrattoFatturazione implements Serializable {
 		selected = dfs.retrieveDeep(selected.getId());
 
 		id = selected.getId();
-		codiceTipoFatturazione = selected.getTipoFatturazione() != null ? selected.getTipoFatturazione().getId() : null;
-		codiceTipoFrazionamentoFatturazione = selected.getTipoFrazionamentoFatturazione() != null ? selected.getTipoFrazionamentoFatturazione().getId() : null;
 		codiceCondizioniPagamento = selected.getCondizioniPagamento() != null ? selected.getCondizioniPagamento().getId() : null;
 		codiceMetodoPagamento = selected.getMetodoPagamento() != null ? selected.getMetodoPagamento().getId() : null;
 		codiceIndirizzo = selected.getIndirizzo() != null ? selected.getIndirizzo().getId() : null;
@@ -212,8 +194,6 @@ public class DettaglioContrattoFatturazione implements Serializable {
 			if(id == null) {
 				dfs.create(
 						dettaglioContrattoGenerale.getId(),
-						codiceTipoFatturazione,
-						codiceTipoFrazionamentoFatturazione,
 						codiceCondizioniPagamento,
 						codiceMetodoPagamento,
 						codiceIndirizzo,
@@ -234,8 +214,6 @@ public class DettaglioContrattoFatturazione implements Serializable {
 
 				dfs.update(
 						id,
-						codiceTipoFatturazione,
-						codiceTipoFrazionamentoFatturazione,
 						codiceCondizioniPagamento,
 						codiceMetodoPagamento,
 						codiceIndirizzo,
@@ -343,23 +321,6 @@ public class DettaglioContrattoFatturazione implements Serializable {
 		this.id = id;
 	}
 
-	public Integer getCodiceTipoFatturazione() {
-		return codiceTipoFatturazione;
-	}
-
-	public void setCodiceTipoFatturazione(Integer codiceTipoFatturazione) {
-		this.codiceTipoFatturazione = codiceTipoFatturazione;
-	}
-
-	public Integer getCodiceTipoFrazionamentoFatturazione() {
-		return codiceTipoFrazionamentoFatturazione;
-	}
-
-	public void setCodiceTipoFrazionamentoFatturazione(
-			Integer codiceTipoFrazionamentoFatturazione) {
-		this.codiceTipoFrazionamentoFatturazione = codiceTipoFrazionamentoFatturazione;
-	}
-
 	public Integer getCodiceCondizioniPagamento() {
 		return codiceCondizioniPagamento;
 	}
@@ -406,23 +367,6 @@ public class DettaglioContrattoFatturazione implements Serializable {
 
 	public void setValidoA(Date validoA) {
 		this.validoA = validoA;
-	}
-
-	public List<TipoFatturazione> getListTipoFatturazione() {
-		return listTipoFatturazione;
-	}
-
-	public void setListTipoFatturazione(List<TipoFatturazione> listTipoFatturazione) {
-		this.listTipoFatturazione = listTipoFatturazione;
-	}
-
-	public List<TipoFrazionamentoFatturazione> getListTipoFrazionamentoFatturazione() {
-		return listTipoFrazionamentoFatturazione;
-	}
-
-	public void setListTipoFrazionamentoFatturazione(
-			List<TipoFrazionamentoFatturazione> listTipoFrazionamentoFatturazione) {
-		this.listTipoFrazionamentoFatturazione = listTipoFrazionamentoFatturazione;
 	}
 
 	public List<CondizioniPagamento> getListCondizioniPagamento() {

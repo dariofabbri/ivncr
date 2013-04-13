@@ -5,17 +5,15 @@ import it.ivncr.erp.service.Query;
 
 import org.hibernate.Session;
 
-public class QueryByCodiceContrattoDescrizioneTipoServizioSpecificaServizioObiettivoServizioTipoFatturazione
+public class QueryByCodiceContrattoAliasTipoServizioSpecificaServizio
 	extends Query<Canone> {
 
 	private Integer codiceContratto;
-	private String descrizione;
+	private String alias;
 	private String tipoServizio;
 	private String specificaServizio;
-	private String obiettivoServizio;
-	private String tipoFatturazione;
 
-	public QueryByCodiceContrattoDescrizioneTipoServizioSpecificaServizioObiettivoServizioTipoFatturazione(Session session) {
+	public QueryByCodiceContrattoAliasTipoServizioSpecificaServizio(Session session) {
 
 		super(session);
 	}
@@ -28,12 +26,12 @@ public class QueryByCodiceContrattoDescrizioneTipoServizioSpecificaServizioObiet
 		this.codiceContratto = codiceContratto;
 	}
 
-	public String getDescrizione() {
-		return descrizione;
+	public String getAlias() {
+		return alias;
 	}
 
-	public void setDescrizione(String descrizione) {
-		this.descrizione = descrizione;
+	public void setAlias(String alias) {
+		this.alias = alias;
 	}
 
 	public String getTipoServizio() {
@@ -50,22 +48,6 @@ public class QueryByCodiceContrattoDescrizioneTipoServizioSpecificaServizioObiet
 
 	public void setSpecificaServizio(String specificaServizio) {
 		this.specificaServizio = specificaServizio;
-	}
-
-	public String getObiettivoServizio() {
-		return obiettivoServizio;
-	}
-
-	public void setObiettivoServizio(String obiettivoServizio) {
-		this.obiettivoServizio = obiettivoServizio;
-	}
-
-	public String getTipoFatturazione() {
-		return tipoFatturazione;
-	}
-
-	public void setTipoFatturazione(String tipoFatturazione) {
-		this.tipoFatturazione = tipoFatturazione;
 	}
 
 	@Override
@@ -86,20 +68,14 @@ public class QueryByCodiceContrattoDescrizioneTipoServizioSpecificaServizioObiet
 				"from Canone can " +
 				"where can.contratto.id = :codiceContratto ";
 
-		if(descrizione != null)
-			hql += "and upper(can.descrizione) like :descrizione ";
+		if(alias != null)
+			hql += "and upper(can.alias) like :alias ";
 
 		if(tipoServizio != null)
 			hql += "and upper(can.tipoServizio.descrizione) like :tipoServizio ";
 
 		if(specificaServizio != null)
 			hql += "and upper(can.specificaServizio.descrizione) like :specificaServizio ";
-
-		if(obiettivoServizio != null)
-			hql += "and upper(can.obiettivoServizio.alias) like :obiettivoServizio ";
-
-		if(tipoFatturazione != null)
-			hql += "and upper(can.tipoFatturazione.descrizione) like :tipoFatturazione ";
 
 		return hql;
 	}
@@ -111,20 +87,14 @@ public class QueryByCodiceContrattoDescrizioneTipoServizioSpecificaServizioObiet
 				"from Canone can " +
 				"where can.contratto.id = :codiceContratto ";
 
-		if(descrizione != null)
-			hql += "and upper(can.descrizione) like :descrizione ";
+		if(alias != null)
+			hql += "and upper(can.alias) like :alias ";
 
 		if(tipoServizio != null)
 			hql += "and upper(can.tipoServizio.descrizione) like :tipoServizio ";
 
 		if(specificaServizio != null)
 			hql += "and upper(can.specificaServizio.descrizione) like :specificaServizio ";
-
-		if(obiettivoServizio != null)
-			hql += "and upper(can.obiettivoServizio.alias) like :obiettivoServizio ";
-
-		if(tipoFatturazione != null)
-			hql += "and upper(can.tipoFatturazione.descrizione) like :tipoFatturazione ";
 
 		if(sortCriteria != null) {
 
@@ -147,20 +117,14 @@ public class QueryByCodiceContrattoDescrizioneTipoServizioSpecificaServizioObiet
 			if (param.equals("codiceContratto"))
 				q.setParameter("codiceContratto", codiceContratto);
 
-			else if (param.equals("descrizione"))
-				q.setParameter("descrizione", "%" + descrizione.toUpperCase() + "%");
+			else if (param.equals("alias"))
+				q.setParameter("alias", "%" + alias.toUpperCase() + "%");
 
 			else if (param.equals("tipoServizio"))
 				q.setParameter("tipoServizio", "%" + tipoServizio.toUpperCase() + "%");
 
 			else if (param.equals("specificaServizio"))
 				q.setParameter("specificaServizio", "%" + specificaServizio.toUpperCase() + "%");
-
-			else if (param.equals("obiettivoServizio"))
-				q.setParameter("obiettivoServizio", "%" + obiettivoServizio.toUpperCase() + "%");
-
-			else if (param.equals("tipoFatturazione"))
-				q.setParameter("tipoFatturazione", "%" + tipoFatturazione.toUpperCase() + "%");
 		}
 	}
 }

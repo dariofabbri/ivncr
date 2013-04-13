@@ -11,11 +11,9 @@ public interface CanoneService extends EntityService<Canone> {
 
 	QueryResult<Canone> list(
 			Integer codiceContratto,
-			String descrizione,
+			String alias,
 			String tipoServizio,
 			String specificaServizio,
-			String obiettivoServizio,
-			String tipoFatturazione,
 			Integer offset,
 			Integer limit);
 
@@ -24,28 +22,28 @@ public interface CanoneService extends EntityService<Canone> {
 
 	Canone create(
 			Integer codiceContratto,
-			String descrizione,
+			String alias,
 			Integer codiceTipoServizio,
 			Integer codiceSpecificaServizio,
-			Integer codiceObiettivoServizio,
 			Date dataInizioValidita,
-			Integer codiceRaggruppamentoFatturazione,
-			BigDecimal importoMensile,
-			Integer codiceTipoFatturazione,
 			Date dataCessazione,
+			Boolean fatturaMinimoUnMese,
+			Boolean fatturazioneAnticipata,
+			Integer fatturaOgniMesi,
+			BigDecimal canoneMensile,
 			String note);
 
 	Canone update(
 			Integer id,
-			String descrizione,
+			String alias,
 			Integer codiceTipoServizio,
 			Integer codiceSpecificaServizio,
-			Integer codiceObiettivoServizio,
 			Date dataInizioValidita,
-			Integer codiceRaggruppamentoFatturazione,
-			BigDecimal importoMensile,
-			Integer codiceTipoFatturazione,
 			Date dataCessazione,
+			Boolean fatturaMinimoUnMese,
+			Boolean fatturazioneAnticipata,
+			Integer fatturaOgniMesi,
+			BigDecimal canoneMensile,
 			String note);
 
 	void delete(Integer id);

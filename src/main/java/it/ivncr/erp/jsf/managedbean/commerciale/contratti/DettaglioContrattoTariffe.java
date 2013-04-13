@@ -2,16 +2,12 @@ package it.ivncr.erp.jsf.managedbean.commerciale.contratti;
 
 
 import it.ivncr.erp.jsf.RobustLazyDataModel;
-import it.ivncr.erp.model.commerciale.cliente.ObiettivoServizio;
 import it.ivncr.erp.model.commerciale.contratto.SpecificaServizio;
 import it.ivncr.erp.model.commerciale.contratto.Tariffa;
-import it.ivncr.erp.model.commerciale.contratto.TipoFatturazione;
 import it.ivncr.erp.model.commerciale.contratto.TipoServizio;
-import it.ivncr.erp.model.commerciale.contratto.TipoTariffa;
 import it.ivncr.erp.service.QueryResult;
 import it.ivncr.erp.service.ServiceFactory;
 import it.ivncr.erp.service.SortDirection;
-import it.ivncr.erp.service.contratto.ContrattoService;
 import it.ivncr.erp.service.lut.LUTService;
 import it.ivncr.erp.service.tariffa.TariffaService;
 
@@ -50,23 +46,30 @@ public class DettaglioContrattoTariffe implements Serializable {
 	private Tariffa selected;
 
 	private Integer id;
-	private String descrizione;
+	private String alias;
 	private Integer codiceTipoServizio;
 	private Integer codiceSpecificaServizio;
-	private Integer codiceObiettivoServizio;
-	private Integer codiceTipoTariffa;
-	private BigDecimal costo;
-	private Integer numero;
+	private BigDecimal costoOrario;
+	private BigDecimal costoOperazione;
+	private BigDecimal costoFissoUnaTantum;
+	private BigDecimal costoFissoATempo;
+	private Integer costoFissoMesi;
+	private Integer franchigieTotali;
+	private Integer franchigieATempo;
+	private Integer franchigieMesi;
+	private BigDecimal ritenutaGaranzia;
+	private Integer ritenutaGaranziaGiorni;
 	private Date dataInizioValidita;
-	private Integer codiceTipoFatturazione;
 	private Date dataCessazione;
+	private Boolean fatturazioneAnticipata;
+	private Boolean extraFatturatoAParte;
+	private Boolean fatturaSpezzata;
+	private Integer fatturaOgniMesi;
+	private Boolean fatturaMinimoUnMese;
 	private String note;
 
 	private List<TipoServizio> listTipoServizio;
 	private List<SpecificaServizio> listSpecificaServizio;
-	private List<ObiettivoServizio> listObiettivoServizio;
-	private List<TipoTariffa> listTipoTariffa;
-	private List<TipoFatturazione> listTipoFatturazione;
 
 
 	public DettaglioContrattoTariffe() {
@@ -131,19 +134,6 @@ public class DettaglioContrattoTariffe implements Serializable {
 		//
 		listTipoServizio = lutService.listItems("TipoServizio");
 
-		// Load tipo tariffa LUT.
-		//
-		listTipoTariffa = lutService.listItems("TipoTariffa");
-
-		// Load tipo fatturazione LUT.
-		//
-		listTipoFatturazione = lutService.listItems("TipoFatturazione");
-
-		// Load available obiettivo servizio.
-		//
-		ContrattoService cs = ServiceFactory.createService("Contratto");
-		listObiettivoServizio = cs.listAvailableObiettiviServizio(dettaglioContrattoGenerale.getId());
-
 		logger.debug("Initialization performed.");
 	}
 
@@ -152,16 +142,26 @@ public class DettaglioContrattoTariffe implements Serializable {
 		logger.debug("Cleaning form state.");
 
 		id = null;
-		descrizione = null;
+		alias = null;
 		codiceTipoServizio = null;
 		codiceSpecificaServizio = null;
-		codiceObiettivoServizio = null;
-		codiceTipoTariffa = null;
-		costo = null;
-		numero = null;
+		costoOrario = null;
+		costoOperazione = null;
+		costoFissoUnaTantum = null;
+		costoFissoATempo = null;
+		costoFissoMesi = null;
+		franchigieTotali = null;
+		franchigieATempo = null;
+		franchigieMesi = null;
+		ritenutaGaranzia = null;
+		ritenutaGaranziaGiorni = null;
 		dataInizioValidita = null;
-		codiceTipoFatturazione = null;
 		dataCessazione = null;
+		fatturazioneAnticipata = null;
+		extraFatturatoAParte = null;
+		fatturaSpezzata = null;
+		fatturaOgniMesi = null;
+		fatturaMinimoUnMese = null;
 		note = null;
 	}
 
@@ -203,16 +203,26 @@ public class DettaglioContrattoTariffe implements Serializable {
 		selected = ts.retrieveDeep(selected.getId());
 
 		id = selected.getId();
-		descrizione = selected.getDescrizione();
+		alias = selected.getAlias();
 		codiceTipoServizio = selected.getTipoServizio() != null ? selected.getTipoServizio().getId() : null;
 		codiceSpecificaServizio = selected.getSpecificaServizio() != null ? selected.getSpecificaServizio().getId() : null;
-		codiceObiettivoServizio = selected.getObiettivoServizio() != null ? selected.getObiettivoServizio().getId() : null;
-		codiceTipoTariffa = selected.getTipoTariffa() != null ? selected.getTipoTariffa().getId() : null;
-		costo = selected.getCosto();
-		numero = selected.getNumero();
+		costoOrario = selected.getCostoOrario();
+		costoOperazione = selected.getCostoOperazione();
+		costoFissoUnaTantum = selected.getCostoFissoUnaTantum();
+		costoFissoATempo = selected.getCostoFissoATempo();
+		costoFissoMesi = selected.getCostoFissoMesi();
+		franchigieTotali = selected.getFranchigieTotali();
+		franchigieATempo = selected.getFranchigieATempo();
+		franchigieMesi = selected.getFranchigieMesi();
+		ritenutaGaranzia = selected.getRitenutaGaranzia();
+		ritenutaGaranziaGiorni = selected.getRitenutaGaranziaGiorni();
 		dataInizioValidita = selected.getDataInizioValidita();
-		codiceTipoFatturazione = selected.getTipoFatturazione() != null ? selected.getTipoFatturazione().getId() : null;
 		dataCessazione = selected.getDataCessazione();
+		fatturazioneAnticipata = selected.getFatturazioneAnticipata();
+		extraFatturatoAParte = selected.getExtraFatturatoAParte();
+		fatturaSpezzata = selected.getFatturaSpezzata();
+		fatturaOgniMesi = selected.getFatturaOgniMesi();
+		fatturaMinimoUnMese = selected.getFatturaMinimoUnMese();
 		note = selected.getNote();
 
 		// After having loaded the entity, it is possible to populate the
@@ -231,17 +241,28 @@ public class DettaglioContrattoTariffe implements Serializable {
 			if(id == null) {
 				ts.create(
 						dettaglioContrattoGenerale.getId(),
-						descrizione,
+						alias,
 						codiceTipoServizio,
 						codiceSpecificaServizio,
-						codiceObiettivoServizio,
-						codiceTipoTariffa,
-						costo,
-						numero,
+						costoOrario,
+						costoOperazione,
+						costoFissoUnaTantum,
+						costoFissoATempo,
+						costoFissoMesi,
+						franchigieTotali,
+						franchigieATempo,
+						franchigieMesi,
+						ritenutaGaranzia,
+						ritenutaGaranziaGiorni,
 						dataInizioValidita,
-						codiceTipoFatturazione,
 						dataCessazione,
+						fatturazioneAnticipata,
+						extraFatturatoAParte,
+						fatturaSpezzata,
+						fatturaOgniMesi,
+						fatturaMinimoUnMese,
 						note);
+
 				logger.debug("Entity successfully created.");
 
 				// Add a message.
@@ -256,16 +277,26 @@ public class DettaglioContrattoTariffe implements Serializable {
 
 				ts.update(
 						id,
-						descrizione,
+						alias,
 						codiceTipoServizio,
 						codiceSpecificaServizio,
-						codiceObiettivoServizio,
-						codiceTipoTariffa,
-						costo,
-						numero,
+						costoOrario,
+						costoOperazione,
+						costoFissoUnaTantum,
+						costoFissoATempo,
+						costoFissoMesi,
+						franchigieTotali,
+						franchigieATempo,
+						franchigieMesi,
+						ritenutaGaranzia,
+						ritenutaGaranziaGiorni,
 						dataInizioValidita,
-						codiceTipoFatturazione,
 						dataCessazione,
+						fatturazioneAnticipata,
+						extraFatturatoAParte,
+						fatturaSpezzata,
+						fatturaOgniMesi,
+						fatturaMinimoUnMese,
 						note);
 				logger.debug("Entity successfully updated.");
 
@@ -368,12 +399,12 @@ public class DettaglioContrattoTariffe implements Serializable {
 		this.id = id;
 	}
 
-	public String getDescrizione() {
-		return descrizione;
+	public String getAlias() {
+		return alias;
 	}
 
-	public void setDescrizione(String descrizione) {
-		this.descrizione = descrizione;
+	public void setAlias(String alias) {
+		this.alias = alias;
 	}
 
 	public Integer getCodiceTipoServizio() {
@@ -392,36 +423,84 @@ public class DettaglioContrattoTariffe implements Serializable {
 		this.codiceSpecificaServizio = codiceSpecificaServizio;
 	}
 
-	public Integer getCodiceObiettivoServizio() {
-		return codiceObiettivoServizio;
+	public BigDecimal getCostoOrario() {
+		return costoOrario;
 	}
 
-	public void setCodiceObiettivoServizio(Integer codiceObiettivoServizio) {
-		this.codiceObiettivoServizio = codiceObiettivoServizio;
+	public void setCostoOrario(BigDecimal costoOrario) {
+		this.costoOrario = costoOrario;
 	}
 
-	public Integer getCodiceTipoTariffa() {
-		return codiceTipoTariffa;
+	public BigDecimal getCostoOperazione() {
+		return costoOperazione;
 	}
 
-	public void setCodiceTipoTariffa(Integer codiceTipoTariffa) {
-		this.codiceTipoTariffa = codiceTipoTariffa;
+	public void setCostoOperazione(BigDecimal costoOperazione) {
+		this.costoOperazione = costoOperazione;
 	}
 
-	public BigDecimal getCosto() {
-		return costo;
+	public BigDecimal getCostoFissoUnaTantum() {
+		return costoFissoUnaTantum;
 	}
 
-	public void setCosto(BigDecimal costo) {
-		this.costo = costo;
+	public void setCostoFissoUnaTantum(BigDecimal costoFissoUnaTantum) {
+		this.costoFissoUnaTantum = costoFissoUnaTantum;
 	}
 
-	public Integer getNumero() {
-		return numero;
+	public BigDecimal getCostoFissoATempo() {
+		return costoFissoATempo;
 	}
 
-	public void setNumero(Integer numero) {
-		this.numero = numero;
+	public void setCostoFissoATempo(BigDecimal costoFissoATempo) {
+		this.costoFissoATempo = costoFissoATempo;
+	}
+
+	public Integer getCostoFissoMesi() {
+		return costoFissoMesi;
+	}
+
+	public void setCostoFissoMesi(Integer costoFissoMesi) {
+		this.costoFissoMesi = costoFissoMesi;
+	}
+
+	public Integer getFranchigieTotali() {
+		return franchigieTotali;
+	}
+
+	public void setFranchigieTotali(Integer franchigieTotali) {
+		this.franchigieTotali = franchigieTotali;
+	}
+
+	public Integer getFranchigieATempo() {
+		return franchigieATempo;
+	}
+
+	public void setFranchigieATempo(Integer franchigieATempo) {
+		this.franchigieATempo = franchigieATempo;
+	}
+
+	public Integer getFranchigieMesi() {
+		return franchigieMesi;
+	}
+
+	public void setFranchigieMesi(Integer franchigieMesi) {
+		this.franchigieMesi = franchigieMesi;
+	}
+
+	public BigDecimal getRitenutaGaranzia() {
+		return ritenutaGaranzia;
+	}
+
+	public void setRitenutaGaranzia(BigDecimal ritenutaGaranzia) {
+		this.ritenutaGaranzia = ritenutaGaranzia;
+	}
+
+	public Integer getRitenutaGaranziaGiorni() {
+		return ritenutaGaranziaGiorni;
+	}
+
+	public void setRitenutaGaranziaGiorni(Integer ritenutaGaranziaGiorni) {
+		this.ritenutaGaranziaGiorni = ritenutaGaranziaGiorni;
 	}
 
 	public Date getDataInizioValidita() {
@@ -432,20 +511,52 @@ public class DettaglioContrattoTariffe implements Serializable {
 		this.dataInizioValidita = dataInizioValidita;
 	}
 
-	public Integer getCodiceTipoFatturazione() {
-		return codiceTipoFatturazione;
-	}
-
-	public void setCodiceTipoFatturazione(Integer codiceTipoFatturazione) {
-		this.codiceTipoFatturazione = codiceTipoFatturazione;
-	}
-
 	public Date getDataCessazione() {
 		return dataCessazione;
 	}
 
 	public void setDataCessazione(Date dataCessazione) {
 		this.dataCessazione = dataCessazione;
+	}
+
+	public Boolean getFatturazioneAnticipata() {
+		return fatturazioneAnticipata;
+	}
+
+	public void setFatturazioneAnticipata(Boolean fatturazioneAnticipata) {
+		this.fatturazioneAnticipata = fatturazioneAnticipata;
+	}
+
+	public Boolean getExtraFatturatoAParte() {
+		return extraFatturatoAParte;
+	}
+
+	public void setExtraFatturatoAParte(Boolean extraFatturatoAParte) {
+		this.extraFatturatoAParte = extraFatturatoAParte;
+	}
+
+	public Boolean getFatturaSpezzata() {
+		return fatturaSpezzata;
+	}
+
+	public void setFatturaSpezzata(Boolean fatturaSpezzata) {
+		this.fatturaSpezzata = fatturaSpezzata;
+	}
+
+	public Integer getFatturaOgniMesi() {
+		return fatturaOgniMesi;
+	}
+
+	public void setFatturaOgniMesi(Integer fatturaOgniMesi) {
+		this.fatturaOgniMesi = fatturaOgniMesi;
+	}
+
+	public Boolean getFatturaMinimoUnMese() {
+		return fatturaMinimoUnMese;
+	}
+
+	public void setFatturaMinimoUnMese(Boolean fatturaMinimoUnMese) {
+		this.fatturaMinimoUnMese = fatturaMinimoUnMese;
 	}
 
 	public String getNote() {
@@ -471,30 +582,5 @@ public class DettaglioContrattoTariffe implements Serializable {
 	public void setListSpecificaServizio(
 			List<SpecificaServizio> listSpecificaServizio) {
 		this.listSpecificaServizio = listSpecificaServizio;
-	}
-
-	public List<ObiettivoServizio> getListObiettivoServizio() {
-		return listObiettivoServizio;
-	}
-
-	public void setListObiettivoServizio(
-			List<ObiettivoServizio> listObiettivoServizio) {
-		this.listObiettivoServizio = listObiettivoServizio;
-	}
-
-	public List<TipoTariffa> getListTipoTariffa() {
-		return listTipoTariffa;
-	}
-
-	public void setListTipoTariffa(List<TipoTariffa> listTipoTariffa) {
-		this.listTipoTariffa = listTipoTariffa;
-	}
-
-	public List<TipoFatturazione> getListTipoFatturazione() {
-		return listTipoFatturazione;
-	}
-
-	public void setListTipoFatturazione(List<TipoFatturazione> listTipoFatturazione) {
-		this.listTipoFatturazione = listTipoFatturazione;
 	}
 }

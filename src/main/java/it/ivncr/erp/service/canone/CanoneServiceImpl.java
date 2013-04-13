@@ -1,11 +1,8 @@
 package it.ivncr.erp.service.canone;
 
-import it.ivncr.erp.model.commerciale.cliente.ObiettivoServizio;
 import it.ivncr.erp.model.commerciale.contratto.Canone;
 import it.ivncr.erp.model.commerciale.contratto.Contratto;
-import it.ivncr.erp.model.commerciale.contratto.RaggruppamentoFatturazione;
 import it.ivncr.erp.model.commerciale.contratto.SpecificaServizio;
-import it.ivncr.erp.model.commerciale.contratto.TipoFatturazione;
 import it.ivncr.erp.model.commerciale.contratto.TipoServizio;
 import it.ivncr.erp.service.AbstractService;
 import it.ivncr.erp.service.NotFoundException;
@@ -31,25 +28,21 @@ public class CanoneServiceImpl extends AbstractService implements CanoneService 
 			SortDirection sortDirection,
 			Map<String, String> filters) {
 
-		QueryByCodiceContrattoDescrizioneTipoServizioSpecificaServizioObiettivoServizioTipoFatturazione q =
-				new QueryByCodiceContrattoDescrizioneTipoServizioSpecificaServizioObiettivoServizioTipoFatturazione(session);
+		QueryByCodiceContrattoAliasTipoServizioSpecificaServizio q =
+				new QueryByCodiceContrattoAliasTipoServizioSpecificaServizio(session);
 
 		Integer codiceContratto = null;
 		if(filters.get("codiceContratto") != null)
 			codiceContratto = Integer.decode(filters.get("codiceContratto"));
 
-		String descrizione = filters.get("descrizione");
+		String alias = filters.get("alias");
 		String tipoServizio = filters.get("tipoServizio.descrizione");
 		String specificaServizio = filters.get("specificaServizio.descrizione");
-		String obiettivoServizio = filters.get("obiettivoServizio.alias");
-		String tipoFatturazione = filters.get("tipoFatturazione.descrizione");
 
 		q.setCodiceContratto(codiceContratto);
-		q.setDescrizione(descrizione);
+		q.setAlias(alias);
 		q.setTipoServizio(tipoServizio);
 		q.setSpecificaServizio(specificaServizio);
-		q.setObiettivoServizio(obiettivoServizio);
-		q.setTipoFatturazione(tipoFatturazione);
 
 		q.setSortCriteria(sortCriteria);
 		q.setSortDirection(sortDirection);
@@ -63,23 +56,19 @@ public class CanoneServiceImpl extends AbstractService implements CanoneService 
 	@Override
 	public QueryResult<Canone> list(
 			Integer codiceContratto,
-			String descrizione,
+			String alias,
 			String tipoServizio,
 			String specificaServizio,
-			String obiettivoServizio,
-			String tipoFatturazione,
 			Integer offset,
 			Integer limit) {
 
-		QueryByCodiceContrattoDescrizioneTipoServizioSpecificaServizioObiettivoServizioTipoFatturazione q =
-				new QueryByCodiceContrattoDescrizioneTipoServizioSpecificaServizioObiettivoServizioTipoFatturazione(session);
+		QueryByCodiceContrattoAliasTipoServizioSpecificaServizio q =
+				new QueryByCodiceContrattoAliasTipoServizioSpecificaServizio(session);
 
 		q.setCodiceContratto(codiceContratto);
-		q.setDescrizione(descrizione);
+		q.setAlias(alias);
 		q.setTipoServizio(tipoServizio);
 		q.setSpecificaServizio(specificaServizio);
-		q.setObiettivoServizio(obiettivoServizio);
-		q.setTipoFatturazione(tipoFatturazione);
 
 		q.setOffset(offset);
 		q.setLimit(limit);
@@ -108,9 +97,6 @@ public class CanoneServiceImpl extends AbstractService implements CanoneService 
 				"from Canone can " +
 				"left join fetch can.tipoServizio tse " +
 				"left join fetch can.specificaServizio sse " +
-				"left join fetch can.obiettivoServizio ose " +
-				"left join fetch can.raggruppamentoFatturazione rfa " +
-				"left join fetch can.tipoFatturazione tfa " +
 				"where can.id = :id ";
 		Query query = session.createQuery(hql);
 		query.setParameter("id", id);
@@ -124,15 +110,15 @@ public class CanoneServiceImpl extends AbstractService implements CanoneService 
 	@Override
 	public Canone create(
 			Integer codiceContratto,
-			String descrizione,
+			String alias,
 			Integer codiceTipoServizio,
 			Integer codiceSpecificaServizio,
-			Integer codiceObiettivoServizio,
 			Date dataInizioValidita,
-			Integer codiceRaggruppamentoFatturazione,
-			BigDecimal importoMensile,
-			Integer codiceTipoFatturazione,
 			Date dataCessazione,
+			Boolean fatturaMinimoUnMese,
+			Boolean fatturazioneAnticipata,
+			Integer fatturaOgniMesi,
+			BigDecimal canoneMensile,
 			String note) {
 
 		// Fetch referred entities.
@@ -140,9 +126,6 @@ public class CanoneServiceImpl extends AbstractService implements CanoneService 
 		Contratto contratto = (Contratto)session.get(Contratto.class, codiceContratto);
 		TipoServizio tipoServizio = (TipoServizio)session.get(TipoServizio.class, codiceTipoServizio);
 		SpecificaServizio specificaServizio = (SpecificaServizio)session.get(SpecificaServizio.class, codiceSpecificaServizio);
-		ObiettivoServizio obiettivoServizio = (ObiettivoServizio)session.get(ObiettivoServizio.class, codiceObiettivoServizio);
-		RaggruppamentoFatturazione raggruppamentoFatturazione = (RaggruppamentoFatturazione)session.get(RaggruppamentoFatturazione.class, codiceRaggruppamentoFatturazione);
-		TipoFatturazione tipoFatturazione = (TipoFatturazione)session.get(TipoFatturazione.class, codiceTipoFatturazione);
 
 		// Create the new entity.
 		//
@@ -151,15 +134,15 @@ public class CanoneServiceImpl extends AbstractService implements CanoneService 
 		// Set entity fields.
 		//
 		entity.setContratto(contratto);
-		entity.setDescrizione(descrizione);
+		entity.setAlias(alias);
 		entity.setTipoServizio(tipoServizio);
 		entity.setSpecificaServizio(specificaServizio);
-		entity.setObiettivoServizio(obiettivoServizio);
 		entity.setDataInizioValidita(dataInizioValidita);
-		entity.setRaggruppamentoFatturazione(raggruppamentoFatturazione);
-		entity.setImportoMensile(importoMensile);
-		entity.setTipoFatturazione(tipoFatturazione);
 		entity.setDataCessazione(dataCessazione);
+		entity.setFatturaMinimoUnMese(fatturaMinimoUnMese);
+		entity.setFatturazioneAnticipata(fatturazioneAnticipata);
+		entity.setFatturaOgniMesi(fatturaOgniMesi);
+		entity.setCanoneMensile(canoneMensile);
 		entity.setNote(note);
 
 		// Persist the entity to the database.
@@ -178,15 +161,15 @@ public class CanoneServiceImpl extends AbstractService implements CanoneService 
 	@Override
 	public Canone update(
 			Integer id,
-			String descrizione,
+			String alias,
 			Integer codiceTipoServizio,
 			Integer codiceSpecificaServizio,
-			Integer codiceObiettivoServizio,
 			Date dataInizioValidita,
-			Integer codiceRaggruppamentoFatturazione,
-			BigDecimal importoMensile,
-			Integer codiceTipoFatturazione,
 			Date dataCessazione,
+			Boolean fatturaMinimoUnMese,
+			Boolean fatturazioneAnticipata,
+			Integer fatturaOgniMesi,
+			BigDecimal canoneMensile,
 			String note) {
 
 		Canone entity = retrieve(id);
@@ -204,21 +187,18 @@ public class CanoneServiceImpl extends AbstractService implements CanoneService 
 		//
 		TipoServizio tipoServizio = (TipoServizio)session.get(TipoServizio.class, codiceTipoServizio);
 		SpecificaServizio specificaServizio = (SpecificaServizio)session.get(SpecificaServizio.class, codiceSpecificaServizio);
-		ObiettivoServizio obiettivoServizio = (ObiettivoServizio)session.get(ObiettivoServizio.class, codiceObiettivoServizio);
-		RaggruppamentoFatturazione raggruppamentoFatturazione = (RaggruppamentoFatturazione)session.get(RaggruppamentoFatturazione.class, codiceRaggruppamentoFatturazione);
-		TipoFatturazione tipoFatturazione = (TipoFatturazione)session.get(TipoFatturazione.class, codiceTipoFatturazione);
 
 		// Set entity fields.
 		//
-		entity.setDescrizione(descrizione);
+		entity.setAlias(alias);
 		entity.setTipoServizio(tipoServizio);
 		entity.setSpecificaServizio(specificaServizio);
-		entity.setObiettivoServizio(obiettivoServizio);
 		entity.setDataInizioValidita(dataInizioValidita);
-		entity.setRaggruppamentoFatturazione(raggruppamentoFatturazione);
-		entity.setImportoMensile(importoMensile);
-		entity.setTipoFatturazione(tipoFatturazione);
 		entity.setDataCessazione(dataCessazione);
+		entity.setFatturaMinimoUnMese(fatturaMinimoUnMese);
+		entity.setFatturazioneAnticipata(fatturazioneAnticipata);
+		entity.setFatturaOgniMesi(fatturaOgniMesi);
+		entity.setCanoneMensile(canoneMensile);
 		entity.setNote(note);
 
 		session.update(entity);
