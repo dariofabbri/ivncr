@@ -1,0 +1,332 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:custom="http://java.sun.com/jsf/composite/components/custom">
+			
+	<p:panelGrid styleClass="form-panel">
+					
+		<p:row>
+			<p:column colspan="2" styleClass="form-header">
+				<h:outputText value="Elenco dei ricavi extra vigilanza associati al contratto."/>
+			</p:column>
+		</p:row>
+		
+		<p:row>
+		
+			<p:column>
+								
+				<p:dataTable
+					id="ricaviExtraTable"
+					var="ricavoExtra"
+					value="#{dettaglioContrattoRicaviExtra.listRicaviExtra}"
+					selectionMode="single"
+					selection="#{dettaglioContrattoRicaviExtra.selected}"
+					rowKey="#{ricavoExtra.id}"
+					sortBy="#{ricavoExtra.dataInizioValidita}"
+					sortOrder="descending"
+					emptyMessage="Nessun record trovato" 
+					styleClass="small-datatable">
+
+					<p:ajax event="rowSelect" update=":detailForm:tabView:importiAccordion:ricaviExtraButtons"/>
+	
+					<p:ajax event="rowUnselect" update=":detailForm:tabView:importiAccordion:ricaviExtraButtons"/>
+
+					<p:column headerText="Alias" sortBy="#{ricavoExtra.alias}">
+						<h:outputText value="#{ricavoExtra.alias}" />
+					</p:column>
+
+					<p:column headerText="Tipo servizio" sortBy="#{ricavoExtra.tipoServizio.descrizione}">
+						<h:outputText value="#{ricavoExtra.tipoServizio.descrizione}" />
+					</p:column>
+
+					<p:column headerText="Specifica servizio" sortBy="#{ricavoExtra.specificaServizio.descrizione}">
+						<h:outputText value="#{ricavoExtra.specificaServizio.descrizione}" />
+					</p:column>
+
+					<p:column headerText="Raggruppamento" sortBy="#{ricavoExtra.raggruppamentoFatturazione.descrizione}">
+						<h:outputText value="#{ricavoExtra.raggruppamentoFatturazione.descrizione}" />
+					</p:column>
+
+					<p:column headerText="Canone mensile" sortBy="#{ricavoExtra.canoneMensile}">
+						<h:outputText value="#{ricavoExtra.canoneMensile}">
+							<f:converter converterId="currencyConverter"/>
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Inizio" sortBy="#{ricavoExtra.dataInizioValidita}">
+						<h:outputText value="#{ricavoExtra.dataInizioValidita}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Cessazione" sortBy="#{ricavoExtra.dataCessazione}">
+						<h:outputText value="#{ricavoExtra.dataCessazione}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+																		
+				</p:dataTable>
+			
+			</p:column>
+			
+		</p:row>
+		
+		<p:row>
+			<p:column>
+				
+				<p:outputPanel id="ricaviExtraButtons">
+					
+					<p:commandButton value="Aggiungi"
+						oncomplete="detailRicavoExtraDialogWidget.show()"
+						actionListener="#{dettaglioContrattoRicaviExtra.startCreate}"
+						process="@this"
+						update=":detailForm:tabView:importiAccordion:detailRicavoExtraView:detailRicavoExtraDialog"/>
+
+					<p:commandButton value="Modifica"
+						disabled="#{empty dettaglioContrattoRicaviExtra.selected}"
+						oncomplete="detailRicavoExtraDialogWidget.show()"
+						actionListener="#{dettaglioContrattoRicaviExtra.startUpdate}"
+						process="@this"
+						update=":detailForm:tabView:importiAccordion:detailRicavoExtraView:detailRicavoExtraDialog"/>
+
+					<p:commandButton value="Elimina"
+						disabled="#{empty dettaglioContrattoRicaviExtra.selected}"
+						type="button"
+						onclick="deleteRicavoExtraDialogWidget.show()"/>
+					
+				</p:outputPanel>
+				
+			</p:column>
+		</p:row>
+		
+	</p:panelGrid>
+
+	
+	
+	<f:subview id="detailRicavoExtraView">
+	
+		<p:dialog 
+			id="detailRicavoExtraDialog"
+			header="Dettagli del ricavo extra vigilanza" 
+			widgetVar="detailRicavoExtraDialogWidget" 
+			modal="true"
+			showEffect="fade" 
+			hideEffect="fade"> 
+					
+			<p:messages id="messages" globalOnly="false" showSummary="false" showDetail="true" closable="true"/>
+			
+			<p:panelGrid id="panel" styleClass="form-panel">
+							
+				<p:row>
+					<p:column colspan="2" styleClass="form-header">
+						<h:outputText value="Il pannello permette di impostare i dettagli del ricavo extra vigilanza."/>
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>
+						<p:outputLabel for="alias" value="Alias:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioContrattoRicaviExtra.alias}" id="alias"
+							required="true"
+							requiredMessage="Il campo alias è obbligatorio"/>
+						<p:watermark for="alias" value="Alias del ricavo" />  
+						<p:tooltip for="alias" showEffect="fade" value="Alias identificativo del ricavo extra vigilanza" />
+					</p:column>
+				</p:row>
+				
+				<p:row>
+					<p:column>
+						<p:outputLabel for="codiceTipoServizio" value="Tipo servizio:" />
+					</p:column>
+					<p:column>
+						<p:selectOneMenu
+							required="true" 
+							requiredMessage="Il campo tipo servizio è obbligatorio"
+							id="codiceTipoServizio" 
+							value="#{dettaglioContrattoRicaviExtra.codiceTipoServizio}"
+							effect="fade">
+							<p:ajax process="@this" update="codiceSpecificaServizio" listener="#{dettaglioContrattoRicaviExtra.populateSpecificaServizio}"/>
+							<f:selectItem itemLabel="Selezionare un tipo di servizio" itemValue="" />
+							<f:selectItems 
+								value="#{dettaglioContrattoRicaviExtra.listTipoServizio}" var="item"
+								itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+						</p:selectOneMenu>	
+						<p:tooltip for="codiceTipoServizio" showEffect="fade" value="Tipo di servizio" />
+					</p:column>
+				</p:row>
+				
+				<p:row>
+					<p:column>
+						<p:outputLabel for="codiceSpecificaServizio" value="Specifica del servizio:" />
+					</p:column>
+					<p:column>
+						<p:selectOneMenu
+							required="true" 
+							requiredMessage="Il campo specifica del servizio è obbligatorio"
+							id="codiceSpecificaServizio" 
+							value="#{dettaglioContrattoRicaviExtra.codiceSpecificaServizio}"
+							effect="fade">
+							<f:selectItem itemLabel="Selezionare una specifica di servizio" itemValue="" />
+							<f:selectItems 
+								value="#{dettaglioContrattoRicaviExtra.listSpecificaServizio}" var="item"
+								itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+						</p:selectOneMenu>	
+						<p:tooltip for="codiceSpecificaServizio" showEffect="fade" value="Specifica di servizio" />
+					</p:column>
+				</p:row>
+				
+				<p:row>
+					<p:column>
+						<p:outputLabel for="codiceRaggruppamentoFatturazione" value="Raggruppamento fatturazione:" />
+					</p:column>
+					<p:column>
+						<p:selectOneMenu
+							id="codiceRaggruppamentoFatturazione" 
+							value="#{dettaglioContrattoRicaviExtra.codiceRaggruppamentoFatturazione}"
+							effect="fade">
+							<f:selectItem itemLabel="Selezionare un raggruppamento" itemValue="" />
+							<f:selectItems 
+								value="#{dettaglioContrattoRicaviExtra.listRaggruppamentoFatturazione}" var="item"
+								itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+						</p:selectOneMenu>	
+						<p:tooltip for="codiceRaggruppamentoFatturazione" showEffect="fade" value="Raggruppamento di fatturazione" />
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>
+						<p:outputLabel for="canoneMensile" value="Canone mensile:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioContrattoRicaviExtra.canoneMensile}" id="canoneMensile"
+							required="true"
+							requiredMessage="Il campo canone mensile è obbligatorio"
+							converter="currencyConverter" converterMessage="Il campo canone mensile non rappresenta un importo valido"/>
+						<p:watermark for="canoneMensile" value="Canone mensile" />  
+						<p:tooltip for="canoneMensile" showEffect="fade" value="Canone mensile applicato per il ricavo extra vigilanza" />
+					</p:column>
+
+					<p:column colspan="2" styleClass="form-header"/>
+				</p:row>
+					
+				<p:row>
+					<p:column>
+						<p:outputLabel for="fatturaMinimoUnMese" value="Minimo un mese:" />
+					</p:column>
+					<p:column>
+						<p:selectBooleanCheckbox value="#{dettaglioContrattoRicaviExtra.fatturaMinimoUnMese}" id="fatturaMinimoUnMese"/>
+						<p:tooltip for="fatturaMinimoUnMese" showEffect="fade" value="Fattura minimo un mese" />
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>
+						<p:outputLabel for="fatturazioneAnticipata" value="Fatturazione anticipata:" />
+					</p:column>
+					<p:column>
+						<p:selectBooleanCheckbox value="#{dettaglioContrattoRicaviExtra.fatturazioneAnticipata}" id="fatturazioneAnticipata"/>
+						<p:tooltip for="fatturazioneAnticipata" showEffect="fade" value="Fatturazione anticipata" />
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>
+						<p:outputLabel for="fatturaOgniMesi" value="Fattura ogni mesi:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioContrattoRicaviExtra.fatturaOgniMesi}" id="fatturaOgniMesi"
+							converter="integerConverter" converterMessage="Il campo fattura ogni mesi non rappresenta un numero intero valido"/>
+						<p:watermark for="fatturaOgniMesi" value="Mesi" />  
+						<p:tooltip for="fatturaOgniMesi" showEffect="fade" value="Mesi" />
+					</p:column>
+				</p:row>
+				
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="dataInizioValidita" value="Data inizio validità:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioContrattoRicaviExtra.dataInizioValidita}" id="dataInizioValidita"
+							pattern="dd/MM/yyyy"
+							required="true" 
+							requiredMessage="Il campo data inizio validità è obbligatorio"/>
+						<p:watermark for="dataInizioValidita" value="Data di inizio validità" />  
+						<p:tooltip for="dataInizioValidita" showEffect="fade" value="Data di inizio validità del ricavo extra vigilanza" />
+					</p:column>
+				</p:row>
+				
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="dataCessazione" value="Data cessazione:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioContrattoRicaviExtra.dataCessazione}" id="dataCessazione"
+							pattern="dd/MM/yyyy"/>
+						<p:watermark for="dataCessazione" value="Data di cessazione" />  
+						<p:tooltip for="dataCessazione" showEffect="fade" value="Data di cessazione del ricavo extra vigilanza" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="note" value="Note:" />
+					</p:column>
+					<p:column>
+						<p:inputTextarea value="#{dettaglioContrattoRicaviExtra.note}" id="note"/>
+						<p:watermark for="note" value="Eventuali annotazioni sul canone" />  
+						<p:tooltip for="note" showEffect="fade" value="Eventuali annotazioni sul canone" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column colspan="2" styleClass="form-footer">
+						<p:outputPanel id="buttons">
+							<p:commandButton value="Salva"
+								id="saveButton"
+								actionListener="#{dettaglioContrattoRicaviExtra.doSave}" 
+								update="detailRicavoExtraView:messages,detailRicavoExtraView:panel,:detailForm:tabView:importiAccordion:ricaviExtraTable,:detailForm:growl"
+								process="detailRicavoExtraView:detailRicavoExtraDialog"
+								oncomplete="if(args.ok) { detailRicavoExtraDialogWidget.hide(); }"/>
+							<p:commandButton value="Annulla"
+								type="button"
+								onclick="detailRicavoExtraDialogWidget.hide();" />
+						</p:outputPanel>
+					</p:column>
+				</p:row>
+				
+			</p:panelGrid>
+	
+			<p:defaultCommand target="saveButton" scope="detailRicavoExtraDialog"/>
+			
+		</p:dialog>
+	
+	</f:subview>
+	
+	
+	<p:confirmDialog 
+		id="deleteRicavoExtraDialog"
+		header="Rimuovi ricavo extra vigilanza" 
+		widgetVar="deleteRicavoExtraDialogWidget"
+		message="Si conferma la rimozione del ricavo extra vigilanza selezionato? L'operazione non può essere annullata."
+		showEffect="fade" 
+		hideEffect="fade">
+		
+		<p:commandButton 
+			value="Elimina"
+			update=":detailForm:tabView:importiAccordion:ricaviExtraTable,:detailForm:tabView:importiAccordion:ricaviExtraButtons,:detailForm:growl"
+			process="@this" 
+			oncomplete="deleteRicavoExtraDialogWidget.hide()"  
+            actionListener="#{dettaglioContrattoRicaviExtra.doDelete}" />
+              
+        <p:commandButton 
+        	value="Annulla" 
+        	onclick="deleteRicavoExtraDialogWidget.hide()" 
+        	type="button" />
+        	   
+	</p:confirmDialog>
+
+</html>
