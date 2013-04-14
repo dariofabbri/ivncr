@@ -1,13 +1,10 @@
 package it.ivncr.erp.jsf.managedbean.commerciale.contratti;
 
 
-import it.ivncr.erp.jsf.RobustLazyDataModel;
 import it.ivncr.erp.model.commerciale.contratto.SpecificaServizio;
 import it.ivncr.erp.model.commerciale.contratto.Tariffa;
 import it.ivncr.erp.model.commerciale.contratto.TipoServizio;
-import it.ivncr.erp.service.QueryResult;
 import it.ivncr.erp.service.ServiceFactory;
-import it.ivncr.erp.service.SortDirection;
 import it.ivncr.erp.service.lut.LUTService;
 import it.ivncr.erp.service.tariffa.TariffaService;
 
@@ -15,7 +12,6 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -25,8 +21,6 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.context.RequestContext;
-import org.primefaces.model.LazyDataModel;
-import org.primefaces.model.SortOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,9 +35,6 @@ public class DettaglioContrattoTariffe implements Serializable {
 
 	@ManagedProperty("#{dettaglioContrattoGenerale}")
 	private DettaglioContrattoGenerale dettaglioContrattoGenerale;
-
-	private LazyDataModel<Tariffa> model;
-	private Tariffa selected;
 
 	private Integer id;
 	private String alias;
@@ -71,58 +62,11 @@ public class DettaglioContrattoTariffe implements Serializable {
 	private List<TipoServizio> listTipoServizio;
 	private List<SpecificaServizio> listSpecificaServizio;
 
+	private List<Tariffa> listTariffe;
+	private Tariffa selected;
+
 
 	public DettaglioContrattoTariffe() {
-
-		model = new RobustLazyDataModel<Tariffa>() {
-
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public List<Tariffa> load(
-					int first,
-					int pageSize,
-					String sortField,
-					SortOrder sortOrder,
-					Map<String, String> filters) {
-
-				logger.debug("Fetching data model.");
-
-				if(dettaglioContrattoGenerale.getId() == null) {
-					return null;
-				}
-
-				// Inject codice contratto argument in applied filters map.
-				//
-				filters.put("codiceContratto", Integer.toString(dettaglioContrattoGenerale.getId()));
-
-				TariffaService ts = ServiceFactory.createService("Tariffa");
-				QueryResult<Tariffa> result = ts.list(
-						first,
-						pageSize,
-						sortField,
-						SortDirection.fromSortOrder(sortOrder),
-						filters);
-
-				this.setRowCount(result.getRecords());
-
-				return result.getResults();
-			}
-
-			@Override
-			public Object getRowKey(Tariffa tariffa) {
-
-				return tariffa == null ? null : tariffa.getId();
-			}
-
-			@Override
-			public Tariffa getRowData(String rowKey) {
-
-				TariffaService ts = ServiceFactory.createService("Tariffa");
-				Tariffa tariffa = ts.retrieveDeep(Integer.decode(rowKey));
-				return tariffa;
-			}
-		};
 	}
 
 	@PostConstruct
@@ -134,8 +78,23 @@ public class DettaglioContrattoTariffe implements Serializable {
 		//
 		listTipoServizio = lutService.listItems("TipoServizio");
 
+		// Load list for data table.
+		//
+		loadTariffe();
+
 		logger.debug("Initialization performed.");
 	}
+
+
+	public void loadTariffe() {
+
+		if(dettaglioContrattoGenerale.getId() == null)
+			return;
+
+		TariffaService ts = ServiceFactory.createService("Tariffa");
+		listTariffe = ts.listByContratto(dettaglioContrattoGenerale.getId());
+	}
+
 
 	private void clean() {
 
@@ -309,6 +268,10 @@ public class DettaglioContrattoTariffe implements Serializable {
 				FacesContext.getCurrentInstance().addMessage(null, message);
 			}
 
+			// Refresh list.
+			//
+			loadTariffe();
+
 			// Signal to modal dialog that everything went fine.
 			//
 			RequestContext.getCurrentInstance().addCallbackParam("ok", true);
@@ -350,9 +313,13 @@ public class DettaglioContrattoTariffe implements Serializable {
 					"L'eliminazione della tariffa si è conclusa con successo.");
 			FacesContext.getCurrentInstance().addMessage(null, message);
 
-			// Signal to modal dialog that everything went fine.
+			// Reset selection.
 			//
-			RequestContext.getCurrentInstance().addCallbackParam("ok", true);
+			selected = null;
+
+			// Refresh list.
+			//
+			loadTariffe();
 
 		} catch(Exception e) {
 
@@ -373,22 +340,6 @@ public class DettaglioContrattoTariffe implements Serializable {
 	public void setDettaglioContrattoGenerale(
 			DettaglioContrattoGenerale dettaglioContrattoGenerale) {
 		this.dettaglioContrattoGenerale = dettaglioContrattoGenerale;
-	}
-
-	public LazyDataModel<Tariffa> getModel() {
-		return model;
-	}
-
-	public void setModel(LazyDataModel<Tariffa> model) {
-		this.model = model;
-	}
-
-	public Tariffa getSelected() {
-		return selected;
-	}
-
-	public void setSelected(Tariffa selected) {
-		this.selected = selected;
 	}
 
 	public Integer getId() {
@@ -582,5 +533,21 @@ public class DettaglioContrattoTariffe implements Serializable {
 	public void setListSpecificaServizio(
 			List<SpecificaServizio> listSpecificaServizio) {
 		this.listSpecificaServizio = listSpecificaServizio;
+	}
+
+	public List<Tariffa> getListTariffe() {
+		return listTariffe;
+	}
+
+	public void setListTariffe(List<Tariffa> listTariffe) {
+		this.listTariffe = listTariffe;
+	}
+
+	public Tariffa getSelected() {
+		return selected;
+	}
+
+	public void setSelected(Tariffa selected) {
+		this.selected = selected;
 	}
 }

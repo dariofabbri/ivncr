@@ -14,6 +14,7 @@ import it.ivncr.erp.util.AuditUtil.Snapshot;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import org.hibernate.Query;
@@ -269,5 +270,24 @@ public class TariffaServiceImpl extends AbstractService implements TariffaServic
 		// Audit call for the delete operation.
 		//
 		AuditUtil.log(Operation.Delete, Snapshot.Source, entity);
+	}
+
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Tariffa> listByContratto(Integer codiceContratto) {
+
+		String hql =
+				"from Tariffa tar " +
+				"left join fetch tar.tipoServizio tse " +
+				"left join fetch tar.specificaServizio sse " +
+				"where tar.contratto.id = :codiceContratto ";
+		Query query = session.createQuery(hql);
+		query.setParameter("codiceContratto", codiceContratto);
+
+		List<Tariffa> result = query.list();
+		logger.debug("Query result: " + result);
+
+		return result;
 	}
 }

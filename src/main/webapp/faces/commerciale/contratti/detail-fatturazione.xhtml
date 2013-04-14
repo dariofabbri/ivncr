@@ -75,16 +75,6 @@
 		    	Lista dei dettagli di fatturazione
 		    </f:facet>
 	
-			<p:column headerText="Tipo fatturazione" sortBy="#{dettaglioFatturazione.tipoFatturazione.descrizione}"
-				filterBy="#{dettaglioFatturazione.tipoFatturazione.descrizione}">
-				<h:outputText value="#{dettaglioFatturazione.tipoFatturazione.descrizione}" />
-			</p:column>
-	
-			<p:column headerText="Frazionamento" sortBy="#{dettaglioFatturazione.tipoFrazionamentoFatturazione.descrizione}"
-				filterBy="#{dettaglioFatturazione.tipoFrazionamentoFatturazione.descrizione}">
-				<h:outputText value="#{dettaglioFatturazione.tipoFrazionamentoFatturazione.descrizione}" />
-			</p:column>
-	
 			<p:column headerText="Condizioni pagamento" sortBy="#{dettaglioFatturazione.condizioniPagamento.descrizione}"
 				filterBy="#{dettaglioFatturazione.condizioniPagamento.descrizione}">
 				<h:outputText value="#{dettaglioFatturazione.condizioniPagamento.descrizione}" />
@@ -131,47 +121,7 @@
 	
 			<p:panelGrid id="wrapper" styleClass="form-panel">
 
-				<p:focus for="codiceTipoFatturazione"/>
-				
-				<p:row>
-					<p:column>
-						<p:outputLabel for="codiceTipoFatturazione" value="Tipo fatturazione:" />
-					</p:column>
-					<p:column>
-						<p:selectOneMenu
-							required="true" 
-							requiredMessage="Il campo tipo fatturazione è obbligatorio"
-							id="codiceTipoFatturazione" 
-							value="#{dettaglioContrattoFatturazione.codiceTipoFatturazione}"
-							effect="fade">
-							<f:selectItem itemLabel="Selezionare un tipo di fatturazione" itemValue="" />
-							<f:selectItems 
-								value="#{dettaglioContrattoFatturazione.listTipoFatturazione}" var="item"
-								itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
-						</p:selectOneMenu>	
-						<p:tooltip for="codiceTipoFatturazione" showEffect="fade" value="Tipo di fatturazione" />
-					</p:column>
-				</p:row>
-				
-				<p:row>
-					<p:column>
-						<p:outputLabel for="codiceTipoFrazionamentoFatturazione" value="Frazionamento fatturazione:" />
-					</p:column>
-					<p:column>
-						<p:selectOneMenu
-							required="true" 
-							requiredMessage="Il campo frazionamento fatturazione è obbligatorio"
-							id="codiceTipoFrazionamentoFatturazione" 
-							value="#{dettaglioContrattoFatturazione.codiceTipoFrazionamentoFatturazione}"
-							effect="fade">
-							<f:selectItem itemLabel="Selezionare un frazionamento di fatturazione" itemValue="" />
-							<f:selectItems 
-								value="#{dettaglioContrattoFatturazione.listTipoFrazionamentoFatturazione}" var="item"
-								itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
-						</p:selectOneMenu>	
-						<p:tooltip for="codiceTipoFrazionamentoFatturazione" showEffect="fade" value="Tipo di frazionamento della fatturazione" />
-					</p:column>
-				</p:row>
+				<p:focus for="codiceCondizioniPagamento"/>
 				
 				<p:row>
 					<p:column>

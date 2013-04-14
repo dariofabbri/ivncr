@@ -6,6 +6,7 @@ import it.ivncr.erp.service.QueryResult;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 public interface TariffaService extends EntityService<Tariffa> {
 
@@ -69,4 +70,6 @@ public interface TariffaService extends EntityService<Tariffa> {
 			String note);
 
 	void delete(Integer id);
+
+	List<Tariffa> listByContratto(Integer id);
 }

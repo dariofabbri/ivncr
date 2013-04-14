@@ -1,0 +1,463 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:custom="http://java.sun.com/jsf/composite/components/custom">
+			
+	<p:panelGrid styleClass="form-panel">
+					
+		<p:row>
+			<p:column colspan="2" styleClass="form-header">
+				<h:outputText value="Elenco delle tariffe associate al contratto."/>
+			</p:column>
+		</p:row>
+		
+		<p:row>
+		
+			<p:column>
+								
+				<p:dataTable
+					id="tariffeTable"
+					var="tariffa"
+					value="#{dettaglioContrattoTariffe.listTariffe}"
+					selectionMode="single"
+					selection="#{dettaglioContrattoTariffe.selected}"
+					rowKey="#{tariffa.id}"
+					sortBy="#{tariffa.dataInizioValidita}"
+					sortOrder="descending"
+					emptyMessage="Nessun record trovato" 
+					styleClass="small-datatable">
+
+					<p:ajax event="rowSelect" update=":detailForm:tabView:importiAccordion:tariffeButtons"/>
+	
+					<p:ajax event="rowUnselect" update=":detailForm:tabView:importiAccordion:tariffeButtons"/>
+
+					<p:column headerText="Alias" sortBy="#{tariffa.alias}">
+						<h:outputText value="#{tariffa.alias}" />
+					</p:column>
+
+					<p:column headerText="Tipo servizio" sortBy="#{tariffa.tipoServizio.descrizione}">
+						<h:outputText value="#{tariffa.tipoServizio.descrizione}" />
+					</p:column>
+
+					<p:column headerText="Specifica servizio" sortBy="#{tariffa.specificaServizio.descrizione}">
+						<h:outputText value="#{tariffa.specificaServizio.descrizione}" />
+					</p:column>
+
+					<p:column headerText="Inizio" sortBy="#{tariffa.dataInizioValidita}">
+						<h:outputText value="#{tariffa.dataInizioValidita}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Cessazione" sortBy="#{tariffa.dataCessazione}">
+						<h:outputText value="#{tariffa.dataCessazione}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+																		
+				</p:dataTable>
+			
+			</p:column>
+			
+		</p:row>
+		
+		<p:row>
+			<p:column>
+				
+				<p:outputPanel id="tariffeButtons">
+					
+					<p:commandButton value="Aggiungi"
+						oncomplete="detailTariffaDialogWidget.show()"
+						actionListener="#{dettaglioContrattoTariffe.startCreate}"
+						process="@this"
+						update=":detailForm:tabView:importiAccordion:detailTariffaView:detailTariffaDialog"/>
+
+					<p:commandButton value="Modifica"
+						disabled="#{empty dettaglioContrattoTariffe.selected}"
+						oncomplete="detailTariffaDialogWidget.show()"
+						actionListener="#{dettaglioContrattoTariffe.startUpdate}"
+						process="@this"
+						update=":detailForm:tabView:importiAccordion:detailTariffaView:detailTariffaDialog"/>
+
+					<p:commandButton value="Elimina"
+						disabled="#{empty dettaglioContrattoTariffe.selected}"
+						type="button"
+						onclick="deleteTariffaDialogWidget.show()"/>
+					
+				</p:outputPanel>
+				
+			</p:column>
+		</p:row>
+		
+	</p:panelGrid>
+
+	
+	
+	<f:subview id="detailTariffaView">
+	
+		<p:dialog 
+			id="detailTariffaDialog"
+			header="Dettagli della tariffa" 
+			widgetVar="detailTariffaDialogWidget" 
+			modal="true"
+			resizable="false"
+			showEffect="fade" 
+			hideEffect="fade"> 
+					
+			<p:messages id="messages" globalOnly="false" showSummary="false" showDetail="true" closable="true"/>
+			
+			<p:panelGrid id="panel" styleClass="form-panel">
+							
+				<p:row>
+					<p:column colspan="4" styleClass="form-header">
+						<h:outputText value="Il pannello permette di impostare i dettagli della tariffa."/>
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>
+						<p:outputLabel for="alias" value="Alias:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioContrattoTariffe.alias}" id="alias"
+							required="true"
+							requiredMessage="Il campo alias è obbligatorio"/>
+						<p:watermark for="alias" value="Alias della tariffa" />  
+						<p:tooltip for="alias" showEffect="fade" value="Alias identificativo della tariffa" />
+					</p:column>
+
+					<p:column colspan="2"/>
+				</p:row>
+				
+				<p:row>
+					<p:column>
+						<p:outputLabel for="codiceTipoServizio" value="Tipo servizio:" />
+					</p:column>
+					<p:column>
+						<p:selectOneMenu
+							required="true" 
+							requiredMessage="Il campo tipo servizio è obbligatorio"
+							id="codiceTipoServizio" 
+							value="#{dettaglioContrattoTariffe.codiceTipoServizio}"
+							effect="fade">
+							<p:ajax process="@this" update="codiceSpecificaServizio" listener="#{dettaglioContrattoTariffe.populateSpecificaServizio}"/>
+							<f:selectItem itemLabel="Selezionare un tipo di servizio" itemValue="" />
+							<f:selectItems 
+								value="#{dettaglioContrattoTariffe.listTipoServizio}" var="item"
+								itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+						</p:selectOneMenu>	
+						<p:tooltip for="codiceTipoServizio" showEffect="fade" value="Tipo di servizio" />
+					</p:column>
+
+					<p:column>
+						<p:outputLabel for="codiceSpecificaServizio" value="Specifica del servizio:" />
+					</p:column>
+					<p:column>
+						<p:selectOneMenu
+							required="true" 
+							requiredMessage="Il campo specifica del servizio è obbligatorio"
+							id="codiceSpecificaServizio" 
+							value="#{dettaglioContrattoTariffe.codiceSpecificaServizio}"
+							effect="fade">
+							<f:selectItem itemLabel="Selezionare una specifica di servizio" itemValue="" />
+							<f:selectItems 
+								value="#{dettaglioContrattoTariffe.listSpecificaServizio}" var="item"
+								itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+						</p:selectOneMenu>	
+						<p:tooltip for="codiceSpecificaServizio" showEffect="fade" value="Specifica di servizio" />
+					</p:column>
+				</p:row>
+				
+				<p:row>
+					<p:column colspan="4">
+						<p:separator/>
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>
+						<p:outputLabel for="costoOrario" value="Costo orario:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioContrattoTariffe.costoOrario}" id="costoOrario"
+							converter="currencyConverter" converterMessage="Il campo costo orario non rappresenta un importo valido"/>
+						<p:watermark for="costoOrario" value="Costo orario" />  
+						<p:tooltip for="costoOrario" showEffect="fade" value="Costo orario applicato per la tariffa" />
+					</p:column>
+
+					<p:column>
+						<p:outputLabel for="costoOperazione" value="Costo operazione:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioContrattoTariffe.costoOperazione}" id="costoOperazione"
+							converter="currencyConverter" converterMessage="Il campo costo operazione non rappresenta un importo valido"/>
+						<p:watermark for="costoOperazione" value="Costo per operazione" />  
+						<p:tooltip for="costoOperazione" showEffect="fade" value="Costo per operazione applicato per la tariffa" />
+					</p:column>
+				</p:row>
+				
+				<p:row>
+					<p:column colspan="4">
+						<p:separator/>
+					</p:column>
+				</p:row>
+							
+				<p:row>
+					<p:column colspan="2" styleClass="form-header">
+						<h:outputText value="Costo fisso"/>
+					</p:column>
+
+					<p:column colspan="2" styleClass="form-header">
+						<h:outputText value="Franchigie"/>
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>
+						<p:outputLabel for="costoFissoUnaTantum" value="Costo una tantum:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioContrattoTariffe.costoFissoUnaTantum}" id="costoFissoUnaTantum"
+							converter="currencyConverter" converterMessage="Il campo costo fisso una tantum non rappresenta un importo valido"/>
+						<p:watermark for="costoFissoUnaTantum" value="Costo fisso una tantum" />  
+						<p:tooltip for="costoFissoUnaTantum" showEffect="fade" value="Costo fisso una tantum applicato per la tariffa" />
+					</p:column>
+
+					<p:column>
+						<p:outputLabel for="franchigieTotali" value="Franchighie totali:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioContrattoTariffe.franchigieTotali}" id="franchigieTotali"
+							converter="currencyConverter" converterMessage="Il campo franchigie totali non rappresenta un importo valido"/>
+						<p:watermark for="franchigieTotali" value="Costo fisso una tantum" />  
+						<p:tooltip for="franchigieTotali" showEffect="fade" value="Franchigie totali applicate per la tariffa" />
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>
+						<p:outputLabel for="costoFissoATempo" value="Costo a tempo:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioContrattoTariffe.costoFissoATempo}" id="costoFissoATempo"
+							converter="currencyConverter" converterMessage="Il campo costo fisso a tempo non rappresenta un importo valido"/>
+						<p:watermark for="costoFissoATempo" value="Costo fisso a tempo" />  
+						<p:tooltip for="costoFissoATempo" showEffect="fade" value="Costo fisso a tempo applicato per la tariffa" />
+					</p:column>
+
+					<p:column>
+						<p:outputLabel for="franchigieATempo" value="Franchigie a tempo:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioContrattoTariffe.franchigieATempo}" id="franchigieATempo"
+							converter="currencyConverter" converterMessage="Il campo franchigie a tempo non rappresenta un importo valido"/>
+						<p:watermark for="franchigieATempo" value="Franchigie a tempo" />  
+						<p:tooltip for="franchigieATempo" showEffect="fade" value="Franchigie a tempo applicate per la tariffa" />
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>
+						<p:outputLabel for="costoFissoMesi" value="Mesi:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioContrattoTariffe.costoFissoMesi}" id="costoFissoMesi"
+							converter="integerConverter" converterMessage="Il campo costo fisso mesi non rappresenta un numero intero valido"/>
+						<p:watermark for="costoFissoMesi" value="Mesi" />  
+						<p:tooltip for="costoFissoMesi" showEffect="fade" value="Mesi" />
+					</p:column>
+
+					<p:column>
+						<p:outputLabel for="franchigieMesi" value="Mesi:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioContrattoTariffe.franchigieMesi}" id="franchigieMesi"
+							converter="integerConverter" converterMessage="Il campo franchigie mesi non rappresenta un numero intero valido"/>
+						<p:watermark for="franchigieMesi" value="Mesi" />  
+						<p:tooltip for="franchigieMesi" showEffect="fade" value="Mesi" />
+					</p:column>
+				</p:row>
+				
+				<p:row>
+					<p:column colspan="4">
+						<p:separator/>
+					</p:column>
+				</p:row>
+							
+				<p:row>
+					<p:column colspan="2" styleClass="form-header">
+						<h:outputText value="Ritenuta a garanzia"/>
+					</p:column>
+
+					<p:column colspan="2" styleClass="form-header"/>
+				</p:row>
+					
+				<p:row>
+					<p:column>
+						<p:outputLabel for="ritenutaGaranzia" value="Importo:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioContrattoTariffe.ritenutaGaranzia}" id="ritenutaGaranzia"
+							converter="currencyConverter" converterMessage="Il campo importo della ritenuta a garanzia non rappresenta un importo valido"/>
+						<p:watermark for="ritenutaGaranzia" value="Costo fisso a tempo" />  
+						<p:tooltip for="ritenutaGaranzia" showEffect="fade" value="Costo fisso a tempo applicato per la tariffa" />
+					</p:column>
+
+					<p:column colspan="2" styleClass="form-header"/>
+				</p:row>
+					
+				<p:row>
+					<p:column>
+						<p:outputLabel for="ritenutaGaranziaGiorni" value="Giorni:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioContrattoTariffe.ritenutaGaranziaGiorni}" id="ritenutaGaranziaGiorni"
+							converter="integerConverter" converterMessage="Il campo giorni della ritenuta a garanzia non rappresenta un numero intero valido"/>
+						<p:watermark for="ritenutaGaranziaGiorni" value="Giorni" />  
+						<p:tooltip for="ritenutaGaranziaGiorni" showEffect="fade" value="Giorni" />
+					</p:column>
+
+					<p:column colspan="2" styleClass="form-header"/>
+				</p:row>
+				
+				<p:row>
+					<p:column colspan="4">
+						<p:separator/>
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>
+						<p:outputLabel for="fatturazioneAnticipata" value="Fatturazione anticipata:" />
+					</p:column>
+					<p:column>
+						<p:selectBooleanCheckbox value="#{dettaglioContrattoTariffe.fatturazioneAnticipata}" id="fatturazioneAnticipata"/>
+						<p:tooltip for="fatturazioneAnticipata" showEffect="fade" value="Fatturazione anticipata" />
+					</p:column>
+
+					<p:column>
+						<p:outputLabel for="extraFatturatoAParte" value="Extra a parte:" />
+					</p:column>
+					<p:column>
+						<p:selectBooleanCheckbox value="#{dettaglioContrattoTariffe.extraFatturatoAParte}" id="extraFatturatoAParte"/>
+						<p:tooltip for="extraFatturatoAParte" showEffect="fade" value="Extra fatturato a parte" />
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>
+						<p:outputLabel for="fatturaSpezzata" value="Fattura spezzata:" />
+					</p:column>
+					<p:column>
+						<p:selectBooleanCheckbox value="#{dettaglioContrattoTariffe.fatturaSpezzata}" id="fatturaSpezzata"/>
+						<p:tooltip for="fatturaSpezzata" showEffect="fade" value="Fatturazione spezzata" />
+					</p:column>
+
+					<p:column>
+						<p:outputLabel for="fatturaMinimoUnMese" value="Minimo un mese:" />
+					</p:column>
+					<p:column>
+						<p:selectBooleanCheckbox value="#{dettaglioContrattoTariffe.fatturaMinimoUnMese}" id="fatturaMinimoUnMese"/>
+						<p:tooltip for="fatturaMinimoUnMese" showEffect="fade" value="Fattura minimo un mese" />
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>
+						<p:outputLabel for="fatturaOgniMesi" value="Fattura ogni mesi:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioContrattoTariffe.fatturaOgniMesi}" id="fatturaOgniMesi"
+							converter="integerConverter" converterMessage="Il campo fattura ogni mesi non rappresenta un numero intero valido"/>
+						<p:watermark for="fatturaOgniMesi" value="Mesi" />  
+						<p:tooltip for="fatturaOgniMesi" showEffect="fade" value="Mesi" />
+					</p:column>
+
+					<p:column colspan="2" styleClass="form-header"/>
+				</p:row>
+				
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="dataInizioValidita" value="Data inizio validità:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioContrattoTariffe.dataInizioValidita}" id="dataInizioValidita"
+							pattern="dd/MM/yyyy"
+							required="true" 
+							requiredMessage="Il campo data inizio validità è obbligatorio"/>
+						<p:watermark for="dataInizioValidita" value="Data di inizio validità" />  
+						<p:tooltip for="dataInizioValidita" showEffect="fade" value="Data di inizio validità" />
+					</p:column>
+
+					<p:column>							
+						<p:outputLabel for="dataCessazione" value="Data cessazione:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioContrattoTariffe.dataCessazione}" id="dataCessazione"
+							pattern="dd/MM/yyyy"/>
+						<p:watermark for="dataCessazione" value="Data di cessazione" />  
+						<p:tooltip for="dataCessazione" showEffect="fade" value="Data di cessazione della tariffa" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="note" value="Note:" />
+					</p:column>
+					<p:column colspan="3">
+						<p:inputTextarea value="#{dettaglioContrattoTariffe.note}" id="note"/>
+						<p:watermark for="note" value="Eventuali annotazioni sulla tariffa" />  
+						<p:tooltip for="note" showEffect="fade" value="Eventuali annotazioni sulla tariffa" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column colspan="4" styleClass="form-footer">
+						<p:outputPanel id="buttons">
+							<p:commandButton value="Salva"
+								id="saveButton"
+								actionListener="#{dettaglioContrattoTariffe.doSave}" 
+								update="detailTariffaView:messages,detailTariffaView:panel,:detailForm:tabView:importiAccordion:tariffeTable,:detailForm:growl"
+								process="detailTariffaView:detailTariffaDialog"
+								oncomplete="if(args.ok) { detailTariffaDialogWidget.hide(); }"/>
+							<p:commandButton value="Annulla"
+								type="button"
+								onclick="detailTariffaDialogWidget.hide();" />
+						</p:outputPanel>
+					</p:column>
+				</p:row>
+				
+			</p:panelGrid>
+	
+			<p:defaultCommand target="saveButton" scope="detailTariffaDialog"/>
+			
+		</p:dialog>
+	
+	</f:subview>
+	
+	
+	<p:confirmDialog 
+		id="deleteTariffaDialog"
+		header="Rimuovi tariffa" 
+		widgetVar="deleteTariffaDialogWidget"
+		message="Si conferma la rimozione della tariffa selezionata? L'operazione non può essere annullata."
+		showEffect="fade" 
+		hideEffect="fade">
+		
+		<p:commandButton 
+			value="Elimina"
+			update=":detailForm:tabView:importiAccordion:tariffeTable,:detailForm:tabView:importiAccordion:tariffeButtons,:detailForm:growl"
+			process="@this" 
+			oncomplete="deleteTariffaDialogWidget.hide()"  
+            actionListener="#{dettaglioContrattoTariffe.doDelete}" />
+              
+        <p:commandButton 
+        	value="Annulla" 
+        	onclick="deleteTariffaDialogWidget.hide()" 
+        	type="button" />
+        	   
+	</p:confirmDialog>
+
+</html>
