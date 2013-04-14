@@ -1,0 +1,310 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:custom="http://java.sun.com/jsf/composite/components/custom">
+			
+	<p:panelGrid styleClass="form-panel">
+					
+		<p:row>
+			<p:column colspan="2" styleClass="form-header">
+				<h:outputText value="Elenco dei canoni associati al contratto."/>
+			</p:column>
+		</p:row>
+		
+		<p:row>
+		
+			<p:column>
+								
+				<p:dataTable
+					id="canoniTable"
+					var="canone"
+					value="#{dettaglioContrattoCanoni.listCanoni}"
+					selectionMode="single"
+					selection="#{dettaglioContrattoCanoni.selected}"
+					rowKey="#{canone.id}"
+					sortBy="#{canone.dataInizioValidita}"
+					sortOrder="descending"
+					emptyMessage="Nessun record trovato" 
+					styleClass="small-datatable">
+
+					<p:ajax event="rowSelect" update=":detailForm:tabView:importiAccordion:canoniButtons"/>
+	
+					<p:ajax event="rowUnselect" update=":detailForm:tabView:importiAccordion:canoniButtons"/>
+
+					<p:column headerText="Alias" sortBy="#{canone.alias}">
+						<h:outputText value="#{canone.alias}" />
+					</p:column>
+
+					<p:column headerText="Tipo servizio" sortBy="#{canone.tipoServizio.descrizione}">
+						<h:outputText value="#{canone.tipoServizio.descrizione}" />
+					</p:column>
+
+					<p:column headerText="Specifica servizio" sortBy="#{canone.specificaServizio.descrizione}">
+						<h:outputText value="#{canone.specificaServizio.descrizione}" />
+					</p:column>
+
+					<p:column headerText="Canone mensile" sortBy="#{canone.canoneMensile}">
+						<h:outputText value="#{canone.canoneMensile}">
+							<f:converter converterId="currencyConverter"/>
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Inizio" sortBy="#{canone.dataInizioValidita}">
+						<h:outputText value="#{canone.dataInizioValidita}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Cessazione" sortBy="#{canone.dataCessazione}">
+						<h:outputText value="#{canone.dataCessazione}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+						</h:outputText>
+					</p:column>
+																		
+				</p:dataTable>
+			
+			</p:column>
+			
+		</p:row>
+		
+		<p:row>
+			<p:column>
+				
+				<p:outputPanel id="canoniButtons">
+					
+					<p:commandButton value="Aggiungi"
+						oncomplete="detailCanoneDialogWidget.show()"
+						actionListener="#{dettaglioContrattoCanoni.startCreate}"
+						process="@this"
+						update=":detailForm:tabView:importiAccordion:detailCanoneView:detailCanoneDialog"/>
+
+					<p:commandButton value="Modifica"
+						disabled="#{empty dettaglioContrattoCanoni.selected}"
+						oncomplete="detailCanoneDialogWidget.show()"
+						actionListener="#{dettaglioContrattoCanoni.startUpdate}"
+						process="@this"
+						update=":detailForm:tabView:importiAccordion:detailCanoneView:detailCanoneDialog"/>
+
+					<p:commandButton value="Elimina"
+						disabled="#{empty dettaglioContrattoCanoni.selected}"
+						type="button"
+						onclick="deleteCanoneDialogWidget.show()"/>
+					
+				</p:outputPanel>
+				
+			</p:column>
+		</p:row>
+		
+	</p:panelGrid>
+
+	
+	
+	<f:subview id="detailCanoneView">
+	
+		<p:dialog 
+			id="detailCanoneDialog"
+			header="Dettagli del canone" 
+			widgetVar="detailCanoneDialogWidget" 
+			modal="true"
+			showEffect="fade" 
+			hideEffect="fade"> 
+					
+			<p:messages id="messages" globalOnly="false" showSummary="false" showDetail="true" closable="true"/>
+			
+			<p:panelGrid id="panel" styleClass="form-panel">
+							
+				<p:row>
+					<p:column colspan="2" styleClass="form-header">
+						<h:outputText value="Il pannello permette di impostare i dettagli del canone."/>
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>
+						<p:outputLabel for="alias" value="Alias:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioContrattoCanoni.alias}" id="alias"
+							required="true"
+							requiredMessage="Il campo alias è obbligatorio"/>
+						<p:watermark for="alias" value="Alias del canone" />  
+						<p:tooltip for="alias" showEffect="fade" value="Alias identificativo del canone" />
+					</p:column>
+				</p:row>
+				
+				<p:row>
+					<p:column>
+						<p:outputLabel for="codiceTipoServizio" value="Tipo servizio:" />
+					</p:column>
+					<p:column>
+						<p:selectOneMenu
+							required="true" 
+							requiredMessage="Il campo tipo servizio è obbligatorio"
+							id="codiceTipoServizio" 
+							value="#{dettaglioContrattoCanoni.codiceTipoServizio}"
+							effect="fade">
+							<p:ajax process="@this" update="codiceSpecificaServizio" listener="#{dettaglioContrattoCanoni.populateSpecificaServizio}"/>
+							<f:selectItem itemLabel="Selezionare un tipo di servizio" itemValue="" />
+							<f:selectItems 
+								value="#{dettaglioContrattoTariffe.listTipoServizio}" var="item"
+								itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+						</p:selectOneMenu>	
+						<p:tooltip for="codiceTipoServizio" showEffect="fade" value="Tipo di servizio" />
+					</p:column>
+				</p:row>
+				
+				<p:row>
+					<p:column>
+						<p:outputLabel for="codiceSpecificaServizio" value="Specifica del servizio:" />
+					</p:column>
+					<p:column>
+						<p:selectOneMenu
+							required="true" 
+							requiredMessage="Il campo specifica del servizio è obbligatorio"
+							id="codiceSpecificaServizio" 
+							value="#{dettaglioContrattoCanoni.codiceSpecificaServizio}"
+							effect="fade">
+							<f:selectItem itemLabel="Selezionare una specifica di servizio" itemValue="" />
+							<f:selectItems 
+								value="#{dettaglioContrattoCanoni.listSpecificaServizio}" var="item"
+								itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+						</p:selectOneMenu>	
+						<p:tooltip for="codiceSpecificaServizio" showEffect="fade" value="Specifica di servizio" />
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>
+						<p:outputLabel for="canoneMensile" value="Canone mensile:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioContrattoCanoni.canoneMensile}" id="canoneMensile"
+							required="true"
+							requiredMessage="Il campo canone mensile è obbligatorio"
+							converter="currencyConverter" converterMessage="Il campo canone mensile non rappresenta un importo valido"/>
+						<p:watermark for="canoneMensile" value="Canone mensile" />  
+						<p:tooltip for="canoneMensile" showEffect="fade" value="Canone mensile applicato per il canone" />
+					</p:column>
+
+					<p:column colspan="2" styleClass="form-header"/>
+				</p:row>
+					
+				<p:row>
+					<p:column>
+						<p:outputLabel for="fatturaMinimoUnMese" value="Minimo un mese:" />
+					</p:column>
+					<p:column>
+						<p:selectBooleanCheckbox value="#{dettaglioContrattoCanoni.fatturaMinimoUnMese}" id="fatturaMinimoUnMese"/>
+						<p:tooltip for="fatturaMinimoUnMese" showEffect="fade" value="Fattura minimo un mese" />
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>
+						<p:outputLabel for="fatturazioneAnticipata" value="Fatturazione anticipata:" />
+					</p:column>
+					<p:column>
+						<p:selectBooleanCheckbox value="#{dettaglioContrattoCanoni.fatturazioneAnticipata}" id="fatturazioneAnticipata"/>
+						<p:tooltip for="fatturazioneAnticipata" showEffect="fade" value="Fatturazione anticipata" />
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>
+						<p:outputLabel for="fatturaOgniMesi" value="Fattura ogni mesi:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioContrattoCanoni.fatturaOgniMesi}" id="fatturaOgniMesi"
+							converter="integerConverter" converterMessage="Il campo fattura ogni mesi non rappresenta un numero intero valido"/>
+						<p:watermark for="fatturaOgniMesi" value="Mesi" />  
+						<p:tooltip for="fatturaOgniMesi" showEffect="fade" value="Mesi" />
+					</p:column>
+				</p:row>
+				
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="dataInizioValidita" value="Data inizio validità:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioContrattoCanoni.dataInizioValidita}" id="dataInizioValidita"
+							pattern="dd/MM/yyyy"
+							required="true" 
+							requiredMessage="Il campo data inizio validità è obbligatorio"/>
+						<p:watermark for="dataInizioValidita" value="Data di inizio validità" />  
+						<p:tooltip for="dataInizioValidita" showEffect="fade" value="Data di inizio validità del canone" />
+					</p:column>
+				</p:row>
+				
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="dataCessazione" value="Data cessazione:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioContrattoCanoni.dataCessazione}" id="dataCessazione"
+							pattern="dd/MM/yyyy"/>
+						<p:watermark for="dataCessazione" value="Data di cessazione" />  
+						<p:tooltip for="dataCessazione" showEffect="fade" value="Data di cessazione del canone" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="note" value="Note:" />
+					</p:column>
+					<p:column>
+						<p:inputTextarea value="#{dettaglioContrattoCanoni.note}" id="note"/>
+						<p:watermark for="note" value="Eventuali annotazioni sul canone" />  
+						<p:tooltip for="note" showEffect="fade" value="Eventuali annotazioni sul canone" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column colspan="2" styleClass="form-footer">
+						<p:outputPanel id="buttons">
+							<p:commandButton value="Salva"
+								id="saveButton"
+								actionListener="#{dettaglioContrattoCanoni.doSave}" 
+								update="detailCanoneView:messages,detailCanoneView:panel,:detailForm:tabView:importiAccordion:canoniTable,:detailForm:growl"
+								process="detailCanoneView:detailCanoneDialog"
+								oncomplete="if(args.ok) { detailCanoneDialogWidget.hide(); }"/>
+							<p:commandButton value="Annulla"
+								type="button"
+								onclick="detailCanoneDialogWidget.hide();" />
+						</p:outputPanel>
+					</p:column>
+				</p:row>
+				
+			</p:panelGrid>
+	
+			<p:defaultCommand target="saveButton" scope="detailCanoneDialog"/>
+			
+		</p:dialog>
+	
+	</f:subview>
+	
+	
+	<p:confirmDialog 
+		id="deleteCanoneDialog"
+		header="Rimuovi canone" 
+		widgetVar="deleteCanoneDialogWidget"
+		message="Si conferma la rimozione del canone selezionato? L'operazione non può essere annullata."
+		showEffect="fade" 
+		hideEffect="fade">
+		
+		<p:commandButton 
+			value="Elimina"
+			update=":detailForm:tabView:importiAccordion:canoniTable,:detailForm:tabView:importiAccordion:canoniButtons,:detailForm:growl"
+			process="@this" 
+			oncomplete="deleteCanoneDialogWidget.hide()"  
+            actionListener="#{dettaglioContrattoCanoni.doDelete}" />
+              
+        <p:commandButton 
+        	value="Annulla" 
+        	onclick="deleteCanoneDialogWidget.hide()" 
+        	type="button" />
+        	   
+	</p:confirmDialog>
+
+</html>

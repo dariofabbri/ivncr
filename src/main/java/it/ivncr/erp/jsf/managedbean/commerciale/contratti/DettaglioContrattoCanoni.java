@@ -1,13 +1,10 @@
 package it.ivncr.erp.jsf.managedbean.commerciale.contratti;
 
 
-import it.ivncr.erp.jsf.RobustLazyDataModel;
 import it.ivncr.erp.model.commerciale.contratto.Canone;
 import it.ivncr.erp.model.commerciale.contratto.SpecificaServizio;
 import it.ivncr.erp.model.commerciale.contratto.TipoServizio;
-import it.ivncr.erp.service.QueryResult;
 import it.ivncr.erp.service.ServiceFactory;
-import it.ivncr.erp.service.SortDirection;
 import it.ivncr.erp.service.canone.CanoneService;
 import it.ivncr.erp.service.lut.LUTService;
 
@@ -15,7 +12,6 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -25,8 +21,6 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.context.RequestContext;
-import org.primefaces.model.LazyDataModel;
-import org.primefaces.model.SortOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,9 +36,6 @@ public class DettaglioContrattoCanoni implements Serializable {
 	@ManagedProperty("#{dettaglioContrattoGenerale}")
 	private DettaglioContrattoGenerale dettaglioContrattoGenerale;
 
-	private LazyDataModel<Canone> model;
-	private Canone selected;
-
 	private Integer id;
 	private String alias;
 	private Integer codiceTipoServizio;
@@ -57,61 +48,14 @@ public class DettaglioContrattoCanoni implements Serializable {
 	private BigDecimal canoneMensile;
 	private String note;
 
+	private List<Canone> listCanoni;
+	private Canone selected;
+
 	private List<TipoServizio> listTipoServizio;
 	private List<SpecificaServizio> listSpecificaServizio;
 
 
 	public DettaglioContrattoCanoni() {
-
-		model = new RobustLazyDataModel<Canone>() {
-
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public List<Canone> load(
-					int first,
-					int pageSize,
-					String sortField,
-					SortOrder sortOrder,
-					Map<String, String> filters) {
-
-				logger.debug("Fetching data model.");
-
-				if(dettaglioContrattoGenerale.getId() == null) {
-					return null;
-				}
-
-				// Inject codice contratto argument in applied filters map.
-				//
-				filters.put("codiceContratto", Integer.toString(dettaglioContrattoGenerale.getId()));
-
-				CanoneService cs = ServiceFactory.createService("Canone");
-				QueryResult<Canone> result = cs.list(
-						first,
-						pageSize,
-						sortField,
-						SortDirection.fromSortOrder(sortOrder),
-						filters);
-
-				this.setRowCount(result.getRecords());
-
-				return result.getResults();
-			}
-
-			@Override
-			public Object getRowKey(Canone canone) {
-
-				return canone == null ? null : canone.getId();
-			}
-
-			@Override
-			public Canone getRowData(String rowKey) {
-
-				CanoneService cs = ServiceFactory.createService("Canone");
-				Canone canone = cs.retrieveDeep(Integer.decode(rowKey));
-				return canone;
-			}
-		};
 	}
 
 	@PostConstruct
@@ -123,8 +67,23 @@ public class DettaglioContrattoCanoni implements Serializable {
 		//
 		listTipoServizio = lutService.listItems("TipoServizio");
 
+		// Load list for data table.
+		//
+		loadCanoni();
+
 		logger.debug("Initialization performed.");
 	}
+
+
+	public void loadCanoni() {
+
+		if(dettaglioContrattoGenerale.getId() == null)
+			return;
+
+		CanoneService cs = ServiceFactory.createService("Canone");
+		listCanoni = cs.listByContratto(dettaglioContrattoGenerale.getId());
+	}
+
 
 	private void clean() {
 
@@ -253,6 +212,10 @@ public class DettaglioContrattoCanoni implements Serializable {
 				FacesContext.getCurrentInstance().addMessage(null, message);
 			}
 
+			// Refresh list.
+			//
+			loadCanoni();
+
 			// Signal to modal dialog that everything went fine.
 			//
 			RequestContext.getCurrentInstance().addCallbackParam("ok", true);
@@ -294,9 +257,13 @@ public class DettaglioContrattoCanoni implements Serializable {
 					"L'eliminazione del canone si è conclusa con successo.");
 			FacesContext.getCurrentInstance().addMessage(null, message);
 
-			// Signal to modal dialog that everything went fine.
+			// Reset selection.
 			//
-			RequestContext.getCurrentInstance().addCallbackParam("ok", true);
+			selected = null;
+
+			// Refresh list.
+			//
+			loadCanoni();
 
 		} catch(Exception e) {
 
@@ -317,22 +284,6 @@ public class DettaglioContrattoCanoni implements Serializable {
 	public void setDettaglioContrattoGenerale(
 			DettaglioContrattoGenerale dettaglioContrattoGenerale) {
 		this.dettaglioContrattoGenerale = dettaglioContrattoGenerale;
-	}
-
-	public LazyDataModel<Canone> getModel() {
-		return model;
-	}
-
-	public void setModel(LazyDataModel<Canone> model) {
-		this.model = model;
-	}
-
-	public Canone getSelected() {
-		return selected;
-	}
-
-	public void setSelected(Canone selected) {
-		this.selected = selected;
 	}
 
 	public Integer getId() {
@@ -421,6 +372,22 @@ public class DettaglioContrattoCanoni implements Serializable {
 
 	public void setNote(String note) {
 		this.note = note;
+	}
+
+	public List<Canone> getListCanoni() {
+		return listCanoni;
+	}
+
+	public void setListCanoni(List<Canone> listCanoni) {
+		this.listCanoni = listCanoni;
+	}
+
+	public Canone getSelected() {
+		return selected;
+	}
+
+	public void setSelected(Canone selected) {
+		this.selected = selected;
 	}
 
 	public List<TipoServizio> getListTipoServizio() {

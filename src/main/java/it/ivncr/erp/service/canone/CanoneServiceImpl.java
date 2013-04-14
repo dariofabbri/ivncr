@@ -14,6 +14,7 @@ import it.ivncr.erp.util.AuditUtil.Snapshot;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import org.hibernate.Query;
@@ -228,5 +229,24 @@ public class CanoneServiceImpl extends AbstractService implements CanoneService 
 		// Audit call for the delete operation.
 		//
 		AuditUtil.log(Operation.Delete, Snapshot.Source, entity);
+	}
+
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Canone> listByContratto(Integer codiceContratto) {
+
+		String hql =
+				"from Canone can " +
+				"left join fetch can.tipoServizio tse " +
+				"left join fetch can.specificaServizio sse " +
+				"where can.contratto.id = :codiceContratto ";
+		Query query = session.createQuery(hql);
+		query.setParameter("codiceContratto", codiceContratto);
+
+		List<Canone> result = query.list();
+		logger.debug("Query result: " + result);
+
+		return result;
 	}
 }

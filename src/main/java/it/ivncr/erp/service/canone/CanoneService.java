@@ -6,6 +6,7 @@ import it.ivncr.erp.service.QueryResult;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 public interface CanoneService extends EntityService<Canone> {
 
@@ -47,4 +48,6 @@ public interface CanoneService extends EntityService<Canone> {
 			String note);
 
 	void delete(Integer id);
+
+	List<Canone> listByContratto(Integer id);
 }
