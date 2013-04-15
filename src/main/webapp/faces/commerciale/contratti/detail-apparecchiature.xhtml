@@ -1,0 +1,328 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<f:subview id="listApparecchiatureView">
+	
+		<p:outputPanel id="buttons" style="display: block; margin-top: 2em; margin-bottom: 2em;">
+	
+			<p:commandButton
+				id="createButton"
+				value="Crea"
+				actionListener="#{dettaglioContrattoApparecchiature.startCreate}"
+				process="@this"
+				update=":detailForm:tabView:detailApparecchiaturaView:detailApparecchiaturaDialog"
+				oncomplete="detailApparecchiaturaDialogWidget.show();"
+				icon="ui-icon-star"/>
+			<p:tooltip 
+				for="createButton" 
+				value="Crea una nuova apparecchiatura" 
+				showEffect="fade" 
+				hideEffect="fade"/>
+	
+			<p:commandButton
+				id="deleteButton"
+				value="Elimina"
+				disabled="#{dettaglioContrattoApparecchiature.selected == null}"
+				process="@this"
+				update=":detailForm:tabView:deleteApparecchiaturaView:deleteApparecchiaturaDialog"
+				oncomplete="deleteApparecchiaturaDialogWidget.show();"
+				icon="ui-icon-trash" />
+			<p:tooltip 
+				for="deleteButton" 
+				value="Elimina l'apparecchiatura selezionata" 
+				showEffect="fade" 
+				hideEffect="fade"/>
+	
+			<p:commandButton
+				id="updateButton" 
+				value="Modifica"
+				disabled="#{dettaglioContrattoApparecchiature.selected == null}"
+				actionListener="#{dettaglioContrattoApparecchiature.startUpdate}"
+				process="@this"
+				update=":detailForm:tabView:detailApparecchiaturaView:detailApparecchiaturaDialog"
+				oncomplete="detailApparecchiaturaDialogWidget.show();"
+				icon="ui-icon-pencil" />
+			<p:tooltip 
+				for="updateButton" 
+				value="Modifica l'apparecchiatura selezionata" 
+				showEffect="fade" 
+				hideEffect="fade"/>
+	
+		</p:outputPanel>
+
+		<p:dataTable 
+			id="apparecchiatureTable" 
+			var="apparecchiatura" 
+			value="#{dettaglioContrattoApparecchiature.model}"
+			paginator="true" 
+			paginatorPosition="bottom" rows="10"
+			paginatorTemplate="{CurrentPageReport} {RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+			currentPageReportTemplate="Trovati {totalRecords} record - Pagina {currentPage} di {totalPages}"
+			rowsPerPageTemplate="5,10,50" 
+			pageLinks="10"
+			emptyMessage="Nessun record trovato" 
+			selectionMode="single"
+			selection="#{dettaglioContrattoApparecchiature.selected}"
+			lazy="true">
+	
+			<p:ajax event="rowSelect" process="@this" update=":detailForm:tabView:listApparecchiatureView:buttons"/>
+			<p:ajax event="rowUnselect" process="@this" update=":detailForm:tabView:listApparecchiatureView:buttons"/>
+	      		
+			<f:facet name="header">
+		    	Lista delle apparecchiature tecnologiche
+		    </f:facet>
+	
+			<p:column headerText="Tipo" sortBy="#{apparecchiatura.tipoApparecchiaturaTecnologica.descrizione}"
+				filterBy="#{apparecchiatura.tipoApparecchiaturaTecnologica.descrizione}">
+				<h:outputText value="#{apparecchiatura.tipoApparecchiaturaTecnologica.descrizione}" />
+			</p:column>
+	
+			<p:column headerText="Gruppo" sortBy="#{apparecchiatura.tipoApparecchiaturaTecnologica.gruppoApparecchiatura.descrizione}"
+				filterBy="#{apparecchiatura.tipoApparecchiaturaTecnologica.gruppoApparecchiatura.descrizione}">
+				<h:outputText value="#{apparecchiatura.tipoApparecchiaturaTecnologica.gruppoApparecchiatura.descrizione}" />
+			</p:column>
+	
+			<p:column headerText="Matricola" sortBy="#{apparecchiatura.matricola}"
+				filterBy="#{apparecchiatura.matricola}">
+				<h:outputText value="#{apparecchiatura.matricola}" />
+			</p:column>
+	
+			<p:column headerText="Descrizione" sortBy="#{apparecchiatura.descrizione}"
+				filterBy="#{apparecchiatura.descrizione}">
+				<h:outputText value="#{apparecchiatura.descrizione}" />
+			</p:column>
+	
+			<p:column headerText="Installazione" sortBy="#{apparecchiatura.dataInstallazione}">
+				<h:outputText value="#{apparecchiatura.dataInstallazione}">
+					<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+				</h:outputText>
+			</p:column>
+	
+			<p:column headerText="Fatturazione" sortBy="#{apparecchiatura.dataFatturazione}">
+				<h:outputText value="#{apparecchiatura.dataFatturazione}">
+					<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+				</h:outputText>
+			</p:column>
+	
+		</p:dataTable>
+
+	</f:subview>
+
+
+	<f:subview id="detailApparecchiaturaView">
+		
+		<p:dialog
+			id="detailApparecchiaturaDialog"
+			header="Dati dell'apparecchiatura" 
+			widgetVar="detailApparecchiaturaDialogWidget" 
+			modal="true"
+			showEffect="fade" 
+			hideEffect="fade"> 
+
+			<p:messages id="messages" globalOnly="false" showSummary="false" showDetail="true" severity="error" closable="true"/>
+	
+			<p:panelGrid id="wrapper" styleClass="form-panel">
+
+				<p:focus for="codiceTipoApparecchiatura"/>
+				
+				<p:row>
+					<p:column>
+						<p:outputLabel for="codiceGruppoApparecchiatura" value="Gruppo apparecchiatura:" />
+					</p:column>
+					<p:column>
+						<p:selectOneMenu
+							required="true" 
+							requiredMessage="Il campo gruppo apparecchiatura è obbligatorio"
+							id="codiceGruppoApparecchiatura" 
+							value="#{dettaglioContrattoApparecchiature.codiceGruppoApparecchiatura}"
+							effect="fade">
+							<p:ajax process="@this" update="codiceTipoApparecchiatura" listener="#{dettaglioContrattoApparecchiature.populateTipoApparecchiatura}"/>
+							<f:selectItem itemLabel="Selezionare un gruppo di apparecchiature" itemValue="" />
+							<f:selectItems 
+								value="#{dettaglioContrattoApparecchiature.listGruppoApparecchiaturaTecnologica}" var="item"
+								itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+						</p:selectOneMenu>	
+						<p:tooltip for="codiceGruppoApparecchiatura" showEffect="fade" value="Tipo di servizio" />
+					</p:column>
+				</p:row>
+				
+				<p:row>
+					<p:column>
+						<p:outputLabel for="codiceTipoApparecchiatura" value="Tipo di apparecchiatura:" />
+					</p:column>
+					<p:column>
+						<p:selectOneMenu
+							required="true" 
+							requiredMessage="Il campo tipo apparecchiatura è obbligatorio"
+							id="codiceTipoApparecchiatura" 
+							value="#{dettaglioContrattoApparecchiature.codiceTipoApparecchiatura}"
+							effect="fade">
+							<f:selectItem itemLabel="Selezionare un tipo apparecchiatura" itemValue="" />
+							<f:selectItems 
+								value="#{dettaglioContrattoApparecchiature.listTipoApparecchiaturaTecnologica}" var="item"
+								itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+						</p:selectOneMenu>	
+						<p:tooltip for="codiceTipoApparecchiatura" showEffect="fade" value="Tipo di apparecchiatura tecnologica" />
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>
+						<p:outputLabel for="matricola" value="Matricola:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioContrattoApparecchiature.matricola}" id="matricola" />
+						<p:watermark for="matricola" value="Numero di matricola" />  
+						<p:tooltip for="matricola" showEffect="fade" value="Numero di matricola dell\'apparecchiatura" />
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>
+						<p:outputLabel for="descrizione" value="Descrizione:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioContrattoApparecchiature.descrizione}" id="descrizione" />
+						<p:watermark for="descrizione" value="Descrizione apparecchiatura" />  
+						<p:tooltip for="descrizione" showEffect="fade" value="Descrizione dell\'apparecchiatura" />
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>
+						<p:outputLabel for="comodatoUso" value="Comodato d'uso:" />
+					</p:column>
+					<p:column>
+						<p:selectBooleanCheckbox value="#{dettaglioContrattoApparecchiature.comodatoUso}" id="comodatoUso"/>
+						<p:tooltip for="comodatoUso" showEffect="fade" value="Apparecchiatura in comodato d\'uso" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="dataInstallazione" value="Data installazione:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioContrattoApparecchiature.dataInstallazione}" id="dataInstallazione"
+							pattern="dd/MM/yyyy"/>
+						<p:watermark for="dataInstallazione" value="Data di installazione" />  
+						<p:tooltip for="dataInstallazione" showEffect="fade" value="Data di installazione dell\'apparecchiatura" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="dataFatturazione" value="Data fatturazione:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioContrattoApparecchiature.dataFatturazione}" id="dataFatturazione"
+							pattern="dd/MM/yyyy"/>
+						<p:watermark for="dataFatturazione" value="Data di fatturazione" />  
+						<p:tooltip for="dataFatturazione" showEffect="fade" value="Data di fatturazione dell\'apparecchiatura" />
+					</p:column>
+				</p:row>
+						
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="dataRitiro" value="Data ritiro:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioContrattoApparecchiature.dataRitiro}" id="dataRitiro"
+							pattern="dd/MM/yyyy"/>
+						<p:watermark for="dataRitiro" value="Data di ritiro" />  
+						<p:tooltip for="dataRitiro" showEffect="fade" value="Data di ritiro dell\'apparecchiatura" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<p:outputLabel for="costoUnaTantum" value="Costo una tantum:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioContrattoApparecchiature.costoUnaTantum}" id="costoUnaTantum"
+							converter="currencyConverter" converterMessage="Il campo costo una tantum non rappresenta un importo valido"/>
+						<p:watermark for="costoUnaTantum" value="Costo una tantum" />  
+						<p:tooltip for="costoUnaTantum" showEffect="fade" value="Costo una tantum applicato per l\'apparecchiatura" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="note" value="Note:" />
+					</p:column>
+					<p:column>
+						<p:inputTextarea value="#{dettaglioContrattoApparecchiature.note}" id="note"/>
+						<p:watermark for="note" value="Eventuali annotazioni sull\'apparecchiatura" />  
+						<p:tooltip for="note" showEffect="fade" value="Eventuali annotazioni sull\'apparecchiatura" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column colspan="2" styleClass="form-footer">
+
+						<p:commandButton value="Salva"
+							actionListener="#{dettaglioContrattoApparecchiature.doSave}"
+							process="detailApparecchiaturaDialog"
+							update=":detailForm:tabView:listApparecchiatureView:apparecchiatureTable,:detailForm:tabView:listApparecchiatureView:buttons,:detailForm:tabView:detailApparecchiaturaView:messages,:detailForm:tabView:detailApparecchiaturaView:wrapper,:detailForm:growl" 
+							oncomplete="if(args.ok) { detailApparecchiaturaDialogWidget.hide(); }"/>
+		
+						<p:commandButton value="Annulla"
+							type="button"
+							onclick="detailApparecchiaturaDialogWidget.hide();" />
+
+					</p:column>
+				</p:row>
+									
+			</p:panelGrid>
+					
+		</p:dialog>
+		
+	</f:subview>
+	
+	
+	<f:subview id="deleteApparecchiaturaView">
+		
+		<p:dialog
+			id="deleteApparecchiaturaDialog" 
+			header="Eliminazione apparecchiatura" 
+			widgetVar="deleteApparecchiaturaDialogWidget" 
+			modal="true"
+			showEffect="fade" 
+			hideEffect="fade"> 
+				
+			<p:messages id="messages" globalOnly="false" showSummary="false" showDetail="true" severity="error" closable="true"/>
+			
+			<p:panelGrid styleClass="form-panel">
+				
+				<p:row>
+					<p:column>		
+						<h:outputText value="Si conferma l'eliminazione dell'apparecchiatura selezionata?"/>
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column styleClass="form-footer">		
+
+						<p:commandButton value="Elimina"
+							actionListener="#{dettaglioContrattoApparecchiature.doDelete}"
+							process="@this"
+							update=":detailForm:tabView:listApparecchiatureView:apparecchiatureTable,:detailForm:tabView:listApparecchiatureView:buttons,:detailForm:tabView:deleteApparecchiaturaView:messages,:detailForm:growl" 
+							oncomplete="if(args.ok) { deleteApparecchiaturaDialogWidget.hide(); }"/>
+		
+						<p:commandButton value="Annulla"
+							type="button"
+							onclick="deleteApparecchiaturaDialogWidget.hide();" />
+							
+					</p:column>
+				</p:row>
+				
+			</p:panelGrid>
+			
+		</p:dialog>
+		
+	</f:subview>
+		
+</html>
