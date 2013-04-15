@@ -1,0 +1,262 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<f:subview id="listDocumentiView">
+	
+		<p:outputPanel id="buttons" style="display: block; margin-top: 2em; margin-bottom: 2em;">
+	
+			<p:commandButton
+				id="createButton"
+				value="Crea"
+				actionListener="#{dettaglioContrattoDocumenti.startCreate}"
+				process="@this"
+				update=":detailForm:tabView:detailDocumentoView:detailDocumentoDialog"
+				oncomplete="detailDocumentoDialogWidget.show();"
+				icon="ui-icon-star"/>
+			<p:tooltip 
+				for="createButton" 
+				value="Carica un nuovo documento" 
+				showEffect="fade" 
+				hideEffect="fade"/>
+	
+			<p:commandButton
+				id="deleteButton"
+				value="Elimina"
+				disabled="#{dettaglioContrattoDocumenti.selected == null}"
+				process="@this"
+				update=":detailForm:tabView:deleteDocumentoView:deleteDocumentoDialog"
+				oncomplete="deleteDocumentoDialogWidget.show();"
+				icon="ui-icon-trash" />
+			<p:tooltip 
+				for="deleteButton" 
+				value="Elimina il documento selezionato" 
+				showEffect="fade" 
+				hideEffect="fade"/>
+	
+			<p:commandButton
+				id="updateButton" 
+				value="Modifica"
+				disabled="#{dettaglioContrattoDocumenti.selected == null}"
+				actionListener="#{dettaglioContrattoDocumenti.startUpdate}"
+				process="@this"
+				update=":detailForm:tabView:detailDocumentoView:detailDocumentoDialog"
+				oncomplete="detailDocumentoDialogWidget.show();"
+				icon="ui-icon-pencil" />
+			<p:tooltip 
+				for="updateButton" 
+				value="Modifica il documento selezionato" 
+				showEffect="fade" 
+				hideEffect="fade"/>
+	
+		</p:outputPanel>
+
+		<p:dataTable 
+			id="documentiTable" 
+			var="documento" 
+			value="#{dettaglioContrattoDocumenti.model}"
+			paginator="true" 
+			paginatorPosition="bottom" rows="10"
+			paginatorTemplate="{CurrentPageReport} {RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+			currentPageReportTemplate="Trovati {totalRecords} record - Pagina {currentPage} di {totalPages}"
+			rowsPerPageTemplate="5,10,50" 
+			pageLinks="10"
+			emptyMessage="Nessun record trovato" 
+			selectionMode="single"
+			selection="#{dettaglioContrattoDocumenti.selected}"
+			lazy="true">
+	
+			<p:ajax event="rowSelect" process="@this" update=":detailForm:tabView:listDocumentiView:buttons"/>
+			<p:ajax event="rowUnselect" process="@this" update=":detailForm:tabView:listDocumentiView:buttons"/>
+	      		
+			<f:facet name="header">
+		    	Lista dei documenti
+		    </f:facet>
+	
+			<p:column headerText="Descrizione" sortBy="#{documento.descrizione}"
+				filterBy="#{documento.descrizione}">
+				<h:outputText value="#{documento.descrizione}" />
+			</p:column>
+	
+			<p:column headerText="Nome file" sortBy="#{documento.filename}"
+				filterBy="#{documento.filename}">
+				<h:outputText value="#{documento.filename}" />
+			</p:column>
+	
+			<p:column headerText="Tipo" sortBy="#{documento.mimeType}"
+				filterBy="#{documento.mimeType}">
+				<h:outputText value="#{documento.mimeType}" />
+			</p:column>
+		
+			<p:column headerText="Caricamento" sortBy="#{documento.caricamento}">
+				<h:outputText value="#{documento.caricamento}">
+					<f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="#{appConfig.timeZone}" />
+				</h:outputText>
+			</p:column>
+	
+			<p:column headerText="Dimensione" sortBy="#{documento.documento.length}">
+				<h:outputText value="#{documento.documento.length}" />
+			</p:column>
+	
+		</p:dataTable>
+
+	</f:subview>
+
+
+	<f:subview id="detailDocumentoView">
+		
+		<p:dialog
+			id="detailDocumentoDialog"
+			header="Informazioni sul documento" 
+			widgetVar="detailDocumentoDialogWidget" 
+			modal="true"
+			showEffect="fade" 
+			hideEffect="fade"> 
+
+			<p:messages id="messages" globalOnly="false" showSummary="false" showDetail="true" severity="error" closable="true"/>
+	
+			<p:panelGrid id="wrapper" styleClass="form-panel">
+
+				<p:focus for="descrizione"/>
+
+				<p:row>
+					<p:column>
+						<p:outputLabel for="file" value="File:" />
+					</p:column>
+					<p:column>
+						<p:fileUpload 
+							id="file" 
+							value="#{dettaglioContrattoDocumenti.file}" 
+							mode="advanced"
+							auto="true"
+							sizeLimit="10000000"
+							fileUploadListener="#{dettaglioContrattoDocumenti.handleFileUpload}"
+							update="filename,mimeType"/>  					
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>
+						<p:outputLabel for="descrizione" value="Descrizione:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioContrattoDocumenti.descrizione}" id="descrizione" />
+						<p:watermark for="descrizione" value="Descrizione" />  
+						<p:tooltip for="descrizione" showEffect="fade" value="Descrizione associata al documento" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>
+						<p:outputLabel for="filename" value="Nome file:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioContrattoDocumenti.filename}" id="filename" />
+						<p:watermark for="filename" value="Nome del file" />  
+						<p:tooltip for="filename" showEffect="fade" value="Nome del file" />
+					</p:column>
+				</p:row>
+				
+				<p:row>
+					<p:column>
+						<p:outputLabel for="mimeType" value="Tipo file:" />
+					</p:column>
+					<p:column>
+						<p:selectOneMenu
+							id="mimeType" 
+							value="#{dettaglioContrattoDocumenti.mimeType}"
+							effect="fade">
+							<f:selectItem itemLabel="Selezionare un tipo" itemValue="" />
+							<f:selectItem itemLabel="Documento Word (*.doc)" itemValue="application/msword" />
+							<f:selectItem itemLabel="Documento Word (*.docx)" itemValue="application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
+							<f:selectItem itemLabel="Documento Excel (*.xls)" itemValue="application/vnd.ms-excel" />
+							<f:selectItem itemLabel="Documento Excel (*.xlsx)" itemValue="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+							<f:selectItem itemLabel="Documento PDF (*.pdf)" itemValue="application/pdf" />
+							<f:selectItem itemLabel="Immagine PNG (*.png)" itemValue="image/png" />
+							<f:selectItem itemLabel="Immagine JPG (*.jpg)" itemValue="image/jpeg" />
+							<f:selectItem itemLabel="Immagine GIF (*.gif)" itemValue="image/gif" />
+							<f:selectItem itemLabel="Immagine TIIF (*.tif)" itemValue="image/tiff" />
+						</p:selectOneMenu>	
+						<p:tooltip for="mimeType" showEffect="fade" value="Tipo di file" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="note" value="Note:" />
+					</p:column>
+					<p:column>
+						<p:inputTextarea value="#{dettaglioContrattoDocumenti.note}" id="note"/>
+						<p:watermark for="note" value="Eventuali annotazioni sul documento" />  
+						<p:tooltip for="note" showEffect="fade" value="Eventuali annotazioni sul documento" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column colspan="2" styleClass="form-footer">
+
+						<p:commandButton value="Salva"
+							actionListener="#{dettaglioContrattoDocumenti.doSave}"
+							process="detailDocumentoDialog"
+							update=":detailForm:tabView:listDocumentiView:documentiTable,:detailForm:tabView:listDocumentiView:buttons,:detailForm:tabView:detailDocumentoView:messages,:detailForm:tabView:detailDocumentoView:wrapper,:detailForm:growl" 
+							oncomplete="if(args.ok) { detailDocumentoDialogWidget.hide(); }"/>
+		
+						<p:commandButton value="Annulla"
+							type="button"
+							onclick="detailDocumentoDialogWidget.hide();" />
+
+					</p:column>
+				</p:row>
+									
+			</p:panelGrid>
+					
+		</p:dialog>
+		
+	</f:subview>
+	
+	
+	<f:subview id="deleteDocumentoView">
+		
+		<p:dialog
+			id="deleteDocumentoDialog" 
+			header="Eliminazione documento" 
+			widgetVar="deleteDocumentoDialogWidget" 
+			modal="true"
+			showEffect="fade" 
+			hideEffect="fade"> 
+				
+			<p:messages id="messages" globalOnly="false" showSummary="false" showDetail="true" severity="error" closable="true"/>
+			
+			<p:panelGrid styleClass="form-panel">
+				
+				<p:row>
+					<p:column>		
+						<h:outputText value="Si conferma l'eliminazione del documento selezionato?"/>
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column styleClass="form-footer">		
+
+						<p:commandButton value="Elimina"
+							actionListener="#{dettaglioContrattoDocumenti.doDelete}"
+							process="@this"
+							update=":detailForm:tabView:listDocumentiView:documentiTable,:detailForm:tabView:listDocumentiView:buttons,:detailForm:tabView:deleteDocumentoView:messages,:detailForm:growl" 
+							oncomplete="if(args.ok) { deleteDocumentoDialogWidget.hide(); }"/>
+		
+						<p:commandButton value="Annulla"
+							type="button"
+							onclick="deleteDocumentoDialogWidget.hide();" />
+							
+					</p:column>
+				</p:row>
+				
+			</p:panelGrid>
+			
+		</p:dialog>
+		
+	</f:subview>
+		
+</html>
