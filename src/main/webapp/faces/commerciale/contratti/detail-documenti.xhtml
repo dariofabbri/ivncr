@@ -96,8 +96,18 @@
 				</h:outputText>
 			</p:column>
 	
-			<p:column headerText="Dimensione" sortBy="#{documento.documento.length}">
-				<h:outputText value="#{documento.documento.length}" />
+			<p:column headerText="Dimensione" sortBy="#{documento.lengthInBytes}">
+				<h:outputText value="#{documento.lengthInBytes}" />
+			</p:column>
+			
+			<p:column>
+				<p:commandLink 
+					value="Download" 
+					ajax="false"
+					actionListener="#{dettaglioContrattoDocumenti.prepareDownload}" 
+					rendered="#{not empty documento.documento}">  
+					<p:fileDownload value="#{dettaglioContrattoDocumenti.streamedContent}" />  
+				</p:commandLink>
 			</p:column>
 	
 		</p:dataTable>
@@ -121,7 +131,7 @@
 
 				<p:focus for="descrizione"/>
 
-				<p:row>
+				<p:row rendered="#{empty dettaglioContrattoDocumenti.id}">
 					<p:column>
 						<p:outputLabel for="file" value="File:" />
 					</p:column>
@@ -132,6 +142,9 @@
 							mode="advanced"
 							auto="true"
 							sizeLimit="10000000"
+							fileLimit="1"
+							required="true"
+							requiredMessage="E' obbligatorio selezionare un file"
 							fileUploadListener="#{dettaglioContrattoDocumenti.handleFileUpload}"
 							update="filename,mimeType"/>  					
 					</p:column>
@@ -153,7 +166,9 @@
 						<p:outputLabel for="filename" value="Nome file:" />
 					</p:column>
 					<p:column>
-						<p:inputText value="#{dettaglioContrattoDocumenti.filename}" id="filename" />
+						<p:inputText value="#{dettaglioContrattoDocumenti.filename}" id="filename"
+							required="true"
+							requiredMessage="Il campo nome del file è obbligatorio" />
 						<p:watermark for="filename" value="Nome del file" />  
 						<p:tooltip for="filename" showEffect="fade" value="Nome del file" />
 					</p:column>

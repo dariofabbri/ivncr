@@ -444,10 +444,10 @@ CREATE TABLE app.con_documento_contratto
 	id SERIAL NOT NULL PRIMARY KEY,
 	contratto_id INTEGER NOT NULL REFERENCES app.con_contratto(id),
 	descrizione VARCHAR(255),
-	filename VARCHAR(255),
+	filename VARCHAR(255) NOT NULL,
 	mime_type VARCHAR(255),
-	caricamento_ts TIMESTAMP WITH TIME ZONE,
-	documento OID,
+	caricamento_ts TIMESTAMP WITH TIME ZONE NOT NULL,
+	documento OID NOT NULL,
 	note VARCHAR(4000)
 );
 

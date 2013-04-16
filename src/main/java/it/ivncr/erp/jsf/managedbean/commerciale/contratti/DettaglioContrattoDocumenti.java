@@ -8,6 +8,7 @@ import it.ivncr.erp.service.ServiceFactory;
 import it.ivncr.erp.service.SortDirection;
 import it.ivncr.erp.service.documentocontratto.DocumentoContrattoService;
 
+import java.io.ByteArrayInputStream;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
@@ -21,8 +22,10 @@ import javax.faces.context.FacesContext;
 
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
+import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,6 +52,8 @@ public class DettaglioContrattoDocumenti implements Serializable {
 	private String note;
 
 	private UploadedFile file;
+
+	private StreamedContent streamedContent;
 
 
 	public DettaglioContrattoDocumenti() {
@@ -159,6 +164,16 @@ public class DettaglioContrattoDocumenti implements Serializable {
 			DocumentoContrattoService dcs = ServiceFactory.createService("DocumentoContratto");
 
 			if(id == null) {
+
+				if(file == null) {
+					FacesMessage message = new FacesMessage(
+							FacesMessage.SEVERITY_ERROR,
+							"Errore",
+							"Nessun file selezionato.");
+					FacesContext.getCurrentInstance().addMessage("file", message);
+					return;
+				}
+
 				dcs.create(
 						dettaglioContrattoGenerale.getId(),
 						descrizione,
@@ -262,6 +277,22 @@ public class DettaglioContrattoDocumenti implements Serializable {
 	}
 
 
+	public void prepareDownload(DocumentoContratto documento) {
+
+		if(documento == null || documento.getDocumento() == null) {
+			streamedContent = null;
+			return;
+		}
+
+		ByteArrayInputStream bais = new ByteArrayInputStream(documento.getDocumento());
+
+		streamedContent = new DefaultStreamedContent(
+				bais,
+				documento.getMimeType() != null ? documento.getMimeType() : "application/octet-stream",
+				documento.getFilename() != null ? documento.getFilename() : "downloaded-file");
+	}
+
+
 	public DettaglioContrattoGenerale getDettaglioContrattoGenerale() {
 		return dettaglioContrattoGenerale;
 	}
@@ -333,5 +364,13 @@ public class DettaglioContrattoDocumenti implements Serializable {
 
 	public void setFile(UploadedFile file) {
 		this.file = file;
+	}
+
+	public StreamedContent getStreamedContent() {
+		return streamedContent;
+	}
+
+	public void setStreamedContent(StreamedContent streamedContent) {
+		this.streamedContent = streamedContent;
 	}
 }
