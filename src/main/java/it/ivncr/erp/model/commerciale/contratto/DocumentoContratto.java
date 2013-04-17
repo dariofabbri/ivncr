@@ -1,6 +1,5 @@
 package it.ivncr.erp.model.commerciale.contratto;
 
-import java.io.ByteArrayInputStream;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -16,8 +15,6 @@ import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.primefaces.model.DefaultStreamedContent;
-import org.primefaces.model.StreamedContent;
 
 @Entity
 @Table(name = "con_documento_contratto")
@@ -76,18 +73,6 @@ public class DocumentoContratto {
 		}
 
 		return documento.length;
-	}
-
-
-	public StreamedContent getStreamedContent() {
-
-		ByteArrayInputStream bais = new ByteArrayInputStream(documento);
-
-		StreamedContent sc = new DefaultStreamedContent(
-				bais,
-				mimeType != null ? mimeType : "application/octet-stream",
-				filename != null ? filename : "downloaded-file");
-		return sc;
 	}
 
 

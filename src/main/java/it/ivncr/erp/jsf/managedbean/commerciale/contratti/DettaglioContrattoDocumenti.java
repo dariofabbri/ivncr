@@ -109,11 +109,13 @@ public class DettaglioContrattoDocumenti implements Serializable {
 		};
 	}
 
+
 	@PostConstruct
 	public void init() {
 
 		logger.debug("Initialization performed.");
 	}
+
 
 	private void clean() {
 
@@ -125,6 +127,24 @@ public class DettaglioContrattoDocumenti implements Serializable {
 		mimeType = null;
 		note = null;
 	}
+
+
+	public void prepareDownload(DocumentoContratto documento) {
+
+		if(documento == null || documento.getDocumento() == null) {
+			streamedContent = null;
+			return;
+		}
+
+		ByteArrayInputStream bais = new ByteArrayInputStream(documento.getDocumento());
+
+		streamedContent = new DefaultStreamedContent(
+				bais,
+				documento.getMimeType() != null ? documento.getMimeType() : "application/octet-stream",
+				documento.getFilename() != null ? documento.getFilename() : "downloaded-file");
+
+	}
+
 
 	public void startCreate() {
 
@@ -154,7 +174,13 @@ public class DettaglioContrattoDocumenti implements Serializable {
 		filename = selected.getFilename();
 		mimeType = selected.getMimeType();
 		note =  selected.getNote();
+
+
+		// Prepare the download (that can be requested from the link in the dialog).
+		//
+		prepareDownload(selected);
 	}
+
 
 	public void doSave() {
 
@@ -274,22 +300,6 @@ public class DettaglioContrattoDocumenti implements Serializable {
 
 		filename = event.getFile().getFileName();
 		mimeType = event.getFile().getContentType();
-	}
-
-
-	public void prepareDownload(DocumentoContratto documento) {
-
-		if(documento == null || documento.getDocumento() == null) {
-			streamedContent = null;
-			return;
-		}
-
-		ByteArrayInputStream bais = new ByteArrayInputStream(documento.getDocumento());
-
-		streamedContent = new DefaultStreamedContent(
-				bais,
-				documento.getMimeType() != null ? documento.getMimeType() : "application/octet-stream",
-				documento.getFilename() != null ? documento.getFilename() : "downloaded-file");
 	}
 
 

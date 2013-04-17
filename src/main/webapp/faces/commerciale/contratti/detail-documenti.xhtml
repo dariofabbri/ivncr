@@ -104,7 +104,8 @@
 				<p:commandLink 
 					value="Download" 
 					ajax="false"
-					actionListener="#{dettaglioContrattoDocumenti.prepareDownload}" 
+					immediate="true"
+					actionListener="#{dettaglioContrattoDocumenti.prepareDownload(documento)}"
 					rendered="#{not empty documento.documento}">  
 					<p:fileDownload value="#{dettaglioContrattoDocumenti.streamedContent}" />  
 				</p:commandLink>
@@ -147,6 +148,17 @@
 							requiredMessage="E' obbligatorio selezionare un file"
 							fileUploadListener="#{dettaglioContrattoDocumenti.handleFileUpload}"
 							update="filename,mimeType"/>  					
+					</p:column>
+				</p:row>
+
+				<p:row rendered="#{not empty dettaglioContrattoDocumenti.id}">
+					<p:column>
+						<p:commandLink 
+							value="Download" 
+							ajax="false"
+							immediate="true">
+							<p:fileDownload value="#{dettaglioContrattoDocumenti.streamedContent}" />  
+						</p:commandLink>
 					</p:column>
 				</p:row>
 					
