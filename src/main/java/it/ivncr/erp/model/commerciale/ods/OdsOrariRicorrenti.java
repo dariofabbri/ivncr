@@ -1,4 +1,4 @@
-package it.ivncr.erp.model.commerciale.contratto;
+package it.ivncr.erp.model.commerciale.ods;
 
 import it.ivncr.erp.model.generale.GiornoSettimana;
 

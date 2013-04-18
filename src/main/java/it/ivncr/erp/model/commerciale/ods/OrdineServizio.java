@@ -1,6 +1,12 @@
-package it.ivncr.erp.model.commerciale.contratto;
+package it.ivncr.erp.model.commerciale.ods;
 
 import it.ivncr.erp.model.commerciale.cliente.ObiettivoServizio;
+import it.ivncr.erp.model.commerciale.contratto.Canone;
+import it.ivncr.erp.model.commerciale.contratto.Contratto;
+import it.ivncr.erp.model.commerciale.contratto.RaggruppamentoFatturazione;
+import it.ivncr.erp.model.commerciale.contratto.SpecificaServizio;
+import it.ivncr.erp.model.commerciale.contratto.Tariffa;
+import it.ivncr.erp.model.commerciale.contratto.TipoServizio;
 
 import java.util.Date;
 

@@ -1,0 +1,114 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:readonly="http://java.sun.com/jsf/composite/components/readonly">
+
+<ui:composition template="/WEB-INF/templates/main.xhtml">
+
+	<ui:define name="container">
+
+		<h:form  id="form">
+		
+		<p:growl id="growl" showSummary="true" showDetail="true" life="2000"/>
+
+			<h1 class="title ui-widget-header ui-corner-all">Gestione ordini di servizio</h1>
+			
+			<p:outputPanel id="buttons" style="display: block; margin-top: 2em; margin-bottom: 2em;">
+
+				<p:commandButton 
+					id="searchButton"
+					value="Ricerca avanzata"
+					icon="ui-icon-search" 
+					update=":searchForm" 
+					onclick="searchDialog.show();"/>
+					
+				<p:commandButton 
+					value="Nuovo OdS"
+					action="#{gestioneOds.startCreate}"
+					icon="ui-icon-star" />
+
+				<p:commandButton 
+					value="Elimina OdS selezionato"
+					disabled="#{empty gestioneOds.selected}"
+					onclick="deleteDialog.show();"
+					icon="ui-icon-trash" />
+
+				<p:commandButton 
+					value="Modifica OdS selezionato"
+					disabled="#{empty gestioneOds.selected}"
+					action="#{gestioneOds.startUpdate}"
+					icon="ui-icon-pencil" />
+
+			</p:outputPanel>
+
+			<p:dataTable 
+				var="ods" 
+				value="#{gestioneOds.model}"
+				paginator="true" 
+				paginatorPosition="bottom" rows="10"
+				paginatorTemplate="{CurrentPageReport} {RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+				currentPageReportTemplate="Trovati {totalRecords} record - Pagina {currentPage} di {totalPages}"
+				rowsPerPageTemplate="5,10,50" 
+				pageLinks="10"
+				emptyMessage="Nessun record trovato" 
+				selectionMode="single"
+				selection="#{gestioneOds.selected}"
+				sortBy="#{ods.codice}"
+				id="odsTable" 
+				lazy="true">
+
+				<p:ajax event="rowSelect" update=":form:buttons"/>
+
+				<p:ajax event="rowUnselect" update=":form:buttons"/>
+        		
+				<f:facet name="header">
+			    	Lista degli ordini di servizio
+			    </f:facet>
+
+				<p:column headerText="Oneroso" sortBy="#{ods.oneroso}">
+					<readonly:checkbox value="#{ods.oneroso}" />
+				</p:column>
+
+				<p:column headerText="Codice contratto" sortBy="#{ods.contratto.codice}"
+					filterBy="#{ods.contratto.codice}">
+					<h:outputText value="#{ods.contratto.codice}" />
+				</p:column>
+
+				<p:column headerText="Codice OdS" sortBy="#{ods.codice}"
+					filterBy="#{ods.codice}">
+					<h:outputText value="#{ods.codice}" />
+				</p:column>
+
+				<p:column headerText="Alias" sortBy="#{ods.alias}"
+					filterBy="#{ods.alias}">
+					<h:outputText value="#{ods.alias}" />
+				</p:column>
+
+				<p:column headerText="Tipo servizio" sortBy="#{ods.tipoServizio.descrizione}"
+					filterBy="#{ods.tipoServizio.descrizione}">
+					<h:outputText value="#{ods.tipoServizio.descrizione}" />
+				</p:column>
+
+				<p:column headerText="Specifica servizio" sortBy="#{ods.specificaServizio.descrizione}"
+					filterBy="#{ods.specificaServizio.descrizione}">
+					<h:outputText value="#{ods.specificaServizio.descrizione}" />
+				</p:column>
+
+				<p:column headerText="Obiettivo servizio" sortBy="#{ods.obiettivoServizio.alias}"
+					filterBy="#{ods.obiettivoServizio.alias}">
+					<h:outputText value="#{ods.obiettivoServizio.alias}" />
+				</p:column>
+
+			</p:dataTable>
+
+		</h:form>
+		
+		<ui:include src="search.xhtml"/>
+		
+	</ui:define>
+
+</ui:composition>
+
+</html>

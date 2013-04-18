@@ -59,18 +59,18 @@
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.GruppoApparecchiaturaTecnologica" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.LayoutStampa" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.MetodoPagamento" />
-		<mapping class="it.ivncr.erp.model.commerciale.contratto.OdsApparecchiatura" />
-		<mapping class="it.ivncr.erp.model.commerciale.contratto.OdsFrazionamento" />
-		<mapping class="it.ivncr.erp.model.commerciale.contratto.OdsOrariCalendario" />
-		<mapping class="it.ivncr.erp.model.commerciale.contratto.OdsOrariRicorrenti" />
-		<mapping class="it.ivncr.erp.model.commerciale.contratto.OrdineServizio" />
+		<mapping class="it.ivncr.erp.model.commerciale.ods.OdsApparecchiatura" />
+		<mapping class="it.ivncr.erp.model.commerciale.ods.OdsFrazionamento" />
+		<mapping class="it.ivncr.erp.model.commerciale.ods.OdsOrariCalendario" />
+		<mapping class="it.ivncr.erp.model.commerciale.ods.OdsOrariRicorrenti" />
+		<mapping class="it.ivncr.erp.model.commerciale.ods.OrdineServizio" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.RaggruppamentoFatturazione" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.RicavoExtraVigilanza" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.RinnovoContrattuale" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.SpecificaServizio" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.Tariffa" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.TipoApparecchiaturaTecnologica" />
-		<mapping class="it.ivncr.erp.model.commerciale.contratto.TipoOrdineServizio" />
+		<mapping class="it.ivncr.erp.model.commerciale.ods.TipoOrdineServizio" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.TipoProvenienza" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.TipoServizio" />
 

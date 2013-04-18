@@ -11,6 +11,7 @@
 		
 		<menuitem value="Gestione clienti" url="/faces/commerciale/clienti/index.xhtml" />
 		<menuitem value="Gestione contratti" url="/faces/commerciale/contratti/index.xhtml" />
+		<menuitem value="Gestione OdS" url="/faces/commerciale/ods/index.xhtml" />
 		
 	</submenu>
 

@@ -1,4 +1,6 @@
-package it.ivncr.erp.model.commerciale.contratto;
+package it.ivncr.erp.model.commerciale.ods;
+
+import it.ivncr.erp.model.commerciale.contratto.ApparecchiaturaTecnologica;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
