@@ -26,7 +26,12 @@
 					
 				<p:commandButton 
 					value="Nuovo OdS"
-					action="#{gestioneOds.startCreate}"
+					action="#{gestioneOds.startCreate(false)}"
+					icon="ui-icon-star" />
+					
+				<p:commandButton 
+					value="Nuovo servizio oneroso"
+					action="#{gestioneOds.startCreate(true)}"
 					icon="ui-icon-star" />
 
 				<p:commandButton 

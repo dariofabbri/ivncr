@@ -59,8 +59,6 @@ public class DettaglioContrattoGenerale implements Serializable {
 	private Integer anniPeriodoRinnovo;
 	private Integer giorniPreavvisoScadenza;
 
-	private String note;
-
 	private LazyDataModel<Cliente> clienteModel;
 
 
@@ -381,14 +379,6 @@ public class DettaglioContrattoGenerale implements Serializable {
 
 	public void setGiorniPreavvisoScadenza(Integer giorniPreavvisoScadenza) {
 		this.giorniPreavvisoScadenza = giorniPreavvisoScadenza;
-	}
-
-	public String getNote() {
-		return note;
-	}
-
-	public void setNote(String note) {
-		this.note = note;
 	}
 
 	public LazyDataModel<Cliente> getClienteModel() {

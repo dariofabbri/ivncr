@@ -33,10 +33,7 @@ public interface OrdineServizioService extends EntityService<OrdineServizio> {
 			Integer codiceTipoServizio,
 			Integer codiceSpecificaServizio,
 			Integer codiceObiettivoServizio,
-			Integer codiceTariffa,
-			Integer codiceCanone,
 			Boolean oneroso,
-			Integer codiceRaggruppamentoFatturazione,
 			Boolean cessato);
 
 	OrdineServizio update(
@@ -55,6 +52,26 @@ public interface OrdineServizioService extends EntityService<OrdineServizio> {
 			Boolean oneroso,
 			Integer codiceRaggruppamentoFatturazione,
 			Boolean cessato);
+
+	OrdineServizio updateTestata(
+			Integer id,
+			String alias,
+			Integer codiceTipoOrdineServizio,
+			Date dataDecorrenza,
+			Date dataTermine,
+			Date dataFineValidita,
+			Date orarioFineValidita,
+			Integer codiceTipoServizio,
+			Integer codiceSpecificaServizio,
+			Integer codiceObiettivoServizio,
+			Boolean cessato);
+
+	OrdineServizio updateFatturazione(
+			Integer id,
+			Integer codiceTariffa,
+			Integer codiceCanone,
+			Boolean oneroso,
+			Integer codiceRaggruppamentoFatturazione);
 
 	OrdineServizio setNote(Integer id, String note);
 

@@ -86,9 +86,10 @@ public class GestioneOds implements Serializable {
 		};
 	}
 
-	public String startCreate() {
+	public String startCreate(boolean oneroso) {
 
 		edited = new OrdineServizio();
+		edited.setOneroso(oneroso);
 
 		logger.debug("Moving to detail page for new record creation.");
 		return "detail?faces-redirect=true";

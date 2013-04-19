@@ -9,6 +9,8 @@ import it.ivncr.erp.model.commerciale.contratto.Tariffa;
 import it.ivncr.erp.model.commerciale.contratto.TipoServizio;
 import it.ivncr.erp.model.commerciale.ods.OrdineServizio;
 import it.ivncr.erp.model.commerciale.ods.TipoOrdineServizio;
+import it.ivncr.erp.model.generale.Azienda;
+import it.ivncr.erp.model.generale.Contatore;
 import it.ivncr.erp.service.AbstractService;
 import it.ivncr.erp.service.NotFoundException;
 import it.ivncr.erp.service.QueryResult;
@@ -143,10 +145,7 @@ public class OrdineServizioServiceImpl extends AbstractService implements Ordine
 			Integer codiceTipoServizio,
 			Integer codiceSpecificaServizio,
 			Integer codiceObiettivoServizio,
-			Integer codiceTariffa,
-			Integer codiceCanone,
 			Boolean oneroso,
-			Integer codiceRaggruppamentoFatturazione,
 			Boolean cessato) {
 
 		Date now = new Date();
@@ -158,9 +157,6 @@ public class OrdineServizioServiceImpl extends AbstractService implements Ordine
 		TipoServizio tipoServizio = (TipoServizio)session.get(TipoServizio.class, codiceTipoServizio);
 		SpecificaServizio specificaServizio = (SpecificaServizio)session.get(SpecificaServizio.class, codiceSpecificaServizio);
 		ObiettivoServizio obiettivoServizio = (ObiettivoServizio)session.get(ObiettivoServizio.class, codiceObiettivoServizio);
-		Tariffa tariffa = (Tariffa)session.get(Tariffa.class, codiceTariffa);
-		Canone canone = (Canone)session.get(Canone.class, codiceCanone);
-		RaggruppamentoFatturazione raggruppamentoFatturazione = (RaggruppamentoFatturazione)session.get(RaggruppamentoFatturazione.class, codiceRaggruppamentoFatturazione);
 
 		// Create the new entity.
 		//
@@ -185,10 +181,7 @@ public class OrdineServizioServiceImpl extends AbstractService implements Ordine
 		ordineServizio.setTipoServizio(tipoServizio);
 		ordineServizio.setSpecificaServizio(specificaServizio);
 		ordineServizio.setObiettivoServizio(obiettivoServizio);
-		ordineServizio.setTariffa(tariffa);
-		ordineServizio.setCanone(canone);
 		ordineServizio.setOneroso(oneroso);
-		ordineServizio.setRaggruppamentoFatturazione(raggruppamentoFatturazione);
 		ordineServizio.setCessato(cessato);
 
 		ordineServizio.setCreazione(now);
@@ -264,6 +257,113 @@ public class OrdineServizioServiceImpl extends AbstractService implements Ordine
 		ordineServizio.setOneroso(oneroso);
 		ordineServizio.setRaggruppamentoFatturazione(raggruppamentoFatturazione);
 		ordineServizio.setCessato(cessato);
+
+		ordineServizio.setUltimaModifica(now);
+
+		session.update(ordineServizio);
+		logger.debug("Entity successfully updated.");
+
+		// Audit call for the update operation.
+		//
+		AuditUtil.log(Operation.Update, Snapshot.Destination, ordineServizio);
+
+		return ordineServizio;
+	}
+
+	@Override
+	public OrdineServizio updateTestata(
+			Integer id,
+			String alias,
+			Integer codiceTipoOrdineServizio,
+			Date dataDecorrenza,
+			Date dataTermine,
+			Date dataFineValidita,
+			Date orarioFineValidita,
+			Integer codiceTipoServizio,
+			Integer codiceSpecificaServizio,
+			Integer codiceObiettivoServizio,
+			Boolean cessato) {
+
+		OrdineServizio ordineServizio = retrieve(id);
+		if(ordineServizio == null) {
+			String message = String.format("It has not been possible to retrieve specified entity: %d", id);
+			logger.info(message);
+			throw new NotFoundException(message);
+		}
+
+		// Audit call for the update operation.
+		//
+		AuditUtil.log(Operation.Update, Snapshot.Source, ordineServizio);
+
+		// Fetch referred entities.
+		//
+		TipoOrdineServizio tipoOrdineServizio = (TipoOrdineServizio)session.get(TipoOrdineServizio.class, codiceTipoOrdineServizio);
+		TipoServizio tipoServizio = (TipoServizio)session.get(TipoServizio.class, codiceTipoServizio);
+		SpecificaServizio specificaServizio = (SpecificaServizio)session.get(SpecificaServizio.class, codiceSpecificaServizio);
+		ObiettivoServizio obiettivoServizio = (ObiettivoServizio)session.get(ObiettivoServizio.class, codiceObiettivoServizio);
+
+
+		Date now = new Date();
+
+		// Set entity fields.
+		//
+		ordineServizio.setTipoOrdineServizio(tipoOrdineServizio);
+		ordineServizio.setAlias(alias);
+		ordineServizio.setDataDecorrenza(dataDecorrenza);
+		ordineServizio.setDataTermine(dataTermine);
+		ordineServizio.setDataFineValidita(dataFineValidita);
+		ordineServizio.setOrarioFineValidita(orarioFineValidita);
+		ordineServizio.setTipoServizio(tipoServizio);
+		ordineServizio.setSpecificaServizio(specificaServizio);
+		ordineServizio.setObiettivoServizio(obiettivoServizio);
+		ordineServizio.setCessato(cessato);
+
+		ordineServizio.setUltimaModifica(now);
+
+		session.update(ordineServizio);
+		logger.debug("Entity successfully updated.");
+
+		// Audit call for the update operation.
+		//
+		AuditUtil.log(Operation.Update, Snapshot.Destination, ordineServizio);
+
+		return ordineServizio;
+	}
+
+	@Override
+	public OrdineServizio updateFatturazione(
+			Integer id,
+			Integer codiceTariffa,
+			Integer codiceCanone,
+			Boolean oneroso,
+			Integer codiceRaggruppamentoFatturazione) {
+
+		OrdineServizio ordineServizio = retrieve(id);
+		if(ordineServizio == null) {
+			String message = String.format("It has not been possible to retrieve specified entity: %d", id);
+			logger.info(message);
+			throw new NotFoundException(message);
+		}
+
+		// Audit call for the update operation.
+		//
+		AuditUtil.log(Operation.Update, Snapshot.Source, ordineServizio);
+
+		// Fetch referred entities.
+		//
+		Tariffa tariffa = (Tariffa)session.get(Tariffa.class, codiceTariffa);
+		Canone canone = (Canone)session.get(Canone.class, codiceCanone);
+		RaggruppamentoFatturazione raggruppamentoFatturazione = (RaggruppamentoFatturazione)session.get(RaggruppamentoFatturazione.class, codiceRaggruppamentoFatturazione);
+
+
+		Date now = new Date();
+
+		// Set entity fields.
+		//
+		ordineServizio.setTariffa(tariffa);
+		ordineServizio.setCanone(canone);
+		ordineServizio.setOneroso(oneroso);
+		ordineServizio.setRaggruppamentoFatturazione(raggruppamentoFatturazione);
 
 		ordineServizio.setUltimaModifica(now);
 
@@ -383,12 +483,9 @@ public class OrdineServizioServiceImpl extends AbstractService implements Ordine
 
 	private String getNextCodice(Integer codiceAzienda, Integer anno, boolean increment) {
 
-		throw new UnsupportedOperationException();
-
-		/*
 		// Prepare key for specified year.
 		//
-		String key = String.format("CODICE_CONTRATTO_%04d", anno);
+		String key = String.format("CODICE_ODS_%04d", anno);
 
 		// Retrieve next available number from counters table.
 		//
@@ -406,7 +503,7 @@ public class OrdineServizioServiceImpl extends AbstractService implements Ordine
 		//
 		if(contatore == null) {
 
-			String descrizione = String.format("Contatore per la generazione dei codici contratto per l'anno %04d", anno);
+			String descrizione = String.format("Contatore per la generazione dei codici ordini di servizio per l'anno %04d", anno);
 
 			// Fetch azienda using specified code.
 			//
@@ -433,13 +530,10 @@ public class OrdineServizioServiceImpl extends AbstractService implements Ordine
 		}
 
 		return codice;
-		*/
 	}
 
-	/*
 	private String makeCodiceFromNumericAndYear(Integer numeric, Integer year) {
 
-		return String.format("%d/%04d", numeric, year);
+		return String.format("%04d/%06d", year, numeric);
 	}
-	*/
 }
