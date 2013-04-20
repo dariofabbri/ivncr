@@ -18,8 +18,8 @@
 						</p:column>
 						<p:column>
 							<p:inputText value="#{dettaglioContrattoGenerale.cliente.ragioneSociale}" id="cliente" disabled="true"/>
-							<p:watermark for="codice" value="Cliente del contratto" />  
-							<p:tooltip for="codice" showEffect="fade" value="Cliente del contratto" />
+							<p:watermark for="cliente" value="Cliente del contratto" />  
+							<p:tooltip for="cliente" showEffect="fade" value="Cliente del contratto" />
 														
 							<p:commandButton 
 								value="..."
@@ -72,7 +72,7 @@
 						<p:column>
 							<p:calendar value="#{dettaglioContrattoGenerale.dataContratto}" id="dataContratto"
 								required="true" requiredMessage="Il campo data contratto è obbligatorio"
-								pattern="dd/MM/yyyy"/>
+								locale="it" pattern="dd/MM/yyyy"/>
 							<p:watermark for="dataContratto" value="Data del contratto" />  
 							<p:tooltip for="dataContratto" showEffect="fade" value="Campo data del contratto" />
 						</p:column>
@@ -85,7 +85,7 @@
 						<p:column>
 							<p:calendar value="#{dettaglioContrattoGenerale.dataDecorrenza}" id="dataDecorrenza"
 								required="true" requiredMessage="Il campo data decorrenza è obbligatorio"
-								pattern="dd/MM/yyyy"/>
+								locale="it" pattern="dd/MM/yyyy"/>
 							<p:watermark for="dataDecorrenza" value="Decorrenza del contratto" />  
 							<p:tooltip for="dataDecorrenza" showEffect="fade" value="Campo data di decorrenza del contratto" />
 						</p:column>
@@ -97,7 +97,7 @@
 						</p:column>
 						<p:column>
 							<p:calendar value="#{dettaglioContrattoGenerale.dataTermine}" id="dataTermine"
-								pattern="dd/MM/yyyy"/>
+								locale="it" pattern="dd/MM/yyyy"/>
 							<p:watermark for="dataTermine" value="Data di termine del contratto" />  
 							<p:tooltip for="dataTermine" showEffect="fade" value="Campo data di termine del contratto" />
 						</p:column>
@@ -109,7 +109,7 @@
 						</p:column>
 						<p:column>
 							<p:calendar value="#{dettaglioContrattoGenerale.dataCessazione}" id="dataCessazione"
-								pattern="dd/MM/yyyy"/>
+								locale="it" pattern="dd/MM/yyyy"/>
 							<p:watermark for="dataCessazione" value="Data di cessazione del contratto" />  
 							<p:tooltip for="dataCessazione" showEffect="fade" value="Campo data di cessazione del contratto" />
 						</p:column>

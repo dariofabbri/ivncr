@@ -58,7 +58,7 @@
 						<p:column>
 							<p:calendar value="#{dettaglioAddettoGenerale.dataNascita}" id="dataNascita"
 								required="true" requiredMessage="Il campo data di nascita è obbligatorio"
-								pattern="dd/MM/yyyy"/>
+								locale="it" pattern="dd/MM/yyyy"/>
 							<p:watermark for="dataNascita" value="Data di nascita dell\'addetto" />  
 							<p:tooltip for="dataNascita" showEffect="fade" value="Campo data di nascita dell'addetto" />
 						</p:column>
@@ -526,7 +526,7 @@
 					</p:column>
 					<p:column>
 						<p:calendar value="#{dettaglioAddettoFamiliari.dataNascita}" id="dataNascita"
-									pattern="dd/MM/yyyy"/>
+							locale="it" pattern="dd/MM/yyyy"/>
 						<p:watermark for="dataNascita" value="Data di nascita del familiare" />  
 						<p:tooltip for="dataNascita" showEffect="fade" value="Campo data di nascita del familiare" />
 					</p:column>

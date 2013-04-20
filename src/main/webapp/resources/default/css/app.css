@@ -95,6 +95,11 @@
 
 .small-datatable .ui-sortable-column,
 .small-datatable .ui-widget-content,
+.small-datatable th,
 .small-datatable tbody td {
 	font-size: 12px;
+}
+
+.small-datatable .ui-inputtext {
+	width: 150px;
 }

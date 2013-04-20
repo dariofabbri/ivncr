@@ -164,7 +164,7 @@
 					</p:column>
 					<p:column>
 						<p:calendar value="#{dettaglioAddettoDocumenti.dataRilascio}" id="dataRilascio"
-							pattern="dd/MM/yyyy"
+							locale="it" pattern="dd/MM/yyyy"
 							required="true" 
 							requiredMessage="Il campo data di rilascio del documento è obbligatorio"/>
 						<p:watermark for="dataRilascio" value="Data di rilascio del documento" />  
@@ -178,7 +178,7 @@
 					</p:column>
 					<p:column>
 						<p:calendar value="#{dettaglioAddettoDocumenti.dataScadenza}" id="dataScadenza"
-							pattern="dd/MM/yyyy"/>
+							locale="it" pattern="dd/MM/yyyy"/>
 						<p:watermark for="dataScadenza" value="Data di scadenza del documento" />  
 						<p:tooltip for="dataScadenza" showEffect="fade" value="Data di scadenza del documento" />
 					</p:column>

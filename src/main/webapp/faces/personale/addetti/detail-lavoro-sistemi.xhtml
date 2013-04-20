@@ -135,7 +135,7 @@
 						<p:calendar value="#{dettaglioAddettoSistemi.validoDa}" id="validoDa"
 							required="true"
 							requiredMessage="Il campo valido da è obbligatorio"
-							pattern="dd/MM/yyyy"/>
+							locale="it" pattern="dd/MM/yyyy"/>
 						<p:watermark for="validoDa" value="Valido da" />  
 						<p:tooltip for="validoDa" showEffect="fade" value="Valido da" />
 					</p:column>
@@ -147,7 +147,7 @@
 					</p:column>
 					<p:column>
 						<p:calendar value="#{dettaglioAddettoSistemi.validoA}" id="validoA"
-							pattern="dd/MM/yyyy"/>
+							locale="it" pattern="dd/MM/yyyy"/>
 						<p:watermark for="validoA" value="Valido a" />  
 						<p:tooltip for="validoA" showEffect="fade" value="Valido a" />
 					</p:column>

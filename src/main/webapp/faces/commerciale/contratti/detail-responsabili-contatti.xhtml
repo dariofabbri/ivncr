@@ -164,7 +164,7 @@
 					</p:column>
 					<p:column>
 						<p:calendar value="#{dettaglioContrattoContatti.validoDa}" id="validoDa"
-							pattern="dd/MM/yyyy"
+							locale="it" pattern="dd/MM/yyyy"
 							required="true" 
 							requiredMessage="Il campo valido da è obbligatorio"/>
 						<p:watermark for="validoDa" value="Data di inizio validità" />  
@@ -178,7 +178,7 @@
 					</p:column>
 					<p:column>
 						<p:calendar value="#{dettaglioContrattoContatti.validoA}" id="validoA"
-							pattern="dd/MM/yyyy"/>
+							locale="it" pattern="dd/MM/yyyy"/>
 						<p:watermark for="validoA" value="Data di fine validità" />  
 						<p:tooltip for="validoA" showEffect="fade" value="Data di fine validità" />
 					</p:column>

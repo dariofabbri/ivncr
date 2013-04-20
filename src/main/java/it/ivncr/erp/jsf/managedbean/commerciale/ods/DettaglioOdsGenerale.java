@@ -2,12 +2,17 @@ package it.ivncr.erp.jsf.managedbean.commerciale.ods;
 
 import it.ivncr.erp.jsf.RobustLazyDataModel;
 import it.ivncr.erp.jsf.managedbean.accesso.session.LoginInfo;
+import it.ivncr.erp.model.commerciale.cliente.ObiettivoServizio;
 import it.ivncr.erp.model.commerciale.contratto.Contratto;
+import it.ivncr.erp.model.commerciale.contratto.SpecificaServizio;
+import it.ivncr.erp.model.commerciale.contratto.TipoServizio;
 import it.ivncr.erp.model.commerciale.ods.OrdineServizio;
+import it.ivncr.erp.model.commerciale.ods.TipoOrdineServizio;
 import it.ivncr.erp.service.QueryResult;
 import it.ivncr.erp.service.ServiceFactory;
 import it.ivncr.erp.service.SortDirection;
 import it.ivncr.erp.service.contratto.ContrattoService;
+import it.ivncr.erp.service.lut.LUTService;
 import it.ivncr.erp.service.ordineservizio.OrdineServizioService;
 
 import java.io.Serializable;
@@ -49,8 +54,8 @@ public class DettaglioOdsGenerale implements Serializable {
 	private Contratto contratto;
 
 	private Integer codiceTipoOrdineServizio;
-	private Integer codicePadre;
-	private Integer codiceNuovaAttivazione;
+	private OrdineServizio padre;
+	private OrdineServizio nuovaAttivazione;
 	private String codice;
 	private String alias;
 	private Date dataDecorrenza;
@@ -63,6 +68,11 @@ public class DettaglioOdsGenerale implements Serializable {
 	private Boolean cessato;
 
 	private LazyDataModel<Contratto> contrattoModel;
+
+	private List<TipoOrdineServizio> listTipoOrdineServizio;
+	private List<TipoServizio> listTipoServizio;
+	private List<SpecificaServizio> listSpecificaServizio;
+	private List<ObiettivoServizio> listObiettivoServizio;
 
 
 	public DettaglioOdsGenerale() {
@@ -117,6 +127,17 @@ public class DettaglioOdsGenerale implements Serializable {
 	@PostConstruct
 	public void init() {
 
+		LUTService lutService = ServiceFactory.createService("LUT");
+
+		// Load tipo ordine servizio LUT.
+		//
+		listTipoOrdineServizio = lutService.listItems("TipoOrdineServizio");
+
+		// Load tipo servizio LUT.
+		//
+		listTipoServizio = lutService.listItems("TipoServizio");
+
+
 		OrdineServizioService oss = ServiceFactory.createService("OrdineServizio");
 
 		// If we are editing an existing record, it is time to fetch
@@ -129,8 +150,8 @@ public class DettaglioOdsGenerale implements Serializable {
 			contratto = ods.getContratto();
 
 			codiceTipoOrdineServizio = ods.getTipoOrdineServizio() != null ? ods.getTipoOrdineServizio().getId() : null;
-			codicePadre = ods.getPadre() != null ? ods.getPadre().getId() : null;
-			codiceNuovaAttivazione = ods.getNuovaAttivazione() != null ? ods.getNuovaAttivazione().getId() : null;
+			padre = ods.getPadre();
+			nuovaAttivazione = ods.getNuovaAttivazione();
 			codice = ods.getCodice();
 			alias = ods.getAlias();
 			dataDecorrenza = ods.getDataDecorrenza();
@@ -141,6 +162,11 @@ public class DettaglioOdsGenerale implements Serializable {
 			codiceSpecificaServizio = ods.getSpecificaServizio() != null ? ods.getSpecificaServizio().getId() : null;
 			codiceObiettivoServizio = ods.getObiettivoServizio() != null ? ods.getObiettivoServizio().getId() : null;
 			cessato = ods.getCessato();
+
+			// After having loaded the entity, it is possible to populate the
+			// list using the current value of tipo servizio.
+			//
+			populateSpecificaServizio();
 
 			logger.debug("Initialization loaded ordine servizio details.");
 		}
@@ -157,15 +183,33 @@ public class DettaglioOdsGenerale implements Serializable {
 	}
 
 
-	public void doSelectCliente() {
+	public void populateSpecificaServizio() {
+
+		logger.debug("Entering populateSpecificaServizio method.");
+
+		if(codiceTipoServizio == null) {
+			listSpecificaServizio = null;
+		}
+
+		// Load specifica servizio LUT.
+		//
+		LUTService lutService = ServiceFactory.createService("LUT");
+		listSpecificaServizio = lutService.listItems("SpecificaServizio", "id", "tipoServizio.id", codiceTipoServizio);
+	}
+
+
+	public void doSelectContratto() {
 
 		if(contratto == null) {
 			logger.error("Unexpected empty contratto after selection from picker dialog.");
 			return;
 		}
 
-		// Extra initialization after contratto selection, if needed, goes here.
+		// Populate obiettivo servizio drop down list, selecting those available in
+		// selected contratto.
 		//
+		ContrattoService cs = ServiceFactory.createService("Contratto");
+		listObiettivoServizio = cs.listAvailableObiettiviServizio(contratto.getId());
 	}
 
 
@@ -309,20 +353,20 @@ public class DettaglioOdsGenerale implements Serializable {
 		this.codiceTipoOrdineServizio = codiceTipoOrdineServizio;
 	}
 
-	public Integer getCodicePadre() {
-		return codicePadre;
+	public OrdineServizio getPadre() {
+		return padre;
 	}
 
-	public void setCodicePadre(Integer codicePadre) {
-		this.codicePadre = codicePadre;
+	public void setPadre(OrdineServizio padre) {
+		this.padre = padre;
 	}
 
-	public Integer getCodiceNuovaAttivazione() {
-		return codiceNuovaAttivazione;
+	public OrdineServizio getNuovaAttivazione() {
+		return nuovaAttivazione;
 	}
 
-	public void setCodiceNuovaAttivazione(Integer codiceNuovaAttivazione) {
-		this.codiceNuovaAttivazione = codiceNuovaAttivazione;
+	public void setNuovaAttivazione(OrdineServizio nuovaAttivazione) {
+		this.nuovaAttivazione = nuovaAttivazione;
 	}
 
 	public String getCodice() {
@@ -411,5 +455,40 @@ public class DettaglioOdsGenerale implements Serializable {
 
 	public void setContrattoModel(LazyDataModel<Contratto> contrattoModel) {
 		this.contrattoModel = contrattoModel;
+	}
+
+	public List<TipoOrdineServizio> getListTipoOrdineServizio() {
+		return listTipoOrdineServizio;
+	}
+
+	public void setListTipoOrdineServizio(
+			List<TipoOrdineServizio> listTipoOrdineServizio) {
+		this.listTipoOrdineServizio = listTipoOrdineServizio;
+	}
+
+	public List<TipoServizio> getListTipoServizio() {
+		return listTipoServizio;
+	}
+
+	public void setListTipoServizio(List<TipoServizio> listTipoServizio) {
+		this.listTipoServizio = listTipoServizio;
+	}
+
+	public List<SpecificaServizio> getListSpecificaServizio() {
+		return listSpecificaServizio;
+	}
+
+	public void setListSpecificaServizio(
+			List<SpecificaServizio> listSpecificaServizio) {
+		this.listSpecificaServizio = listSpecificaServizio;
+	}
+
+	public List<ObiettivoServizio> getListObiettivoServizio() {
+		return listObiettivoServizio;
+	}
+
+	public void setListObiettivoServizio(
+			List<ObiettivoServizio> listObiettivoServizio) {
+		this.listObiettivoServizio = listObiettivoServizio;
 	}
 }

@@ -1,0 +1,369 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<p:panelGrid styleClass="multi-col-layout" id="testataPanel">
+		
+		<p:row>
+			
+			<p:column>
+	
+				<p:panelGrid styleClass="form-panel">
+					
+					<p:row>
+						<p:column>
+							<p:outputLabel for="contratto" value="Contratto:" />
+						</p:column>
+						<p:column>
+							<p:inputText value="#{dettaglioOdsGenerale.contratto.codice}" id="contratto" disabled="true"/>
+							<p:watermark for="contratto" value="Contratto dell\'ordine di servizio" />  
+							<p:tooltip for="contratto" showEffect="fade" value="Contratto dell'ordine di servizio" />
+														
+							<p:commandButton 
+								value="..."
+								process="@this"
+								update="selectContrattoDialog"
+								oncomplete="selectContrattoDialogWidget.show();"
+								disabled="#{not empty dettaglioOdsGenerale.id}"/>
+							
+						</p:column>
+					</p:row>
+					
+					<p:row>
+						<p:column>
+							<p:outputLabel for="codice" value="Codice:" />
+						</p:column>
+						<p:column>
+							<p:inputText value="#{dettaglioOdsGenerale.codice}" id="codice" disabled="true"/>
+							<p:watermark for="codice" value="Codice identificativo dell\'ordine di servizio" />  
+							<p:tooltip for="codice" showEffect="fade" value="Il codice rappresenta univocamente l'ordine di servizio ed è generato automaticamente dal sistema" />
+						</p:column>
+					</p:row>
+					
+					<p:row>
+						<p:column>							
+							<p:outputLabel for="alias" value="Alias:" />
+						</p:column>
+						<p:column>
+							<p:inputText value="#{dettaglioOdsGenerale.alias}" id="alias" />
+							<p:watermark for="alias" value="Alias identificativo dell\'ordine di servizio" />  
+							<p:tooltip for="alias" showEffect="fade" value="Alias identificativo dell'ordine di servizio" />
+						</p:column>
+					</p:row>
+					
+					<p:row>
+						<p:column>
+							<p:outputLabel for="codiceTipoServizio" value="Tipo servizio:" />
+						</p:column>
+						<p:column>
+							<p:selectOneMenu
+								required="true" 
+								requiredMessage="Il campo tipo servizio è obbligatorio"
+								id="codiceTipoServizio" 
+								value="#{dettaglioOdsGenerale.codiceTipoServizio}"
+								effect="fade">
+								<p:ajax process="@this" update="codiceSpecificaServizio" listener="#{dettaglioOdsGenerale.populateSpecificaServizio}"/>
+								<f:selectItem itemLabel="Selezionare un tipo di servizio" itemValue="" />
+								<f:selectItems 
+									value="#{dettaglioOdsGenerale.listTipoServizio}" var="item"
+									itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+							</p:selectOneMenu>	
+							<p:tooltip for="codiceTipoServizio" showEffect="fade" value="Tipo di servizio" />
+						</p:column>
+					</p:row>
+					
+					<p:row>
+						<p:column>
+							<p:outputLabel for="codiceSpecificaServizio" value="Specifica del servizio:" />
+						</p:column>
+						<p:column>
+							<p:selectOneMenu
+								required="true" 
+								requiredMessage="Il campo specifica del servizio è obbligatorio"
+								id="codiceSpecificaServizio" 
+								value="#{dettaglioOdsGenerale.codiceSpecificaServizio}"
+								effect="fade">
+								<f:selectItem itemLabel="Selezionare una specifica di servizio" itemValue="" />
+								<f:selectItems 
+									value="#{dettaglioOdsGenerale.listSpecificaServizio}" var="item"
+									itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+							</p:selectOneMenu>	
+							<p:tooltip for="codiceSpecificaServizio" showEffect="fade" value="Specifica di servizio" />
+						</p:column>
+					</p:row>
+					
+					<p:row>
+						<p:column>
+							<p:outputLabel for="codiceObiettivoServizio" value="Obiettivo di servizio:" />
+						</p:column>
+						<p:column>
+							<p:selectOneMenu
+								required="true" 
+								requiredMessage="Il campo obiettivo di servizio è obbligatorio"
+								id="codiceObiettivoServizio" 
+								value="#{dettaglioOdsGenerale.codiceObiettivoServizio}"
+								effect="fade">
+								<f:selectItem itemLabel="Selezionare un obiettivo di servizio" itemValue="" />
+								<f:selectItems 
+									value="#{dettaglioOdsGenerale.listObiettivoServizio}" var="item"
+									itemLabel="#{item.alias}" itemValue="#{item.id}" />
+							</p:selectOneMenu>	
+							<p:tooltip for="codiceObiettivoServizio" showEffect="fade" value="Obiettivo di servizio" />
+						</p:column>
+					</p:row>
+						
+					<p:row>
+						<p:column>							
+							<p:outputLabel for="cessato" value="Cessato:" />
+						</p:column>
+						<p:column>
+							<p:selectBooleanCheckbox value="#{dettaglioOdsGenerale.cessato}" id="cessato"/>
+							<p:tooltip for="cessato" showEffect="fade" value="Indica se il servizio è cessato o meno" />
+						</p:column>
+					</p:row>
+					
+				</p:panelGrid>
+				
+			</p:column>
+			
+			<p:column>
+	
+				<p:panelGrid styleClass="form-panel">
+				
+					<p:row>
+						<p:column>
+							<p:outputLabel for="codiceTipoOrdineServizio" value="Tipo:" />
+						</p:column>
+						<p:column>
+							<p:selectOneMenu
+								id="codiceTipoOrdineServizio" 
+								value="#{dettaglioOdsGenerale.codiceTipoOrdineServizio}"
+								disabled="true"
+								effect="fade">
+								<f:selectItem itemLabel="Selezionare un tipo" itemValue="" />
+								<f:selectItems 
+									value="#{dettaglioOdsGenerale.listTipoOrdineServizio}" var="item"
+									itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+							</p:selectOneMenu>	
+							<p:tooltip for="codiceTipoOrdineServizio" showEffect="fade" value="Tipo di ordine di servizio" />
+						</p:column>
+					</p:row>
+					
+					<p:row>
+						<p:column>
+							<p:outputLabel for="padre" value="Padre:" />
+						</p:column>
+						<p:column>
+							<p:inputText value="#{dettaglioOdsGenerale.padre.codice}" id="padre" disabled="true"/>
+							<p:tooltip for="padre" showEffect="fade" value="Ordine di servizio padre" />
+						</p:column>
+					</p:row>
+					
+					<p:row>
+						<p:column>
+							<p:outputLabel for="nuovaAttivazione" value="Nuova attivazione:" />
+						</p:column>
+						<p:column>
+							<p:inputText value="#{dettaglioOdsGenerale.nuovaAttivazione.codice}" id="nuovaAttivazione" disabled="true"/>
+							<p:tooltip for="nuovaAttivazione" showEffect="fade" value="Nuova attivazione" />
+						</p:column>
+					</p:row>
+					
+					<p:row>
+						<p:column>							
+							<p:outputLabel for="dataDecorrenza" value="Data decorrenza:" />
+						</p:column>
+						<p:column>
+							<p:calendar value="#{dettaglioOdsGenerale.dataDecorrenza}" id="dataDecorrenza"
+								required="true" requiredMessage="Il campo data decorrenza è obbligatorio"
+								locale="it" pattern="dd/MM/yyyy"/>
+							<p:watermark for="dataDecorrenza" value="Decorrenza dell\'ordine di servizio" />  
+							<p:tooltip for="dataDecorrenza" showEffect="fade" value="Campo data di decorrenza dell'ordine di servizio" />
+						</p:column>
+					</p:row>
+					
+					<p:row>
+						<p:column>							
+							<p:outputLabel for="dataTermine" value="Data termine:" />
+						</p:column>
+						<p:column>
+							<p:calendar value="#{dettaglioOdsGenerale.dataTermine}" id="dataTermine"
+								locale="it" pattern="dd/MM/yyyy"/>
+							<p:watermark for="dataTermine" value="Termine dell\'ordine di servizio" />  
+							<p:tooltip for="dataTermine" showEffect="fade" value="Campo data di termine dell'ordine di servizio" />
+						</p:column>
+					</p:row>
+					
+					<p:row>
+						<p:column>							
+							<p:outputLabel for="dataFineValidita" value="Data fine validità:" />
+						</p:column>
+						<p:column>
+							<p:calendar value="#{dettaglioOdsGenerale.dataFineValidita}" id="dataFineValidita"
+								locale="it" pattern="dd/MM/yyyy"/>
+							<p:watermark for="dataFineValidita" value="Fine validità dell\'ordine di servizio" />  
+							<p:tooltip for="dataFineValidita" showEffect="fade" value="Campo data di fine validità dell'ordine di servizio" />
+						</p:column>
+					</p:row>
+					
+					<p:row>
+						<p:column>							
+							<p:outputLabel for="orarioFineValidita" value="Orario fine validità:" />
+						</p:column>
+						<p:column>
+							<p:calendar value="#{dettaglioOdsGenerale.orarioFineValidita}" id="orarioFineValidita"
+								locale="it" pattern="HH:mm" timeOnly="true"/>
+							<p:watermark for="orarioFineValidita" value="Fine validità dell\'ordine di servizio" />  
+							<p:tooltip for="orarioFineValidita" showEffect="fade" value="Campo orario di fine validità dell'ordine di servizio" />
+						</p:column>
+					</p:row>
+					
+				</p:panelGrid>
+			
+			</p:column>
+			
+		</p:row>
+					
+		<p:row>
+		
+			<p:column colspan="2" styleClass="form-footer">
+				<p:commandButton
+					id="saveButton"
+					value="Salva"
+					actionListener="#{dettaglioOdsGenerale.doSave}"
+					update="@form"
+					process="testataPanel"
+					icon="ui-icon-star"/>
+				<p:tooltip 
+					for="saveButton" 
+					value="Salva i dati dell\'ordine di servizio" 
+					showEffect="fade" 
+					hideEffect="fade"/>
+			</p:column>
+			
+		</p:row>
+
+	</p:panelGrid>
+	
+	
+	<p:dialog
+		id="selectContrattoDialog"
+		header="Selezione contratto" 
+		widgetVar="selectContrattoDialogWidget" 
+		modal="true"
+		showEffect="fade" 
+		hideEffect="fade"> 
+			
+		<p:panelGrid styleClass="form-panel">
+						
+			<p:row>
+				<p:column styleClass="form-header">
+					<h:outputText value="Selezionare il contratto per il quale si intende creare l'ordine di servizio."/>
+				</p:column>
+			</p:row>
+			
+			<p:row>
+			
+				<p:column>
+				
+					<p:dataTable
+						var="contratto" 
+						value="#{dettaglioOdsGenerale.contrattoModel}"
+						paginator="true"
+						paginatorPosition="bottom" rows="10"
+						paginatorTemplate="{CurrentPageReport} {RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+						currentPageReportTemplate="Trovati {totalRecords} record - Pagina {currentPage} di {totalPages}"
+						rowsPerPageTemplate="5,10,50" 
+						pageLinks="10"
+						emptyMessage="Nessun record trovato" 
+						selectionMode="single"
+						selection="#{dettaglioOdsGenerale.contratto}"
+						sortBy="#{contratto.codice}"
+						id="contrattiTable" 
+						lazy="true"
+						styleClass="small-datatable">
+	
+						<p:ajax event="rowSelect" update=":detailForm:selectContrattoDialogButtons"/>
+		
+						<p:ajax event="rowUnselect" update=":detailForm:selectContrattoDialogButtons"/>
+
+						<p:column headerText="Codice contratto" sortBy="#{contratto.codice}"
+							filterBy="#{contratto.codice}">
+							<h:outputText value="#{contratto.codice}" />
+						</p:column>
+		
+						<p:column headerText="Alias" sortBy="#{contratto.alias}"
+							filterBy="#{contratto.alias}">
+							<h:outputText value="#{contratto.alias}" />
+						</p:column>
+		
+						<p:column headerText="Codice cliente" sortBy="#{contratto.cliente.codice}"
+							filterBy="#{contratto.cliente.codice}">
+							<h:outputText value="#{contratto.cliente.codice}" />
+						</p:column>
+		
+						<p:column headerText="Ragione sociale" sortBy="#{contratto.ragioneSociale}"
+							filterBy="#{contratto.ragioneSociale}">
+							<h:outputText value="#{contratto.ragioneSociale}" />
+						</p:column>
+		
+						<p:column headerText="Data contratto">
+							<h:outputText value="#{contratto.dataContratto}">
+								<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+							</h:outputText>
+						</p:column>
+		
+						<p:column headerText="Data decorrenza">
+							<h:outputText value="#{contratto.dataDecorrenza}">
+								<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+							</h:outputText>
+						</p:column>
+		
+						<p:column headerText="Data termine">
+							<h:outputText value="#{contratto.dataTermine}">
+								<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+							</h:outputText>
+						</p:column>
+		
+						<p:column headerText="Data cessazione">
+							<h:outputText value="#{contratto.dataCessazione}">
+								<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+							</h:outputText>
+						</p:column>
+																			
+					</p:dataTable>
+					
+				</p:column>
+				
+			</p:row>
+
+			<p:row>
+			
+				<p:column styleClass="form-footer">
+				
+					<p:outputPanel id="selectContrattoDialogButtons">
+						
+						<p:commandButton 
+							value="Annulla"
+							type="button"
+							onclick="selectContrattoDialogWidget.hide();" />
+							
+						<p:commandButton value="Seleziona"
+							disabled="#{empty dettaglioOdsGenerale.contratto}"
+							actionListener="#{dettaglioOdsGenerale.doSelectContratto}"
+							process="@this"
+							update=":detailForm:contratto,:detailForm:codiceObiettivoServizio" 
+							oncomplete="selectContrattoDialogWidget.hide();"/>
+							
+					</p:outputPanel>
+							
+				</p:column>
+			</p:row>
+			
+		</p:panelGrid>
+
+	</p:dialog>
+	
+</html>

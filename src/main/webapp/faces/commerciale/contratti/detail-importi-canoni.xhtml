@@ -227,7 +227,7 @@
 					</p:column>
 					<p:column>
 						<p:calendar value="#{dettaglioContrattoCanoni.dataInizioValidita}" id="dataInizioValidita"
-							pattern="dd/MM/yyyy"
+							locale="it" pattern="dd/MM/yyyy"
 							required="true" 
 							requiredMessage="Il campo data inizio validità è obbligatorio"/>
 						<p:watermark for="dataInizioValidita" value="Data di inizio validità" />  
@@ -241,7 +241,7 @@
 					</p:column>
 					<p:column>
 						<p:calendar value="#{dettaglioContrattoCanoni.dataCessazione}" id="dataCessazione"
-							pattern="dd/MM/yyyy"/>
+							locale="it" pattern="dd/MM/yyyy"/>
 						<p:watermark for="dataCessazione" value="Data di cessazione" />  
 						<p:tooltip for="dataCessazione" showEffect="fade" value="Data di cessazione del canone" />
 					</p:column>
