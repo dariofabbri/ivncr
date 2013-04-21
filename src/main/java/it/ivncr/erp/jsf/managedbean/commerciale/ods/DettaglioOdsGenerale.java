@@ -51,9 +51,11 @@ public class DettaglioOdsGenerale implements Serializable {
 	@ManagedProperty("#{gestioneOds.edited.oneroso}")
 	private Boolean oneroso;
 
+	@ManagedProperty("#{gestioneOds.edited.tipoOrdineServizio.id}")
+	private Integer codiceTipoOrdineServizio;
+
 	private Contratto contratto;
 
-	private Integer codiceTipoOrdineServizio;
 	private OrdineServizio padre;
 	private OrdineServizio nuovaAttivazione;
 	private String codice;
@@ -164,9 +166,10 @@ public class DettaglioOdsGenerale implements Serializable {
 			cessato = ods.getCessato();
 
 			// After having loaded the entity, it is possible to populate the
-			// list using the current value of tipo servizio.
+			// lists using the current value of tipo servizio and of contratto.
 			//
 			populateSpecificaServizio();
+			populateObiettivoServizio();
 
 			logger.debug("Initialization loaded ordine servizio details.");
 		}
@@ -198,7 +201,7 @@ public class DettaglioOdsGenerale implements Serializable {
 	}
 
 
-	public void doSelectContratto() {
+	public void populateObiettivoServizio() {
 
 		if(contratto == null) {
 			logger.error("Unexpected empty contratto after selection from picker dialog.");
@@ -210,6 +213,11 @@ public class DettaglioOdsGenerale implements Serializable {
 		//
 		ContrattoService cs = ServiceFactory.createService("Contratto");
 		listObiettivoServizio = cs.listAvailableObiettiviServizio(contratto.getId());
+	}
+
+
+	public void doSelectContratto() {
+		populateObiettivoServizio();
 	}
 
 

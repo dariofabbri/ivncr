@@ -3,9 +3,11 @@ package it.ivncr.erp.jsf.managedbean.commerciale.ods;
 import it.ivncr.erp.jsf.RobustLazyDataModel;
 import it.ivncr.erp.jsf.managedbean.accesso.session.LoginInfo;
 import it.ivncr.erp.model.commerciale.ods.OrdineServizio;
+import it.ivncr.erp.model.commerciale.ods.TipoOrdineServizio;
 import it.ivncr.erp.service.QueryResult;
 import it.ivncr.erp.service.ServiceFactory;
 import it.ivncr.erp.service.SortDirection;
+import it.ivncr.erp.service.lut.LUTService;
 import it.ivncr.erp.service.ordineservizio.OrdineServizioService;
 
 import java.io.Serializable;
@@ -90,6 +92,10 @@ public class GestioneOds implements Serializable {
 
 		edited = new OrdineServizio();
 		edited.setOneroso(oneroso);
+
+		LUTService lutService = ServiceFactory.createService("LUT");
+		TipoOrdineServizio tipoOrdineServizio = lutService.retrieveItem("TipoOrdineServizio", TipoOrdineServizio.NUOVA_ATTIVAZIONE);
+		edited.setTipoOrdineServizio(tipoOrdineServizio);
 
 		logger.debug("Moving to detail page for new record creation.");
 		return "detail?faces-redirect=true";
