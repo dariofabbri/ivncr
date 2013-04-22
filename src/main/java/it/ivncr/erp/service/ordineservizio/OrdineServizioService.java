@@ -1,10 +1,14 @@
 package it.ivncr.erp.service.ordineservizio;
 
+import it.ivncr.erp.model.commerciale.contratto.Canone;
+import it.ivncr.erp.model.commerciale.contratto.Tariffa;
+import it.ivncr.erp.model.commerciale.ods.OdsFrazionamento;
 import it.ivncr.erp.model.commerciale.ods.OrdineServizio;
 import it.ivncr.erp.service.EntityService;
 import it.ivncr.erp.service.QueryResult;
 
 import java.util.Date;
+import java.util.List;
 
 public interface OrdineServizioService extends EntityService<OrdineServizio> {
 
@@ -68,10 +72,12 @@ public interface OrdineServizioService extends EntityService<OrdineServizio> {
 
 	OrdineServizio updateFatturazione(
 			Integer id,
+			Boolean oneroso,
 			Integer codiceTariffa,
 			Integer codiceCanone,
-			Boolean oneroso,
-			Integer codiceRaggruppamentoFatturazione);
+			Integer codiceRaggruppamentoFatturazione,
+			String osservazioniFattura,
+			List<OdsFrazionamento> listOdsFrazionamento);
 
 	OrdineServizio setNote(Integer id, String note);
 
@@ -81,4 +87,7 @@ public interface OrdineServizioService extends EntityService<OrdineServizio> {
 
 	String peekNextCodice(Integer codiceAzienda, Integer anno);
 	String retrieveNextCodice(Integer codiceAzienda, Integer anno);
+
+	List<Tariffa> listAvailableTariffa(Integer id);
+	List<Canone> listAvailableCanone(Integer id);
 }

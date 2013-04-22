@@ -7,6 +7,7 @@ import it.ivncr.erp.model.commerciale.contratto.RaggruppamentoFatturazione;
 import it.ivncr.erp.model.commerciale.contratto.SpecificaServizio;
 import it.ivncr.erp.model.commerciale.contratto.Tariffa;
 import it.ivncr.erp.model.commerciale.contratto.TipoServizio;
+import it.ivncr.erp.model.commerciale.ods.OdsFrazionamento;
 import it.ivncr.erp.model.commerciale.ods.OrdineServizio;
 import it.ivncr.erp.model.commerciale.ods.TipoOrdineServizio;
 import it.ivncr.erp.model.generale.Azienda;
@@ -22,6 +23,7 @@ import it.ivncr.erp.util.AuditUtil.Snapshot;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Map;
 
 import org.hibernate.Query;
@@ -333,10 +335,12 @@ public class OrdineServizioServiceImpl extends AbstractService implements Ordine
 	@Override
 	public OrdineServizio updateFatturazione(
 			Integer id,
+			Boolean oneroso,
 			Integer codiceTariffa,
 			Integer codiceCanone,
-			Boolean oneroso,
-			Integer codiceRaggruppamentoFatturazione) {
+			Integer codiceRaggruppamentoFatturazione,
+			String osservazioniFattura,
+			List<OdsFrazionamento> listOdsFrazionamento) {
 
 		OrdineServizio ordineServizio = retrieve(id);
 		if(ordineServizio == null) {
@@ -364,10 +368,34 @@ public class OrdineServizioServiceImpl extends AbstractService implements Ordine
 		ordineServizio.setCanone(canone);
 		ordineServizio.setOneroso(oneroso);
 		ordineServizio.setRaggruppamentoFatturazione(raggruppamentoFatturazione);
-
+		ordineServizio.setOsservazioniFattura(osservazioniFattura);
 		ordineServizio.setUltimaModifica(now);
-
 		session.update(ordineServizio);
+
+
+		// Clean up current set of ods frazionamento.
+		//
+		String hql =
+				"delete from OdsFrazionamento odf " +
+				"where odf.ordineServizio.id = :id ";
+		Query query = session.createQuery(hql);
+		query.setParameter("id", id);
+		query.executeUpdate();
+
+
+		// Create the rows for passed frazionamento.
+		//
+		if(listOdsFrazionamento != null) {
+			for(OdsFrazionamento odsFrazionamento : listOdsFrazionamento) {
+				OdsFrazionamento o = new OdsFrazionamento();
+				o.setOrdineServizio(ordineServizio);
+				o.setCliente(odsFrazionamento.getCliente());
+				o.setQuota(odsFrazionamento.getQuota());
+				o.setEsclusioneRitenutaGaranzia(odsFrazionamento.getEsclusioneRitenutaGaranzia());
+				session.save(o);
+			}
+		}
+
 		logger.debug("Entity successfully updated.");
 
 		// Audit call for the update operation.
@@ -478,6 +506,42 @@ public class OrdineServizioServiceImpl extends AbstractService implements Ordine
 
 		return getNextCodice(codiceAzienda, anno, true);
 
+	}
+
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Tariffa> listAvailableTariffa(Integer codiceOrdineServizio) {
+
+		String hql =
+				"from Tariffa tar " +
+				"where tar.contratto.id in " +
+				"(select ods.contratto.id from OrdineServizio ods where ods.id = :codiceOrdineServizio) ";
+		Query query = session.createQuery(hql);
+		query.setParameter("codiceOrdineServizio", codiceOrdineServizio);
+
+		List<Tariffa> result = query.list();
+		logger.debug("Query result: " + result);
+
+		return result;
+	}
+
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Canone> listAvailableCanone(Integer codiceOrdineServizio) {
+
+		String hql =
+				"from Canone can " +
+				"where can.contratto.id in " +
+				"(select ods.contratto.id from OrdineServizio ods where ods.id = :codiceOrdineServizio) ";
+		Query query = session.createQuery(hql);
+		query.setParameter("codiceOrdineServizio", codiceOrdineServizio);
+
+		List<Canone> result = query.list();
+		logger.debug("Query result: " + result);
+
+		return result;
 	}
 
 
