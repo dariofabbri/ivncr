@@ -113,77 +113,113 @@
 				</p:column>
 				
 			</p:row>
-						
-			<p:row>
-				<p:column colspan="2" styleClass="form-header">
-					<h:outputText value="Frazionamento della fatturazione"/>
-				</p:column>
-			</p:row>
-			
-			<p:row>
-			
+
+			<p:row rendered="#{not dettaglioOdsFatturazione.oneroso}">
 				<p:column colspan="2">
+										
+					<p:fieldset 
+						legend="Frazionamento fatturazione" 
+						collapsed="true" 
+						toggleable="true" 
+						toggleSpeed="500">
+								
+						<p:panelGrid styleClass="form-panel">
+										
+							<p:row>
+								<p:column styleClass="form-header">
+									<h:outputText value="Frazionamento della fatturazione"/>
+								</p:column>
+							</p:row>
+							
+							<p:row>
+							
+								<p:column>
+													
+									<p:dataTable
+										id="frazionamentiTable"
+										var="frazionamento"
+										value="#{dettaglioOdsFatturazione.listOdsFrazionamento}"
+										selectionMode="single"
+										selection="#{dettaglioOdsFatturazione.selectedOdsFrazionamento}"
+										rowKey="#{frazionamento.id}"
+										emptyMessage="Nessun record trovato" 
+										styleClass="small-datatable">
+					
+										<p:ajax event="rowSelect" update=":detailForm:tabView:fatturazioneView:fatturazioneButtons"/>
+						
+										<p:ajax event="rowUnselect" update=":detailForm:tabView:fatturazioneView:fatturazioneButtons"/>
+					
+										<p:column headerText="Cliente" sortBy="#{frazionamento.cliente.ragioneSociale}">
+											<h:outputText value="#{frazionamento.cliente.ragioneSociale}" />
+										</p:column>
+					
+										<p:column headerText="Quota" sortBy="#{frazionamento.quota}">
+											<h:outputText value="#{frazionamento.quota}">
+												<f:converter converterId="percentageConverter"/>
+											</h:outputText>
+										</p:column>
+				
+										<p:column headerText="Esclusione ritenuta garanzia" sortBy="#{frazionamento.esclusioneRitenutaGaranzia}" style="text-align: center; width: 100px;">
+											<readonly:checkbox value="#{frazionamento.esclusioneRitenutaGaranzia}" />
+										</p:column>
+				
+									</p:dataTable>
+								
+								</p:column>
+								
+							</p:row>
+							
+							<p:row>
+							
+								<p:column>
 									
-					<p:dataTable
-						id="frazionamentiTable"
-						var="frazionamento"
-						value="#{dettaglioOdsFatturazione.listOdsFrazionamento}"
-						selectionMode="single"
-						selection="#{dettaglioOdsFatturazione.selectedOdsFrazionamento}"
-						rowKey="#{frazionamento.id}"
-						emptyMessage="Nessun record trovato" 
-						styleClass="small-datatable">
-	
-						<p:ajax event="rowSelect" update=":detailForm:tabView:fatturazioneView:fatturazioneButtons"/>
-		
-						<p:ajax event="rowUnselect" update=":detailForm:tabView:fatturazioneView:fatturazioneButtons"/>
-	
-						<p:column headerText="Cliente" sortBy="#{frazionamento.cliente.ragioneSociale}">
-							<h:outputText value="#{frazionamento.cliente.ragioneSociale}" />
-						</p:column>
-	
-						<p:column headerText="Quota" sortBy="#{frazionamento.quota}">
-							<h:outputText value="#{frazionamento.quota}">
-								<f:converter converterId="percentageConverter"/>
-							</h:outputText>
-						</p:column>
-
-						<p:column headerText="Esclusione ritenuta garanzia" sortBy="#{frazionamento.esclusioneRitenutaGaranzia}" style="text-align: center; width: 100px;">
-							<readonly:checkbox value="#{frazionamento.esclusioneRitenutaGaranzia}" />
-						</p:column>
-
-					</p:dataTable>
+									<p:outputPanel id="fatturazioneButtons">
 				
+										<p:commandButton value="Nuovo"
+											oncomplete="detailFrazionamentoDialogWidget.show()"
+											actionListener="#{dettaglioOdsFatturazione.startCreateFrazionamento}"
+											process="@this"
+											update=":detailForm:tabView:detailFrazionamentoView:detailFrazionamentoDialog"/>
+					
+										<p:commandButton value="Modifica"
+											disabled="#{empty dettaglioOdsFatturazione.selectedOdsFrazionamento}"
+											oncomplete="detailFrazionamentoDialogWidget.show()"
+											actionListener="#{dettaglioOdsFatturazione.startUpdateFrazionamento}"
+											process="@this"
+											update=":detailForm:tabView:detailFrazionamentoView:detailFrazionamentoDialog"/>
+					
+										<p:commandButton value="Elimina"
+											disabled="#{empty dettaglioOdsFatturazione.selectedOdsFrazionamento}"
+											type="button"
+											onclick="deleteFrazionamentoDialogWidget.show()"/>
+										
+									</p:outputPanel>
+									
+								</p:column>
+								
+							</p:row>
+						
+						</p:panelGrid>
+						
+					</p:fieldset>
 				</p:column>
-				
-			</p:row>
-			
+			</p:row>			
+					
 			<p:row>
 			
-				<p:column colspan="2">
-					
-					<p:outputPanel id="fatturazioneButtons">
-
-						<p:commandButton value="Nuovo"
-							oncomplete="detailFrazionamentoDialogWidget.show()"
-							actionListener="#{dettaglioOdsFatturazione.startCreateFrazionamento}"
-							process="@this"
-							update=":detailForm:tabView:detailFrazionamentoView:detailFrazionamentoDialog"/>
-	
-						<p:commandButton value="Modifica"
-							disabled="#{empty dettaglioOdsFatturazione.selectedOdsFrazionamento}"
-							oncomplete="detailFrazionamentoDialogWidget.show()"
-							actionListener="#{dettaglioOdsFatturazione.startUpdateFrazionamento}"
-							process="@this"
-							update=":detailForm:tabView:detailFrazionamentoView:detailFrazionamentoDialog"/>
-	
-						<p:commandButton value="Elimina"
-							disabled="#{empty dettaglioOdsFatturazione.selectedOdsFrazionamento}"
-							type="button"
-							onclick="deleteFrazionamentoDialogWidget.show()"/>
-						
-					</p:outputPanel>
-					
+				<p:column colspan="2" styleClass="form-footer">
+					<p:commandButton
+						id="saveButton"
+						value="Salva"
+						actionListener="#{dettaglioOdsFatturazione.doSave}"
+						update=":detailForm:tabView:fatturazioneView:fatturazionePanel,:detailForm:growl"
+						process=":detailForm:tabView:fatturazioneView:fatturazionePanel"
+						icon="ui-icon-star"/>
+					<p:tooltip 
+						for="saveButton" 
+						value="Salva i dati di fatturazione dell'ordine di servizio" 
+						showEffect="fade" 
+						hideEffect="fade"/>
 				</p:column>
 				
 			</p:row>
@@ -212,8 +248,20 @@
 						<h:outputText value="Il pannello permette di immettere le informazioni di dettaglio relative al frazionamento della fatturazione. Selezionare un cliente ed impostare la percentuale di frazionamento; la somma delle percentuali deve essere 100."/>
 					</p:column>
 				</p:row>
+				
+				<p:row rendered="#{not empty dettaglioOdsFatturazione.idFrazionamento}">
+					<p:column>
+						<p:outputLabel for="cliente" value="Cliente:" />
+					</p:column>
+					<p:column>
+						<p:inputText
+							disabled="true" 
+							value="#{dettaglioOdsFatturazione.selectedOdsFrazionamento.cliente.ragioneSociale}" 
+							id="cliente"/>
+					</p:column>					
+				</p:row>
 	
-				<p:row rendered="#{empty dettaglioOdsFatturazione.selectedOdsFrazionamento}">
+				<p:row rendered="#{empty dettaglioOdsFatturazione.idFrazionamento}">
 					<p:column colspan="2">
 						<p:dataTable
 							var="cliente" 

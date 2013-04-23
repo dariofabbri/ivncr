@@ -20,6 +20,7 @@ import it.ivncr.erp.util.AuditUtil;
 import it.ivncr.erp.util.AuditUtil.Operation;
 import it.ivncr.erp.util.AuditUtil.Snapshot;
 
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -355,9 +356,9 @@ public class OrdineServizioServiceImpl extends AbstractService implements Ordine
 
 		// Fetch referred entities.
 		//
-		Tariffa tariffa = (Tariffa)session.get(Tariffa.class, codiceTariffa);
-		Canone canone = (Canone)session.get(Canone.class, codiceCanone);
-		RaggruppamentoFatturazione raggruppamentoFatturazione = (RaggruppamentoFatturazione)session.get(RaggruppamentoFatturazione.class, codiceRaggruppamentoFatturazione);
+		Tariffa tariffa = codiceTariffa != null ? (Tariffa)session.get(Tariffa.class, codiceTariffa) : null;
+		Canone canone = codiceCanone != null ? (Canone)session.get(Canone.class, codiceCanone) : null;
+		RaggruppamentoFatturazione raggruppamentoFatturazione = codiceRaggruppamentoFatturazione != null ? (RaggruppamentoFatturazione)session.get(RaggruppamentoFatturazione.class, codiceRaggruppamentoFatturazione) : null;
 
 
 		Date now = new Date();
@@ -385,15 +386,27 @@ public class OrdineServizioServiceImpl extends AbstractService implements Ordine
 
 		// Create the rows for passed frazionamento.
 		//
+		BigDecimal totalPercentage = BigDecimal.ZERO;
 		if(listOdsFrazionamento != null) {
 			for(OdsFrazionamento odsFrazionamento : listOdsFrazionamento) {
+
 				OdsFrazionamento o = new OdsFrazionamento();
 				o.setOrdineServizio(ordineServizio);
 				o.setCliente(odsFrazionamento.getCliente());
 				o.setQuota(odsFrazionamento.getQuota());
 				o.setEsclusioneRitenutaGaranzia(odsFrazionamento.getEsclusioneRitenutaGaranzia());
 				session.save(o);
+
+				totalPercentage = totalPercentage.add(odsFrazionamento.getQuota());
 			}
+		}
+
+		// Check total percentage.
+		//
+		if(totalPercentage.compareTo(new BigDecimal(100)) != 0) {
+			String msg = String.format("Total percentage for frazionamento was: %s", totalPercentage);
+			logger.error(msg);
+			throw new RuntimeException(msg);
 		}
 
 		logger.debug("Entity successfully updated.");

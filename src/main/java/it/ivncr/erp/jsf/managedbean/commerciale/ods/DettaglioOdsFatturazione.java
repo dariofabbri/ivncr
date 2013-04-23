@@ -8,6 +8,7 @@ import it.ivncr.erp.model.commerciale.contratto.Canone;
 import it.ivncr.erp.model.commerciale.contratto.RaggruppamentoFatturazione;
 import it.ivncr.erp.model.commerciale.contratto.Tariffa;
 import it.ivncr.erp.model.commerciale.ods.OdsFrazionamento;
+import it.ivncr.erp.model.commerciale.ods.OrdineServizio;
 import it.ivncr.erp.service.QueryResult;
 import it.ivncr.erp.service.ServiceFactory;
 import it.ivncr.erp.service.SortDirection;
@@ -19,8 +20,10 @@ import it.ivncr.erp.service.ordineservizio.OrdineServizioService;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -50,6 +53,7 @@ public class DettaglioOdsFatturazione implements Serializable {
 	@ManagedProperty("#{loginInfo}")
     private LoginInfo loginInfo;
 
+	private Integer id;
 	private Boolean oneroso;
 	private Integer codiceTariffa;
 	private Integer codiceCanone;
@@ -66,6 +70,7 @@ public class DettaglioOdsFatturazione implements Serializable {
 	private LazyDataModel<Cliente> clienteModel;
 	private Cliente selectedCliente;
 
+	private Integer idFrazionamento;
 	private BigDecimal quota;
 	private Boolean esclusioneRitenutaGaranzia;
 
@@ -135,6 +140,17 @@ public class DettaglioOdsFatturazione implements Serializable {
 		listTariffa = oss.listAvailableTariffa(dettaglioOdsGenerale.getId());
 		listCanone = oss.listAvailableCanone(dettaglioOdsGenerale.getId());
 
+		// Reloading the entity is required to be sure that the value has not changed since it was
+		// read in the data table list of values.
+		//
+		OrdineServizio entity = oss.retrieveDeep(dettaglioOdsGenerale.getId());
+		id = entity.getId();
+		oneroso = entity.getOneroso();
+		codiceTariffa = entity.getTariffa() != null ? entity.getTariffa().getId() : null;
+		codiceCanone = entity.getCanone() != null ? entity.getCanone().getId() : null;
+		codiceRaggruppamentoFatturazione = entity.getRaggruppamentoFatturazione() != null ? entity.getRaggruppamentoFatturazione().getId() : null;
+		osservazioniFattura = entity.getOsservazioniFattura();
+
 		// Load frazionamento.
 		//
 		OdsFrazionamentoService ofs = ServiceFactory.createService("OdsFrazionamento");
@@ -155,7 +171,7 @@ public class DettaglioOdsFatturazione implements Serializable {
 		try {
 			OrdineServizioService oss = ServiceFactory.createService("OrdineServizio");
 			oss.updateFatturazione(
-					dettaglioOdsGenerale.getId(),
+					id,
 					oneroso,
 					codiceTariffa,
 					codiceCanone,
@@ -193,10 +209,9 @@ public class DettaglioOdsFatturazione implements Serializable {
 
 		logger.debug("Entering startCreateFrazionamento() method.");
 
+		idFrazionamento = null;
 		quota = null;
 		esclusioneRitenutaGaranzia = null;
-
-		selectedOdsFrazionamento = null;
 	}
 
 
@@ -207,6 +222,7 @@ public class DettaglioOdsFatturazione implements Serializable {
 		// No need to reload from DB, the table is an in memory snapshot that
 		// must be confirmed or canceled in a single shot.
 		//
+		idFrazionamento = selectedOdsFrazionamento.getId();
 		selectedCliente = selectedOdsFrazionamento.getCliente();
 		quota = selectedOdsFrazionamento.getQuota();
 		esclusioneRitenutaGaranzia = selectedOdsFrazionamento.getEsclusioneRitenutaGaranzia();
@@ -223,7 +239,7 @@ public class DettaglioOdsFatturazione implements Serializable {
 			listOdsFrazionamento = new ArrayList<OdsFrazionamento>();
 		}
 
-		if(selectedOdsFrazionamento == null) {
+		if(idFrazionamento == null) {
 
 			OdsFrazionamento odsFrazionamento = new OdsFrazionamento();
 			odsFrazionamento.setCliente(selectedCliente);
@@ -254,22 +270,69 @@ public class DettaglioOdsFatturazione implements Serializable {
 	}
 
 
+	public void doDeleteFrazionamento() {
+
+		logger.debug("Entering doSaveFrazionamento() method.");
+
+		listOdsFrazionamento.remove(selectedOdsFrazionamento);
+		selectedOdsFrazionamento = null;
+	}
+
+
 	private boolean formValidations() {
 
 		// At least one between canone and tariffa must be selected.
 		//
+		if(codiceTariffa == null && codiceCanone == null) {
+			FacesMessage message = new FacesMessage(
+					FacesMessage.SEVERITY_ERROR,
+					"Immettere canone o tariffa",
+					"E' necessario selezionare un valore almeno per un campo tra canone e tariffa.");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			return false;
+		}
 
-		// Check that the sum of quota adds up to 100.
+		// Check that the sum of quota adds up to 100 and that
+		// no duplicate cliente has been specified.
 		//
+		BigDecimal totalPercentage = BigDecimal.ZERO;
+		Set<Integer> codiciClientiFrazionamento = new HashSet<Integer>();
+		if(listOdsFrazionamento != null && listOdsFrazionamento.size() > 0) {
+			for(OdsFrazionamento o : listOdsFrazionamento) {
+
+				totalPercentage = totalPercentage.add(o.getQuota());
+
+				if(codiciClientiFrazionamento.contains(o.getCliente().getId())) {
+					FacesMessage message = new FacesMessage(
+							FacesMessage.SEVERITY_ERROR,
+							"Cliente duplicato nel frazionamento",
+							"Non è possibile specificare lo stesso cliente più di una volta nella tabella di frazionamento.");
+					FacesContext.getCurrentInstance().addMessage(null, message);
+					return false;
+				}
+
+				codiciClientiFrazionamento.add(o.getCliente().getId());
+			}
+		}
+		if(totalPercentage.compareTo(new BigDecimal(100)) != 0) {
+			FacesMessage message = new FacesMessage(
+					FacesMessage.SEVERITY_ERROR,
+					"La somma delle percentuali non fa 100",
+					"La somma delle percentuali specificate nella tabella di fatturazione deve essere esattamente 100.");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			return false;
+		}
 
 		return true;
 	}
+
 
 	public DettaglioOdsGenerale getDettaglioOdsGenerale() {
 		return dettaglioOdsGenerale;
 	}
 
-	public void setDettaglioOdsGenerale(DettaglioOdsGenerale dettaglioOdsGenerale) {
+	public void setDettaglioOdsGenerale(
+			DettaglioOdsGenerale dettaglioOdsGenerale) {
 		this.dettaglioOdsGenerale = dettaglioOdsGenerale;
 	}
 
@@ -281,6 +344,13 @@ public class DettaglioOdsFatturazione implements Serializable {
 		this.loginInfo = loginInfo;
 	}
 
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
 	public Boolean getOneroso() {
 		return oneroso;
@@ -319,7 +389,8 @@ public class DettaglioOdsFatturazione implements Serializable {
 		return listOdsFrazionamento;
 	}
 
-	public void setListOdsFrazionamento(List<OdsFrazionamento> listOdsFrazionamento) {
+	public void setListOdsFrazionamento(
+			List<OdsFrazionamento> listOdsFrazionamento) {
 		this.listOdsFrazionamento = listOdsFrazionamento;
 	}
 
@@ -379,6 +450,14 @@ public class DettaglioOdsFatturazione implements Serializable {
 
 	public void setSelectedCliente(Cliente selectedCliente) {
 		this.selectedCliente = selectedCliente;
+	}
+
+	public Integer getIdFrazionamento() {
+		return idFrazionamento;
+	}
+
+	public void setIdFrazionamento(Integer idFrazionamento) {
+		this.idFrazionamento = idFrazionamento;
 	}
 
 	public BigDecimal getQuota() {
