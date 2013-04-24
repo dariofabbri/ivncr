@@ -6,6 +6,7 @@ import it.ivncr.erp.service.QueryResult;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 public interface ApparecchiaturaTecnologicaService extends EntityService<ApparecchiaturaTecnologica> {
 
@@ -46,4 +47,6 @@ public interface ApparecchiaturaTecnologicaService extends EntityService<Apparec
 			String note);
 
 	void delete(Integer id);
+
+	List<ApparecchiaturaTecnologica> listDisponibiliPerOrdineServizio(Integer codiceOrdineServizio);
 }

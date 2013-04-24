@@ -13,6 +13,7 @@ import it.ivncr.erp.util.AuditUtil.Snapshot;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import org.hibernate.Query;
@@ -224,5 +225,28 @@ public class ApparecchiaturaTecnologicaServiceImpl extends AbstractService imple
 		// Audit call for the delete operation.
 		//
 		AuditUtil.log(Operation.Delete, Snapshot.Source, entity);
+	}
+
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ApparecchiaturaTecnologica> listDisponibiliPerOrdineServizio(Integer codiceOrdineServizio) {
+
+		String hql =
+				"select distinct ate " +
+				"from ApparecchiaturaTecnologica ate " +
+				"left join fetch ate.tipoApparecchiaturaTecnologica tat " +
+				"left join fetch tat.gruppoApparecchiatura gra " +
+				"where ate.id not in " +
+				"(select oda.apparecchiaturaTecnologica.id from OdsApparecchiatura oda) " +
+				"and ate.contratto.id = " +
+				"(select ose.contratto.id from OrdineServizio ose " +
+				"where ose.id = :codiceOrdineServizio) ";
+		Query query = session.createQuery(hql);
+		query.setParameter("codiceOrdineServizio", codiceOrdineServizio);
+		List<ApparecchiaturaTecnologica> result = query.list();
+		logger.debug("Query returned: " + result);
+
+		return result;
 	}
 }

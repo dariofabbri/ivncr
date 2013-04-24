@@ -1,0 +1,240 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<f:subview id="listApparecchiatureView">
+	
+		<p:outputPanel id="buttons" style="display: block; margin-top: 2em; margin-bottom: 2em;">
+	
+			<p:commandButton
+				id="addButton"
+				value="Aggiungi"
+				actionListener="#{dettaglioOdsApparecchiature.startAdd}"
+				process="@this"
+				update=":detailForm:tabView:addApparecchiaturaView:addApparecchiaturaDialog"
+				oncomplete="addApparecchiaturaDialogWidget.show();"
+				icon="ui-icon-star"/>
+			<p:tooltip 
+				for="addButton" 
+				value="Aggiungi apparecchiatura" 
+				showEffect="fade" 
+				hideEffect="fade"/>
+	
+			<p:commandButton
+				id="removeButton"
+				value="Rimuovi"
+				disabled="#{dettaglioOdsApparecchiature.selected == null}"
+				process="@this"
+				update=":detailForm:tabView:deleteApparecchiaturaView:deleteApparecchiaturaDialog"
+				oncomplete="deleteApparecchiaturaDialogWidget.show();"
+				icon="ui-icon-trash" />
+			<p:tooltip 
+				for="removeButton" 
+				value="Rimuove l'apparecchiatura selezionata" 
+				showEffect="fade" 
+				hideEffect="fade"/>
+	
+		</p:outputPanel>
+
+		<p:dataTable 
+			id="apparecchiatureTable" 
+			var="apparecchiatura" 
+			value="#{dettaglioOdsApparecchiature.listOdsApparecchiatura}"
+			paginator="true" 
+			paginatorPosition="bottom" rows="10"
+			paginatorTemplate="{CurrentPageReport} {RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+			currentPageReportTemplate="Trovati {totalRecords} record - Pagina {currentPage} di {totalPages}"
+			rowsPerPageTemplate="5,10,50" 
+			pageLinks="10"
+			emptyMessage="Nessun record trovato" 
+			selectionMode="single"
+			selection="#{dettaglioOdsApparecchiature.selected}">
+	
+			<p:ajax event="rowSelect" process="@this" update=":detailForm:tabView:listApparecchiatureView:buttons"/>
+			<p:ajax event="rowUnselect" process="@this" update=":detailForm:tabView:listApparecchiatureView:buttons"/>
+	      		
+			<f:facet name="header">
+		    	Lista delle apparecchiature tecnologiche associate al servizio
+		    </f:facet>
+	
+			<p:column headerText="Tipo" sortBy="#{apparecchiatura.apparecchiaturaTecnologica.tipoApparecchiaturaTecnologica.descrizione}"
+				filterBy="#{apparecchiatura.apparecchiaturaTecnologica.tipoApparecchiaturaTecnologica.descrizione}">
+				<h:outputText value="#{apparecchiatura.apparecchiaturaTecnologica.tipoApparecchiaturaTecnologica.descrizione}" />
+			</p:column>
+	
+			<p:column headerText="Gruppo" sortBy="#{apparecchiatura.apparecchiaturaTecnologica.tipoApparecchiaturaTecnologica.gruppoApparecchiatura.descrizione}"
+				filterBy="#{apparecchiatura.apparecchiaturaTecnologica.tipoApparecchiaturaTecnologica.gruppoApparecchiatura.descrizione}">
+				<h:outputText value="#{apparecchiatura.apparecchiaturaTecnologica.tipoApparecchiaturaTecnologica.gruppoApparecchiatura.descrizione}" />
+			</p:column>
+	
+			<p:column headerText="Matricola" sortBy="#{apparecchiatura.apparecchiaturaTecnologica.matricola}"
+				filterBy="#{apparecchiatura.apparecchiaturaTecnologica.matricola}">
+				<h:outputText value="#{apparecchiatura.apparecchiaturaTecnologica.matricola}" />
+			</p:column>
+	
+			<p:column headerText="Descrizione" sortBy="#{apparecchiatura.apparecchiaturaTecnologica.descrizione}"
+				filterBy="#{apparecchiatura.apparecchiaturaTecnologica.descrizione}">
+				<h:outputText value="#{apparecchiatura.apparecchiaturaTecnologica.descrizione}" />
+			</p:column>
+	
+			<p:column headerText="Installazione" sortBy="#{apparecchiatura.apparecchiaturaTecnologica.dataInstallazione}">
+				<h:outputText value="#{apparecchiatura.apparecchiaturaTecnologica.dataInstallazione}">
+					<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+				</h:outputText>
+			</p:column>
+	
+			<p:column headerText="Fatturazione" sortBy="#{apparecchiatura.apparecchiaturaTecnologica.dataFatturazione}">
+				<h:outputText value="#{apparecchiatura.apparecchiaturaTecnologica.dataFatturazione}">
+					<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+				</h:outputText>
+			</p:column>
+	
+		</p:dataTable>
+
+	</f:subview>
+
+
+	<f:subview id="addApparecchiaturaView">
+		
+		<p:dialog
+			id="addApparecchiaturaDialog"
+			header="Aggiunta di un'apparecchiatura" 
+			widgetVar="addApparecchiaturaDialogWidget" 
+			modal="true"
+			showEffect="fade" 
+			hideEffect="fade"> 
+
+			<p:messages id="messages" globalOnly="false" showSummary="false" showDetail="true" severity="error" closable="true"/>
+	
+			<p:panelGrid id="wrapper" styleClass="form-panel">
+							
+				<p:row>
+					<p:column colspan="2" styleClass="form-header">
+						<h:outputText value="Il pannello permette di selezionare un'apparecchiatura dalla lista di quelle associate al contratto."/>
+					</p:column>
+				</p:row>
+				
+				<p:row>
+
+					<p:column>
+
+						<p:dataTable 
+							id="apparecchiatureDisponibiliTable" 
+							var="apparecchiatura" 
+							value="#{dettaglioOdsApparecchiature.listApparecchiatureDisponibili}"
+							paginator="true" 
+							paginatorPosition="bottom" rows="10"
+							paginatorTemplate="{CurrentPageReport} {RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+							currentPageReportTemplate="Trovati {totalRecords} record - Pagina {currentPage} di {totalPages}"
+							rowsPerPageTemplate="5,10,50" 
+							pageLinks="10"
+							emptyMessage="Nessun record trovato" 
+							selectionMode="single"
+							selection="#{dettaglioOdsApparecchiature.selectedApparecchiatura}"
+							styleClass="small-datatable">
+					
+							<p:ajax event="rowSelect" process="@this" update=":detailForm:tabView:addApparecchiaturaView:addApparecchiaturaDialogButtons"/>
+							<p:ajax event="rowUnselect" process="@this" update=":detailForm:tabView:addApparecchiaturaView:addApparecchiaturaDialogButtons"/>
+					      		
+							<f:facet name="header">
+						    	Lista delle apparecchiature tecnologiche disponibili
+						    </f:facet>
+					
+							<p:column headerText="Tipo" sortBy="#{apparecchiatura.tipoApparecchiaturaTecnologica.descrizione}"
+								filterBy="#{apparecchiatura.tipoApparecchiaturaTecnologica.descrizione}">
+								<h:outputText value="#{apparecchiatura.tipoApparecchiaturaTecnologica.descrizione}" />
+							</p:column>
+					
+							<p:column headerText="Gruppo" sortBy="#{apparecchiatura.tipoApparecchiaturaTecnologica.gruppoApparecchiatura.descrizione}"
+								filterBy="#{apparecchiatura.tipoApparecchiaturaTecnologica.gruppoApparecchiatura.descrizione}">
+								<h:outputText value="#{apparecchiatura.tipoApparecchiaturaTecnologica.gruppoApparecchiatura.descrizione}" />
+							</p:column>
+					
+							<p:column headerText="Matricola" sortBy="#{apparecchiatura.matricola}"
+								filterBy="#{apparecchiatura.matricola}">
+								<h:outputText value="#{apparecchiatura.matricola}" />
+							</p:column>
+					
+							<p:column headerText="Descrizione" sortBy="#{apparecchiatura.descrizione}"
+								filterBy="#{apparecchiatura.descrizione}">
+								<h:outputText value="#{apparecchiatura.descrizione}" />
+							</p:column>
+					
+						</p:dataTable>
+					
+					</p:column>
+
+				</p:row>
+
+				<p:row>
+					<p:column colspan="2" styleClass="form-footer">
+
+						<p:outputPanel id="addApparecchiaturaDialogButtons">
+	
+							<p:commandButton value="Aggiungi"
+								actionListener="#{dettaglioOdsApparecchiature.doAdd}"
+								process="addApparecchiaturaDialog"
+								update=":detailForm:tabView:listApparecchiatureView:apparecchiatureTable,:detailForm:tabView:listApparecchiatureView:buttons,:detailForm:tabView:addApparecchiaturaView:messages,:detailForm:tabView:addApparecchiaturaView:wrapper,:detailForm:growl" 
+								oncomplete="if(args.ok) { addApparecchiaturaDialogWidget.hide(); }"/>
+			
+							<p:commandButton value="Annulla"
+								type="button"
+								onclick="addApparecchiaturaDialogWidget.hide();" />
+
+						</p:outputPanel>
+						
+					</p:column>
+				</p:row>
+									
+			</p:panelGrid>
+					
+		</p:dialog>
+		
+	</f:subview>
+	
+	
+	<f:subview id="deleteApparecchiaturaView">
+		
+		<p:dialog
+			id="deleteApparecchiaturaDialog" 
+			header="Eliminazione apparecchiatura" 
+			widgetVar="deleteApparecchiaturaDialogWidget" 
+			modal="true"
+			showEffect="fade" 
+			hideEffect="fade"> 
+				
+			<p:messages id="messages" globalOnly="false" showSummary="false" showDetail="true" severity="error" closable="true"/>
+			
+			<p:panelGrid styleClass="form-panel">
+				
+				<p:row>
+					<p:column>		
+						<h:outputText value="Si conferma l'eliminazione dell'apparecchiatura selezionata?"/>
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column styleClass="form-footer">		
+
+						<p:commandButton value="Elimina"
+							actionListener="#{dettaglioContrattoApparecchiature.doDelete}"
+							process="@this"
+							update=":detailForm:tabView:listApparecchiatureView:apparecchiatureTable,:detailForm:tabView:listApparecchiatureView:buttons,:detailForm:tabView:deleteApparecchiaturaView:messages,:detailForm:growl" 
+							oncomplete="if(args.ok) { deleteApparecchiaturaDialogWidget.hide(); }"/>
+		
+						<p:commandButton value="Annulla"
+							type="button"
+							onclick="deleteApparecchiaturaDialogWidget.hide();" />
+							
+					</p:column>
+				</p:row>
+				
+			</p:panelGrid>
+			
+		</p:dialog>
+		
+	</f:subview>
+		
+</html>

@@ -1,0 +1,32 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<f:subview id="modalitaOperativeView">
+ 	
+		<p:panelGrid styleClass="form-panel">
+
+			<p:focus for="modalitaOperative"/>
+			
+			<p:row>
+				<p:column>
+					<p:inputTextarea id="modalitaOperative" value="#{dettaglioOdsModalitaOperative.modalitaOperative}" rows="20" style="width:800px;"/>
+  				</p:column>
+  			</p:row>  
+  						
+			<p:row>
+				<p:column styleClass="form-footer">
+					<p:commandButton value="Salva"
+						actionListener="#{dettaglioOdsModalitaOperative.doSave}"
+						process="modalitaOperativeView"
+						update=":detailForm:growl"/> 
+				</p:column>
+			</p:row>
+			
+		</p:panelGrid>
+
+	</f:subview>
+
+</html>
