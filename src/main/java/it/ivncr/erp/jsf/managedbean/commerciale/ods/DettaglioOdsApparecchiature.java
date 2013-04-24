@@ -10,10 +10,13 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
+import org.primefaces.context.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,9 +32,11 @@ public class DettaglioOdsApparecchiature implements Serializable {
 	private DettaglioOdsGenerale dettaglioOdsGenerale;
 
 	private List<OdsApparecchiatura> listOdsApparecchiatura;
+	private List<OdsApparecchiatura> filteredOdsApparecchiatura;
 	private OdsApparecchiatura selected;
 
 	private List<ApparecchiaturaTecnologica> listApparecchiatureDisponibili;
+	private List<ApparecchiaturaTecnologica> filteredApparecchiatureDisponibili;
 	private ApparecchiaturaTecnologica selectedApparecchiatura;
 
 
@@ -64,104 +69,25 @@ public class DettaglioOdsApparecchiature implements Serializable {
 		//
 		ApparecchiaturaTecnologicaService ats = ServiceFactory.createService("ApparecchiaturaTecnologica");
 		listApparecchiatureDisponibili = ats.listDisponibiliPerOrdineServizio(dettaglioOdsGenerale.getId());
-	}
 
-
-	public DettaglioOdsGenerale getDettaglioOdsGenerale() {
-		return dettaglioOdsGenerale;
-	}
-
-
-	public void setDettaglioOdsGenerale(DettaglioOdsGenerale dettaglioOdsGenerale) {
-		this.dettaglioOdsGenerale = dettaglioOdsGenerale;
-	}
-
-
-	public List<OdsApparecchiatura> getListOdsApparecchiatura() {
-		return listOdsApparecchiatura;
-	}
-
-
-	public void setListOdsApparecchiatura(
-			List<OdsApparecchiatura> listOdsApparecchiatura) {
-		this.listOdsApparecchiatura = listOdsApparecchiatura;
-	}
-
-
-	public OdsApparecchiatura getSelected() {
-		return selected;
-	}
-
-
-	public void setSelected(OdsApparecchiatura selected) {
-		this.selected = selected;
-	}
-
-
-	public List<ApparecchiaturaTecnologica> getListApparecchiatureDisponibili() {
-		return listApparecchiatureDisponibili;
-	}
-
-
-	public void setListApparecchiatureDisponibili(
-			List<ApparecchiaturaTecnologica> listApparecchiatureDisponibili) {
-		this.listApparecchiatureDisponibili = listApparecchiatureDisponibili;
-	}
-
-
-	public ApparecchiaturaTecnologica getSelectedApparecchiatura() {
-		return selectedApparecchiatura;
-	}
-
-
-	public void setSelectedApparecchiatura(
-			ApparecchiaturaTecnologica selectedApparecchiatura) {
-		this.selectedApparecchiatura = selectedApparecchiatura;
-	}
-
-
-	/*
-	public void doAdd() {
-
-		// Apply form-level validations.
+		// Clean up previous selections, if present.
 		//
-		if(!formValidations())
-			return;
+		selectedApparecchiatura = null;
+	}
+
+
+	public void doAdd() {
 
 		// Create service to persist data.
 		//
-		ContrattoGestoreService cgs = ServiceFactory.createService("ContrattoGestore");
+		OdsApparecchiaturaService oas = ServiceFactory.createService("OdsApparecchiatura");
 
 		try {
-			ContrattoGestore entity = null;
+			oas.create(
+				dettaglioOdsGenerale.getId(),
+				selectedApparecchiatura.getId());
 
-			// If the record already exists, just update it.
-			//
-			if(id != null) {
-
-				entity = cgs.update(
-						id,
-						selectedGestore.getId(),
-						validoDa,
-						validoA);
-
-				logger.debug("Entity successfully updated.");
-			}
-
-			// Otherwise create a new record.
-			//
-			else {
-
-				entity = cgs.create(
-						dettaglioContrattoGenerale.getId(),
-						selectedGestore.getId(),
-						validoDa,
-						validoA);
-				id = entity.getId();
-
-				logger.debug("Entity successfully created.");
-
-			}
+			logger.debug("Entity successfully created.");
 
 			// Everything went fine.
 			//
@@ -173,7 +99,7 @@ public class DettaglioOdsApparecchiature implements Serializable {
 
 			// Refresh list.
 			//
-			loadGestori();
+			loadApparecchiature();
 
 			// Signal to modal dialog that everything went fine.
 			//
@@ -194,12 +120,12 @@ public class DettaglioOdsApparecchiature implements Serializable {
 
 	public void doDelete() {
 
-		// Create service to persist data.
+		// Create service to delete the record
 		//
-		ContrattoGestoreService cgs = ServiceFactory.createService("ContrattoGestore");
+		OdsApparecchiaturaService oas = ServiceFactory.createService("OdsApparecchiatura");
 
 		try {
-			cgs.delete(selected.getId());
+			oas.delete(selected.getId());
 
 			// Everything went fine.
 			//
@@ -215,7 +141,11 @@ public class DettaglioOdsApparecchiature implements Serializable {
 
 			// Refresh list.
 			//
-			loadGestori();
+			loadApparecchiature();
+
+			// Signal to modal dialog that everything went fine.
+			//
+			RequestContext.getCurrentInstance().addCallbackParam("ok", true);
 
 		} catch(Exception e) {
 
@@ -228,6 +158,69 @@ public class DettaglioOdsApparecchiature implements Serializable {
 			FacesContext.getCurrentInstance().addMessage(null, message);
 		}
 	}
-	*/
 
+
+
+
+	public DettaglioOdsGenerale getDettaglioOdsGenerale() {
+		return dettaglioOdsGenerale;
+	}
+
+	public void setDettaglioOdsGenerale(
+			DettaglioOdsGenerale dettaglioOdsGenerale) {
+		this.dettaglioOdsGenerale = dettaglioOdsGenerale;
+	}
+
+	public List<OdsApparecchiatura> getListOdsApparecchiatura() {
+		return listOdsApparecchiatura;
+	}
+
+	public void setListOdsApparecchiatura(
+			List<OdsApparecchiatura> listOdsApparecchiatura) {
+		this.listOdsApparecchiatura = listOdsApparecchiatura;
+	}
+
+	public List<OdsApparecchiatura> getFilteredOdsApparecchiatura() {
+		return filteredOdsApparecchiatura;
+	}
+
+	public void setFilteredOdsApparecchiatura(
+			List<OdsApparecchiatura> filteredOdsApparecchiatura) {
+		this.filteredOdsApparecchiatura = filteredOdsApparecchiatura;
+	}
+
+	public OdsApparecchiatura getSelected() {
+		return selected;
+	}
+
+	public void setSelected(OdsApparecchiatura selected) {
+		this.selected = selected;
+	}
+
+	public List<ApparecchiaturaTecnologica> getListApparecchiatureDisponibili() {
+		return listApparecchiatureDisponibili;
+	}
+
+	public void setListApparecchiatureDisponibili(
+			List<ApparecchiaturaTecnologica> listApparecchiatureDisponibili) {
+		this.listApparecchiatureDisponibili = listApparecchiatureDisponibili;
+	}
+
+	public List<ApparecchiaturaTecnologica> getFilteredApparecchiatureDisponibili() {
+		return filteredApparecchiatureDisponibili;
+	}
+
+	public void setFilteredApparecchiatureDisponibili(
+			List<ApparecchiaturaTecnologica> filteredApparecchiatureDisponibili) {
+		this.filteredApparecchiatureDisponibili = filteredApparecchiatureDisponibili;
+	}
+
+	public ApparecchiaturaTecnologica getSelectedApparecchiatura() {
+		return selectedApparecchiatura;
+	}
+
+	public void setSelectedApparecchiatura(
+			ApparecchiaturaTecnologica selectedApparecchiatura) {
+		this.selectedApparecchiatura = selectedApparecchiatura;
+	}
 }

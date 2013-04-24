@@ -42,6 +42,8 @@
 			id="apparecchiatureTable" 
 			var="apparecchiatura" 
 			value="#{dettaglioOdsApparecchiature.listOdsApparecchiatura}"
+			rowKey="#{apparecchiatura.id}"
+			filteredValue="#{dettaglioOdsApparecchiature.filteredOdsApparecchiatura}"
 			paginator="true" 
 			paginatorPosition="bottom" rows="10"
 			paginatorTemplate="{CurrentPageReport} {RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
@@ -122,13 +124,15 @@
 
 						<p:dataTable 
 							id="apparecchiatureDisponibiliTable" 
-							var="apparecchiatura" 
+							var="apparecchiaturaDisponibile" 
 							value="#{dettaglioOdsApparecchiature.listApparecchiatureDisponibili}"
+							rowKey="#{apparecchiaturaDisponibile.id}"
+							filteredValue="#{dettaglioOdsApparecchiature.filteredApparecchiatureDisponibili}"
 							paginator="true" 
 							paginatorPosition="bottom" rows="10"
 							paginatorTemplate="{CurrentPageReport} {RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
 							currentPageReportTemplate="Trovati {totalRecords} record - Pagina {currentPage} di {totalPages}"
-							rowsPerPageTemplate="5,10,50" 
+							rowsPerPageTemplate="5,10,20" 
 							pageLinks="10"
 							emptyMessage="Nessun record trovato" 
 							selectionMode="single"
@@ -142,24 +146,28 @@
 						    	Lista delle apparecchiature tecnologiche disponibili
 						    </f:facet>
 					
-							<p:column headerText="Tipo" sortBy="#{apparecchiatura.tipoApparecchiaturaTecnologica.descrizione}"
-								filterBy="#{apparecchiatura.tipoApparecchiaturaTecnologica.descrizione}">
-								<h:outputText value="#{apparecchiatura.tipoApparecchiaturaTecnologica.descrizione}" />
+							<p:column headerText="Tipo" sortBy="#{apparecchiaturaDisponibile.tipoApparecchiaturaTecnologica.descrizione}"
+								filterBy="#{apparecchiaturaDisponibile.tipoApparecchiaturaTecnologica.descrizione}"
+								filterMatchMode="contains">
+								<h:outputText value="#{apparecchiaturaDisponibile.tipoApparecchiaturaTecnologica.descrizione}" />
 							</p:column>
 					
-							<p:column headerText="Gruppo" sortBy="#{apparecchiatura.tipoApparecchiaturaTecnologica.gruppoApparecchiatura.descrizione}"
-								filterBy="#{apparecchiatura.tipoApparecchiaturaTecnologica.gruppoApparecchiatura.descrizione}">
-								<h:outputText value="#{apparecchiatura.tipoApparecchiaturaTecnologica.gruppoApparecchiatura.descrizione}" />
+							<p:column headerText="Gruppo" sortBy="#{apparecchiaturaDisponibile.tipoApparecchiaturaTecnologica.gruppoApparecchiatura.descrizione}"
+								filterBy="#{apparecchiaturaDisponibile.tipoApparecchiaturaTecnologica.gruppoApparecchiatura.descrizione}"
+								filterMatchMode="contains">
+								<h:outputText value="#{apparecchiaturaDisponibile.tipoApparecchiaturaTecnologica.gruppoApparecchiatura.descrizione}" />
 							</p:column>
 					
-							<p:column headerText="Matricola" sortBy="#{apparecchiatura.matricola}"
-								filterBy="#{apparecchiatura.matricola}">
-								<h:outputText value="#{apparecchiatura.matricola}" />
+							<p:column headerText="Matricola" sortBy="#{apparecchiaturaDisponibile.matricola}"
+								filterBy="#{apparecchiaturaDisponibile.matricola}"
+								filterMatchMode="contains">
+								<h:outputText value="#{apparecchiaturaDisponibile.matricola}" />
 							</p:column>
 					
-							<p:column headerText="Descrizione" sortBy="#{apparecchiatura.descrizione}"
-								filterBy="#{apparecchiatura.descrizione}">
-								<h:outputText value="#{apparecchiatura.descrizione}" />
+							<p:column headerText="Descrizione" sortBy="#{apparecchiaturaDisponibile.descrizione}"
+								filterBy="#{apparecchiaturaDisponibile.descrizione}"
+								filterMatchMode="contains">
+								<h:outputText value="#{apparecchiaturaDisponibile.descrizione}" />
 							</p:column>
 					
 						</p:dataTable>
@@ -175,6 +183,7 @@
 	
 							<p:commandButton value="Aggiungi"
 								actionListener="#{dettaglioOdsApparecchiature.doAdd}"
+								disabled="#{empty dettaglioOdsApparecchiature.selectedApparecchiatura}"
 								process="addApparecchiaturaDialog"
 								update=":detailForm:tabView:listApparecchiatureView:apparecchiatureTable,:detailForm:tabView:listApparecchiatureView:buttons,:detailForm:tabView:addApparecchiaturaView:messages,:detailForm:tabView:addApparecchiaturaView:wrapper,:detailForm:growl" 
 								oncomplete="if(args.ok) { addApparecchiaturaDialogWidget.hide(); }"/>
@@ -199,7 +208,7 @@
 		
 		<p:dialog
 			id="deleteApparecchiaturaDialog" 
-			header="Eliminazione apparecchiatura" 
+			header="Rimozione apparecchiatura" 
 			widgetVar="deleteApparecchiaturaDialogWidget" 
 			modal="true"
 			showEffect="fade" 
@@ -211,15 +220,15 @@
 				
 				<p:row>
 					<p:column>		
-						<h:outputText value="Si conferma l'eliminazione dell'apparecchiatura selezionata?"/>
+						<h:outputText value="Si conferma la rimozione dell'apparecchiatura selezionata dalla lista di quelle associate al servizio?"/>
 					</p:column>
 				</p:row>
 
 				<p:row>
 					<p:column styleClass="form-footer">		
 
-						<p:commandButton value="Elimina"
-							actionListener="#{dettaglioContrattoApparecchiature.doDelete}"
+						<p:commandButton value="Rimuovi"
+							actionListener="#{dettaglioOdsApparecchiature.doDelete}"
 							process="@this"
 							update=":detailForm:tabView:listApparecchiatureView:apparecchiatureTable,:detailForm:tabView:listApparecchiatureView:buttons,:detailForm:tabView:deleteApparecchiaturaView:messages,:detailForm:growl" 
 							oncomplete="if(args.ok) { deleteApparecchiaturaDialogWidget.hide(); }"/>
