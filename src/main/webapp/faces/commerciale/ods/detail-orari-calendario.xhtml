@@ -1,0 +1,318 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<f:subview id="listCalendarioView">
+	
+		<p:outputPanel id="buttons" style="display: block; margin-top: 2em; margin-bottom: 2em;">
+	
+			<p:commandButton
+				id="addGiornoButton"
+				value="Aggiungi giorno"
+				actionListener="#{dettaglioOdsOrariCalendario.startAddGiorno}"
+				process="@this"
+				update=":detailForm:tabView:addGiornoCalendarioView:addGiornoCalendarioDialog"
+				oncomplete="addGiornoCalendarioDialogWidget.show();"
+				icon="ui-icon-star"/>
+			<p:tooltip 
+				for="addGiornoButton" 
+				value="Aggiungi un giorno alla lista" 
+				showEffect="fade" 
+				hideEffect="fade"/>
+	
+			<p:commandButton
+				id="addPeriodoButton"
+				value="Aggiungi periodo"
+				actionListener="#{dettaglioOdsOrariCalendario.startAddPeriodo}"
+				process="@this"
+				update=":detailForm:tabView:addPeriodoCalendarioView:addPeriodoCalendarioDialog"
+				oncomplete="addPeriodoCalendarioDialogWidget.show();"
+				icon="ui-icon-star"/>
+			<p:tooltip 
+				for="addPeriodoButton" 
+				value="Aggiungi un periodo alla lista" 
+				showEffect="fade" 
+				hideEffect="fade"/>
+	
+			<p:commandButton
+				id="removePeriodoButton"
+				value="Rimuovi periodo"
+				actionListener="#{dettaglioOdsOrariCalendario.startRemovePeriodo}"
+				process="@this"
+				update=":detailForm:tabView:removePeriodoCalendarioView:removePeriodoCalendarioDialog"
+				oncomplete="removePeriodoCalendarioDialogWidget.show();"
+				icon="ui-icon-star"/>
+			<p:tooltip 
+				for="removePeriodoButton" 
+				value="Rimuovi un periodo alla lista" 
+				showEffect="fade" 
+				hideEffect="fade"/>
+	
+			<p:commandButton
+				id="removeSelectedButton"
+				value="Rimuovi selezionati"
+				disabled="#{empty dettaglioOdsOrariCalendario.selected}"
+				process="@this"
+				update=":detailForm:tabView:deleteSelectedGiorniCalendarioView:deleteSelectedGiorniCalendarioDialog"
+				oncomplete="deleteSelectedGiorniDialogWidget.show();"
+				icon="ui-icon-trash" />
+			<p:tooltip 
+				for="removeSelectedButton" 
+				value="Rimuove i giorni selezionati dalla lista" 
+				showEffect="fade" 
+				hideEffect="fade"/>
+	
+		</p:outputPanel>
+
+		<p:dataTable 
+			id="orariTable" 
+			var="orario" 
+			value="#{dettaglioOdsOrariCalendario.listOdsOrariCalendario}"
+			rowKey="#{orario.id}"
+			paginator="true" 
+			paginatorPosition="bottom" rows="10"
+			paginatorTemplate="{CurrentPageReport} {RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+			currentPageReportTemplate="Trovati {totalRecords} record - Pagina {currentPage} di {totalPages}"
+			rowsPerPageTemplate="5,10,50" 
+			pageLinks="10"
+			emptyMessage="Nessun record trovato" 
+			selectionMode="multiple"
+			selection="#{dettaglioOdsOrariCalendario.selectedOdsOrariCalendario}">
+	
+			<p:ajax event="rowSelect" process="@this" update=":detailForm:tabView:listCalendarioView:buttons"/>
+			<p:ajax event="rowUnselect" process="@this" update=":detailForm:tabView:listCalendarioView:buttons"/>
+	      		
+			<f:facet name="header">
+		    	Lista degli orari a calendario del servizio
+		    </f:facet>
+	
+			<p:column headerText="Giorno" sortBy="#{orario.giorno}">
+				<h:outputText value="#{orario.giorno}" />
+			</p:column>
+	
+			<p:column headerText="Data" sortBy="#{orario.dataServizio}">
+				<h:outputText value="#{orario.dataServizio}">
+					<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+				</h:outputText>
+			</p:column>
+	
+			<p:column headerText="Num." sortBy="#{orario.quantita1}">
+				<h:outputText value="#{orario.quantita1}" />
+			</p:column>
+	
+			<p:column headerText="Dalle" sortBy="#{orario.orarioInizio1}">
+				<h:outputText value="#{orario.orarioInizio1}">
+					<f:convertDateTime pattern="HH:mm" timeZone="#{appConfig.timeZone}" />
+				</h:outputText>
+			</p:column>
+	
+			<p:column headerText="Alle" sortBy="#{orario.orarioFine1}">
+				<h:outputText value="#{orario.orarioFine1}">
+					<f:convertDateTime pattern="HH:mm" timeZone="#{appConfig.timeZone}" />
+				</h:outputText>
+			</p:column>
+	
+			<p:column headerText="Num." sortBy="#{orario.quantita2}">
+				<h:outputText value="#{orario.quantita2}" />
+			</p:column>
+	
+			<p:column headerText="Dalle" sortBy="#{orario.orarioInizio2}">
+				<h:outputText value="#{orario.orarioInizio2}">
+					<f:convertDateTime pattern="HH:mm" timeZone="#{appConfig.timeZone}" />
+				</h:outputText>
+			</p:column>
+	
+			<p:column headerText="Alle" sortBy="#{orario.orarioFine2}">
+				<h:outputText value="#{orario.orarioFine2}">
+					<f:convertDateTime pattern="HH:mm" timeZone="#{appConfig.timeZone}" />
+				</h:outputText>
+			</p:column>
+	
+			<p:column headerText="Num." sortBy="#{orario.quantita3}">
+				<h:outputText value="#{orario.quantita3}" />
+			</p:column>
+	
+			<p:column headerText="Dalle" sortBy="#{orario.orarioInizio3}">
+				<h:outputText value="#{orario.orarioInizio3}">
+					<f:convertDateTime pattern="HH:mm" timeZone="#{appConfig.timeZone}" />
+				</h:outputText>
+			</p:column>
+	
+			<p:column headerText="Alle" sortBy="#{orario.orarioFine3}">
+				<h:outputText value="#{orario.orarioFine3}">
+					<f:convertDateTime pattern="HH:mm" timeZone="#{appConfig.timeZone}" />
+				</h:outputText>
+			</p:column>
+	
+		</p:dataTable>
+
+	</f:subview>
+
+
+	<f:subview id="addGiornoCalendarioView">
+		
+		<p:dialog
+			id="addGiornoCalendarioDialog"
+			header="Aggiunta di un giorno" 
+			widgetVar="addGiornoCalendarioDialogWidget" 
+			modal="true"
+			showEffect="fade" 
+			hideEffect="fade"> 
+
+			<p:messages id="messages" globalOnly="false" showSummary="false" showDetail="true" severity="error" closable="true"/>
+	
+			<p:panelGrid id="wrapper" styleClass="form-panel">
+							
+				<p:row>
+					<p:column colspan="2" styleClass="form-header">
+						<h:outputText value="Il pannello permette di selezionare un giorno da aggiungere agli orari a calendario del servizio."/>
+					</p:column>
+				</p:row>
+				
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="dataServizio" value="Data servizio:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioOdsOrariCalendario.dataServizio}" id="dataServizio"
+							locale="it" pattern="dd/MM/yyyy"
+							required="true" 
+							requiredMessage="Il campo data servizio è obbligatorio"/>
+						<p:watermark for="dataServizio" value="Data del servizio" />  
+						<p:tooltip for="dataServizio" showEffect="fade" value="Data del servizio" />
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>
+						<p:outputLabel for="quantita1" value="Num.:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioOdsOrariCalendario.quantita1}" id="quantita1"
+							converter="integerConverter" converterMessage="Il campo numero (1) non rappresenta un numero intero valido"/>
+						<p:watermark for="quantita1" value="Numero (1)" />  
+						<p:tooltip for="quantita1" showEffect="fade" value="Numero (1)" />
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="orarioInizio1" value="Dalle:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioOdsOrariCalendario.orarioInizio1}" id="orarioInizio1"
+							locale="it" pattern="HH:mm" timeOnly="true"/>
+						<p:watermark for="orarioInizio1" value="Orario di inizio (1)" />  
+						<p:tooltip for="orarioInizio1" showEffect="fade" value="Orario di inizio (1)" />
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="orarioFine1" value="Alle:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioOdsOrariCalendario.orarioFine1}" id="orarioFine1"
+							locale="it" pattern="HH:mm" timeOnly="true"/>
+						<p:watermark for="orarioFine1" value="Orario di fine (1)" />  
+						<p:tooltip for="orarioFine1" showEffect="fade" value="Orario di fine (1)" />
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>
+						<p:outputLabel for="quantita2" value="Num.:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioOdsOrariCalendario.quantita2}" id="quantita2"
+							converter="integerConverter" converterMessage="Il campo numero (2) non rappresenta un numero intero valido"/>
+						<p:watermark for="quantita2" value="Numero (2)" />  
+						<p:tooltip for="quantita2" showEffect="fade" value="Numero (2)" />
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="orarioInizio2" value="Dalle:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioOdsOrariCalendario.orarioInizio2}" id="orarioInizio2"
+							locale="it" pattern="HH:mm" timeOnly="true"/>
+						<p:watermark for="orarioInizio2" value="Orario di inizio (2)" />  
+						<p:tooltip for="orarioInizio2" showEffect="fade" value="Orario di inizio (2)" />
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="orarioFine2" value="Alle:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioOdsOrariCalendario.orarioFine2}" id="orarioFine2"
+							locale="it" pattern="HH:mm" timeOnly="true"/>
+						<p:watermark for="orarioFine2" value="Orario di fine (2)" />  
+						<p:tooltip for="orarioFine2" showEffect="fade" value="Orario di fine (2)" />
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>
+						<p:outputLabel for="quantita3" value="Num.:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioOdsOrariCalendario.quantita3}" id="quantita3"
+							converter="integerConverter" converterMessage="Il campo numero (3) non rappresenta un numero intero valido"/>
+						<p:watermark for="quantita3" value="Numero (3)" />  
+						<p:tooltip for="quantita3" showEffect="fade" value="Numero (3)" />
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="orarioInizio3" value="Dalle:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioOdsOrariCalendario.orarioInizio3}" id="orarioInizio3"
+							locale="it" pattern="HH:mm" timeOnly="true"/>
+						<p:watermark for="orarioInizio3" value="Orario di inizio (3)" />  
+						<p:tooltip for="orarioInizio3" showEffect="fade" value="Orario di inizio (3)" />
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="orarioFine3" value="Alle:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioOdsOrariCalendario.orarioFine3}" id="orarioFine3"
+							locale="it" pattern="HH:mm" timeOnly="true"/>
+						<p:watermark for="orarioFine3" value="Orario di fine (3)" />  
+						<p:tooltip for="orarioFine3" showEffect="fade" value="Orario di fine (3)" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column colspan="2" styleClass="form-footer">
+						<p:outputPanel id="buttons">
+							<p:commandButton value="Salva"
+								id="saveButton"
+								actionListener="#{dettaglioOdsOrariCalendario.doSave}" 
+								update="addGiornoCalendarioView:messages,addGiornoCalendarioView:panel,:detailForm:tabView:orariAccordion:listCalendarioView:orariTable,:detailForm:growl"
+								process="addGiornoCalendarioView:addGiornoCalendarioDialog"
+								oncomplete="if(args.ok) { addGiornoCalendarioDialogWidget.hide(); }"/>
+							<p:commandButton value="Annulla"
+								type="button"
+								onclick="addGiornoCalendarioDialogWidget.hide();" />
+						</p:outputPanel>
+					</p:column>
+				</p:row>
+									
+			</p:panelGrid>
+					
+		</p:dialog>
+		
+	</f:subview>
+		
+</html>
