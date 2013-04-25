@@ -13,7 +13,7 @@
 				value="Aggiungi giorno"
 				actionListener="#{dettaglioOdsOrariCalendario.startAddGiorno}"
 				process="@this"
-				update=":detailForm:tabView:addGiornoCalendarioView:addGiornoCalendarioDialog"
+				update=":detailForm:tabView:orariAccordion:addGiornoCalendarioView:addGiornoCalendarioDialog"
 				oncomplete="addGiornoCalendarioDialogWidget.show();"
 				icon="ui-icon-star"/>
 			<p:tooltip 
@@ -27,7 +27,7 @@
 				value="Aggiungi periodo"
 				actionListener="#{dettaglioOdsOrariCalendario.startAddPeriodo}"
 				process="@this"
-				update=":detailForm:tabView:addPeriodoCalendarioView:addPeriodoCalendarioDialog"
+				update=":detailForm:tabView:orariAccordion:addPeriodoCalendarioView:addPeriodoCalendarioDialog"
 				oncomplete="addPeriodoCalendarioDialogWidget.show();"
 				icon="ui-icon-star"/>
 			<p:tooltip 
@@ -41,7 +41,7 @@
 				value="Rimuovi periodo"
 				actionListener="#{dettaglioOdsOrariCalendario.startRemovePeriodo}"
 				process="@this"
-				update=":detailForm:tabView:removePeriodoCalendarioView:removePeriodoCalendarioDialog"
+				update=":detailForm:tabView:orariAccordion:removePeriodoCalendarioView:removePeriodoCalendarioDialog"
 				oncomplete="removePeriodoCalendarioDialogWidget.show();"
 				icon="ui-icon-star"/>
 			<p:tooltip 
@@ -55,8 +55,8 @@
 				value="Rimuovi selezionati"
 				disabled="#{empty dettaglioOdsOrariCalendario.selected}"
 				process="@this"
-				update=":detailForm:tabView:deleteSelectedGiorniCalendarioView:deleteSelectedGiorniCalendarioDialog"
-				oncomplete="deleteSelectedGiorniDialogWidget.show();"
+				update=":detailForm:tabView:orariAccordion:removeSelectedGiorniCalendarioView:removeSelectedGiorniCalendarioDialog"
+				oncomplete="removeSelectedGiorniDialogWidget.show();"
 				icon="ui-icon-trash" />
 			<p:tooltip 
 				for="removeSelectedButton" 
@@ -81,8 +81,8 @@
 			selectionMode="multiple"
 			selection="#{dettaglioOdsOrariCalendario.selectedOdsOrariCalendario}">
 	
-			<p:ajax event="rowSelect" process="@this" update=":detailForm:tabView:listCalendarioView:buttons"/>
-			<p:ajax event="rowUnselect" process="@this" update=":detailForm:tabView:listCalendarioView:buttons"/>
+			<p:ajax event="rowSelect" process="@this" update=":detailForm:tabView:orariAccordion:listCalendarioView:buttons"/>
+			<p:ajax event="rowUnselect" process="@this" update=":detailForm:tabView:orariAccordion:listCalendarioView:buttons"/>
 	      		
 			<f:facet name="header">
 		    	Lista degli orari a calendario del servizio
@@ -163,7 +163,7 @@
 
 			<p:messages id="messages" globalOnly="false" showSummary="false" showDetail="true" severity="error" closable="true"/>
 	
-			<p:panelGrid id="wrapper" styleClass="form-panel">
+			<p:panelGrid id="panel" styleClass="form-panel">
 							
 				<p:row>
 					<p:column colspan="2" styleClass="form-header">
@@ -297,8 +297,7 @@
 					<p:column colspan="2" styleClass="form-footer">
 						<p:outputPanel id="buttons">
 							<p:commandButton value="Salva"
-								id="saveButton"
-								actionListener="#{dettaglioOdsOrariCalendario.doSave}" 
+								actionListener="#{dettaglioOdsOrariCalendario.doAddGiorno}" 
 								update="addGiornoCalendarioView:messages,addGiornoCalendarioView:panel,:detailForm:tabView:orariAccordion:listCalendarioView:orariTable,:detailForm:growl"
 								process="addGiornoCalendarioView:addGiornoCalendarioDialog"
 								oncomplete="if(args.ok) { addGiornoCalendarioDialogWidget.hide(); }"/>
@@ -314,5 +313,280 @@
 		</p:dialog>
 		
 	</f:subview>
+
+
+	<f:subview id="addPeriodoCalendarioView">
 		
+		<p:dialog
+			id="addPeriodoCalendarioDialog"
+			header="Aggiunta di un periodo" 
+			widgetVar="addPeriodoCalendarioDialogWidget" 
+			modal="true"
+			showEffect="fade" 
+			hideEffect="fade"> 
+
+			<p:messages id="messages" globalOnly="false" showSummary="false" showDetail="true" severity="error" closable="true"/>
+	
+			<p:panelGrid id="panel" styleClass="form-panel">
+							
+				<p:row>
+					<p:column colspan="2" styleClass="form-header">
+						<h:outputText value="Il pannello permette di selezionare un periodo da aggiungere agli orari a calendario del servizio."/>
+					</p:column>
+				</p:row>
+				
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="dataInizioPeriodo" value="Data inizio periodo:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioOdsOrariCalendario.dataInizioPeriodo}" id="dataInizioPeriodo"
+							locale="it" pattern="dd/MM/yyyy"
+							required="true" 
+							requiredMessage="Il campo data inizio periodo è obbligatorio"/>
+						<p:watermark for="dataInizioPeriodo" value="Data iniziale del periodo" />  
+						<p:tooltip for="dataInizioPeriodo" showEffect="fade" value="Data iniziale del periodo" />
+					</p:column>
+				</p:row>
+				
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="dataFinePeriodo" value="Data fine periodo:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioOdsOrariCalendario.dataFinePeriodo}" id="dataFinePeriodo"
+							locale="it" pattern="dd/MM/yyyy"
+							required="true" 
+							requiredMessage="Il campo data fine periodo è obbligatorio"/>
+						<p:watermark for="dataFinePeriodo" value="Data finale del periodo" />  
+						<p:tooltip for="dataFinePeriodo" showEffect="fade" value="Data finale del periodo" />
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>
+						<p:outputLabel for="quantita1" value="Num.:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioOdsOrariCalendario.quantita1}" id="quantita1"
+							converter="integerConverter" converterMessage="Il campo numero (1) non rappresenta un numero intero valido"/>
+						<p:watermark for="quantita1" value="Numero (1)" />  
+						<p:tooltip for="quantita1" showEffect="fade" value="Numero (1)" />
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="orarioInizio1" value="Dalle:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioOdsOrariCalendario.orarioInizio1}" id="orarioInizio1"
+							locale="it" pattern="HH:mm" timeOnly="true"/>
+						<p:watermark for="orarioInizio1" value="Orario di inizio (1)" />  
+						<p:tooltip for="orarioInizio1" showEffect="fade" value="Orario di inizio (1)" />
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="orarioFine1" value="Alle:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioOdsOrariCalendario.orarioFine1}" id="orarioFine1"
+							locale="it" pattern="HH:mm" timeOnly="true"/>
+						<p:watermark for="orarioFine1" value="Orario di fine (1)" />  
+						<p:tooltip for="orarioFine1" showEffect="fade" value="Orario di fine (1)" />
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>
+						<p:outputLabel for="quantita2" value="Num.:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioOdsOrariCalendario.quantita2}" id="quantita2"
+							converter="integerConverter" converterMessage="Il campo numero (2) non rappresenta un numero intero valido"/>
+						<p:watermark for="quantita2" value="Numero (2)" />  
+						<p:tooltip for="quantita2" showEffect="fade" value="Numero (2)" />
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="orarioInizio2" value="Dalle:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioOdsOrariCalendario.orarioInizio2}" id="orarioInizio2"
+							locale="it" pattern="HH:mm" timeOnly="true"/>
+						<p:watermark for="orarioInizio2" value="Orario di inizio (2)" />  
+						<p:tooltip for="orarioInizio2" showEffect="fade" value="Orario di inizio (2)" />
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="orarioFine2" value="Alle:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioOdsOrariCalendario.orarioFine2}" id="orarioFine2"
+							locale="it" pattern="HH:mm" timeOnly="true"/>
+						<p:watermark for="orarioFine2" value="Orario di fine (2)" />  
+						<p:tooltip for="orarioFine2" showEffect="fade" value="Orario di fine (2)" />
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>
+						<p:outputLabel for="quantita3" value="Num.:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioOdsOrariCalendario.quantita3}" id="quantita3"
+							converter="integerConverter" converterMessage="Il campo numero (3) non rappresenta un numero intero valido"/>
+						<p:watermark for="quantita3" value="Numero (3)" />  
+						<p:tooltip for="quantita3" showEffect="fade" value="Numero (3)" />
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="orarioInizio3" value="Dalle:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioOdsOrariCalendario.orarioInizio3}" id="orarioInizio3"
+							locale="it" pattern="HH:mm" timeOnly="true"/>
+						<p:watermark for="orarioInizio3" value="Orario di inizio (3)" />  
+						<p:tooltip for="orarioInizio3" showEffect="fade" value="Orario di inizio (3)" />
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="orarioFine3" value="Alle:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioOdsOrariCalendario.orarioFine3}" id="orarioFine3"
+							locale="it" pattern="HH:mm" timeOnly="true"/>
+						<p:watermark for="orarioFine3" value="Orario di fine (3)" />  
+						<p:tooltip for="orarioFine3" showEffect="fade" value="Orario di fine (3)" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column colspan="2" styleClass="form-footer">
+						<p:outputPanel id="buttons">
+							<p:commandButton value="Aggiungi"
+								actionListener="#{dettaglioOdsOrariCalendario.doAddPeriodo}" 
+								update="addPeriodoCalendarioView:messages,addPeriodoCalendarioView:panel,:detailForm:tabView:orariAccordion:listCalendarioView:orariTable,:detailForm:growl"
+								process="addPeriodoCalendarioView:addPeriodoCalendarioDialog"
+								oncomplete="if(args.ok) { addPeriodoCalendarioDialogWidget.hide(); }"/>
+							<p:commandButton value="Annulla"
+								type="button"
+								onclick="addPeriodoCalendarioDialogWidget.hide();" />
+						</p:outputPanel>
+					</p:column>
+				</p:row>
+									
+			</p:panelGrid>
+					
+		</p:dialog>
+		
+	</f:subview>
+
+
+	<f:subview id="removePeriodoCalendarioView">
+		
+		<p:dialog
+			id="removePeriodoCalendarioDialog"
+			header="Rimozione di un periodo" 
+			widgetVar="removePeriodoCalendarioDialogWidget" 
+			modal="true"
+			showEffect="fade" 
+			hideEffect="fade"> 
+
+			<p:messages id="messages" globalOnly="false" showSummary="false" showDetail="true" severity="error" closable="true"/>
+	
+			<p:panelGrid id="panel" styleClass="form-panel">
+							
+				<p:row>
+					<p:column colspan="2" styleClass="form-header">
+						<h:outputText value="Il pannello permette di selezionare un periodo da rimuovere dalla lista degli orari presenti a calendario per il servizio."/>
+					</p:column>
+				</p:row>
+				
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="dataInizioPeriodo" value="Data inizio periodo:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioOdsOrariCalendario.dataInizioPeriodo}" id="dataInizioPeriodo"
+							locale="it" pattern="dd/MM/yyyy"
+							required="true" 
+							requiredMessage="Il campo data inizio periodo è obbligatorio"/>
+						<p:watermark for="dataInizioPeriodo" value="Data iniziale del periodo" />  
+						<p:tooltip for="dataInizioPeriodo" showEffect="fade" value="Data iniziale del periodo" />
+					</p:column>
+				</p:row>
+				
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="dataFinePeriodo" value="Data fine periodo:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioOdsOrariCalendario.dataFinePeriodo}" id="dataFinePeriodo"
+							locale="it" pattern="dd/MM/yyyy"
+							required="true" 
+							requiredMessage="Il campo data fine periodo è obbligatorio"/>
+						<p:watermark for="dataFinePeriodo" value="Data finale del periodo" />  
+						<p:tooltip for="dataFinePeriodo" showEffect="fade" value="Data finale del periodo" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column colspan="2" styleClass="form-footer">
+						<p:outputPanel id="buttons">
+							<p:commandButton value="Rimuovi"
+								actionListener="#{dettaglioOdsOrariCalendario.doRemovePeriodo}" 
+								update="removePeriodoCalendarioView:messages,removePeriodoCalendarioView:panel,:detailForm:tabView:orariAccordion:listCalendarioView:orariTable,:detailForm:growl"
+								process="removePeriodoCalendarioView:removePeriodoCalendarioDialog"
+								oncomplete="if(args.ok) { removePeriodoCalendarioDialogWidget.hide(); }"/>
+							<p:commandButton value="Annulla"
+								type="button"
+								onclick="removePeriodoCalendarioDialogWidget.hide();" />
+						</p:outputPanel>
+					</p:column>
+				</p:row>
+									
+			</p:panelGrid>
+					
+		</p:dialog>
+		
+	</f:subview>
+
+	
+	<f:subview id="removeSelectedGiorniCalendarioView">
+	
+		<p:confirmDialog 
+			id="removeSelectedGiorniCalendarioDialog"
+			header="Rimuovi canone" 
+			widgetVar="removeSelectedGiorniCalendarioDialogWidget"
+			message="Si conferma la rimozione degli orari selezionati selezionati? L'operazione non può essere annullata."
+			showEffect="fade" 
+			hideEffect="fade">
+			
+			<p:commandButton 
+				value="Rimuovi"
+				update=":detailForm:tabView:orariAccordion:listCalendarioView:orariTable,:detailForm:tabView:orariAccordion:listCalendarioView:buttons,:detailForm:growl"
+				process="@this" 
+				oncomplete="removeSelectedGiorniCalendarioDialogWidget.hide()"  
+		           actionListener="#{dettaglioOdsOrariCalendario.doRemoveSelected}" />
+		             
+		       <p:commandButton 
+		       	value="Annulla" 
+		       	onclick="removeSelectedGiorniCalendarioDialogWidget.hide()" 
+		       	type="button" />
+		       	   
+		</p:confirmDialog>
+	
+	</f:subview>
+				
 </html>
