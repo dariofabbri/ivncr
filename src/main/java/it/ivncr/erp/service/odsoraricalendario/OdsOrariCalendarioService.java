@@ -9,7 +9,6 @@ import java.util.List;
 public interface OdsOrariCalendarioService extends EntityService<OdsOrariCalendario> {
 
 	OdsOrariCalendario retrieve(Integer id);
-	OdsOrariCalendario retrieveDeep(Integer id);
 
 	OdsOrariCalendario create(
 			Integer codiceOrdineServizio,
@@ -40,4 +39,14 @@ public interface OdsOrariCalendarioService extends EntityService<OdsOrariCalenda
 	void delete(Integer id);
 
 	List<OdsOrariCalendario> listByOrdineServizio(Integer codiceOrdineServizio);
+
+	boolean isGiornoPresent(
+			Integer codiceOrdineServizio,
+			Date dataServizio);
+
+	boolean isPeriodoPresent(
+			Integer codiceOrdineServizio,
+			Date dataInizioPeriodo,
+			Date dataFinePeriodo);
+
 }

@@ -525,6 +525,10 @@ CREATE TABLE app.con_ods_orari_calendario
 	orario_fine_3 TIME WITH TIME ZONE
 );
 
+ALTER TABLE app.con_ods_orari_calendario 
+  ADD CONSTRAINT con_ods_orari_calendario_unique_ordine_servizio_id_data_servizio 
+  UNIQUE(ordine_servizio_id, data_servizio);
+
 
 CREATE TABLE app.con_ods_apparecchiatura
 (
@@ -533,4 +537,6 @@ CREATE TABLE app.con_ods_apparecchiatura
 	apparecchiatura_tecnologica_id INTEGER NOT NULL REFERENCES app.con_apparecchiatura_tecnologica(id)
 );
 
-ALTER TABLE app.con_ods_apparecchiatura ADD CONSTRAINT con_ods_apparecchiatura_unique_ordine_servizio_id_apparecchiatura_tecnologica_id UNIQUE(ordine_servizio_id, apparecchiatura_tecnologica_id);
+ALTER TABLE app.con_ods_apparecchiatura 
+  ADD CONSTRAINT con_ods_apparecchiatura_unique_ordine_servizio_id_apparecchiatura_tecnologica_id 
+  UNIQUE(ordine_servizio_id, apparecchiatura_tecnologica_id);

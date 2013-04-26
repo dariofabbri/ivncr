@@ -1,6 +1,8 @@
 package it.ivncr.erp.model.commerciale.ods;
 
 
+import it.ivncr.erp.util.GiornoSettimana;
+
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -78,6 +80,12 @@ public class OdsOrariCalendario {
 			.append("orarioInizio3", orarioInizio3)
 			.append("orarioFine3", orarioFine3)
 			.toString();
+	}
+
+
+	public GiornoSettimana getGiorno() {
+
+		return GiornoSettimana.fromDate(dataServizio);
 	}
 
 

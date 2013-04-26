@@ -53,7 +53,7 @@
 			<p:commandButton
 				id="removeSelectedButton"
 				value="Rimuovi selezionati"
-				disabled="#{empty dettaglioOdsOrariCalendario.selected}"
+				disabled="#{empty dettaglioOdsOrariCalendario.selectedOdsOrariCalendario}"
 				process="@this"
 				update=":detailForm:tabView:orariAccordion:removeSelectedGiorniCalendarioView:removeSelectedGiorniCalendarioDialog"
 				oncomplete="removeSelectedGiorniDialogWidget.show();"
@@ -71,6 +71,7 @@
 			var="orario" 
 			value="#{dettaglioOdsOrariCalendario.listOdsOrariCalendario}"
 			rowKey="#{orario.id}"
+			sortBy="#{orario.dataServizio}"
 			paginator="true" 
 			paginatorPosition="bottom" rows="10"
 			paginatorTemplate="{CurrentPageReport} {RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
@@ -89,7 +90,7 @@
 		    </f:facet>
 	
 			<p:column headerText="Giorno" sortBy="#{orario.giorno}">
-				<h:outputText value="#{orario.giorno}" />
+				<h:outputText value="#{orario.giorno.toString()}" />
 			</p:column>
 	
 			<p:column headerText="Data" sortBy="#{orario.dataServizio}">

@@ -1,7 +1,6 @@
 package it.ivncr.erp.service.odsoraricalendario;
 
-import it.ivncr.erp.model.commerciale.contratto.ApparecchiaturaTecnologica;
-import it.ivncr.erp.model.commerciale.ods.OdsApparecchiatura;
+import it.ivncr.erp.model.commerciale.ods.OdsOrariCalendario;
 import it.ivncr.erp.model.commerciale.ods.OrdineServizio;
 import it.ivncr.erp.service.AbstractService;
 import it.ivncr.erp.service.NotFoundException;
@@ -11,6 +10,7 @@ import it.ivncr.erp.util.AuditUtil;
 import it.ivncr.erp.util.AuditUtil.Operation;
 import it.ivncr.erp.util.AuditUtil.Snapshot;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -19,7 +19,7 @@ import org.hibernate.Query;
 public class OdsOrariCalendarioServiceImpl extends AbstractService implements OdsOrariCalendarioService {
 
 	@Override
-	public QueryResult<OdsApparecchiatura> list(
+	public QueryResult<OdsOrariCalendario> list(
 			int first,
 			int pageSize,
 			String sortCriteria,
@@ -30,54 +30,54 @@ public class OdsOrariCalendarioServiceImpl extends AbstractService implements Od
 	}
 
 	@Override
-	public OdsApparecchiatura retrieve(Integer id) {
+	public OdsOrariCalendario retrieve(Integer id) {
 
-		OdsApparecchiatura odsApparecchiatura = (OdsApparecchiatura)session.get(OdsApparecchiatura.class, id);
-		logger.debug("Ods apparecchiatura found: " + odsApparecchiatura);
+		OdsOrariCalendario odsOrariCalendario = (OdsOrariCalendario)session.get(OdsOrariCalendario.class, id);
+		logger.debug("Ods orari calendario found: " + odsOrariCalendario);
 
-		return odsApparecchiatura;
+		return odsOrariCalendario;
 	}
 
 	@Override
-	public OdsApparecchiatura retrieveDeep(Integer id) {
-
-		String hql =
-				"from OdsApparecchiatura oda " +
-				"left join fetch oda.apparecchiaturaTecnologica ate " +
-				"left join fetch ate.tipoApparecchiaturaTecnologica tat " +
-				"left join fetch tat.gruppoApparecchiatura gra " +
-				"where oda.id = :id ";
-		Query query = session.createQuery(hql);
-		query.setParameter("id", id);
-		OdsApparecchiatura odsApparecchiatura = (OdsApparecchiatura)query.uniqueResult();
-		logger.debug("Ods apparecchiatura found: " + odsApparecchiatura);
-
-		return odsApparecchiatura;
-	}
-
-	@Override
-	public OdsApparecchiatura create(
+	public OdsOrariCalendario create(
 			Integer codiceOrdineServizio,
-			Integer codiceApparecchiaturaTecnologica) {
+			Date dataServizio,
+			Integer quantita1,
+			Date orarioInizio1,
+			Date orarioFine1,
+			Integer quantita2,
+			Date orarioInizio2,
+			Date orarioFine2,
+			Integer quantita3,
+			Date orarioInizio3,
+			Date orarioFine3) {
 
 		// Fetch referred entities.
 		//
 		OrdineServizio ordineServizio = (OrdineServizio)session.get(OrdineServizio.class, codiceOrdineServizio);
-		ApparecchiaturaTecnologica apparecchiaturaTecnologica = (ApparecchiaturaTecnologica)session.get(ApparecchiaturaTecnologica.class, codiceApparecchiaturaTecnologica);
 
 		// Create the new entity.
 		//
-		OdsApparecchiatura entity = new OdsApparecchiatura();
+		OdsOrariCalendario entity = new OdsOrariCalendario();
 
 		// Set entity fields.
 		//
 		entity.setOrdineServizio(ordineServizio);
-		entity.setApparecchiaturaTecnologica(apparecchiaturaTecnologica);
+		entity.setDataServizio(dataServizio);
+		entity.setQuantita1(quantita1);
+		entity.setOrarioInizio1(orarioInizio1);
+		entity.setOrarioFine1(orarioFine1);
+		entity.setQuantita2(quantita2);
+		entity.setOrarioInizio2(orarioInizio2);
+		entity.setOrarioFine2(orarioFine2);
+		entity.setQuantita3(quantita3);
+		entity.setOrarioInizio3(orarioInizio3);
+		entity.setOrarioFine3(orarioFine3);
 
 		// Persist the entity to the database.
 		//
 		session.save(entity);
-		logger.debug("Ods apparecchiatura successfully created.");
+		logger.debug("Ods orari calendario successfully created.");
 
 		// Audit call for the create operation.
 		//
@@ -88,13 +88,22 @@ public class OdsOrariCalendarioServiceImpl extends AbstractService implements Od
 
 
 	@Override
-	public OdsApparecchiatura update(
+	public OdsOrariCalendario update(
 			Integer id,
-			Integer codiceApparecchiaturaTecnologica) {
+			Date dataServizio,
+			Integer quantita1,
+			Date orarioInizio1,
+			Date orarioFine1,
+			Integer quantita2,
+			Date orarioInizio2,
+			Date orarioFine2,
+			Integer quantita3,
+			Date orarioInizio3,
+			Date orarioFine3) {
 
-		OdsApparecchiatura entity = retrieve(id);
+		OdsOrariCalendario entity = retrieve(id);
 		if(entity == null) {
-			String message = String.format("It has not been possible to retrieve specified ods apparecchiatura: %d", id);
+			String message = String.format("It has not been possible to retrieve specified ods orari calendario: %d", id);
 			logger.info(message);
 			throw new NotFoundException(message);
 		}
@@ -103,13 +112,18 @@ public class OdsOrariCalendarioServiceImpl extends AbstractService implements Od
 		//
 		AuditUtil.log(Operation.Update, Snapshot.Source, entity);
 
-		// Fetch referred entities.
-		//
-		ApparecchiaturaTecnologica apparecchiaturaTecnologica = (ApparecchiaturaTecnologica)session.get(ApparecchiaturaTecnologica.class, codiceApparecchiaturaTecnologica);
-
 		// Set entity fields.
 		//
-		entity.setApparecchiaturaTecnologica(apparecchiaturaTecnologica);
+		entity.setDataServizio(dataServizio);
+		entity.setQuantita1(quantita1);
+		entity.setOrarioInizio1(orarioInizio1);
+		entity.setOrarioFine1(orarioFine1);
+		entity.setQuantita2(quantita2);
+		entity.setOrarioInizio2(orarioInizio2);
+		entity.setOrarioFine2(orarioFine2);
+		entity.setQuantita3(quantita3);
+		entity.setOrarioInizio3(orarioInizio3);
+		entity.setOrarioFine3(orarioFine3);
 
 		session.update(entity);
 		logger.debug("Entity successfully updated.");
@@ -125,9 +139,9 @@ public class OdsOrariCalendarioServiceImpl extends AbstractService implements Od
 	@Override
 	public void delete(Integer id) {
 
-		OdsApparecchiatura entity = retrieve(id);
+		OdsOrariCalendario entity = retrieve(id);
 		if(entity == null) {
-			String message = String.format("It has not been possible to retrieve specified ods apparecchiatura: %d", id);
+			String message = String.format("It has not been possible to retrieve specified ods orari calendario: %d", id);
 			logger.info(message);
 			throw new NotFoundException(message);
 		}
@@ -142,20 +156,58 @@ public class OdsOrariCalendarioServiceImpl extends AbstractService implements Od
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<OdsApparecchiatura> listByOrdineServizio(Integer codiceOrdineServizio) {
+	public List<OdsOrariCalendario> listByOrdineServizio(Integer codiceOrdineServizio) {
 
 		String hql =
-				"from OdsApparecchiatura oda " +
-				"left join fetch oda.apparecchiaturaTecnologica ate " +
-				"left join fetch ate.tipoApparecchiaturaTecnologica tat " +
-				"left join fetch tat.gruppoApparecchiatura gra " +
-				"where oda.ordineServizio.id = :codiceOrdineServizio ";
+				"from OdsOrariCalendario ooc " +
+				"where ooc.ordineServizio.id = :codiceOrdineServizio ";
 		Query query = session.createQuery(hql);
 		query.setParameter("codiceOrdineServizio", codiceOrdineServizio);
 
-		List<OdsApparecchiatura> result = query.list();
+		List<OdsOrariCalendario> result = query.list();
 		logger.debug("Query result: " + result);
 
 		return result;
+	}
+
+
+	@Override
+	public boolean isGiornoPresent(
+			Integer codiceOrdineServizio,
+			Date dataServizio) {
+
+		String hql =
+				"select count(*) " +
+				"from OdsOrariCalendario ooc " +
+				"where ooc.ordineServizio.id = :codiceOrdineServizio " +
+				"and ooc.dataServizio = :dataServizio ";
+		Query query = session.createQuery(hql);
+		query.setParameter("codiceOrdineServizio", codiceOrdineServizio);
+		query.setParameter("dataServizio", dataServizio);
+
+		Long count = (Long) query.uniqueResult();
+		return count > 0;
+	}
+
+
+	@Override
+	public boolean isPeriodoPresent(
+			Integer codiceOrdineServizio,
+			Date dataInizioPeriodo,
+			Date dataFinePeriodo) {
+
+		String hql =
+				"select count(*) " +
+				"from OdsOrariCalendario ooc " +
+				"where ooc.ordineServizio.id = :codiceOrdineServizio " +
+				"and ooc.dataServizio >= :dataInizioPeriodo " +
+				"and ooc.dataServizio <= :dataFinePeriodo ";
+		Query query = session.createQuery(hql);
+		query.setParameter("codiceOrdineServizio", codiceOrdineServizio);
+		query.setParameter("dataInizioPeriodo", dataInizioPeriodo);
+		query.setParameter("dataFinePeriodo", dataFinePeriodo);
+
+		Long count = (Long) query.uniqueResult();
+		return count > 0;
 	}
 }

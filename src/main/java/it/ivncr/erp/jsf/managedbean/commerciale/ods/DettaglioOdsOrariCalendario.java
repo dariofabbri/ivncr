@@ -2,8 +2,7 @@ package it.ivncr.erp.jsf.managedbean.commerciale.ods;
 
 import it.ivncr.erp.model.commerciale.ods.OdsOrariCalendario;
 import it.ivncr.erp.service.ServiceFactory;
-import it.ivncr.erp.service.apparecchiaturatecnologica.ApparecchiaturaTecnologicaService;
-import it.ivncr.erp.service.odsapparecchiatura.OdsApparecchiaturaService;
+import it.ivncr.erp.service.odsoraricalendario.OdsOrariCalendarioService;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -32,7 +31,7 @@ public class DettaglioOdsOrariCalendario implements Serializable {
 	private DettaglioOdsGenerale dettaglioOdsGenerale;
 
 	private List<OdsOrariCalendario> listOdsOrariCalendario;
-	private OdsOrariCalendario selectedOdsOrariCalendario;
+	private List<OdsOrariCalendario> selectedOdsOrariCalendario;
 
 	private Date dataServizio;
 	private Date dataInizioPeriodo;
@@ -45,7 +44,7 @@ public class DettaglioOdsOrariCalendario implements Serializable {
 	private Date orarioFine2;
 	private Integer quantita3;
 	private Date orarioInizio3;
-	private Date orarioFine4;
+	private Date orarioFine3;
 
 
 	@PostConstruct
@@ -71,65 +70,64 @@ public class DettaglioOdsOrariCalendario implements Serializable {
 
 	public void startAddGiorno() {
 
+		logger.debug("Entering startAddGiorno() method.");
+
+		// Clean up form status.
+		//
+		clean();
 	}
 
 
 	public void startAddPeriodo() {
 
+		logger.debug("Entering startAddPeriodo() method.");
+
+		// Clean up form status.
+		//
+		clean();
 	}
 
 
 	public void startRemovePeriodo() {
 
+		logger.debug("Entering startRemovePeriodo() method.");
+
+		// Clean up form status.
+		//
+		clean();
 	}
 
 
 	public void doAddGiorno() {
 
-	}
+		OdsOrariCalendarioService oocs = ServiceFactory.createService("OdsOrariCalendario");
 
-
-	public void doAddPeriodo() {
-
-	}
-
-
-	public void doRemovePeriodo() {
-
-	}
-
-
-	public void doRemoveSelected() {
-
-	}
-
-
-
-	public void startAdd() {
-
-		logger.debug("Entering startAdd() method.");
-
-		// Load list of available contatti records.
+		// Check if the specified giorno is already present.
 		//
-		ApparecchiaturaTecnologicaService ats = ServiceFactory.createService("ApparecchiaturaTecnologica");
-		listApparecchiatureDisponibili = ats.listDisponibiliPerOrdineServizio(dettaglioOdsGenerale.getId());
+		if(oocs.isGiornoPresent(dettaglioOdsGenerale.getId(), dataServizio)) {
+			FacesMessage message = new FacesMessage(
+					FacesMessage.SEVERITY_ERROR,
+					"Giorno già presente",
+					"Il giorno selezionato è già presente nella lista.");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			return;
+		}
 
-		// Clean up previous selections, if present.
+		// Add the new record.
 		//
-		selectedApparecchiatura = null;
-	}
-
-
-	public void doAdd() {
-
-		// Create service to persist data.
-		//
-		OdsApparecchiaturaService oas = ServiceFactory.createService("OdsApparecchiatura");
-
 		try {
-			oas.create(
-				dettaglioOdsGenerale.getId(),
-				selectedApparecchiatura.getId());
+			oocs.create(
+					dettaglioOdsGenerale.getId(),
+					dataServizio,
+					quantita1,
+					orarioInizio1,
+					orarioFine1,
+					quantita2,
+					orarioInizio2,
+					orarioFine2,
+					quantita3,
+					orarioInizio3,
+					orarioFine3);
 
 			logger.debug("Entity successfully created.");
 
@@ -143,7 +141,7 @@ public class DettaglioOdsOrariCalendario implements Serializable {
 
 			// Refresh list.
 			//
-			loadApparecchiature();
+			loadOrari();
 
 			// Signal to modal dialog that everything went fine.
 			//
@@ -162,45 +160,34 @@ public class DettaglioOdsOrariCalendario implements Serializable {
 	}
 
 
-	public void doDelete() {
+	public void doAddPeriodo() {
 
-		// Create service to delete the record
-		//
-		OdsApparecchiaturaService oas = ServiceFactory.createService("OdsApparecchiatura");
+	}
 
-		try {
-			oas.delete(selected.getId());
 
-			// Everything went fine.
-			//
-			FacesMessage message = new FacesMessage(
-					FacesMessage.SEVERITY_INFO,
-					"Successo",
-					"L'eliminazione del record selezionato si è conclusa con successo.");
-			FacesContext.getCurrentInstance().addMessage(null, message);
+	public void doRemovePeriodo() {
 
-			// Reset selection.
-			//
-			selected = null;
+	}
 
-			// Refresh list.
-			//
-			loadApparecchiature();
 
-			// Signal to modal dialog that everything went fine.
-			//
-			RequestContext.getCurrentInstance().addCallbackParam("ok", true);
+	public void doRemoveSelected() {
 
-		} catch(Exception e) {
+	}
 
-			logger.warn("Exception caught while deleting entity.", e);
+	private void clean() {
 
-			FacesMessage message = new FacesMessage(
-					FacesMessage.SEVERITY_ERROR,
-					"Errore di sistema",
-					"Si è verificato un errore in fase di eliminazione del record.");
-			FacesContext.getCurrentInstance().addMessage(null, message);
-		}
+		dataServizio = null;
+		dataInizioPeriodo = null;
+		dataFinePeriodo = null;
+		quantita1 = null;
+		orarioInizio1 = null;
+		orarioFine1 = null;
+		quantita2 = null;
+		orarioInizio2 = null;
+		orarioFine2 = null;
+		quantita3 = null;
+		orarioInizio3 = null;
+		orarioFine3 = null;
 	}
 
 
@@ -222,12 +209,12 @@ public class DettaglioOdsOrariCalendario implements Serializable {
 		this.listOdsOrariCalendario = listOdsOrariCalendario;
 	}
 
-	public OdsOrariCalendario getSelectedOdsOrariCalendario() {
+	public List<OdsOrariCalendario> getSelectedOdsOrariCalendario() {
 		return selectedOdsOrariCalendario;
 	}
 
 	public void setSelectedOdsOrariCalendario(
-			OdsOrariCalendario selectedOdsOrariCalendario) {
+			List<OdsOrariCalendario> selectedOdsOrariCalendario) {
 		this.selectedOdsOrariCalendario = selectedOdsOrariCalendario;
 	}
 
@@ -319,11 +306,11 @@ public class DettaglioOdsOrariCalendario implements Serializable {
 		this.orarioInizio3 = orarioInizio3;
 	}
 
-	public Date getOrarioFine4() {
-		return orarioFine4;
+	public Date getOrarioFine3() {
+		return orarioFine3;
 	}
 
-	public void setOrarioFine4(Date orarioFine4) {
-		this.orarioFine4 = orarioFine4;
+	public void setOrarioFine3(Date orarioFine3) {
+		this.orarioFine3 = orarioFine3;
 	}
 }
