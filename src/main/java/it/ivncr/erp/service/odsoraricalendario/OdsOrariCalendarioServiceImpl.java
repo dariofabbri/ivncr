@@ -10,13 +10,17 @@ import it.ivncr.erp.util.AuditUtil;
 import it.ivncr.erp.util.AuditUtil.Operation;
 import it.ivncr.erp.util.AuditUtil.Snapshot;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.hibernate.Query;
 
 public class OdsOrariCalendarioServiceImpl extends AbstractService implements OdsOrariCalendarioService {
+
+	private static final int MAX_DAYS_IN_PERIOD = 10000;
 
 	@Override
 	public QueryResult<OdsOrariCalendario> list(
@@ -84,6 +88,95 @@ public class OdsOrariCalendarioServiceImpl extends AbstractService implements Od
 		AuditUtil.log(Operation.Create, Snapshot.Destination, entity);
 
 		return entity;
+	}
+
+
+	@Override
+	public List<OdsOrariCalendario> createPeriodo(
+			Integer codiceOrdineServizio,
+			Date dataInizioPeriodo,
+			Date dataFinePeriodo,
+			Integer quantita1,
+			Date orarioInizio1,
+			Date orarioFine1,
+			Integer quantita2,
+			Date orarioInizio2,
+			Date orarioFine2,
+			Integer quantita3,
+			Date orarioInizio3,
+			Date orarioFine3) {
+
+		// Check arguments (inverted start and end period).
+		//
+		if(dataInizioPeriodo.after(dataFinePeriodo)) {
+			String msg = String.format("Argument dataInizioPeriodo [%s] is after dataFinePeriodo [%s].", dataInizioPeriodo, dataFinePeriodo);
+			logger.error(msg);
+			throw new IllegalArgumentException(msg);
+		}
+
+		// Check if we are asking to generate a huge amount of rows.
+		//
+		long interval = dataFinePeriodo.getTime() - dataInizioPeriodo.getTime();
+		if(interval > 86400000L * MAX_DAYS_IN_PERIOD) {
+			String msg = String.format("The interval between dataInizioPeriodo [%s] and dataFinePeriodo [%s] represents more than %d days.",
+					dataInizioPeriodo,
+					dataFinePeriodo,
+					MAX_DAYS_IN_PERIOD);
+			logger.error(msg);
+			throw new IllegalArgumentException(msg);
+		}
+
+		// Fetch referred entities.
+		//
+		OrdineServizio ordineServizio = (OrdineServizio)session.get(OrdineServizio.class, codiceOrdineServizio);
+
+		// Prepare return object.
+		//
+		List<OdsOrariCalendario> list = new ArrayList<OdsOrariCalendario>();
+
+		// Start iteration on dates of period.
+		//
+		Date dataServizio = dataInizioPeriodo;
+		while(true) {
+
+			if(dataServizio.after(dataFinePeriodo)) {
+				break;
+			}
+
+			// Create the new entity.
+			//
+			OdsOrariCalendario entity = new OdsOrariCalendario();
+
+			// Set entity fields.
+			//
+			entity.setOrdineServizio(ordineServizio);
+			entity.setDataServizio(dataServizio);
+			entity.setQuantita1(quantita1);
+			entity.setOrarioInizio1(orarioInizio1);
+			entity.setOrarioFine1(orarioFine1);
+			entity.setQuantita2(quantita2);
+			entity.setOrarioInizio2(orarioInizio2);
+			entity.setOrarioFine2(orarioFine2);
+			entity.setQuantita3(quantita3);
+			entity.setOrarioInizio3(orarioInizio3);
+			entity.setOrarioFine3(orarioFine3);
+
+			// Persist the entity to the database.
+			//
+			session.save(entity);
+			list.add(entity);
+
+			// Audit call for the create operation.
+			//
+			AuditUtil.log(Operation.Create, Snapshot.Destination, entity);
+
+			// Move to next date.
+			//
+			dataServizio = DateUtils.addDays(dataServizio, 1);
+		}
+		logger.debug("List of ods orari calendario successfully created.");
+
+		return list;
 	}
 
 

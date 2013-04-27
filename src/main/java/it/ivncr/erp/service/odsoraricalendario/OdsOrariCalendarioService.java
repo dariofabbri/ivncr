@@ -23,6 +23,20 @@ public interface OdsOrariCalendarioService extends EntityService<OdsOrariCalenda
 			Date orarioInizio3,
 			Date orarioFine3);
 
+	List<OdsOrariCalendario> createPeriodo(
+			Integer codiceOrdineServizio,
+			Date dataInizioPeriodo,
+			Date dataFinePeriodo,
+			Integer quantita1,
+			Date orarioInizio1,
+			Date orarioFine1,
+			Integer quantita2,
+			Date orarioInizio2,
+			Date orarioFine2,
+			Integer quantita3,
+			Date orarioInizio3,
+			Date orarioFine3);
+
 	OdsOrariCalendario update(
 			Integer id,
 			Date dataServizio,

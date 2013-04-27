@@ -162,6 +162,64 @@ public class DettaglioOdsOrariCalendario implements Serializable {
 
 	public void doAddPeriodo() {
 
+		OdsOrariCalendarioService oocs = ServiceFactory.createService("OdsOrariCalendario");
+
+		// Check if the specified period is overlapping with already present days.
+		//
+		if(oocs.isPeriodoPresent(dettaglioOdsGenerale.getId(), dataInizioPeriodo, dataFinePeriodo)) {
+			FacesMessage message = new FacesMessage(
+					FacesMessage.SEVERITY_ERROR,
+					"Periodo in sovrapposizione",
+					"Il periodo selezionato si sovrappone a giorni già presenti nella lista.");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			return;
+		}
+
+		// Add the new record.
+		//
+		try {
+			oocs.createPeriodo(
+					dettaglioOdsGenerale.getId(),
+					dataInizioPeriodo,
+					dataFinePeriodo,
+					quantita1,
+					orarioInizio1,
+					orarioFine1,
+					quantita2,
+					orarioInizio2,
+					orarioFine2,
+					quantita3,
+					orarioInizio3,
+					orarioFine3);
+
+			logger.debug("Entity successfully created.");
+
+			// Everything went fine.
+			//
+			FacesMessage message = new FacesMessage(
+					FacesMessage.SEVERITY_INFO,
+					"Successo",
+					"Il salvataggio dei dati si è concluso con successo.");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+
+			// Refresh list.
+			//
+			loadOrari();
+
+			// Signal to modal dialog that everything went fine.
+			//
+			RequestContext.getCurrentInstance().addCallbackParam("ok", true);
+
+		} catch(Exception e) {
+
+			logger.warn("Exception caught while saving entity.", e);
+
+			FacesMessage message = new FacesMessage(
+					FacesMessage.SEVERITY_ERROR,
+					"Errore di sistema",
+					"Si è verificato un errore in fase di salvataggio del record.");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+		}
 	}
 
 
