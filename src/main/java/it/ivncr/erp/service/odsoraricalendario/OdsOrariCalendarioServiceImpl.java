@@ -247,6 +247,46 @@ public class OdsOrariCalendarioServiceImpl extends AbstractService implements Od
 	}
 
 
+	@Override
+	public void delete(Iterable<Integer> ids) {
+
+		for(Integer id : ids) {
+			delete(id);
+		}
+	}
+
+
+	@Override
+	public int deletePeriodo(
+		Integer codiceOrdineServizio,
+		Date dataInizioPeriodo,
+		Date dataFinePeriodo) {
+
+		// Check arguments (inverted start and end period).
+		//
+		if(dataInizioPeriodo.after(dataFinePeriodo)) {
+			String msg = String.format("Argument dataInizioPeriodo [%s] is after dataFinePeriodo [%s].", dataInizioPeriodo, dataFinePeriodo);
+			logger.error(msg);
+			throw new IllegalArgumentException(msg);
+		}
+
+		// Delete the range using a DML statement.
+		//
+		String hql =
+				"delete OdsOrariCalendario ooc " +
+				"where ooc.ordineServizio.id = :codiceOrdineServizio " +
+				"and ooc.dataServizio >= :dataInizioPeriodo " +
+				"and ooc.dataServizio <= :dataFinePeriodo ";
+		Query query = session.createQuery(hql);
+		query.setParameter("codiceOrdineServizio", codiceOrdineServizio);
+		query.setParameter("dataInizioPeriodo", dataInizioPeriodo);
+		query.setParameter("dataFinePeriodo", dataFinePeriodo);
+		int deletedRows = query.executeUpdate();
+		logger.debug(String.format("Deleted %d rows.", deletedRows));
+
+		return deletedRows;
+	}
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<OdsOrariCalendario> listByOrdineServizio(Integer codiceOrdineServizio) {

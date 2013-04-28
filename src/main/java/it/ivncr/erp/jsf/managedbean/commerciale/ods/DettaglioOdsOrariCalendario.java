@@ -5,6 +5,7 @@ import it.ivncr.erp.service.ServiceFactory;
 import it.ivncr.erp.service.odsoraricalendario.OdsOrariCalendarioService;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -225,12 +226,97 @@ public class DettaglioOdsOrariCalendario implements Serializable {
 
 	public void doRemovePeriodo() {
 
+		OdsOrariCalendarioService oocs = ServiceFactory.createService("OdsOrariCalendario");
+
+		// Remove the records in the specified interval.
+		//
+		try {
+			int deletedRows = oocs.deletePeriodo(
+					dettaglioOdsGenerale.getId(),
+					dataInizioPeriodo,
+					dataFinePeriodo);
+
+			logger.debug("Entity successfully deleted.");
+
+			// Everything went fine.
+			//
+			FacesMessage message = new FacesMessage(
+					FacesMessage.SEVERITY_INFO,
+					"Successo",
+					String.format("La cancellazione si è conclusa con successo ed ha interessato %d righe.", deletedRows));
+			FacesContext.getCurrentInstance().addMessage(null, message);
+
+			// Refresh list.
+			//
+			loadOrari();
+
+			// Signal to modal dialog that everything went fine.
+			//
+			RequestContext.getCurrentInstance().addCallbackParam("ok", true);
+
+		} catch(Exception e) {
+
+			logger.warn("Exception caught while deleting  entity.", e);
+
+			FacesMessage message = new FacesMessage(
+					FacesMessage.SEVERITY_ERROR,
+					"Errore di sistema",
+					"Si è verificato un errore in fase di cancellazione dei record.");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+		}
 	}
 
 
 	public void doRemoveSelected() {
 
+		// Create service to delete the record.
+		//
+		OdsOrariCalendarioService oocs = ServiceFactory.createService("OdsOrariCalendario");
+
+		try {
+			// Extract ids from selection data model.
+			//
+			List<Integer> ids = new ArrayList<Integer>();
+			for(OdsOrariCalendario ooc : selectedOdsOrariCalendario) {
+				ids.add(ooc.getId());
+			}
+
+			// Delete extracted list of ids.
+			//
+			oocs.delete(ids);
+
+			// Everything went fine.
+			//
+			FacesMessage message = new FacesMessage(
+					FacesMessage.SEVERITY_INFO,
+					"Successo",
+					"L'eliminazione dei record selezionati si è conclusa con successo.");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+
+			// Reset selection.
+			//
+			selectedOdsOrariCalendario = null;
+
+			// Refresh list.
+			//
+			loadOrari();
+
+			// Signal to modal dialog that everything went fine.
+			//
+			RequestContext.getCurrentInstance().addCallbackParam("ok", true);
+
+		} catch(Exception e) {
+
+			logger.warn("Exception caught while deleting entity.", e);
+
+			FacesMessage message = new FacesMessage(
+					FacesMessage.SEVERITY_ERROR,
+					"Errore di sistema",
+					"Si è verificato un errore in fase di eliminazione dei record selezionati.");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+		}
 	}
+
 
 	private void clean() {
 

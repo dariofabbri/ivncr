@@ -52,6 +52,13 @@ public interface OdsOrariCalendarioService extends EntityService<OdsOrariCalenda
 
 	void delete(Integer id);
 
+	void delete(Iterable<Integer> ids);
+
+	int deletePeriodo(
+			Integer codiceOrdineServizio,
+			Date dataInizioPeriodo,
+			Date dataFinePeriodo);
+
 	List<OdsOrariCalendario> listByOrdineServizio(Integer codiceOrdineServizio);
 
 	boolean isGiornoPresent(

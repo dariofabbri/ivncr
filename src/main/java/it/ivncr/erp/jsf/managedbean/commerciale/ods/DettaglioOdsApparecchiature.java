@@ -160,8 +160,6 @@ public class DettaglioOdsApparecchiature implements Serializable {
 	}
 
 
-
-
 	public DettaglioOdsGenerale getDettaglioOdsGenerale() {
 		return dettaglioOdsGenerale;
 	}
