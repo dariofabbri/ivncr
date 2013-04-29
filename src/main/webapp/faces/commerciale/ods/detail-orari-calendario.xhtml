@@ -568,9 +568,9 @@
 	
 		<p:confirmDialog 
 			id="removeSelectedGiorniCalendarioDialog"
-			header="Rimuovi canone" 
+			header="Rimuovi giorni selezionati" 
 			widgetVar="removeSelectedGiorniCalendarioDialogWidget"
-			message="Si conferma la rimozione degli orari selezionati selezionati? L'operazione non può essere annullata."
+			message="Si conferma la rimozione degli orari selezionati? L'operazione non può essere annullata."
 			showEffect="fade" 
 			hideEffect="fade">
 			
@@ -578,13 +578,13 @@
 				value="Rimuovi"
 				update=":detailForm:tabView:orariAccordion:listCalendarioView:orariTable,:detailForm:tabView:orariAccordion:listCalendarioView:buttons,:detailForm:growl"
 				process="@this" 
-				oncomplete="removeSelectedGiorniCalendarioDialogWidget.hide()"  
-		           actionListener="#{dettaglioOdsOrariCalendario.doRemoveSelected}" />
+				oncomplete="removeSelectedGiorniCalendarioDialogWidget.hide()"
+				actionListener="#{dettaglioOdsOrariCalendario.doRemoveSelected}" />
 		             
-		       <p:commandButton 
-		       	value="Annulla" 
-		       	onclick="removeSelectedGiorniCalendarioDialogWidget.hide()" 
-		       	type="button" />
+			<p:commandButton 
+				value="Annulla" 
+				onclick="removeSelectedGiorniCalendarioDialogWidget.hide()" 
+				type="button" />
 		       	   
 		</p:confirmDialog>
 	

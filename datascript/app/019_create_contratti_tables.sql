@@ -508,6 +508,10 @@ CREATE TABLE app.con_ods_orari_ricorrenti
 	orario_fine_3 TIME WITH TIME ZONE
 );
 
+ALTER TABLE app.con_ods_orari_ricorrenti 
+  ADD CONSTRAINT con_ods_orari_ricorrenti_unique_ordine_servizio_id_giorno_settimana_id
+  UNIQUE(ordine_servizio_id, giorno_settimana_id);
+
 
 CREATE TABLE app.con_ods_orari_calendario
 (

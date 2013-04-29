@@ -1,0 +1,399 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:readonly="http://java.sun.com/jsf/composite/components/readonly">
+	
+	<f:subview id="listRicorrentiView">
+	
+		<p:outputPanel id="buttons" style="display: block; margin-top: 2em; margin-bottom: 2em;">
+	
+			<p:commandButton
+				id="addButton"
+				value="Aggiungi"
+				actionListener="#{dettaglioOdsOrariRicorrenti.startAdd}"
+				process="@this"
+				update=":detailForm:tabView:orariAccordion:addRicorrentiView:addRicorrentiDialog"
+				oncomplete="addRicorrentiDialogWidget.show();"
+				icon="ui-icon-star"/>
+			<p:tooltip 
+				for="addButton" 
+				value="Aggiungi giorni alla lista" 
+				showEffect="fade" 
+				hideEffect="fade"/>
+	
+			<p:commandButton
+				id="removeSelectedButton"
+				value="Rimuovi selezionati"
+				disabled="#{empty dettaglioOdsOrariRicorrenti.selectedOdsOrariRicorrenti}"
+				process="@this"
+				update=":detailForm:tabView:orariAccordion:removeSelectedRicorrentiView:removeSelectedRicorrentiDialog"
+				oncomplete="removeSelectedRicorrentiDialogWidget.show();"
+				icon="ui-icon-trash" />
+			<p:tooltip 
+				for="removeSelectedButton" 
+				value="Rimuove i giorni selezionati dalla lista" 
+				showEffect="fade" 
+				hideEffect="fade"/>
+	
+			<p:commandButton
+				id="removeAllButton"
+				value="Rimuovi tutto"
+				disabled="#{empty dettaglioOdsOrariRicorrenti.listOdsOrariRicorrenti}"
+				process="@this"
+				update=":detailForm:tabView:orariAccordion:removeAllRicorrentiView:removeAllRicorrentiDialog"
+				oncomplete="removeAllRicorrentiDialogWidget.show();"
+				icon="ui-icon-trash" />
+			<p:tooltip 
+				for="removeAllButton" 
+				value="Svuota la lista" 
+				showEffect="fade" 
+				hideEffect="fade"/>
+	
+		</p:outputPanel>
+
+		<p:dataTable 
+			id="orariTable" 
+			var="orario" 
+			value="#{dettaglioOdsOrariRicorrenti.listOdsOrariRicorrenti}"
+			rowKey="#{orario.id}"
+			sortBy="#{orario.giornoSettimana.id}"
+			emptyMessage="Nessun record trovato" 
+			selectionMode="multiple"
+			selection="#{dettaglioOdsOrariRicorrenti.selectedOdsOrariRicorrenti}">
+	
+			<p:ajax event="rowSelect" process="@this" update=":detailForm:tabView:orariAccordion:listRicorrentiView:buttons"/>
+			<p:ajax event="rowUnselect" process="@this" update=":detailForm:tabView:orariAccordion:listRicorrentiView:buttons"/>
+	      		
+			<f:facet name="header">
+		    	Lista degli orari ricorrenti del servizio
+		    </f:facet>
+	
+			<p:column headerText="Giorno" sortBy="#{orario.giornoSettimana.id}">
+				<h:outputText value="#{orario.giornoSettimana.descrizione}" />
+			</p:column>
+
+			<p:column headerText="Esclusi festivi" sortBy="#{orario.esclusoFestivo}" style="text-align: center; width: 50px;">
+				<readonly:checkbox value="#{orario.esclusoFestivo}" />
+			</p:column>
+	
+			<p:column headerText="Num." sortBy="#{orario.quantita1}">
+				<h:outputText value="#{orario.quantita1}" />
+			</p:column>
+	
+			<p:column headerText="Dalle" sortBy="#{orario.orarioInizio1}">
+				<h:outputText value="#{orario.orarioInizio1}">
+					<f:convertDateTime pattern="HH:mm" timeZone="#{appConfig.timeZone}" />
+				</h:outputText>
+			</p:column>
+	
+			<p:column headerText="Alle" sortBy="#{orario.orarioFine1}">
+				<h:outputText value="#{orario.orarioFine1}">
+					<f:convertDateTime pattern="HH:mm" timeZone="#{appConfig.timeZone}" />
+				</h:outputText>
+			</p:column>
+	
+			<p:column headerText="Num." sortBy="#{orario.quantita2}">
+				<h:outputText value="#{orario.quantita2}" />
+			</p:column>
+	
+			<p:column headerText="Dalle" sortBy="#{orario.orarioInizio2}">
+				<h:outputText value="#{orario.orarioInizio2}">
+					<f:convertDateTime pattern="HH:mm" timeZone="#{appConfig.timeZone}" />
+				</h:outputText>
+			</p:column>
+	
+			<p:column headerText="Alle" sortBy="#{orario.orarioFine2}">
+				<h:outputText value="#{orario.orarioFine2}">
+					<f:convertDateTime pattern="HH:mm" timeZone="#{appConfig.timeZone}" />
+				</h:outputText>
+			</p:column>
+	
+			<p:column headerText="Num." sortBy="#{orario.quantita3}">
+				<h:outputText value="#{orario.quantita3}" />
+			</p:column>
+	
+			<p:column headerText="Dalle" sortBy="#{orario.orarioInizio3}">
+				<h:outputText value="#{orario.orarioInizio3}">
+					<f:convertDateTime pattern="HH:mm" timeZone="#{appConfig.timeZone}" />
+				</h:outputText>
+			</p:column>
+	
+			<p:column headerText="Alle" sortBy="#{orario.orarioFine3}">
+				<h:outputText value="#{orario.orarioFine3}">
+					<f:convertDateTime pattern="HH:mm" timeZone="#{appConfig.timeZone}" />
+				</h:outputText>
+			</p:column>
+	
+		</p:dataTable>
+
+	</f:subview>
+
+
+	<f:subview id="addRicorrentiView">
+		
+		<p:dialog
+			id="addRicorrentiDialog"
+			header="Aggiunta degli orari ricorrenti" 
+			widgetVar="addRicorrentiDialogWidget" 
+			modal="true"
+			showEffect="fade" 
+			hideEffect="fade"> 
+
+			<p:messages id="messages" globalOnly="false" showSummary="false" showDetail="true" severity="error" closable="true"/>
+	
+			<p:panelGrid id="panel" styleClass="form-panel">
+							
+				<p:row>
+					<p:column colspan="2" styleClass="form-header">
+						<h:outputText value="Il pannello permette di aggiungere gli orari ricorrenti del servizio utilizzando diverse combinazioni per i giorni della settimana."/>
+					</p:column>
+				</p:row>
+										
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="esclusoFestivo" value="Esclusi i festivi:" />
+					</p:column>
+					<p:column>
+						<p:selectBooleanCheckbox value="#{dettaglioOdsOrariRicorrenti.esclusoFestivo}" id="esclusoFestivo"/>
+						<p:tooltip for="esclusoFestivo" showEffect="fade" value="Indica se la selezione si applica o meno ai giorni festivi" />
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>
+						<p:outputLabel for="quantita1" value="Num.:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioOdsOrariRicorrenti.quantita1}" id="quantita1"
+							converter="integerConverter" converterMessage="Il campo numero (1) non rappresenta un numero intero valido"/>
+						<p:watermark for="quantita1" value="Numero (1)" />  
+						<p:tooltip for="quantita1" showEffect="fade" value="Numero (1)" />
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="orarioInizio1" value="Dalle:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioOdsOrariRicorrenti.orarioInizio1}" id="orarioInizio1"
+							locale="it" pattern="HH:mm" timeOnly="true"/>
+						<p:watermark for="orarioInizio1" value="Orario di inizio (1)" />  
+						<p:tooltip for="orarioInizio1" showEffect="fade" value="Orario di inizio (1)" />
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="orarioFine1" value="Alle:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioOdsOrariRicorrenti.orarioFine1}" id="orarioFine1"
+							locale="it" pattern="HH:mm" timeOnly="true"/>
+						<p:watermark for="orarioFine1" value="Orario di fine (1)" />  
+						<p:tooltip for="orarioFine1" showEffect="fade" value="Orario di fine (1)" />
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>
+						<p:outputLabel for="quantita2" value="Num.:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioOdsOrariRicorrenti.quantita2}" id="quantita2"
+							converter="integerConverter" converterMessage="Il campo numero (2) non rappresenta un numero intero valido"/>
+						<p:watermark for="quantita2" value="Numero (2)" />  
+						<p:tooltip for="quantita2" showEffect="fade" value="Numero (2)" />
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="orarioInizio2" value="Dalle:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioOdsOrariRicorrenti.orarioInizio2}" id="orarioInizio2"
+							locale="it" pattern="HH:mm" timeOnly="true"/>
+						<p:watermark for="orarioInizio2" value="Orario di inizio (2)" />  
+						<p:tooltip for="orarioInizio2" showEffect="fade" value="Orario di inizio (2)" />
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="orarioFine2" value="Alle:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioOdsOrariRicorrenti.orarioFine2}" id="orarioFine2"
+							locale="it" pattern="HH:mm" timeOnly="true"/>
+						<p:watermark for="orarioFine2" value="Orario di fine (2)" />  
+						<p:tooltip for="orarioFine2" showEffect="fade" value="Orario di fine (2)" />
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>
+						<p:outputLabel for="quantita3" value="Num.:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{dettaglioOdsOrariRicorrenti.quantita3}" id="quantita3"
+							converter="integerConverter" converterMessage="Il campo numero (3) non rappresenta un numero intero valido"/>
+						<p:watermark for="quantita3" value="Numero (3)" />  
+						<p:tooltip for="quantita3" showEffect="fade" value="Numero (3)" />
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="orarioInizio3" value="Dalle:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioOdsOrariRicorrenti.orarioInizio3}" id="orarioInizio3"
+							locale="it" pattern="HH:mm" timeOnly="true"/>
+						<p:watermark for="orarioInizio3" value="Orario di inizio (3)" />  
+						<p:tooltip for="orarioInizio3" showEffect="fade" value="Orario di inizio (3)" />
+					</p:column>
+				</p:row>
+					
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="orarioFine3" value="Alle:" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{dettaglioOdsOrariRicorrenti.orarioFine3}" id="orarioFine3"
+							locale="it" pattern="HH:mm" timeOnly="true"/>
+						<p:watermark for="orarioFine3" value="Orario di fine (3)" />  
+						<p:tooltip for="orarioFine3" showEffect="fade" value="Orario di fine (3)" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column colspan="2" styleClass="form-footer">
+						<p:outputPanel id="buttons1">
+							<p:commandButton value="Lun"
+								actionListener="#{dettaglioOdsOrariRicorrenti.doAddGiorno(1)}" 
+								update="addRicorrentiView:messages,addRicorrentiView:panel,:detailForm:tabView:orariAccordion:listRicorrentiView:orariTable,:detailForm:tabView:orariAccordion:listRicorrentiView:buttons,:detailForm:growl"
+								process="addRicorrentiView:addRicorrentiDialog"
+								oncomplete="if(args.ok) { addRicorrentiDialogWidget.hide(); }"/>
+							<p:commandButton value="Mar"
+								actionListener="#{dettaglioOdsOrariRicorrenti.doAddGiorno(2)}" 
+								update="addRicorrentiView:messages,addRicorrentiView:panel,:detailForm:tabView:orariAccordion:listRicorrentiView:orariTable,:detailForm:tabView:orariAccordion:listRicorrentiView:buttons,:detailForm:growl"
+								process="addRicorrentiView:addRicorrentiDialog"
+								oncomplete="if(args.ok) { addRicorrentiDialogWidget.hide(); }"/>
+							<p:commandButton value="Mer"
+								actionListener="#{dettaglioOdsOrariRicorrenti.doAddGiorno(3)}" 
+								update="addRicorrentiView:messages,addRicorrentiView:panel,:detailForm:tabView:orariAccordion:listRicorrentiView:orariTable,:detailForm:tabView:orariAccordion:listRicorrentiView:buttons,:detailForm:growl"
+								process="addRicorrentiView:addRicorrentiDialog"
+								oncomplete="if(args.ok) { addRicorrentiDialogWidget.hide(); }"/>
+							<p:commandButton value="Gio"
+								actionListener="#{dettaglioOdsOrariRicorrenti.doAddGiorno(4)}" 
+								update="addRicorrentiView:messages,addRicorrentiView:panel,:detailForm:tabView:orariAccordion:listRicorrentiView:orariTable,:detailForm:tabView:orariAccordion:listRicorrentiView:buttons,:detailForm:growl"
+								process="addRicorrentiView:addRicorrentiDialog"
+								oncomplete="if(args.ok) { addRicorrentiDialogWidget.hide(); }"/>
+							<p:commandButton value="Ven"
+								actionListener="#{dettaglioOdsOrariRicorrenti.doAddGiorno(5)}" 
+								update="addRicorrentiView:messages,addRicorrentiView:panel,:detailForm:tabView:orariAccordion:listRicorrentiView:orariTable,:detailForm:tabView:orariAccordion:listRicorrentiView:buttons,:detailForm:growl"
+								process="addRicorrentiView:addRicorrentiDialog"
+								oncomplete="if(args.ok) { addRicorrentiDialogWidget.hide(); }"/>
+							<p:commandButton value="Sab"
+								actionListener="#{dettaglioOdsOrariRicorrenti.doAddGiorno(6)}" 
+								update="addRicorrentiView:messages,addRicorrentiView:panel,:detailForm:tabView:orariAccordion:listRicorrentiView:orariTable,:detailForm:tabView:orariAccordion:listRicorrentiView:buttons,:detailForm:growl"
+								process="addRicorrentiView:addRicorrentiDialog"
+								oncomplete="if(args.ok) { addRicorrentiDialogWidget.hide(); }"/>
+							<p:commandButton value="Dom"
+								actionListener="#{dettaglioOdsOrariRicorrenti.doAddGiorno(7)}" 
+								update="addRicorrentiView:messages,addRicorrentiView:panel,:detailForm:tabView:orariAccordion:listRicorrentiView:orariTable,:detailForm:tabView:orariAccordion:listRicorrentiView:buttons,:detailForm:growl"
+								process="addRicorrentiView:addRicorrentiDialog"
+								oncomplete="if(args.ok) { addRicorrentiDialogWidget.hide(); }"/>
+						</p:outputPanel>
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column colspan="2" styleClass="form-footer">
+						<p:outputPanel id="buttons2">
+							<p:commandButton value="Annulla"
+								type="button"
+								onclick="addRicorrentiDialogWidget.hide();" />
+							<p:commandButton value="Festivi"
+								actionListener="#{dettaglioOdsOrariRicorrenti.doAddGiorno(8)}" 
+								update="addRicorrentiView:messages,addRicorrentiView:panel,:detailForm:tabView:orariAccordion:listRicorrentiView:orariTable,:detailForm:tabView:orariAccordion:listRicorrentiView:buttons,:detailForm:growl"
+								process="addRicorrentiView:addRicorrentiDialog"
+								oncomplete="if(args.ok) { addRicorrentiDialogWidget.hide(); }"/>
+							<p:commandButton value="Lun-Ven"
+								actionListener="#{dettaglioOdsOrariRicorrenti.doAddGiorni(1,2,3,4,5)}" 
+								update="addRicorrentiView:messages,addRicorrentiView:panel,:detailForm:tabView:orariAccordion:listRicorrentiView:orariTable,:detailForm:tabView:orariAccordion:listRicorrentiView:buttons,:detailForm:growl"
+								process="addRicorrentiView:addRicorrentiDialog"
+								oncomplete="if(args.ok) { addRicorrentiDialogWidget.hide(); }"/>
+							<p:commandButton value="Tutti"
+								actionListener="#{dettaglioOdsOrariRicorrenti.doAddGiorni(1,2,3,4,5,6,7)}" 
+								update="addRicorrentiView:messages,addRicorrentiView:panel,:detailForm:tabView:orariAccordion:listRicorrentiView:orariTable,:detailForm:tabView:orariAccordion:listRicorrentiView:buttons,:detailForm:growl"
+								process="addRicorrentiView:addRicorrentiDialog"
+								oncomplete="if(args.ok) { addRicorrentiDialogWidget.hide(); }"/>
+						</p:outputPanel>
+					</p:column>
+				</p:row>
+									
+			</p:panelGrid>
+					
+		</p:dialog>
+		
+	</f:subview>
+
+	
+	<f:subview id="removeSelectedRicorrentiView">
+	
+		<p:confirmDialog 
+			id="removeSelectedRicorrentiDialog"
+			header="Rimuovi giorni selezionati" 
+			widgetVar="removeSelectedRicorrentiDialogWidget"
+			message="Si conferma la rimozione degli orari selezionati? L'operazione non può essere annullata."
+			showEffect="fade" 
+			hideEffect="fade">
+			
+			<p:commandButton 
+				value="Rimuovi"
+				update=":detailForm:tabView:orariAccordion:listRicorrentiView:orariTable,:detailForm:tabView:orariAccordion:listRicorrentiView:buttons,:detailForm:growl"
+				process="@this" 
+				oncomplete="removeSelectedRicorrentiDialogWidget.hide()"  
+				actionListener="#{dettaglioOdsOrariRicorrenti.doRemoveSelected}" />
+		             
+			<p:commandButton 
+				value="Annulla" 
+				onclick="removeSelectedRicorrentiDialogWidget.hide()" 
+				type="button" />
+		       	   
+		</p:confirmDialog>
+	
+	</f:subview>
+
+	
+	<f:subview id="removeAllRicorrentiView">
+	
+		<p:confirmDialog 
+			id="removeAllRicorrentiDialog"
+			header="Rimuovi tutti i giorni dalla lista" 
+			widgetVar="removeAllRicorrentiDialogWidget"
+			message="Si conferma la rimozione di tutti gli orari presenti in lista? L'operazione non può essere annullata."
+			showEffect="fade" 
+			hideEffect="fade">
+			
+			<p:commandButton 
+				value="Rimuovi"
+				update=":detailForm:tabView:orariAccordion:listRicorrentiView:orariTable,:detailForm:tabView:orariAccordion:listRicorrentiView:buttons,:detailForm:growl"
+				process="@this" 
+				oncomplete="removeAllRicorrentiDialogWidget.hide()"  
+				actionListener="#{dettaglioOdsOrariRicorrenti.doRemoveAll}" />
+		             
+			<p:commandButton 
+				value="Annulla" 
+				onclick="removeAllRicorrentiDialogWidget.hide()" 
+				type="button" />
+		       	   
+		</p:confirmDialog>
+	
+	</f:subview>
+				
+</html>
