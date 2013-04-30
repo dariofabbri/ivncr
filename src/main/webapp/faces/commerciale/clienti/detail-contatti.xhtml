@@ -27,7 +27,7 @@
 				id="deleteButton"
 				value="Elimina"
 				type="button"
-				disabled="#{dettaglioClienteContatti.selected == null}"
+				disabled="#{empty dettaglioClienteContatti.selected}"
 				onclick="deleteContattoDialogWidget.show();"
 				icon="ui-icon-trash" />
 			<p:tooltip 
@@ -39,7 +39,7 @@
 			<p:commandButton
 				id="updateButton" 
 				value="Modifica"
-				disabled="#{dettaglioClienteContatti.selected == null}"
+				disabled="#{empty dettaglioClienteContatti.selected}"
 				actionListener="#{dettaglioClienteContatti.startUpdate}"
 				process="@this"
 				update=":detailForm:tabView:detailContattoView:detailContattoDialog"
@@ -153,6 +153,7 @@
 			header="Dettagli del contatto" 
 			widgetVar="detailContattoDialogWidget" 
 			modal="true"
+			resizable="false"
 			showEffect="fade" 
 			hideEffect="fade"> 
 
@@ -298,6 +299,7 @@
 			header="Eliminazione contatto" 
 			widgetVar="deleteContattoDialogWidget" 
 			modal="true"
+			resizable="false"
 			showEffect="fade" 
 			hideEffect="fade"> 
 				
