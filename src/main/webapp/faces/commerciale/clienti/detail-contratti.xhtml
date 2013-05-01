@@ -1,0 +1,104 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<f:subview id="listContrattiView">
+	
+		<p:outputPanel id="buttons" style="display: block; margin-top: 2em; margin-bottom: 2em;">
+	
+			<p:commandButton
+				id="createButton"
+				value="Crea"
+				process="@this"
+				render="@none"
+				action="#{dettaglioClienteContratti.startCreate}"
+				icon="ui-icon-star"/>
+			<p:tooltip 
+				for="createButton" 
+				value="Crea un nuovo contratto" 
+				showEffect="fade" 
+				hideEffect="fade"/>
+	
+			<p:commandButton
+				id="updateButton" 
+				value="Modifica"
+				immediate="true"
+				disabled="#{empty dettaglioClienteContratti.selected}"
+				action="#{dettaglioClienteContratti.startUpdate}"
+				icon="ui-icon-pencil" />
+			<p:tooltip 
+				for="updateButton" 
+				value="Modifica il contratto selezionato" 
+				showEffect="fade" 
+				hideEffect="fade"/>
+	
+		</p:outputPanel>
+										
+		<p:dataTable 
+			id="contrattiTable" 
+			var="contratto" 
+			value="#{dettaglioClienteContratti.model}"
+			paginator="true" 
+			paginatorPosition="bottom" rows="10"
+			paginatorTemplate="{CurrentPageReport} {RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+			currentPageReportTemplate="Trovati {totalRecords} record - Pagina {currentPage} di {totalPages}"
+			rowsPerPageTemplate="5,10,50" 
+			pageLinks="10"
+			emptyMessage="Nessun record trovato" 
+			selectionMode="single"
+			selection="#{dettaglioClienteContratti.selected}"
+			lazy="true">
+	
+			<p:ajax event="rowSelect" process="@this" update=":detailForm:tabView:listContrattiView:buttons"/>
+			<p:ajax event="rowUnselect" process="@this" update=":detailForm:tabView:listContrattiView:buttons"/>
+	      		
+			<f:facet name="header">
+		    	Lista dei contratti
+		    </f:facet>
+
+			<p:column headerText="Codice contratto" sortBy="#{contratto.codice}"
+				filterBy="#{contratto.codice}">
+				<h:outputText value="#{contratto.codice}" />
+			</p:column>
+
+			<p:column headerText="Alias" sortBy="#{contratto.alias}"
+				filterBy="#{contratto.alias}">
+				<h:outputText value="#{contratto.alias}" />
+			</p:column>
+
+			<p:column headerText="Ragione sociale" sortBy="#{contratto.ragioneSociale}"
+				filterBy="#{contratto.ragioneSociale}">
+				<h:outputText value="#{contratto.ragioneSociale}" />
+			</p:column>
+
+			<p:column headerText="Data contratto">
+				<h:outputText value="#{contratto.dataContratto}">
+					<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+				</h:outputText>
+			</p:column>
+
+			<p:column headerText="Data decorrenza">
+				<h:outputText value="#{contratto.dataDecorrenza}">
+					<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+				</h:outputText>
+			</p:column>
+
+			<p:column headerText="Data termine">
+				<h:outputText value="#{contratto.dataTermine}">
+					<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+				</h:outputText>
+			</p:column>
+
+			<p:column headerText="Data cessazione">
+				<h:outputText value="#{contratto.dataCessazione}">
+					<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+				</h:outputText>
+			</p:column>
+	
+		</p:dataTable>
+
+	</f:subview>
+		
+</html>

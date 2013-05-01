@@ -62,6 +62,41 @@ public class ContrattoServiceImpl extends AbstractService implements ContrattoSe
 	}
 
 	@Override
+	public QueryResult<Contratto> listFromCliente(
+			int first,
+			int pageSize,
+			String sortCriteria,
+			SortDirection sortDirection,
+			Map<String, String> filters) {
+
+		QueryByCodiceClienteCodiceAliasRagioneSociale q =
+				new QueryByCodiceClienteCodiceAliasRagioneSociale(session);
+
+		Integer codiceCliente = null;
+		if(filters.get("codiceCliente") != null)
+			codiceCliente = Integer.decode(filters.get("codiceCliente"));
+
+		String codice = filters.get("codice");
+		String alias = filters.get("alias");
+		String ragioneSociale = filters.get("ragioneSociale");
+
+		q.setCodiceCliente(codiceCliente);
+		q.setCodice(codice);
+		q.setAlias(alias);
+		q.setRagioneSociale(ragioneSociale);
+		q.setOffset(first);
+		q.setLimit(pageSize);
+
+		q.setSortCriteria(sortCriteria);
+		q.setSortDirection(sortDirection);
+
+		QueryResult<Contratto> result = q.query();
+		logger.debug("Query returned: " + result);
+
+		return result;
+	}
+
+	@Override
 	public QueryResult<Contratto> list(
 			Integer codiceAzienda,
 			String codice,

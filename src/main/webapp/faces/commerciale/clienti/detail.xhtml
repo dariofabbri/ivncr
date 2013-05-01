@@ -41,34 +41,28 @@
 						rendered="#{not empty dettaglioClienteGenerale.id}">
 	
 						<p:tab id="generalTab" title="Generale">
-						
 							<ui:include src="detail-generale.xhtml"/>
-							
 						</p:tab>
 					
 						<p:tab id="contattiTab" title="Contatti">
-	
 							<ui:include src="detail-contatti.xhtml"/>
-	
 						</p:tab>
 						
 						<p:tab id="indirizziTab" title="Indirizzi amministrativi">
-	
 							<ui:include src="detail-indirizzi.xhtml"/>
-	
 						</p:tab>					
 					
 						<p:tab id="obiettiviServizioTab" title="Obiettivi di servizio">
-		
 							<ui:include src="detail-obiettivi.xhtml"/>
-		
 						</p:tab>		
 					
 						<p:tab id="noteTab" title="Note">
-	
 							<ui:include src="detail-note.xhtml"/>
-	
 						</p:tab>
+						
+						<p:tab id="contrattiTab" title="Contratti">
+							<ui:include src="detail-contratti.xhtml"/>
+						</p:tab>					
 					
 					</p:tabView>
 					

@@ -5,9 +5,11 @@ import it.ivncr.erp.model.commerciale.cliente.ObiettivoServizio;
 import it.ivncr.erp.model.commerciale.contratto.Contratto;
 import it.ivncr.erp.service.EntityService;
 import it.ivncr.erp.service.QueryResult;
+import it.ivncr.erp.service.SortDirection;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public interface ContrattoService extends EntityService<Contratto> {
 
@@ -19,6 +21,13 @@ public interface ContrattoService extends EntityService<Contratto> {
 			String ragioneSociale,
 			Integer offset,
 			Integer limit);
+
+	QueryResult<Contratto> listFromCliente(
+			int first,
+			int pageSize,
+			String sortCriteria,
+			SortDirection sortDirection,
+			Map<String, String> filters);
 
 	Contratto retrieve(Integer id);
 	Contratto retrieveDeep(Integer id);
