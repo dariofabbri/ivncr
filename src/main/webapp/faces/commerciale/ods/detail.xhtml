@@ -4,6 +4,13 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 	
+	<f:metadata>
+        <f:viewParam name="id" value="#{dettaglioOdsGenerale.id}" />
+        <f:viewParam name="oneroso" value="#{dettaglioOdsGenerale.oneroso}" />
+        <f:viewParam name="codiceTipoOrdineServizio" value="#{dettaglioOdsGenerale.codiceTipoOrdineServizio}" />
+        <f:event type="preRenderView" listener="#{dettaglioOdsGenerale.init}" />
+    </f:metadata>
+	
 	<ui:composition template="/WEB-INF/templates/main.xhtml">
 	
 		<ui:define name="container">

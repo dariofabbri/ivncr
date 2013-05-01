@@ -22,7 +22,6 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -45,13 +44,8 @@ public class DettaglioOdsGenerale implements Serializable {
 	@ManagedProperty("#{loginInfo}")
     private LoginInfo loginInfo;
 
-	@ManagedProperty("#{gestioneOds.edited.id}")
 	private Integer id;
-
-	@ManagedProperty("#{gestioneOds.edited.oneroso}")
 	private Boolean oneroso;
-
-	@ManagedProperty("#{gestioneOds.edited.tipoOrdineServizio.id}")
 	private Integer codiceTipoOrdineServizio;
 
 	private Contratto contratto;
@@ -126,8 +120,14 @@ public class DettaglioOdsGenerale implements Serializable {
 		};
 	}
 
-	@PostConstruct
+
 	public void init() {
+
+		// Skip processing for ajax calls.
+		//
+		if(FacesContext.getCurrentInstance().isPostback()) {
+			return;
+		}
 
 		LUTService lutService = ServiceFactory.createService("LUT");
 

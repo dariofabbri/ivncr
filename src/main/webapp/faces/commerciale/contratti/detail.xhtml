@@ -4,6 +4,11 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 	
+	<f:metadata>
+        <f:viewParam name="id" value="#{dettaglioContrattoGenerale.id}" />
+        <f:event type="preRenderView" listener="#{dettaglioContrattoGenerale.init}" />
+    </f:metadata>
+	
 	<ui:composition template="/WEB-INF/templates/main.xhtml">
 	
 		<ui:define name="container">

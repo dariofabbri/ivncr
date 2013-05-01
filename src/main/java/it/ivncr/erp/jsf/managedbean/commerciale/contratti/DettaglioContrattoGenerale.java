@@ -17,7 +17,6 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -40,7 +39,6 @@ public class DettaglioContrattoGenerale implements Serializable {
 	@ManagedProperty("#{loginInfo}")
     private LoginInfo loginInfo;
 
-	@ManagedProperty("#{gestioneContratti.edited.id}")
 	private Integer id;
 
 	private Cliente cliente;
@@ -111,8 +109,14 @@ public class DettaglioContrattoGenerale implements Serializable {
 		};
 	}
 
-	@PostConstruct
+
 	public void init() {
+
+		// Skip processing for ajax calls.
+		//
+		if(FacesContext.getCurrentInstance().isPostback()) {
+			return;
+		}
 
 		ContrattoService cs = ServiceFactory.createService("Contratto");
 

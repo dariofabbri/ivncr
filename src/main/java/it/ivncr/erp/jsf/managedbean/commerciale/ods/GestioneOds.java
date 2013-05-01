@@ -7,7 +7,6 @@ import it.ivncr.erp.model.commerciale.ods.TipoOrdineServizio;
 import it.ivncr.erp.service.QueryResult;
 import it.ivncr.erp.service.ServiceFactory;
 import it.ivncr.erp.service.SortDirection;
-import it.ivncr.erp.service.lut.LUTService;
 import it.ivncr.erp.service.ordineservizio.OrdineServizioService;
 
 import java.io.Serializable;
@@ -36,7 +35,6 @@ public class GestioneOds implements Serializable {
 
 	private LazyDataModel<OrdineServizio> model;
 	private OrdineServizio selected;
-	private OrdineServizio edited;
 
 
 	public GestioneOds() {
@@ -90,15 +88,8 @@ public class GestioneOds implements Serializable {
 
 	public String startCreate(boolean oneroso) {
 
-		edited = new OrdineServizio();
-		edited.setOneroso(oneroso);
-
-		LUTService lutService = ServiceFactory.createService("LUT");
-		TipoOrdineServizio tipoOrdineServizio = lutService.retrieveItem("TipoOrdineServizio", TipoOrdineServizio.NUOVA_ATTIVAZIONE);
-		edited.setTipoOrdineServizio(tipoOrdineServizio);
-
 		logger.debug("Moving to detail page for new record creation.");
-		return "detail?faces-redirect=true";
+		return "detail?faces-redirect=true&oneroso=" + oneroso + "&codiceTipoOrdineServizio=" + TipoOrdineServizio.NUOVA_ATTIVAZIONE;
 	}
 
 	public String startUpdate() {
@@ -108,10 +99,8 @@ public class GestioneOds implements Serializable {
 			throw new RuntimeException("Invalid status. No row selected on start update request.");
 		}
 
-		edited = selected;
-
 		logger.debug("Moving to detail page for record update.");
-		return "detail?faces-redirect=true";
+		return "detail?faces-redirect=true&id=" + selected.getId();
 	}
 
 	public LoginInfo getLoginInfo() {
@@ -136,13 +125,5 @@ public class GestioneOds implements Serializable {
 
 	public void setSelected(OrdineServizio selected) {
 		this.selected = selected;
-	}
-
-	public OrdineServizio getEdited() {
-		return edited;
-	}
-
-	public void setEdited(OrdineServizio edited) {
-		this.edited = edited;
 	}
 }

@@ -34,7 +34,6 @@ public class GestioneContratti implements Serializable {
 
 	private LazyDataModel<Contratto> model;
 	private Contratto selected;
-	private Contratto edited;
 
 
 	public GestioneContratti() {
@@ -88,8 +87,6 @@ public class GestioneContratti implements Serializable {
 
 	public String startCreate() {
 
-		edited = new Contratto();
-
 		logger.debug("Moving to detail page for new record creation.");
 		return "detail?faces-redirect=true";
 	}
@@ -101,10 +98,8 @@ public class GestioneContratti implements Serializable {
 			throw new RuntimeException("Invalid status. No row selected on start update request.");
 		}
 
-		edited = selected;
-
 		logger.debug("Moving to detail page for record update.");
-		return "detail?faces-redirect=true";
+		return "detail?faces-redirect=true&id=" + selected.getId();
 	}
 
 	public LoginInfo getLoginInfo() {
@@ -129,13 +124,5 @@ public class GestioneContratti implements Serializable {
 
 	public void setSelected(Contratto selected) {
 		this.selected = selected;
-	}
-
-	public Contratto getEdited() {
-		return edited;
-	}
-
-	public void setEdited(Contratto edited) {
-		this.edited = edited;
 	}
 }
