@@ -40,6 +40,7 @@ public class DettaglioContrattoGenerale implements Serializable {
     private LoginInfo loginInfo;
 
 	private Integer id;
+	private Integer clienteId;
 
 	private Cliente cliente;
 
@@ -154,6 +155,14 @@ public class DettaglioContrattoGenerale implements Serializable {
 			GregorianCalendar now = new GregorianCalendar();
 			Integer anno = now.get(Calendar.YEAR);
 			codice = cs.peekNextCodice(loginInfo.getCodiceAzienda(), anno);
+
+			// If a cliente id has been passed, the new record must be created for the
+			// specified cliente. Init required data structures.
+			//
+			if(clienteId != null) {
+				ClienteService cls = ServiceFactory.createService("Cliente");
+				cliente = cls.retrieve(clienteId);
+			}
 		}
 	}
 
@@ -279,6 +288,14 @@ public class DettaglioContrattoGenerale implements Serializable {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public Integer getClienteId() {
+		return clienteId;
+	}
+
+	public void setClienteId(Integer clienteId) {
+		this.clienteId = clienteId;
 	}
 
 	public Cliente getCliente() {

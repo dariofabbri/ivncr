@@ -94,7 +94,7 @@ public class DettaglioClienteContratti implements Serializable {
 	public String startCreate() {
 
 		logger.debug("Moving to detail page for new record creation.");
-		return "../contratti/detail?faces-redirect=true";
+		return "/faces/commerciale/contratti/detail?faces-redirect=true&clienteId=" + dettaglioClienteGenerale.getId();
 	}
 
 	public String startUpdate() {
@@ -105,7 +105,7 @@ public class DettaglioClienteContratti implements Serializable {
 		}
 
 		logger.debug("Moving to detail page for record update.");
-		return "../contratti/detail?faces-redirect=true&id=" + selected.getId();
+		return "/faces/commerciale/contratti/detail?faces-redirect=true&id=" + selected.getId();
 	}
 
 	public DettaglioClienteGenerale getDettaglioClienteGenerale() {
