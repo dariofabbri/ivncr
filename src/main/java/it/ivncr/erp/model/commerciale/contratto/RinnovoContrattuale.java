@@ -1,5 +1,6 @@
 package it.ivncr.erp.model.commerciale.contratto;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -17,7 +18,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
 @Table(name = "con_rinnovo_contrattuale")
-public class RinnovoContrattuale {
+public class RinnovoContrattuale implements Serializable {
+
+  private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "con_rinnovo_contrattuale_id_seq")

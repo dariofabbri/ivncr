@@ -1,5 +1,7 @@
 package it.ivncr.erp.model.commerciale.contratto;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,7 +16,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
 @Table(name = "con_tipo_servizio")
-public class TipoServizio {
+public class TipoServizio implements Serializable {
+
+  private static final long serialVersionUID = 1L;
 
 	public static final Integer PIANTONAMENTO = 1;
 	public static final Integer ISPEZIONE = 2;

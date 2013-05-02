@@ -1,5 +1,7 @@
 package it.ivncr.erp.model.commerciale.ods;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,7 +16,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
 @Table(name = "con_tipo_ordine_servizio")
-public class TipoOrdineServizio {
+public class TipoOrdineServizio implements Serializable {
+
+  private static final long serialVersionUID = 1L;
 
 	public static final Integer NUOVA_ATTIVAZIONE = 1;
 	public static final Integer VAR_EXTRA = 2;

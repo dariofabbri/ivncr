@@ -1,6 +1,7 @@
 package it.ivncr.erp.model.accesso;
 
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
@@ -24,7 +25,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
 @Table(name = "acc_utente")
-public class Utente {
+public class Utente implements Serializable {
+
+  private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "acc_utente_id_seq")

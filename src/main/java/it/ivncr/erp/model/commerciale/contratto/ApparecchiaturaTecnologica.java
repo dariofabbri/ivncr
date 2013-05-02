@@ -1,5 +1,6 @@
 package it.ivncr.erp.model.commerciale.contratto;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -18,7 +19,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
 @Table(name = "con_apparecchiatura_tecnologica")
-public class ApparecchiaturaTecnologica {
+public class ApparecchiaturaTecnologica implements Serializable {
+
+  private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "con_apparecchiatura_tecnologica_id_seq")

@@ -8,6 +8,7 @@ import it.ivncr.erp.model.commerciale.contratto.SpecificaServizio;
 import it.ivncr.erp.model.commerciale.contratto.Tariffa;
 import it.ivncr.erp.model.commerciale.contratto.TipoServizio;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -25,7 +26,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
 @Table(name = "con_ordine_servizio")
-public class OrdineServizio {
+public class OrdineServizio implements Serializable {
+
+  private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "con_ordine_servizio_id_seq")

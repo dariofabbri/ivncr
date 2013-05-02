@@ -1,5 +1,6 @@
 package it.ivncr.erp.model.commerciale.cliente;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +21,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
 @Table(name = "com_contatto")
-public class Contatto {
+public class Contatto implements Serializable {
+
+  private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "com_contatto_id_seq")

@@ -1,5 +1,7 @@
 package it.ivncr.erp.model.personale;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,7 +18,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
 @Table(name = "per_lingua_conosciuta")
-public class LinguaConosciuta {
+public class LinguaConosciuta implements Serializable {
+
+  private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "per_lingua_conosciuta_id_seq")

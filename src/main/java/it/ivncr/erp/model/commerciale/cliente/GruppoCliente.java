@@ -1,5 +1,7 @@
 package it.ivncr.erp.model.commerciale.cliente;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,7 +15,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
 @Table(name = "com_gruppo_cliente")
-public class GruppoCliente {
+public class GruppoCliente implements Serializable {
+
+  private static final long serialVersionUID = 1L;
 
 	public static final Integer GRANDE_UTENZA = 1;
 	public static final Integer PICCOLA_UTENZA = 2;

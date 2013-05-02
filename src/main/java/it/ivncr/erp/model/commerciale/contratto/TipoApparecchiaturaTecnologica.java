@@ -1,5 +1,7 @@
 package it.ivncr.erp.model.commerciale.contratto;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -17,7 +19,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
 @Table(name = "con_tipo_apparecchiatura_tecnologica")
-public class TipoApparecchiaturaTecnologica {
+public class TipoApparecchiaturaTecnologica implements Serializable {
+
+  private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "con_tipo_apparecchiatura_tecnologica_id_seq")

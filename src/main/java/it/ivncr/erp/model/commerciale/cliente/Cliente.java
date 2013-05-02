@@ -2,6 +2,7 @@ package it.ivncr.erp.model.commerciale.cliente;
 
 import it.ivncr.erp.model.generale.Azienda;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -21,7 +22,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
 @Table(name = "com_cliente")
-public class Cliente {
+public class Cliente implements Serializable {
+
+  private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "com_cliente_id_seq")

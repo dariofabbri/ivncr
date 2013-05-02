@@ -1,5 +1,7 @@
 package it.ivncr.erp.model.commerciale.contratto;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,7 +16,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
 @Table(name = "con_layout_stampa")
-public class LayoutStampa {
+public class LayoutStampa implements Serializable {
+
+  private static final long serialVersionUID = 1L;
 
 	public static final Integer TOTALIZZATO = 1;
 	public static final Integer TOTALE_DETTAGLIO = 2;

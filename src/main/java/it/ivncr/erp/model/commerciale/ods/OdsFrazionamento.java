@@ -2,6 +2,7 @@ package it.ivncr.erp.model.commerciale.ods;
 
 import it.ivncr.erp.model.commerciale.cliente.Cliente;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 import javax.persistence.Column;
@@ -19,7 +20,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
 @Table(name = "con_ods_frazionamento")
-public class OdsFrazionamento {
+public class OdsFrazionamento implements Serializable {
+
+  private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "con_ods_frazionamento_id_seq")

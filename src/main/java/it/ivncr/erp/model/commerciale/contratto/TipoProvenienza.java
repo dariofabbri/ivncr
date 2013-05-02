@@ -1,5 +1,7 @@
 package it.ivncr.erp.model.commerciale.contratto;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,7 +16,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
 @Table(name = "con_tipo_provenienza")
-public class TipoProvenienza {
+public class TipoProvenienza implements Serializable {
+
+  private static final long serialVersionUID = 1L;
 
 	public static final Integer FAX_CLIENTE = 1;
 	public static final Integer EMAIL_CLIENTE = 2;

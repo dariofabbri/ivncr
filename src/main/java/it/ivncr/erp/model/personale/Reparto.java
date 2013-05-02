@@ -2,6 +2,8 @@ package it.ivncr.erp.model.personale;
 
 import it.ivncr.erp.model.generale.Azienda;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -18,7 +20,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
 @Table(name = "per_reparto")
-public class Reparto {
+public class Reparto implements Serializable {
+
+  private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "per_reparto_id_seq")

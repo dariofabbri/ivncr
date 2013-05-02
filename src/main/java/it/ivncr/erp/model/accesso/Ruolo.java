@@ -1,6 +1,7 @@
 package it.ivncr.erp.model.accesso;
 
 
+import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -19,7 +20,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
 @Table(name = "acc_ruolo")
-public class Ruolo {
+public class Ruolo implements Serializable {
+
+  private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "acc_ruolo_id_seq")

@@ -1,5 +1,7 @@
 package it.ivncr.erp.model.personale;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,7 +16,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
 @Table(name = "per_ccnl")
-public class Ccnl {
+public class Ccnl implements Serializable {
+
+  private static final long serialVersionUID = 1L;
 
 	public static final Integer COMMERCIO = 1;
 	public static final Integer MULTISERVIZI = 2;

@@ -1,5 +1,6 @@
 package it.ivncr.erp.model.commerciale.contratto;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -18,7 +19,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
 @Table(name = "con_contratto_esattore")
-public class ContrattoEsattore {
+public class ContrattoEsattore implements Serializable {
+
+  private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "con_contratto_esattore_id_seq")

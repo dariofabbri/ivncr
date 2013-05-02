@@ -1,6 +1,7 @@
 package it.ivncr.erp.model.accesso;
 
 
+import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -19,17 +20,19 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
 @Table(name = "acc_permesso")
-public class Permesso {
+public class Permesso implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "acc_permesso_id_seq")
 	@SequenceGenerator(name = "acc_permesso_id_seq", sequenceName = "acc_permesso_id_seq")
 	@Column(name="id")
 	private Integer id;
-	
+
 	@Column(name="permesso")
 	private String permesso;
-	
+
 	@Column(name="descrizione")
 	private String descrizione;
 
@@ -41,9 +44,10 @@ public class Permesso {
 	)
 	private Set<Ruolo> ruoli;
 
-	
+
+	@Override
 	public String toString() {
-		
+
 		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
 			.append("id", id)
 			.append("permesso", permesso)

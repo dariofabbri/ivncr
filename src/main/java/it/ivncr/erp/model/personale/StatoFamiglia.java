@@ -1,5 +1,6 @@
 package it.ivncr.erp.model.personale;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -18,7 +19,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
 @Table(name = "per_stato_famiglia")
-public class StatoFamiglia {
+public class StatoFamiglia implements Serializable {
+
+  private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "per_stato_famiglia_id_seq")

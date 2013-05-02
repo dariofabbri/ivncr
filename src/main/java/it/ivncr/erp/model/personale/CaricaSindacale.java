@@ -1,5 +1,7 @@
 package it.ivncr.erp.model.personale;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,7 +16,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
 @Table(name = "per_carica_sindacale")
-public class CaricaSindacale {
+public class CaricaSindacale implements Serializable {
+
+  private static final long serialVersionUID = 1L;
 
 	public static final Integer DIRIGENTE_SINDACALE = 1;
 	public static final Integer RAPPRESENTANTE_SINDACALE = 2;

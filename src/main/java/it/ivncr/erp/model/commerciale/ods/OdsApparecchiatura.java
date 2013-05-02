@@ -2,6 +2,8 @@ package it.ivncr.erp.model.commerciale.ods;
 
 import it.ivncr.erp.model.commerciale.contratto.ApparecchiaturaTecnologica;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,7 +19,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
 @Table(name = "con_ods_apparecchiatura")
-public class OdsApparecchiatura {
+public class OdsApparecchiatura implements Serializable {
+
+  private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "con_ods_apparecchiatura_id_seq")

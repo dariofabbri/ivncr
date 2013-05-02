@@ -3,6 +3,7 @@ package it.ivncr.erp.model.commerciale.ods;
 
 import it.ivncr.erp.util.GiornoSettimana;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -20,7 +21,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
 @Table(name = "con_ods_orari_calendario")
-public class OdsOrariCalendario {
+public class OdsOrariCalendario implements Serializable {
+
+  private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "con_ods_orari_calendario_id_seq")

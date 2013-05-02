@@ -2,6 +2,7 @@ package it.ivncr.erp.model.commerciale.contratto;
 
 import it.ivncr.erp.model.commerciale.cliente.Indirizzo;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -19,7 +20,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
 @Table(name = "con_dettaglio_fatturazione")
-public class DettaglioFatturazione {
+public class DettaglioFatturazione implements Serializable {
+
+  private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "con_dettaglio_fatturazione_id_seq")

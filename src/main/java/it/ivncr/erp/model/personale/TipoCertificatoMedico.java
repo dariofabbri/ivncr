@@ -1,5 +1,7 @@
 package it.ivncr.erp.model.personale;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,7 +16,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
 @Table(name = "per_tipo_certificato_medico")
-public class TipoCertificatoMedico {
+public class TipoCertificatoMedico implements Serializable {
+
+  private static final long serialVersionUID = 1L;
 
 	public static final Integer DONAZIONE_SANGUE = 1;
 	public static final Integer INFORTUNIO = 2;

@@ -1,5 +1,7 @@
 package it.ivncr.erp.model.commerciale.cliente;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,7 +16,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
 @Table(name = "com_tipo_indirizzo")
-public class TipoIndirizzo {
+public class TipoIndirizzo implements Serializable {
+
+  private static final long serialVersionUID = 1L;
 
 	public static final Integer SEDE_LEGALE = 1;
 	public static final Integer SEDE_OPERATIVA = 2;
