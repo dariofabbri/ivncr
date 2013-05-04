@@ -308,8 +308,10 @@ CREATE TABLE app.con_rinnovo_contrattuale
 (
 	id SERIAL NOT NULL PRIMARY KEY,
 	contratto_id INTEGER NOT NULL REFERENCES app.con_contratto(id),
-	data_decorrenza DATE NOT NULL,
-	data_termine DATE,
+	data_decorrenza_pre DATE,
+	data_termine_pre DATE,
+	data_decorrenza_post DATE,
+	data_termine_post DATE,
 	note VARCHAR(4000)
 );
 
@@ -377,6 +379,24 @@ CREATE TABLE app.con_canone
 );
 
 
+CREATE TABLE app.con_canone_storico
+(
+	id SERIAL NOT NULL PRIMARY KEY,
+	canone_id INTEGER NOT NULL REFERENCES app.con_canone(id),
+	contratto_id INTEGER NOT NULL REFERENCES app.con_contratto(id),
+	alias VARCHAR(255) NOT NULL,
+	tipo_servizio_id INTEGER NOT NULL REFERENCES app.con_tipo_servizio(id),
+	specifica_servizio_id INTEGER NOT NULL REFERENCES app.con_specifica_servizio(id),
+	data_inizio_validita DATE NOT NULL,
+	data_cessazione DATE,
+	fattura_minimo_un_mese BOOLEAN,
+	fatturazione_anticipata BOOLEAN,
+	fattura_ogni_mesi INTEGER,	
+	canone_mensile NUMERIC(18, 4) NOT NULL,
+	note VARCHAR(4000)
+);
+
+
 CREATE TABLE app.con_tariffa
 (
 	id SERIAL NOT NULL PRIMARY KEY,
@@ -404,6 +424,34 @@ CREATE TABLE app.con_tariffa
 	note VARCHAR(4000)
 );
 
+
+CREATE TABLE app.con_tariffa_storico
+(
+	id SERIAL NOT NULL PRIMARY KEY,
+	tariffa_id INTEGER NOT NULL REFERENCES app.con_tariffa(id),
+	contratto_id INTEGER NOT NULL REFERENCES app.con_contratto(id),
+	alias VARCHAR(255) NOT NULL,
+	tipo_servizio_id INTEGER NOT NULL REFERENCES app.con_tipo_servizio(id),
+	specifica_servizio_id INTEGER NOT NULL REFERENCES app.con_specifica_servizio(id),
+	costo_orario NUMERIC(18, 4),
+	costo_operazione NUMERIC(18, 4),
+	costo_fisso_una_tantum NUMERIC(18, 4),
+	costo_fisso_a_tempo NUMERIC(18, 4),
+	costo_fisso_mesi INTEGER,
+	franchigie_totali INTEGER,
+	franchigie_a_tempo INTEGER,
+	franchigie_mesi INTEGER,
+	ritenuta_garanzia NUMERIC(5, 2),
+	ritenuta_garanzia_giorni INTEGER,	
+	data_inizio_validita DATE NOT NULL,	
+	data_cessazione DATE,
+	fatturazione_anticipata BOOLEAN,
+	extra_fatturato_a_parte BOOLEAN,
+	fattura_spezzata BOOLEAN,
+	fattura_ogni_mesi INTEGER,
+	fattura_minimo_un_mese BOOLEAN,
+	note VARCHAR(4000)
+);
 
 CREATE TABLE app.con_ricavo_extra_vigilanza
 (

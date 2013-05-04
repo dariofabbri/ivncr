@@ -162,34 +162,34 @@
 																		
 						<p:row>				
 							<p:column colspan="2" styleClass="form-footer">
-								<c:if test="#{dettaglioClienteGenerale.bloccato}">
-									<p:commandButton
-										id="activateButton"
-										value="Attiva"
-										process="@this"
-										update=":detailForm:tabView:activateDialog"
-										actionListener="#{dettaglioClienteGenerale.prepareActivation}"
-										oncomplete="activateDialogWidget.show()"/>
-									<p:tooltip 
-										for="activateButton" 
-										value="Attiva il cliente precedentemente bloccato" 
-										showEffect="fade" 
-										hideEffect="fade"/>
-								</c:if>
-								<c:if test="#{dettaglioClienteGenerale.attivo}"> 
-									<p:commandButton
-										id="deactivateButton"
-										value="Blocca"
-										process="@this"
-										update=":detailForm:tabView:activateDialog"
-										actionListener="#{dettaglioClienteGenerale.prepareActivation}"
-										oncomplete="activateDialogWidget.show()"/>
-									<p:tooltip 
-										for="deactivateButton" 
-										value="Blocca il cliente" 
-										showEffect="fade" 
-										hideEffect="fade"/>
-								</c:if>
+								<p:commandButton
+									rendered="#{dettaglioClienteGenerale.bloccato}"
+									id="activateButton"
+									value="Attiva"
+									process="@this"
+									update=":detailForm:tabView:activateDialog"
+									actionListener="#{dettaglioClienteGenerale.prepareActivation}"
+									oncomplete="activateDialogWidget.show()"/>
+								<p:tooltip 
+									rendered="#{dettaglioClienteGenerale.bloccato}"
+									for="activateButton" 
+									value="Attiva il cliente precedentemente bloccato" 
+									showEffect="fade" 
+									hideEffect="fade"/>
+								<p:commandButton
+									rendered="#{dettaglioClienteGenerale.attivo}"
+									id="deactivateButton"
+									value="Blocca"
+									process="@this"
+									update=":detailForm:tabView:activateDialog"
+									actionListener="#{dettaglioClienteGenerale.prepareActivation}"
+									oncomplete="activateDialogWidget.show()"/>
+								<p:tooltip 
+									rendered="#{dettaglioClienteGenerale.attivo}"
+									for="deactivateButton" 
+									value="Blocca il cliente" 
+									showEffect="fade" 
+									hideEffect="fade"/>
 							</p:column>
 						</p:row>
 									

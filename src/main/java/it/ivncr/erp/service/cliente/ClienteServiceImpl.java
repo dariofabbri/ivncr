@@ -355,11 +355,11 @@ public class ClienteServiceImpl extends AbstractService implements ClienteServic
 		}
 
 		if(partitaIva != null && codiceFiscale != null) {
-			hql += "and (cli.partitaIva = :partitaIva or cli.codiceFiscale = :codiceFiscale) ";
+			hql += "and cli.partitaIva = :partitaIva and cli.codiceFiscale = :codiceFiscale ";
 		} else if(partitaIva != null) {
-			hql += "and cli.partitaIva = :partitaIva ";
+			hql += "and cli.partitaIva = :partitaIva and cli.codiceFiscale is null ";
 		} else if(codiceFiscale != null) {
-			hql += "and cli.codiceFiscale = :codiceFiscale ";
+			hql += "and cli.codiceFiscale = :codiceFiscale and cli.partitaIva is null ";
 		} else {
 			String msg = "Unexpected arguments: at least one between partitaIva and codiceFiscale must be not null.";
 			logger.error(msg);
