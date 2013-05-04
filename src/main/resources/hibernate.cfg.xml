@@ -45,6 +45,7 @@
 	
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.ApparecchiaturaTecnologica" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.Canone" />
+		<mapping class="it.ivncr.erp.model.commerciale.contratto.CanoneStorico" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.CondizioniPagamento" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.Contratto" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.ContrattoContatto" />
@@ -69,6 +70,7 @@
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.RinnovoContrattuale" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.SpecificaServizio" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.Tariffa" />
+		<mapping class="it.ivncr.erp.model.commerciale.contratto.TariffaStorico" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.TipoApparecchiaturaTecnologica" />
 		<mapping class="it.ivncr.erp.model.commerciale.ods.TipoOrdineServizio" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.TipoProvenienza" />

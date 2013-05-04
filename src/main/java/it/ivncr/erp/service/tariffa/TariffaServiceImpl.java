@@ -3,6 +3,7 @@ package it.ivncr.erp.service.tariffa;
 import it.ivncr.erp.model.commerciale.contratto.Contratto;
 import it.ivncr.erp.model.commerciale.contratto.SpecificaServizio;
 import it.ivncr.erp.model.commerciale.contratto.Tariffa;
+import it.ivncr.erp.model.commerciale.contratto.TariffaStorico;
 import it.ivncr.erp.model.commerciale.contratto.TipoServizio;
 import it.ivncr.erp.service.AbstractService;
 import it.ivncr.erp.service.NotFoundException;
@@ -205,12 +206,46 @@ public class TariffaServiceImpl extends AbstractService implements TariffaServic
 			Boolean fatturaMinimoUnMese,
 			String note) {
 
+		// Save current timestamp.
+		//
+		Date now = new Date();
+
+		// Retrieve specified entity.
+		//
 		Tariffa entity = retrieve(id);
 		if(entity == null) {
 			String message = String.format("It has not been possible to retrieve specified tariffa: %d", id);
 			logger.info(message);
 			throw new NotFoundException(message);
 		}
+
+		// Save entity in journal table.
+		//
+		TariffaStorico journal = new TariffaStorico();
+		journal.setTariffa(entity);
+		journal.setModifica(now);
+		journal.setAlias(alias);
+		journal.setTipoServizio(entity.getTipoServizio());
+		journal.setSpecificaServizio(entity.getSpecificaServizio());
+		journal.setCostoOrario(entity.getCostoOrario());
+		journal.setCostoOperazione(entity.getCostoOperazione());
+		journal.setCostoFissoUnaTantum(entity.getCostoFissoUnaTantum());
+		journal.setCostoFissoATempo(entity.getCostoFissoATempo());
+		journal.setCostoFissoMesi(entity.getCostoFissoMesi());
+		journal.setFranchigieTotali(entity.getFranchigieTotali());
+		journal.setFranchigieATempo(entity.getFranchigieATempo());
+		journal.setFranchigieMesi(entity.getFranchigieMesi());
+		journal.setRitenutaGaranzia(entity.getRitenutaGaranzia());
+		journal.setRitenutaGaranziaGiorni(entity.getRitenutaGaranziaGiorni());
+		journal.setDataInizioValidita(entity.getDataInizioValidita());
+		journal.setDataCessazione(entity.getDataCessazione());
+		journal.setFatturazioneAnticipata(entity.getFatturazioneAnticipata());
+		journal.setExtraFatturatoAParte(entity.getExtraFatturatoAParte());
+		journal.setFatturaSpezzata(entity.getFatturaSpezzata());
+		journal.setFatturaOgniMesi(entity.getFatturaOgniMesi());
+		journal.setFatturaMinimoUnMese(entity.getFatturaMinimoUnMese());
+		journal.setNote(entity.getNote());
+		session.save(journal);
 
 		// Audit call for the update operation.
 		//

@@ -1,6 +1,7 @@
 package it.ivncr.erp.service.canone;
 
 import it.ivncr.erp.model.commerciale.contratto.Canone;
+import it.ivncr.erp.model.commerciale.contratto.CanoneStorico;
 import it.ivncr.erp.model.commerciale.contratto.Contratto;
 import it.ivncr.erp.model.commerciale.contratto.SpecificaServizio;
 import it.ivncr.erp.model.commerciale.contratto.TipoServizio;
@@ -173,12 +174,35 @@ public class CanoneServiceImpl extends AbstractService implements CanoneService 
 			BigDecimal canoneMensile,
 			String note) {
 
+		// Save current timestamp.
+		//
+		Date now = new Date();
+
+		// Retrieve specified entity.
+		//
 		Canone entity = retrieve(id);
 		if(entity == null) {
 			String message = String.format("It has not been possible to retrieve specified canone: %d", id);
 			logger.info(message);
 			throw new NotFoundException(message);
 		}
+
+		// Save entity in journal table.
+		//
+		CanoneStorico journal = new CanoneStorico();
+		journal.setCanone(entity);
+		journal.setModifica(now);
+		journal.setAlias(entity.getAlias());
+		journal.setTipoServizio(entity.getTipoServizio());
+		journal.setSpecificaServizio(entity.getSpecificaServizio());
+		journal.setDataInizioValidita(entity.getDataInizioValidita());
+		journal.setDataCessazione(entity.getDataCessazione());
+		journal.setFatturaMinimoUnMese(entity.getFatturaMinimoUnMese());
+		journal.setFatturazioneAnticipata(entity.getFatturazioneAnticipata());
+		journal.setFatturaOgniMesi(entity.getFatturaOgniMesi());
+		journal.setCanoneMensile(entity.getCanoneMensile());
+		journal.setNote(entity.getNote());
+		session.save(journal);
 
 		// Audit call for the update operation.
 		//

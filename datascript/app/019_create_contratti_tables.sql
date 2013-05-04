@@ -383,7 +383,7 @@ CREATE TABLE app.con_canone_storico
 (
 	id SERIAL NOT NULL PRIMARY KEY,
 	canone_id INTEGER NOT NULL REFERENCES app.con_canone(id),
-	contratto_id INTEGER NOT NULL REFERENCES app.con_contratto(id),
+  modifica_ts TIMESTAMP WITH TIME ZONE NOT NULL,
 	alias VARCHAR(255) NOT NULL,
 	tipo_servizio_id INTEGER NOT NULL REFERENCES app.con_tipo_servizio(id),
 	specifica_servizio_id INTEGER NOT NULL REFERENCES app.con_specifica_servizio(id),
@@ -429,7 +429,7 @@ CREATE TABLE app.con_tariffa_storico
 (
 	id SERIAL NOT NULL PRIMARY KEY,
 	tariffa_id INTEGER NOT NULL REFERENCES app.con_tariffa(id),
-	contratto_id INTEGER NOT NULL REFERENCES app.con_contratto(id),
+  modifica_ts TIMESTAMP WITH TIME ZONE NOT NULL,
 	alias VARCHAR(255) NOT NULL,
 	tipo_servizio_id INTEGER NOT NULL REFERENCES app.con_tipo_servizio(id),
 	specifica_servizio_id INTEGER NOT NULL REFERENCES app.con_specifica_servizio(id),
@@ -452,6 +452,7 @@ CREATE TABLE app.con_tariffa_storico
 	fattura_minimo_un_mese BOOLEAN,
 	note VARCHAR(4000)
 );
+
 
 CREATE TABLE app.con_ricavo_extra_vigilanza
 (
