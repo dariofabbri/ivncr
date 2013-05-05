@@ -10,4 +10,10 @@ files. The audit trail need to be written on a different file.
 A daily rolling file policy need to be specified.
 
 
+To disable session persistance in Tomcat, it is necessary to uncomment the following rows
+in conf/context.xml:
+    <!-- Uncomment this to disable session persistence across Tomcat restarts -->
+    <Manager pathname="" />
+
+
 Before moving to production set javax.faces.PROJECT_STAGE parameter to production in web.xml file.

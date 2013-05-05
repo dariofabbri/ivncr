@@ -6,9 +6,11 @@ import it.ivncr.erp.model.commerciale.ods.OdsFrazionamento;
 import it.ivncr.erp.model.commerciale.ods.OrdineServizio;
 import it.ivncr.erp.service.EntityService;
 import it.ivncr.erp.service.QueryResult;
+import it.ivncr.erp.service.SortDirection;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public interface OrdineServizioService extends EntityService<OrdineServizio> {
 
@@ -22,6 +24,13 @@ public interface OrdineServizioService extends EntityService<OrdineServizio> {
 			String obiettivoServizio,
 			Integer offset,
 			Integer limit);
+
+	QueryResult<OrdineServizio> listFromContratto(
+			int first,
+			int pageSize,
+			String sortField,
+			SortDirection fromSortOrder,
+			Map<String, String> filters);
 
 	OrdineServizio retrieve(Integer id);
 	OrdineServizio retrieveDeep(Integer id);

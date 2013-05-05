@@ -45,6 +45,7 @@ public class DettaglioOdsGenerale implements Serializable {
     private LoginInfo loginInfo;
 
 	private Integer id;
+	private Integer contrattoId;
 	private Boolean oneroso;
 	private Integer codiceTipoOrdineServizio;
 
@@ -182,6 +183,14 @@ public class DettaglioOdsGenerale implements Serializable {
 			GregorianCalendar now = new GregorianCalendar();
 			Integer anno = now.get(Calendar.YEAR);
 			codice = oss.peekNextCodice(loginInfo.getCodiceAzienda(), anno);
+
+			// If a contratto id has been passed, the new record must be created for the
+			// specified contratto. Init required data structures.
+			//
+			if(contrattoId != null) {
+				ContrattoService cos = ServiceFactory.createService("Contratto");
+				contratto = cos.retrieve(contrattoId);
+			}
 		}
 	}
 
@@ -321,6 +330,7 @@ public class DettaglioOdsGenerale implements Serializable {
 		return true;
 	}
 
+
 	public LoginInfo getLoginInfo() {
 		return loginInfo;
 	}
@@ -337,6 +347,14 @@ public class DettaglioOdsGenerale implements Serializable {
 		this.id = id;
 	}
 
+	public Integer getContrattoId() {
+		return contrattoId;
+	}
+
+	public void setContrattoId(Integer contrattoId) {
+		this.contrattoId = contrattoId;
+	}
+
 	public Boolean getOneroso() {
 		return oneroso;
 	}
@@ -345,20 +363,20 @@ public class DettaglioOdsGenerale implements Serializable {
 		this.oneroso = oneroso;
 	}
 
-	public Contratto getContratto() {
-		return contratto;
-	}
-
-	public void setContratto(Contratto contratto) {
-		this.contratto = contratto;
-	}
-
 	public Integer getCodiceTipoOrdineServizio() {
 		return codiceTipoOrdineServizio;
 	}
 
 	public void setCodiceTipoOrdineServizio(Integer codiceTipoOrdineServizio) {
 		this.codiceTipoOrdineServizio = codiceTipoOrdineServizio;
+	}
+
+	public Contratto getContratto() {
+		return contratto;
+	}
+
+	public void setContratto(Contratto contratto) {
+		this.contratto = contratto;
 	}
 
 	public OrdineServizio getPadre() {

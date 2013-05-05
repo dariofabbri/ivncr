@@ -1,0 +1,90 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<f:subview id="listOnerosiView">
+	
+		<p:outputPanel id="buttons" style="display: block; margin-top: 2em; margin-bottom: 2em;">
+				
+			<p:commandButton
+				id="createButton"
+				value="Crea"
+				process="@this"
+				render="@none"
+				action="#{dettaglioContrattoOnerosi.startCreate}"
+				icon="ui-icon-star"/>
+			<p:tooltip 
+				for="createButton" 
+				value="Crea un nuovo servizio oneroso" 
+				showEffect="fade" 
+				hideEffect="fade"/>
+	
+			<p:commandButton
+				id="updateButton" 
+				value="Modifica"
+				immediate="true"
+				disabled="#{empty dettaglioContrattoOnerosi.selected}"
+				action="#{dettaglioContrattoOnerosi.startUpdate}"
+				icon="ui-icon-pencil" />
+			<p:tooltip 
+				for="updateButton" 
+				value="Modifica il servizio selezionato" 
+				showEffect="fade" 
+				hideEffect="fade"/>
+	
+		</p:outputPanel>
+										
+		<p:dataTable 
+			id="onerosiTable" 
+			var="ods" 
+			value="#{dettaglioContrattoOnerosi.model}"
+			paginator="true" 
+			paginatorPosition="bottom" rows="10"
+			paginatorTemplate="{CurrentPageReport} {RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+			currentPageReportTemplate="Trovati {totalRecords} record - Pagina {currentPage} di {totalPages}"
+			rowsPerPageTemplate="5,10,50" 
+			pageLinks="10"
+			emptyMessage="Nessun record trovato" 
+			selectionMode="single"
+			selection="#{dettaglioContrattoOnerosi.selected}"
+			lazy="true">
+	
+			<p:ajax event="rowSelect" process="@this" update=":detailForm:tabView:listOnerosiView:buttons"/>
+			<p:ajax event="rowUnselect" process="@this" update=":detailForm:tabView:listOnerosiView:buttons"/>
+	      		
+			<f:facet name="header">
+		    	Lista dei servizi onerosi
+		    </f:facet>
+
+			<p:column headerText="Codice OdS" sortBy="#{ods.codice}"
+				filterBy="#{ods.codice}">
+				<h:outputText value="#{ods.codice}" />
+			</p:column>
+
+			<p:column headerText="Alias" sortBy="#{ods.alias}"
+				filterBy="#{ods.alias}">
+				<h:outputText value="#{ods.alias}" />
+			</p:column>
+
+			<p:column headerText="Tipo servizio" sortBy="#{ods.tipoServizio.descrizione}"
+				filterBy="#{ods.tipoServizio.descrizione}">
+				<h:outputText value="#{ods.tipoServizio.descrizione}" />
+			</p:column>
+
+			<p:column headerText="Specifica servizio" sortBy="#{ods.specificaServizio.descrizione}"
+				filterBy="#{ods.specificaServizio.descrizione}">
+				<h:outputText value="#{ods.specificaServizio.descrizione}" />
+			</p:column>
+
+			<p:column headerText="Obiettivo servizio" sortBy="#{ods.obiettivoServizio.alias}"
+				filterBy="#{ods.obiettivoServizio.alias}">
+				<h:outputText value="#{ods.obiettivoServizio.alias}" />
+			</p:column>
+	
+		</p:dataTable>
+
+	</f:subview>
+		
+</html>

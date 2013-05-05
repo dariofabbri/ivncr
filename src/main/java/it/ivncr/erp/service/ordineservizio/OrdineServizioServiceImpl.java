@@ -73,6 +73,50 @@ public class OrdineServizioServiceImpl extends AbstractService implements Ordine
 	}
 
 	@Override
+	public QueryResult<OrdineServizio> listFromContratto(
+			int first,
+			int pageSize,
+			String sortCriteria,
+			SortDirection sortDirection,
+			Map<String, String> filters) {
+
+		QueryByCodiceContrattoOnerosoCodiceAliasTipoServizioSpecificaServizioObiettivoServizio q =
+				new QueryByCodiceContrattoOnerosoCodiceAliasTipoServizioSpecificaServizioObiettivoServizio(session);
+
+		Integer codiceContratto = null;
+		if(filters.get("codiceContratto") != null)
+			codiceContratto = Integer.decode(filters.get("codiceContratto"));
+
+		Boolean oneroso = null;
+		if(filters.get("oneroso") != null)
+			oneroso = Boolean.parseBoolean(filters.get("oneroso"));
+
+		String codice = filters.get("codice");
+		String alias = filters.get("alias");
+		String tipoServizio = filters.get("tipoServizio.descrizione");
+		String specificaServizio = filters.get("specificaServizio.descrizione");
+		String obiettivoServizio = filters.get("obiettivoServizio.descrizione");
+
+		q.setCodiceContratto(codiceContratto);
+		q.setOneroso(oneroso);
+		q.setCodice(codice);
+		q.setAlias(alias);
+		q.setTipoServizio(tipoServizio);
+		q.setSpecificaServizio(specificaServizio);
+		q.setObiettivoServizio(obiettivoServizio);
+		q.setOffset(first);
+		q.setLimit(pageSize);
+
+		q.setSortCriteria(sortCriteria);
+		q.setSortDirection(sortDirection);
+
+		QueryResult<OrdineServizio> result = q.query();
+		logger.debug("Query returned: " + result);
+
+		return result;
+	}
+
+	@Override
 	public QueryResult<OrdineServizio> list(
 			Integer codiceAzienda,
 			String codiceContratto,
