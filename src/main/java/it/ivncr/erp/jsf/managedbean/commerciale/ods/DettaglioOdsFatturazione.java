@@ -134,6 +134,10 @@ public class DettaglioOdsFatturazione implements Serializable {
 		//
 		listRaggruppamentoFatturazione = lutService.listItems("RaggruppamentoFatturazione");
 
+		if(dettaglioOdsGenerale == null || dettaglioOdsGenerale.getId() == null) {
+			return;
+		}
+		
 		// Load available canone and tariffa items.
 		//
 		OrdineServizioService oss = ServiceFactory.createService("OrdineServizio");
