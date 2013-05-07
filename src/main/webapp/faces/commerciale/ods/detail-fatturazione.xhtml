@@ -20,7 +20,7 @@
 								<p:outputLabel for="oneroso" value="Oneroso:" />
 							</p:column>
 							<p:column>
-								<p:selectBooleanCheckbox value="#{dettaglioOdsFatturazione.oneroso}" id="oneroso">
+								<p:selectBooleanCheckbox value="#{dettaglioOdsGenerale.oneroso}" id="oneroso">
 									<p:ajax process="@this" update="fatturazionePanel"/>  
 								</p:selectBooleanCheckbox>
 								<p:tooltip for="oneroso" showEffect="fade" value="Indica se si tratta di un servizio oneroso o meno" />
@@ -34,12 +34,12 @@
 							<p:column>
 								<p:selectOneMenu
 									id="codiceTariffa" 
-									value="#{dettaglioOdsFatturazione.codiceTariffa}"
-									disabled="#{dettaglioOdsFatturazione.oneroso}"
+									value="#{dettaglioOdsGenerale.codiceTariffa}"
+									disabled="#{dettaglioOdsGenerale.oneroso}"
 									effect="fade">
 									<f:selectItem itemLabel="Selezionare una tariffa" itemValue="" />
 									<f:selectItems 
-										value="#{dettaglioOdsFatturazione.listTariffa}" var="item"
+										value="#{dettaglioOdsGenerale.listTariffa}" var="item"
 										itemLabel="#{item.alias}" itemValue="#{item.id}" />
 								</p:selectOneMenu>	
 								<p:tooltip for="codiceTariffa" showEffect="fade" value="Tariffa selezionata" />
@@ -53,12 +53,12 @@
 							<p:column>
 								<p:selectOneMenu
 									id="codiceCanone" 
-									value="#{dettaglioOdsFatturazione.codiceCanone}"
-									disabled="#{dettaglioOdsFatturazione.oneroso}"
+									value="#{dettaglioOdsGenerale.codiceCanone}"
+									disabled="#{dettaglioOdsGenerale.oneroso}"
 									effect="fade">
 									<f:selectItem itemLabel="Selezionare un canone" itemValue="" />
 									<f:selectItems 
-										value="#{dettaglioOdsFatturazione.listCanone}" var="item"
+										value="#{dettaglioOdsGenerale.listCanone}" var="item"
 										itemLabel="#{item.alias}" itemValue="#{item.id}" />
 								</p:selectOneMenu>	
 								<p:tooltip for="codiceCanone" showEffect="fade" value="Canone selezionato" />
@@ -72,12 +72,12 @@
 							<p:column>
 								<p:selectOneMenu
 									id="codiceRaggruppamentoFatturazione" 
-									value="#{dettaglioOdsFatturazione.codiceRaggruppamentoFatturazione}"
-									disabled="#{dettaglioOdsFatturazione.oneroso}"
+									value="#{dettaglioOdsGenerale.codiceRaggruppamentoFatturazione}"
+									disabled="#{dettaglioOdsGenerale.oneroso}"
 									effect="fade">
 									<f:selectItem itemLabel="Selezionare un raggruppamento" itemValue="" />
 									<f:selectItems 
-										value="#{dettaglioOdsFatturazione.listRaggruppamentoFatturazione}" var="item"
+										value="#{dettaglioOdsGenerale.listRaggruppamentoFatturazione}" var="item"
 										itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
 								</p:selectOneMenu>	
 								<p:tooltip for="codiceRaggruppamentoFatturazione" showEffect="fade" value="Raggruppamento fatturazione selezionato" />
@@ -99,8 +99,8 @@
 							<p:column>
 								<p:inputTextarea 
 									id="osservazioniFattura"
-									value="#{dettaglioOdsFatturazione.osservazioniFattura}" 
-									disabled="#{dettaglioOdsFatturazione.oneroso}"
+									value="#{dettaglioOdsGenerale.osservazioniFattura}" 
+									disabled="#{dettaglioOdsGenerale.oneroso}"
 									rows="5"/>
 								<p:watermark for="osservazioniFattura" value="Osservazioni da riportare in fattura" />  
 								<p:tooltip for="osservazioniFattura" showEffect="fade" value="Eventuali osservazioni da riportare in fattura" />
@@ -113,7 +113,7 @@
 				
 			</p:row>
 
-			<p:row rendered="#{not dettaglioOdsFatturazione.oneroso}">
+			<p:row rendered="#{not dettaglioOdsGenerale.oneroso}">
 				<p:column colspan="2">
 										
 					<p:fieldset 
@@ -137,9 +137,9 @@
 									<p:dataTable
 										id="frazionamentiTable"
 										var="frazionamento"
-										value="#{dettaglioOdsFatturazione.listOdsFrazionamento}"
+										value="#{dettaglioOdsGenerale.listOdsFrazionamento}"
 										selectionMode="single"
-										selection="#{dettaglioOdsFatturazione.selectedOdsFrazionamento}"
+										selection="#{dettaglioOdsGenerale.selectedOdsFrazionamento}"
 										rowKey="#{frazionamento.id}"
 										emptyMessage="Nessun record trovato" 
 										styleClass="small-datatable">
@@ -176,19 +176,19 @@
 				
 										<p:commandButton value="Nuovo"
 											oncomplete="detailFrazionamentoDialogWidget.show()"
-											actionListener="#{dettaglioOdsFatturazione.startCreateFrazionamento}"
+											actionListener="#{dettaglioOdsGenerale.startCreateFrazionamento}"
 											process="@this"
 											update=":detailForm:tabView:detailFrazionamentoView:detailFrazionamentoDialog"/>
 					
 										<p:commandButton value="Modifica"
-											disabled="#{empty dettaglioOdsFatturazione.selectedOdsFrazionamento}"
+											disabled="#{empty dettaglioOdsGenerale.selectedOdsFrazionamento}"
 											oncomplete="detailFrazionamentoDialogWidget.show()"
-											actionListener="#{dettaglioOdsFatturazione.startUpdateFrazionamento}"
+											actionListener="#{dettaglioOdsGenerale.startUpdateFrazionamento}"
 											process="@this"
 											update=":detailForm:tabView:detailFrazionamentoView:detailFrazionamentoDialog"/>
 					
 										<p:commandButton value="Elimina"
-											disabled="#{empty dettaglioOdsFatturazione.selectedOdsFrazionamento}"
+											disabled="#{empty dettaglioOdsGenerale.selectedOdsFrazionamento}"
 											type="button"
 											onclick="deleteFrazionamentoDialogWidget.show()"/>
 										
@@ -210,7 +210,7 @@
 					<p:commandButton
 						id="saveButton"
 						value="Salva"
-						actionListener="#{dettaglioOdsFatturazione.doSave}"
+						actionListener="#{dettaglioOdsGenerale.doSaveFatturazione}"
 						update=":detailForm:tabView:fatturazioneView:fatturazionePanel,:detailForm:growl"
 						process=":detailForm:tabView:fatturazioneView:fatturazionePanel"
 						icon="ui-icon-star"/>
@@ -249,23 +249,23 @@
 					</p:column>
 				</p:row>
 				
-				<p:row rendered="#{not empty dettaglioOdsFatturazione.idFrazionamento}">
+				<p:row rendered="#{not empty dettaglioOdsGenerale.idFrazionamento}">
 					<p:column>
 						<p:outputLabel for="cliente" value="Cliente:" />
 					</p:column>
 					<p:column>
 						<p:inputText
 							disabled="true" 
-							value="#{dettaglioOdsFatturazione.selectedOdsFrazionamento.cliente.ragioneSociale}" 
+							value="#{dettaglioOdsGenerale.selectedOdsFrazionamento.cliente.ragioneSociale}" 
 							id="cliente"/>
 					</p:column>					
 				</p:row>
 	
-				<p:row rendered="#{empty dettaglioOdsFatturazione.idFrazionamento}">
+				<p:row rendered="#{empty dettaglioOdsGenerale.idFrazionamento}">
 					<p:column colspan="2">
 						<p:dataTable
 							var="cliente" 
-							value="#{dettaglioOdsFatturazione.clienteModel}"
+							value="#{dettaglioOdsGenerale.clienteModel}"
 							paginator="true"
 							paginatorPosition="bottom" rows="10"
 							paginatorTemplate="{CurrentPageReport} {RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
@@ -274,7 +274,7 @@
 							pageLinks="10"
 							emptyMessage="Nessun record trovato" 
 							selectionMode="single"
-							selection="#{dettaglioOdsFatturazione.selectedCliente}"
+							selection="#{dettaglioOdsGenerale.selectedCliente}"
 							sortBy="#{contratto.codice}"
 							id="contrattiTable" 
 							lazy="true"
@@ -319,7 +319,7 @@
 						<p:outputLabel for="quota" value="Quota:" />
 					</p:column>
 					<p:column>
-						<p:inputText value="#{dettaglioOdsFatturazione.quota}" id="quota"
+						<p:inputText value="#{dettaglioOdsGenerale.quota}" id="quota"
 							required="true"
 							requiredMessage="Il campo quota è obbligatorio"
 							converter="percentageConverter" converterMessage="Il campo quota non rappresenta una percentuale valida"/>
@@ -333,7 +333,7 @@
 						<p:outputLabel for="esclusioneRitenutaGaranzia" value="Esclusione ritenuta garanzia:" />
 					</p:column>
 					<p:column>
-						<p:selectBooleanCheckbox value="#{dettaglioOdsFatturazione.esclusioneRitenutaGaranzia}" id="esclusioneRitenutaGaranzia"/>
+						<p:selectBooleanCheckbox value="#{dettaglioOdsGenerale.esclusioneRitenutaGaranzia}" id="esclusioneRitenutaGaranzia"/>
 						<p:tooltip for="esclusioneRitenutaGaranzia" showEffect="fade" value="Indica se sul frazionamento si applica o meno la ritenuta a garanzia" />
 					</p:column>
 				</p:row>
@@ -343,8 +343,8 @@
 						<p:outputPanel id="detailFrazionamentoDialogButtons">
 							<p:commandButton value="Salva"
 								id="saveButton"
-								actionListener="#{dettaglioOdsFatturazione.doSaveFrazionamento}"
-								disabled="#{empty dettaglioOdsFatturazione.selectedCliente}"
+								actionListener="#{dettaglioOdsGenerale.doSaveFrazionamento}"
+								disabled="#{empty dettaglioOdsGenerale.selectedCliente}"
 								update="detailFrazionamentoView:messages,detailFrazionamentoView:panel,:detailForm:tabView:fatturazioneView:frazionamentiTable,:detailForm:growl"
 								process="detailFrazionamentoView:detailFrazionamentoDialog"
 								oncomplete="if(args.ok) { detailFrazionamentoDialogWidget.hide(); }"/>
@@ -377,7 +377,7 @@
 			update=":detailForm:tabView:fatturazioneView:frazionamentiTable,:detailForm:tabView:fatturazioneView:fatturazioneButtons,:detailForm:growl"
 			process="@this" 
 			oncomplete="deleteFrazionamentoDialogWidget.hide()"  
-            actionListener="#{dettaglioOdsFatturazione.doDeleteFrazionamento}" />
+            actionListener="#{dettaglioOdsGenerale.doDeleteFrazionamento}" />
               
         <p:commandButton 
         	value="Annulla" 

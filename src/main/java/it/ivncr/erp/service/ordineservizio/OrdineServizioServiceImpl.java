@@ -430,8 +430,10 @@ public class OrdineServizioServiceImpl extends AbstractService implements Ordine
 
 		// Create the rows for passed frazionamento.
 		//
-		BigDecimal totalPercentage = BigDecimal.ZERO;
-		if(listOdsFrazionamento != null) {
+		if(listOdsFrazionamento != null && listOdsFrazionamento.size() > 0) {
+
+			BigDecimal totalPercentage = BigDecimal.ZERO;
+
 			for(OdsFrazionamento odsFrazionamento : listOdsFrazionamento) {
 
 				OdsFrazionamento o = new OdsFrazionamento();
@@ -443,14 +445,14 @@ public class OrdineServizioServiceImpl extends AbstractService implements Ordine
 
 				totalPercentage = totalPercentage.add(odsFrazionamento.getQuota());
 			}
-		}
 
-		// Check total percentage.
-		//
-		if(totalPercentage.compareTo(new BigDecimal(100)) != 0) {
-			String msg = String.format("Total percentage for frazionamento was: %s", totalPercentage);
-			logger.error(msg);
-			throw new RuntimeException(msg);
+			// Check total percentage.
+			//
+			if(totalPercentage.compareTo(new BigDecimal(100)) != 0) {
+				String msg = String.format("Total percentage for frazionamento was: %s", totalPercentage);
+				logger.error(msg);
+				throw new RuntimeException(msg);
+			}
 		}
 
 		logger.debug("Entity successfully updated.");
