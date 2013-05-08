@@ -4,11 +4,13 @@ import it.ivncr.erp.jsf.RobustLazyDataModel;
 import it.ivncr.erp.jsf.managedbean.accesso.session.LoginInfo;
 import it.ivncr.erp.model.commerciale.cliente.Cliente;
 import it.ivncr.erp.model.commerciale.contratto.Contratto;
+import it.ivncr.erp.model.commerciale.contratto.RinnovoContrattuale;
 import it.ivncr.erp.service.QueryResult;
 import it.ivncr.erp.service.ServiceFactory;
 import it.ivncr.erp.service.SortDirection;
 import it.ivncr.erp.service.cliente.ClienteService;
 import it.ivncr.erp.service.contratto.ContrattoService;
+import it.ivncr.erp.service.rinnovocontrattuale.RinnovoContrattualeService;
 
 import java.io.Serializable;
 import java.util.Calendar;
@@ -59,6 +61,8 @@ public class DettaglioContrattoGenerale implements Serializable {
 	private Integer giorniPreavvisoScadenza;
 
 	private LazyDataModel<Cliente> clienteModel;
+
+	private List<RinnovoContrattuale> listRinnovi;
 
 
 	public DettaglioContrattoGenerale() {
@@ -144,6 +148,8 @@ public class DettaglioContrattoGenerale implements Serializable {
 			anniPeriodoRinnovo = contratto.getAnniPeriodoRinnovo();
 			giorniPreavvisoScadenza = contratto.getGiorniPreavvisoScadenza();
 
+			loadRinnovi();
+
 			logger.debug("Initialization loaded contratto details.");
 		}
 
@@ -164,6 +170,17 @@ public class DettaglioContrattoGenerale implements Serializable {
 				cliente = cls.retrieve(clienteId);
 			}
 		}
+	}
+
+
+	private void loadRinnovi() {
+
+		if(id == null) {
+			return;
+		}
+
+		RinnovoContrattualeService rcs = ServiceFactory.createService("RinnovoContrattuale");
+		listRinnovi = rcs.listByContratto(id);
 	}
 
 
@@ -408,5 +425,13 @@ public class DettaglioContrattoGenerale implements Serializable {
 
 	public void setClienteModel(LazyDataModel<Cliente> clienteModel) {
 		this.clienteModel = clienteModel;
+	}
+
+	public List<RinnovoContrattuale> getListRinnovi() {
+		return listRinnovi;
+	}
+
+	public void setListRinnovi(List<RinnovoContrattuale> listRinnovi) {
+		this.listRinnovi = listRinnovi;
 	}
 }

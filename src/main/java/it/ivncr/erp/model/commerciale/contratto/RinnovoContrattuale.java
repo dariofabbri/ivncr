@@ -32,11 +32,17 @@ public class RinnovoContrattuale implements Serializable {
     @JoinColumn(name="contratto_id")
     private Contratto contratto;
 
-	@Column(name="data_decorrenza")
-	private Date dataDecorrenza;
+	@Column(name="data_decorrenza_pre")
+	private Date dataDecorrenzaPre;
 
-	@Column(name="data_termine")
-	private Date dataTermine;
+	@Column(name="data_termine_pre")
+	private Date dataTerminePre;
+
+	@Column(name="data_decorrenza_post")
+	private Date dataDecorrenzaPost;
+
+	@Column(name="data_termine_post")
+	private Date dataTerminePost;
 
 	@Column(name="note")
 	private String note;
@@ -48,8 +54,10 @@ public class RinnovoContrattuale implements Serializable {
 		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
 			.append("id", id)
 			.append("contratto", contratto, false)
-			.append("dataDecorrenza", dataDecorrenza)
-			.append("dataTermine", dataTermine)
+			.append("dataDecorrenzaPre", dataDecorrenzaPre)
+			.append("dataTerminePre", dataTerminePre)
+			.append("dataDecorrenzaPost", dataDecorrenzaPost)
+			.append("dataTerminePost", dataTerminePost)
 			.append("note", note)
 			.toString();
 	}
@@ -71,19 +79,43 @@ public class RinnovoContrattuale implements Serializable {
 		this.contratto = contratto;
 	}
 
-	public Date getDataDecorrenza() {
-		return dataDecorrenza;
+	public Date getDataDecorrenzaPre() {
+		return dataDecorrenzaPre;
 	}
 
-	public void setDataDecorrenza(Date dataDecorrenza) {
-		this.dataDecorrenza = dataDecorrenza;
+	public void setDataDecorrenzaPre(Date dataDecorrenzaPre) {
+		this.dataDecorrenzaPre = dataDecorrenzaPre;
 	}
 
-	public Date getDataTermine() {
-		return dataTermine;
+	public Date getDataTerminePre() {
+		return dataTerminePre;
 	}
 
-	public void setDataTermine(Date dataTermine) {
-		this.dataTermine = dataTermine;
+	public void setDataTerminePre(Date dataTerminePre) {
+		this.dataTerminePre = dataTerminePre;
+	}
+
+	public Date getDataDecorrenzaPost() {
+		return dataDecorrenzaPost;
+	}
+
+	public void setDataDecorrenzaPost(Date dataDecorrenzaPost) {
+		this.dataDecorrenzaPost = dataDecorrenzaPost;
+	}
+
+	public Date getDataTerminePost() {
+		return dataTerminePost;
+	}
+
+	public void setDataTerminePost(Date dataTerminePost) {
+		this.dataTerminePost = dataTerminePost;
+	}
+
+	public String getNote() {
+		return note;
+	}
+
+	public void setNote(String note) {
+		this.note = note;
 	}
 }

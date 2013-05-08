@@ -192,6 +192,53 @@
 					
 				</p:fieldset>
 				
+				<p:spacer height="15px"/>
+									
+				<p:fieldset 
+					id="storicoRinnovi" 
+					legend="Storico rinnovi" 
+					collapsed="true" 
+					toggleable="true" 
+					toggleSpeed="500">
+								
+					<p:dataTable
+						id="rinnoviTable"
+						var="rinnovo"
+						value="#{dettaglioContrattoGenerale.listRinnovi}"
+						rowKey="#{rinnovo.id}"
+						sortBy="#{rinnovo.dataTerminePost}"
+						sortOrder="descending"
+						emptyMessage="Nessun record trovato" 
+						styleClass="small-datatable">
+	
+						<p:column headerText="Decorrenza precedente" sortBy="#{rinnovo.dataDecorrenzaPre}">
+							<h:outputText value="#{rinnovo.dataDecorrenzaPre}">
+								<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+							</h:outputText>
+						</p:column>
+	
+						<p:column headerText="Termine precedente" sortBy="#{rinnovo.dataTerminePre}">
+							<h:outputText value="#{rinnovo.dataTerminePre}">
+								<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+							</h:outputText>
+						</p:column>
+	
+						<p:column headerText="Nuova decorrenza" sortBy="#{rinnovo.dataDecorrenzaPost}">
+							<h:outputText value="#{rinnovo.dataDecorrenzaPost}">
+								<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+							</h:outputText>
+						</p:column>
+	
+						<p:column headerText="Nuovo termine" sortBy="#{rinnovo.dataTerminePost}">
+							<h:outputText value="#{rinnovo.dataTerminePost}">
+								<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+							</h:outputText>
+						</p:column>
+																			
+					</p:dataTable>
+					
+				</p:fieldset>
+				
 			</p:column>
 			
 		</p:row>
