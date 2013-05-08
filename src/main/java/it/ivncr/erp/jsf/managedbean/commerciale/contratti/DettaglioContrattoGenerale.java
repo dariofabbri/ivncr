@@ -25,6 +25,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import org.primefaces.context.RequestContext;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 import org.slf4j.Logger;
@@ -59,6 +60,8 @@ public class DettaglioContrattoGenerale implements Serializable {
 	private Integer mesiPeriodoRinnovo;
 	private Integer anniPeriodoRinnovo;
 	private Integer giorniPreavvisoScadenza;
+
+	private String noteRinnovo;
 
 	private LazyDataModel<Cliente> clienteModel;
 
@@ -291,6 +294,27 @@ public class DettaglioContrattoGenerale implements Serializable {
 	}
 
 
+	public void startRinnovo() {
+
+		if(
+				giorniPeriodoRinnovo == null &&
+				mesiPeriodoRinnovo == null &&
+				anniPeriodoRinnovo == null) {
+
+			FacesMessage message = new FacesMessage(
+					FacesMessage.SEVERITY_ERROR,
+					"E' necessario specificare un periodo di rinnovo",
+					"E' necessario specificare un periodo di rinnovo (almeno un campo tra giorni, mesi ed anni del periodo di rinnovo).");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			return;
+		}
+
+		// Signal to modal dialog that everything went fine.
+		//
+		RequestContext.getCurrentInstance().addCallbackParam("ok", true);
+	}
+
+
 	public LoginInfo getLoginInfo() {
 		return loginInfo;
 	}
@@ -417,6 +441,14 @@ public class DettaglioContrattoGenerale implements Serializable {
 
 	public void setGiorniPreavvisoScadenza(Integer giorniPreavvisoScadenza) {
 		this.giorniPreavvisoScadenza = giorniPreavvisoScadenza;
+	}
+
+	public String getNoteRinnovo() {
+		return noteRinnovo;
+	}
+
+	public void setNoteRinnovo(String noteRinnovo) {
+		this.noteRinnovo = noteRinnovo;
 	}
 
 	public LazyDataModel<Cliente> getClienteModel() {
