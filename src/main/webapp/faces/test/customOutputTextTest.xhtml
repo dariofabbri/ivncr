@@ -1,0 +1,27 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:custom="http://java.sun.com/jsf/composite/components/custom">
+	
+	<h:head>
+
+		<f:facet name="first">
+			<meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
+			<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+			<title>Test</title>
+		</f:facet>
+
+	</h:head>
+	
+	<h:body>
+	
+		<h:outputText value="Nel mezzo del cammin di nostra vita mi ritrovai per una selva oscura che la diritta via era smarrita.">
+			<f:converter converterId="stringShortener"/>
+			<f:attribute name="length" value="20"/>
+		</h:outputText>
+	
+	</h:body>
+		
+</html>
