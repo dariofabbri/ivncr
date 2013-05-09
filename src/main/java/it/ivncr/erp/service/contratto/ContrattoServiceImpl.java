@@ -4,6 +4,7 @@ import it.ivncr.erp.model.commerciale.cliente.Cliente;
 import it.ivncr.erp.model.commerciale.cliente.Indirizzo;
 import it.ivncr.erp.model.commerciale.cliente.ObiettivoServizio;
 import it.ivncr.erp.model.commerciale.contratto.Contratto;
+import it.ivncr.erp.model.commerciale.contratto.RinnovoContrattuale;
 import it.ivncr.erp.model.generale.Azienda;
 import it.ivncr.erp.model.generale.Contatore;
 import it.ivncr.erp.service.AbstractService;
@@ -20,6 +21,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.hibernate.Query;
 
 public class ContrattoServiceImpl extends AbstractService implements ContrattoService {
@@ -333,6 +335,89 @@ public class ContrattoServiceImpl extends AbstractService implements ContrattoSe
 		logger.debug("Query result: " + result);
 
 		return result;
+	}
+
+
+	@Override
+	public Contratto applicaRinnovo(Integer id, String note) {
+
+		Contratto contratto = retrieve(id);
+		if(contratto == null) {
+			String message = String.format("It has not been possible to retrieve specified entity: %d", id);
+			logger.info(message);
+			throw new NotFoundException(message);
+		}
+
+		// Check if enough info are present for the operation.
+		//
+		if(
+				contratto.getGiorniPeriodoRinnovo() == null &&
+				contratto.getMesiPeriodoRinnovo() == null &&
+				contratto.getAnniPeriodoRinnovo() == null) {
+
+			String message = "At least one among giorniPeriodoRinnovo, mesiPeriodoRinnovo and anniPeriodoRinnovo fields must have a value.";
+			logger.info(message);
+			throw new RuntimeException(message);
+		}
+		if(contratto.getDataTermine() == null) {
+
+			String message = "The field dataTermine must be present, in order to be able to automatically apply specified conditions.";
+			logger.info(message);
+			throw new RuntimeException(message);
+		}
+
+		// Audit call for the update operation.
+		//
+		AuditUtil.log(Operation.Update, Snapshot.Source, contratto);
+
+		// Save current timestamp snapshot.
+		//
+		Date now = new Date();
+
+		// Calculate new set of dates.
+		//
+		Date dataDecorrenza = DateUtils.addDays(contratto.getDataTermine(), 1);
+		Date dataTermine = dataDecorrenza;
+		if(contratto.getGiorniPeriodoRinnovo() != null) {
+			dataTermine = DateUtils.addDays(dataTermine, contratto.getGiorniPeriodoRinnovo());
+		}
+		if(contratto.getMesiPeriodoRinnovo() != null) {
+			dataTermine = DateUtils.addMonths(dataTermine, contratto.getMesiPeriodoRinnovo());
+		}
+		if(contratto.getAnniPeriodoRinnovo() != null) {
+			dataTermine = DateUtils.addYears(dataTermine, contratto.getAnniPeriodoRinnovo());
+		}
+
+		// Create a journal entry.
+		//
+		RinnovoContrattuale rinnovoContrattuale = new RinnovoContrattuale();
+		rinnovoContrattuale.setContratto(contratto);
+		rinnovoContrattuale.setDataDecorrenzaPre(contratto.getDataDecorrenza());
+		rinnovoContrattuale.setDataTerminePre(contratto.getDataTermine());
+		rinnovoContrattuale.setDataDecorrenzaPost(dataDecorrenza);
+		rinnovoContrattuale.setDataTerminePost(dataTermine);
+		rinnovoContrattuale.setNote(note);
+		session.save(rinnovoContrattuale);
+
+		// Audit call for the create operation.
+		//
+		AuditUtil.log(Operation.Create, Snapshot.Destination, rinnovoContrattuale);
+
+
+		// Set entity fields.
+		//
+		contratto.setDataDecorrenza(dataDecorrenza);
+		contratto.setDataTermine(dataTermine);
+		contratto.setUltimaModifica(now);
+		session.update(contratto);
+
+		// Audit call for the update operation.
+		//
+		AuditUtil.log(Operation.Update, Snapshot.Destination, contratto);
+
+		logger.debug("Entity successfully updated.");
+
+		return contratto;
 	}
 
 

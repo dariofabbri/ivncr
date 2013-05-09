@@ -63,4 +63,6 @@ public interface ContrattoService extends EntityService<Contratto> {
 	List<Indirizzo> listAvailableIndirizzi(Integer id);
 
 	List<ObiettivoServizio> listAvailableObiettiviServizio(Integer id);
+
+	Contratto applicaRinnovo(Integer id, String note);
 }

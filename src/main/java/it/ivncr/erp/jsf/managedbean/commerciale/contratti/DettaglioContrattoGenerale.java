@@ -66,6 +66,7 @@ public class DettaglioContrattoGenerale implements Serializable {
 	private LazyDataModel<Cliente> clienteModel;
 
 	private List<RinnovoContrattuale> listRinnovi;
+	private RinnovoContrattuale selectedRinnovoContrattuale;
 
 
 	public DettaglioContrattoGenerale() {
@@ -309,9 +310,63 @@ public class DettaglioContrattoGenerale implements Serializable {
 			return;
 		}
 
+		if(dataTermine == null) {
+
+			FacesMessage message = new FacesMessage(
+					FacesMessage.SEVERITY_ERROR,
+					"E' necessario specificare una data di termine del contratto",
+					"Nessuna data di termine del contratto è stata specificata, impossibile applicare le condizioni di rinnovo.");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			return;
+		}
+
 		// Signal to modal dialog that everything went fine.
 		//
 		RequestContext.getCurrentInstance().addCallbackParam("ok", true);
+	}
+
+
+	public void doRinnovo() {
+
+		// Create service to persist data.
+		//
+		ContrattoService cs = ServiceFactory.createService("Contratto");
+
+		try {
+			Contratto contratto = null;
+
+			contratto = cs.applicaRinnovo(id, noteRinnovo);
+			dataDecorrenza = contratto.getDataDecorrenza();
+			dataTermine = contratto.getDataTermine();
+
+			logger.debug("Entity successfully updated.");
+
+			// Everything went fine.
+			//
+			FacesMessage message = new FacesMessage(
+					FacesMessage.SEVERITY_INFO,
+					"Successo",
+					"Il rinnovo del contratto si è concluso con successo.");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+
+			// Refresh list.
+			//
+			loadRinnovi();
+
+			// Signal to modal dialog that everything went fine.
+			//
+			RequestContext.getCurrentInstance().addCallbackParam("ok", true);
+
+		} catch(Exception e) {
+
+			logger.warn("Exception caught while saving entity.", e);
+
+			FacesMessage message = new FacesMessage(
+					FacesMessage.SEVERITY_ERROR,
+					"Errore di sistema",
+					"Si è verificato un errore in fase di rinnovo del contratto.");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+		}
 	}
 
 
@@ -465,5 +520,14 @@ public class DettaglioContrattoGenerale implements Serializable {
 
 	public void setListRinnovi(List<RinnovoContrattuale> listRinnovi) {
 		this.listRinnovi = listRinnovi;
+	}
+
+	public RinnovoContrattuale getSelectedRinnovoContrattuale() {
+		return selectedRinnovoContrattuale;
+	}
+
+	public void setSelectedRinnovoContrattuale(
+			RinnovoContrattuale selectedRinnovoContrattuale) {
+		this.selectedRinnovoContrattuale = selectedRinnovoContrattuale;
 	}
 }

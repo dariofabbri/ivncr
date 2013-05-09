@@ -226,8 +226,14 @@
 						rowKey="#{rinnovo.id}"
 						sortBy="#{rinnovo.dataTerminePost}"
 						sortOrder="descending"
+						selectionMode="single"
+						selection="#{dettaglioContrattoGenerale.selectedRinnovoContrattuale}"
 						emptyMessage="Nessun record trovato" 
 						styleClass="small-datatable">
+		
+						<p:ajax event="rowSelect" update=":detailForm:detailRinnovoDialog" oncomplete="detailRinnovoDialogWidget.show()"/>
+		
+						<p:ajax event="rowUnselect" update=":detailForm:detailRinnovoDialog"/>
 	
 						<p:column headerText="Decorrenza precedente" sortBy="#{rinnovo.dataDecorrenzaPre}">
 							<h:outputText value="#{rinnovo.dataDecorrenzaPre}">
@@ -392,7 +398,7 @@
 						
 			<p:row>
 				<p:column colspan="2" styleClass="form-header">
-					<h:outputText value="Il pannello permette di rinnovare il contratto applicando le condizioni di rinnovo specificate."/>
+					<h:outputText value="Il pannello permette di rinnovare il contratto applicando le condizioni di rinnovo specificate. Il contratto sarà rinnovato con decorrenza a seguire la precedente data di scadenza."/>
 				</p:column>
 			</p:row>
 					
@@ -425,6 +431,101 @@
 
 		<p:defaultCommand target="rinnovoButton" scope="rinnovoDialog"/>
 		
+	</p:dialog>
+	
+	
+	<p:dialog
+		id="detailRinnovoDialog"
+		header="Dettagli del rinnovo selezionato" 
+		widgetVar="detailRinnovoDialogWidget" 
+		modal="true"
+		resizable="false"
+		showEffect="fade" 
+		hideEffect="fade"> 
+			
+		<p:panelGrid styleClass="form-panel">
+						
+			<p:row>
+				<p:column colspan="2" styleClass="form-header">
+					<h:outputText value="Il pannello mostra i dettagli del rinnovo contrattuale selezionato."/>
+				</p:column>
+			</p:row>
+					
+			<p:row>
+				<p:column>							
+					<h:outputText value="Data decorrenza (precedente):" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{dettaglioContrattoGenerale.selectedRinnovoContrattuale.dataDecorrenzaPre}">
+						<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+					</h:outputText>
+				</p:column>
+			</p:row>
+			
+			<p:row>
+				<p:column>							
+					<h:outputText value="Data termine (precedente):" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{dettaglioContrattoGenerale.selectedRinnovoContrattuale.dataTerminePre}">
+						<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+					</h:outputText>
+				</p:column>
+			</p:row>
+					
+			<p:row>
+				<p:column>							
+					<h:outputText value="Data decorrenza (rinnovo):" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{dettaglioContrattoGenerale.selectedRinnovoContrattuale.dataDecorrenzaPost}">
+						<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+					</h:outputText>
+				</p:column>
+			</p:row>
+			
+			<p:row>
+				<p:column>							
+					<h:outputText value="Data termine (rinnovo):" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{dettaglioContrattoGenerale.selectedRinnovoContrattuale.dataTerminePost}">
+						<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+					</h:outputText>
+				</p:column>
+			</p:row>
+					
+			<p:row>
+				<p:column>							
+					<h:outputText for="noteRinnovo" value="Note:"/>
+				</p:column>
+				<p:column>
+					<p:inputTextarea
+						rows="10"
+						disabled="true"
+						autoResize="false"
+						value="#{dettaglioContrattoGenerale.selectedRinnovoContrattuale.note}"/>
+				</p:column>
+			</p:row>
+
+			<p:row>
+			
+				<p:column styleClass="form-footer">
+				
+					<p:outputPanel id="detailRinnovoDialogButtons">
+						
+						<p:commandButton 
+							value="Chiudi"
+							type="button"
+							onclick="detailRinnovoDialogWidget.hide();" />
+							
+					</p:outputPanel>
+							
+				</p:column>
+			</p:row>
+			
+		</p:panelGrid>
+
 	</p:dialog>
 
 </html>
