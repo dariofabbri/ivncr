@@ -75,7 +75,13 @@
 
 				<p:column headerText="Ragione sociale" sortBy="#{cliente.ragioneSociale}"
 					filterBy="#{cliente.ragioneSociale}">
-					<h:outputText value="#{cliente.ragioneSociale}" />
+					<h:outputText id="textRagioneSociale" value="#{cliente.ragioneSociale}">
+						<f:converter converterId="stringShortener"/>
+						<f:attribute name="length" value="60"/>
+					</h:outputText>
+					<p:tooltip for="textRagioneSociale">
+						<h:outputText value="Pippo pippo pippo pippo pippo pippo pippo pippo&lt;br&gt;pippo pippo pippo pippo pippo pippo " escape="false"/>
+					</p:tooltip>
 				</p:column>
 				
 				<p:column headerText="Partita IVA" sortBy="#{cliente.partitaIva}"
