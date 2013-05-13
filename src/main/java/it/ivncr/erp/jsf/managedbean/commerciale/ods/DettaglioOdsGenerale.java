@@ -294,6 +294,8 @@ public class DettaglioOdsGenerale extends Observable implements Serializable {
 			if(contrattoId != null) {
 				ContrattoService cos = ServiceFactory.createService("Contratto");
 				contratto = cos.retrieve(contrattoId);
+
+				populateObiettivoServizio();
 			}
 		}
 	}
