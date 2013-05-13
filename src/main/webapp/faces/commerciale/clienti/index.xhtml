@@ -2,7 +2,8 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
 
 <ui:composition template="/WEB-INF/templates/main.xhtml">
 
@@ -79,9 +80,12 @@
 						<f:converter converterId="stringShortener"/>
 						<f:attribute name="length" value="60"/>
 					</h:outputText>
-					<p:tooltip for="textRagioneSociale">
-						<h:outputText value="Pippo pippo pippo pippo pippo pippo pippo pippo&lt;br&gt;pippo pippo pippo pippo pippo pippo " escape="false"/>
-					</p:tooltip>
+					<pe:tooltip for="textRagioneSociale" atPosition="bottom left">
+						<h:outputText value="#{cliente.ragioneSociale}" escape="false">
+							<f:converter converterId="stringWrapper"/>
+							<f:attribute name="length" value="60"/>
+						</h:outputText>
+					</pe:tooltip>
 				</p:column>
 				
 				<p:column headerText="Partita IVA" sortBy="#{cliente.partitaIva}"
