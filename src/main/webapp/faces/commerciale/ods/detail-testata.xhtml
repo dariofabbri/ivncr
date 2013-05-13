@@ -2,7 +2,8 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
 	
 	<p:panelGrid styleClass="multi-col-layout" id="testataPanel">
 		
@@ -290,45 +291,53 @@
 		
 						<p:ajax event="rowUnselect" update=":detailForm:selectContrattoDialogButtons"/>
 
-						<p:column headerText="Codice contratto" sortBy="#{contratto.codice}"
+						<p:column headerText="Contratto" sortBy="#{contratto.codice}"
 							filterBy="#{contratto.codice}">
 							<h:outputText value="#{contratto.codice}" />
 						</p:column>
 		
 						<p:column headerText="Alias" sortBy="#{contratto.alias}"
 							filterBy="#{contratto.alias}">
-							<h:outputText value="#{contratto.alias}" />
+							<h:outputText id="textAlias" value="#{contratto.alias}">
+								<f:converter converterId="stringShortener"/>
+								<f:attribute name="length" value="25"/>
+							</h:outputText>
+							<pe:tooltip for="textAlias" atPosition="bottom left" value="#{contratto.alias}"/>
 						</p:column>
 		
-						<p:column headerText="Codice cliente" sortBy="#{contratto.cliente.codice}"
+						<p:column headerText="Cliente" sortBy="#{contratto.cliente.codice}"
 							filterBy="#{contratto.cliente.codice}">
 							<h:outputText value="#{contratto.cliente.codice}" />
 						</p:column>
 		
 						<p:column headerText="Ragione sociale" sortBy="#{contratto.ragioneSociale}"
 							filterBy="#{contratto.ragioneSociale}">
-							<h:outputText value="#{contratto.ragioneSociale}" />
+							<h:outputText id="textRagioneSociale" value="#{contratto.ragioneSociale}">
+								<f:converter converterId="stringShortener"/>
+								<f:attribute name="length" value="60"/>
+							</h:outputText>
+							<pe:tooltip for="textRagioneSociale" atPosition="bottom left" value="#{contratto.ragioneSociale}"/>
 						</p:column>
 		
-						<p:column headerText="Data contratto">
+						<p:column headerText="Contratto">
 							<h:outputText value="#{contratto.dataContratto}">
 								<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
 							</h:outputText>
 						</p:column>
 		
-						<p:column headerText="Data decorrenza">
+						<p:column headerText="Decorrenza">
 							<h:outputText value="#{contratto.dataDecorrenza}">
 								<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
 							</h:outputText>
 						</p:column>
 		
-						<p:column headerText="Data termine">
+						<p:column headerText="Termine">
 							<h:outputText value="#{contratto.dataTermine}">
 								<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
 							</h:outputText>
 						</p:column>
 		
-						<p:column headerText="Data cessazione">
+						<p:column headerText="Cessazione">
 							<h:outputText value="#{contratto.dataCessazione}">
 								<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
 							</h:outputText>

@@ -80,12 +80,7 @@
 						<f:converter converterId="stringShortener"/>
 						<f:attribute name="length" value="60"/>
 					</h:outputText>
-					<pe:tooltip for="textRagioneSociale" atPosition="bottom left">
-						<h:outputText value="#{cliente.ragioneSociale}" escape="false">
-							<f:converter converterId="stringWrapper"/>
-							<f:attribute name="length" value="60"/>
-						</h:outputText>
-					</pe:tooltip>
+					<pe:tooltip for="textRagioneSociale" atPosition="bottom left" value="#{cliente.ragioneSociale}"/>
 				</p:column>
 				
 				<p:column headerText="Partita IVA" sortBy="#{cliente.partitaIva}"

@@ -3,6 +3,7 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
 	xmlns:readonly="http://java.sun.com/jsf/composite/components/readonly">
 
 <ui:composition template="/WEB-INF/templates/main.xhtml">
@@ -74,23 +75,27 @@
 			    	Lista degli ordini di servizio
 			    </f:facet>
 
-				<p:column headerText="Oneroso" sortBy="#{ods.oneroso}" style="text-align: center; width: 50px;">
+				<p:column headerText="One." sortBy="#{ods.oneroso}" style="text-align: center; width: 30px;">
 					<readonly:checkbox value="#{ods.oneroso}" />
 				</p:column>
 
-				<p:column headerText="Codice contratto" sortBy="#{ods.contratto.codice}"
+				<p:column headerText="Contratto" sortBy="#{ods.contratto.codice}"
 					filterBy="#{ods.contratto.codice}">
 					<h:outputText value="#{ods.contratto.codice}" />
 				</p:column>
 
-				<p:column headerText="Codice OdS" sortBy="#{ods.codice}"
+				<p:column headerText="OdS" sortBy="#{ods.codice}"
 					filterBy="#{ods.codice}">
 					<h:outputText value="#{ods.codice}" />
 				</p:column>
 
 				<p:column headerText="Alias" sortBy="#{ods.alias}"
 					filterBy="#{ods.alias}">
-					<h:outputText value="#{ods.alias}" />
+					<h:outputText id="textAlias" value="#{ods.alias}">
+						<f:converter converterId="stringShortener"/>
+						<f:attribute name="length" value="25"/>
+					</h:outputText>
+					<pe:tooltip for="textAlias" atPosition="bottom left" value="#{ods.alias}"/>
 				</p:column>
 
 				<p:column headerText="Tipo servizio" sortBy="#{ods.tipoServizio.descrizione}"
@@ -105,7 +110,11 @@
 
 				<p:column headerText="Obiettivo servizio" sortBy="#{ods.obiettivoServizio.alias}"
 					filterBy="#{ods.obiettivoServizio.alias}">
-					<h:outputText value="#{ods.obiettivoServizio.alias}" />
+					<h:outputText id="textObiettivoServizio" value="#{ods.obiettivoServizio.alias}">
+						<f:converter converterId="stringShortener"/>
+						<f:attribute name="length" value="25"/>
+					</h:outputText>
+					<pe:tooltip for="textObiettivoServizio" atPosition="bottom left" value="#{ods.obiettivoServizio.alias}"/>
 				</p:column>
 
 			</p:dataTable>
