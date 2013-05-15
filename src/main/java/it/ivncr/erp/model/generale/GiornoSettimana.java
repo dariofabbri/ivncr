@@ -28,6 +28,8 @@ public class GiornoSettimana implements Serializable {
 	public static final Integer SABATO = 6;
 	public static final Integer DOMENICA = 7;
 	public static final Integer FESTIVI = 8;
+	public static final Integer PREFESTIVI = 9;
+
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "gen_giorno_settimana_id_seq")
