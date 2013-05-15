@@ -38,15 +38,21 @@
 					icon="ui-icon-star" />
 
 				<p:commandButton 
-					value="Elimina OdS selezionato"
+					value="Elimina OdS"
 					disabled="#{empty gestioneOds.selected}"
 					onclick="deleteDialog.show();"
 					icon="ui-icon-trash" />
 
 				<p:commandButton 
-					value="Modifica OdS selezionato"
+					value="Modifica OdS"
 					disabled="#{empty gestioneOds.selected}"
 					action="#{gestioneOds.startUpdate}"
+					icon="ui-icon-pencil" />
+
+				<p:commandButton 
+					value="Var. contrattuale"
+					disabled="#{gestioneOds.variazioneContrattualeDisabled()}"
+					action="#{gestioneOds.startVariazioneContrattuale}"
 					icon="ui-icon-pencil" />
 
 			</p:outputPanel>

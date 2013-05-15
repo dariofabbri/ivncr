@@ -59,6 +59,7 @@ public class DettaglioOdsGenerale extends Observable implements Serializable {
 
 	private Integer id;
 	private Integer contrattoId;
+	private Integer parentId;
 	private Boolean oneroso;
 	private Integer codiceTipoOrdineServizio;
 
@@ -295,6 +296,44 @@ public class DettaglioOdsGenerale extends Observable implements Serializable {
 				ContrattoService cos = ServiceFactory.createService("Contratto");
 				contratto = cos.retrieve(contrattoId);
 
+				populateObiettivoServizio();
+			}
+
+			// If a variazione contrattuale has been requested, apply proper processing.
+			//
+			if(codiceTipoOrdineServizio.equals(TipoOrdineServizio.VAR_CONTRATTUALE)) {
+
+				// Retrieve specified parent OdS.
+				//
+				OrdineServizio parentOds = oss.retrieveDeep(parentId);
+				if(parentOds == null) {
+					String msg = "Unable to find specified parent OdS.";
+					logger.error(msg);
+					throw new RuntimeException(msg);
+				}
+				if(
+						!parentOds.getTipoOrdineServizio().getId().equals(TipoOrdineServizio.NUOVA_ATTIVAZIONE) &&
+						!parentOds.getTipoOrdineServizio().getId().equals(TipoOrdineServizio.VAR_CONTRATTUALE)) {
+					String msg = "A new variazione contrattuale can only be created starting from nuova attivazione or another variazione contrattuale.";
+					logger.error(msg);
+					throw new RuntimeException(msg);
+				}
+
+				// Set up cloned fields.
+				//
+				contratto = parentOds.getContratto();
+				codiceTipoServizio = parentOds.getTipoServizio() != null ? parentOds.getTipoServizio().getId() : null;
+				codiceSpecificaServizio = parentOds.getSpecificaServizio() != null ? parentOds.getSpecificaServizio().getId() : null;
+				codiceObiettivoServizio = parentOds.getObiettivoServizio() != null ? parentOds.getObiettivoServizio().getId() : null;
+				oneroso = parentOds.getOneroso();
+				padre = parentOds;
+				nuovaAttivazione = parentOds.getTipoOrdineServizio().getId().equals(TipoOrdineServizio.NUOVA_ATTIVAZIONE) ? parentOds : parentOds.getNuovaAttivazione();
+
+
+				// After having loaded the entity, it is possible to populate the
+				// lists using the current value of tipo servizio and of contratto.
+				//
+				populateSpecificaServizio();
 				populateObiettivoServizio();
 			}
 		}
@@ -612,6 +651,16 @@ public class DettaglioOdsGenerale extends Observable implements Serializable {
 	}
 
 
+	public boolean isServizioFrozen() {
+
+		if(id != null) {
+			return true;
+		}
+
+		return !codiceTipoOrdineServizio.equals(TipoOrdineServizio.NUOVA_ATTIVAZIONE);
+	}
+
+
 	public LoginInfo getLoginInfo() {
 		return loginInfo;
 	}
@@ -634,6 +683,14 @@ public class DettaglioOdsGenerale extends Observable implements Serializable {
 
 	public void setContrattoId(Integer contrattoId) {
 		this.contrattoId = contrattoId;
+	}
+
+	public Integer getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(Integer parentId) {
+		this.parentId = parentId;
 	}
 
 	public Boolean getOneroso() {

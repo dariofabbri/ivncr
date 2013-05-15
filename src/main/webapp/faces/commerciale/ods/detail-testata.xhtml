@@ -62,6 +62,7 @@
 							<p:selectOneMenu
 								required="true" 
 								requiredMessage="Il campo tipo servizio è obbligatorio"
+								disabled="#{dettaglioOdsGenerale.isServizioFrozen()}"
 								id="codiceTipoServizio" 
 								value="#{dettaglioOdsGenerale.codiceTipoServizio}"
 								effect="fade">
@@ -83,6 +84,7 @@
 							<p:selectOneMenu
 								required="true" 
 								requiredMessage="Il campo specifica del servizio è obbligatorio"
+								disabled="#{dettaglioOdsGenerale.isServizioFrozen()}"
 								id="codiceSpecificaServizio" 
 								value="#{dettaglioOdsGenerale.codiceSpecificaServizio}"
 								effect="fade">
@@ -103,6 +105,7 @@
 							<p:selectOneMenu
 								required="true" 
 								requiredMessage="Il campo obiettivo di servizio è obbligatorio"
+								disabled="#{dettaglioOdsGenerale.isServizioFrozen()}"
 								id="codiceObiettivoServizio" 
 								value="#{dettaglioOdsGenerale.codiceObiettivoServizio}"
 								effect="fade">

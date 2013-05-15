@@ -92,6 +92,12 @@ public class GestioneOds implements Serializable {
 		return "detail?faces-redirect=true&oneroso=" + oneroso + "&codiceTipoOrdineServizio=" + TipoOrdineServizio.NUOVA_ATTIVAZIONE;
 	}
 
+	public String startVariazioneContrattuale() {
+
+		logger.debug("Moving to detail page for new record creation (variazione contrattuale).");
+		return "detail?faces-redirect=true&codiceTipoOrdineServizio=" + TipoOrdineServizio.VAR_CONTRATTUALE + "&parentId=" + selected.getId();
+	}
+
 	public String startUpdate() {
 
 		if(selected == null) {
@@ -101,6 +107,17 @@ public class GestioneOds implements Serializable {
 
 		logger.debug("Moving to detail page for record update.");
 		return "detail?faces-redirect=true&id=" + selected.getId();
+	}
+
+	public boolean variazioneContrattualeDisabled() {
+
+		if(selected == null) {
+			return true;
+		}
+
+		return
+				!selected.getTipoOrdineServizio().getId().equals(TipoOrdineServizio.NUOVA_ATTIVAZIONE) &&
+				!selected.getTipoOrdineServizio().getId().equals(TipoOrdineServizio.VAR_CONTRATTUALE);
 	}
 
 	public LoginInfo getLoginInfo() {
