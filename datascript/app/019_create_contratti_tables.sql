@@ -16,6 +16,7 @@ INSERT INTO app.gen_giorno_settimana (id, descrizione) VALUES (5, 'Venerdì');
 INSERT INTO app.gen_giorno_settimana (id, descrizione) VALUES (6, 'Sabato');
 INSERT INTO app.gen_giorno_settimana (id, descrizione) VALUES (7, 'Domenica');
 INSERT INTO app.gen_giorno_settimana (id, descrizione) VALUES (8, 'Festivi');
+INSERT INTO app.gen_giorno_settimana (id, descrizione) VALUES (9, 'Prefestivi');
 SELECT setval('app.gen_giorno_settimana_id_seq', (SELECT MAX(id) FROM app.gen_giorno_settimana));
 
 
