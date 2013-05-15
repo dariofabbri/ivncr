@@ -55,6 +55,12 @@
 					action="#{gestioneOds.startVariazioneContrattuale}"
 					icon="ui-icon-pencil" />
 
+				<p:commandButton 
+					value="Var. occasionale"
+					disabled="#{gestioneOds.variazioneOccasionaleDisabled()}"
+					action="#{gestioneOds.startVariazioneOccasionale}"
+					icon="ui-icon-pencil" />
+
 			</p:outputPanel>
 
 			<p:dataTable 

@@ -7,7 +7,10 @@ import it.ivncr.erp.model.commerciale.contratto.RaggruppamentoFatturazione;
 import it.ivncr.erp.model.commerciale.contratto.SpecificaServizio;
 import it.ivncr.erp.model.commerciale.contratto.Tariffa;
 import it.ivncr.erp.model.commerciale.contratto.TipoServizio;
+import it.ivncr.erp.model.commerciale.ods.OdsApparecchiatura;
 import it.ivncr.erp.model.commerciale.ods.OdsFrazionamento;
+import it.ivncr.erp.model.commerciale.ods.OdsOrariCalendario;
+import it.ivncr.erp.model.commerciale.ods.OdsOrariRicorrenti;
 import it.ivncr.erp.model.commerciale.ods.OrdineServizio;
 import it.ivncr.erp.model.commerciale.ods.TipoOrdineServizio;
 import it.ivncr.erp.model.generale.Azienda;
@@ -181,10 +184,9 @@ public class OrdineServizioServiceImpl extends AbstractService implements Ordine
 	}
 
 	@Override
-	public OrdineServizio create(
+	public OrdineServizio createNuovaAttivazione(
 			Integer codiceContratto,
 			String alias,
-			Integer codiceTipoOrdineServizio,
 			Date dataDecorrenza,
 			Date dataTermine,
 			Date dataFineValidita,
@@ -200,7 +202,7 @@ public class OrdineServizioServiceImpl extends AbstractService implements Ordine
 		// Fetch referred entities.
 		//
 		Contratto contratto = (Contratto)session.get(Contratto.class, codiceContratto);
-		TipoOrdineServizio tipoOrdineServizio = (TipoOrdineServizio)session.get(TipoOrdineServizio.class, codiceTipoOrdineServizio);
+		TipoOrdineServizio tipoOrdineServizio = (TipoOrdineServizio)session.get(TipoOrdineServizio.class, TipoOrdineServizio.NUOVA_ATTIVAZIONE);
 		TipoServizio tipoServizio = (TipoServizio)session.get(TipoServizio.class, codiceTipoServizio);
 		SpecificaServizio specificaServizio = (SpecificaServizio)session.get(SpecificaServizio.class, codiceSpecificaServizio);
 		ObiettivoServizio obiettivoServizio = (ObiettivoServizio)session.get(ObiettivoServizio.class, codiceObiettivoServizio);
@@ -246,51 +248,56 @@ public class OrdineServizioServiceImpl extends AbstractService implements Ordine
 		return ordineServizio;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public OrdineServizio update(
-			Integer id,
-			String alias,
+	public OrdineServizio createVariazione(
+			Integer codicePadre,
 			Integer codiceTipoOrdineServizio,
+			String alias,
 			Date dataDecorrenza,
 			Date dataTermine,
 			Date dataFineValidita,
 			Date orarioFineValidita,
-			Integer codiceTipoServizio,
-			Integer codiceSpecificaServizio,
-			Integer codiceObiettivoServizio,
-			Integer codiceTariffa,
-			Integer codiceCanone,
-			Boolean oneroso,
-			Integer codiceRaggruppamentoFatturazione,
 			Boolean cessato) {
 
-		OrdineServizio ordineServizio = retrieve(id);
-		if(ordineServizio == null) {
-			String message = String.format("It has not been possible to retrieve specified entity: %d", id);
+		Date now = new Date();
+
+		// Fetch padre.
+		//
+		OrdineServizio padre = retrieve(codicePadre);
+		if(padre == null) {
+			String message = String.format("It has not been possible to retrieve specified entity: %d", codicePadre);
 			logger.info(message);
 			throw new NotFoundException(message);
 		}
 
-		// Audit call for the update operation.
-		//
-		AuditUtil.log(Operation.Update, Snapshot.Source, ordineServizio);
-
 		// Fetch referred entities.
 		//
+		Contratto contratto = padre.getContratto();
 		TipoOrdineServizio tipoOrdineServizio = (TipoOrdineServizio)session.get(TipoOrdineServizio.class, codiceTipoOrdineServizio);
-		TipoServizio tipoServizio = (TipoServizio)session.get(TipoServizio.class, codiceTipoServizio);
-		SpecificaServizio specificaServizio = (SpecificaServizio)session.get(SpecificaServizio.class, codiceSpecificaServizio);
-		ObiettivoServizio obiettivoServizio = (ObiettivoServizio)session.get(ObiettivoServizio.class, codiceObiettivoServizio);
-		Tariffa tariffa = (Tariffa)session.get(Tariffa.class, codiceTariffa);
-		Canone canone = (Canone)session.get(Canone.class, codiceCanone);
-		RaggruppamentoFatturazione raggruppamentoFatturazione = (RaggruppamentoFatturazione)session.get(RaggruppamentoFatturazione.class, codiceRaggruppamentoFatturazione);
+		TipoServizio tipoServizio = padre.getTipoServizio();
+		SpecificaServizio specificaServizio = padre.getSpecificaServizio();
+		ObiettivoServizio obiettivoServizio = padre.getObiettivoServizio();
+		OrdineServizio nuovaAttivazione = padre.getTipoOrdineServizio().getId().equals(TipoOrdineServizio.NUOVA_ATTIVAZIONE) ? padre : padre.getNuovaAttivazione();
 
 
-		Date now = new Date();
+		// Create the new entity.
+		//
+		OrdineServizio ordineServizio = new OrdineServizio();
+
+		// Retrieve next codice.
+		//
+		GregorianCalendar gc = new GregorianCalendar();
+		gc.setTime(now);
+		String codice = retrieveNextCodice(contratto.getCliente().getAzienda().getId(), gc.get(Calendar.YEAR));
 
 		// Set entity fields.
 		//
+		ordineServizio.setContratto(contratto);
 		ordineServizio.setTipoOrdineServizio(tipoOrdineServizio);
+		ordineServizio.setNuovaAttivazione(nuovaAttivazione);
+		ordineServizio.setPadre(padre);
+		ordineServizio.setCodice(codice);
 		ordineServizio.setAlias(alias);
 		ordineServizio.setDataDecorrenza(dataDecorrenza);
 		ordineServizio.setDataTermine(dataTermine);
@@ -299,20 +306,110 @@ public class OrdineServizioServiceImpl extends AbstractService implements Ordine
 		ordineServizio.setTipoServizio(tipoServizio);
 		ordineServizio.setSpecificaServizio(specificaServizio);
 		ordineServizio.setObiettivoServizio(obiettivoServizio);
-		ordineServizio.setTariffa(tariffa);
-		ordineServizio.setCanone(canone);
-		ordineServizio.setOneroso(oneroso);
-		ordineServizio.setRaggruppamentoFatturazione(raggruppamentoFatturazione);
+		ordineServizio.setOneroso(padre.getOneroso());
 		ordineServizio.setCessato(cessato);
 
+		ordineServizio.setTariffa(padre.getTariffa());
+		ordineServizio.setCanone(padre.getCanone());
+		ordineServizio.setRaggruppamentoFatturazione(padre.getRaggruppamentoFatturazione());
+		ordineServizio.setOsservazioniFattura(padre.getOsservazioniFattura());
+		ordineServizio.setNote(padre.getNote());
+		ordineServizio.setModalitaOperative(padre.getModalitaOperative());
+
+		ordineServizio.setCreazione(now);
 		ordineServizio.setUltimaModifica(now);
 
-		session.update(ordineServizio);
-		logger.debug("Entity successfully updated.");
-
-		// Audit call for the update operation.
+		// Persist the entity to the database.
 		//
-		AuditUtil.log(Operation.Update, Snapshot.Destination, ordineServizio);
+		session.save(ordineServizio);
+		logger.debug("Ordine servizio successfully created.");
+
+		// Process frazionamento.
+		//
+		String hql =
+				"from OdsFrazionamento odf " +
+				"where odf.ordineServizio.id = :id ";
+		Query query = session.createQuery(hql);
+		query.setParameter("id", padre.getId());
+		List<OdsFrazionamento> listFrazionamento = query.list();
+		for(OdsFrazionamento src : listFrazionamento) {
+			OdsFrazionamento dst = new OdsFrazionamento();
+			dst.setOrdineServizio(ordineServizio);
+			dst.setCliente(src.getCliente());
+			dst.setQuota(src.getQuota());
+			dst.setEsclusioneRitenutaGaranzia(src.getEsclusioneRitenutaGaranzia());
+			session.save(dst);
+		}
+
+		// Process orari ricorrenti.
+		//
+		hql =
+				"from OdsOrariRicorrenti oor " +
+				"where oor.ordineServizio.id = :id ";
+		query = session.createQuery(hql);
+		query.setParameter("id", padre.getId());
+		List<OdsOrariRicorrenti> listOrariRicorrenti = query.list();
+		for(OdsOrariRicorrenti src : listOrariRicorrenti) {
+			OdsOrariRicorrenti dst = new OdsOrariRicorrenti();
+			dst.setOrdineServizio(ordineServizio);
+			dst.setGiornoSettimana(src.getGiornoSettimana());
+			dst.setEsclusoFestivo(src.getEsclusoFestivo());
+			dst.setQuantita1(src.getQuantita1());
+			dst.setOrarioInizio1(src.getOrarioInizio1());
+			dst.setOrarioFine1(src.getOrarioFine1());
+			dst.setQuantita2(src.getQuantita2());
+			dst.setOrarioInizio2(src.getOrarioInizio2());
+			dst.setOrarioFine2(src.getOrarioFine2());
+			dst.setQuantita3(src.getQuantita3());
+			dst.setOrarioInizio3(src.getOrarioInizio3());
+			dst.setOrarioFine3(src.getOrarioFine3());
+			session.save(dst);
+		}
+
+		// Process orari calendario.
+		//
+		hql =
+				"from OdsOrariCalendario ooc " +
+				"where ooc.ordineServizio.id = :id ";
+		query = session.createQuery(hql);
+		query.setParameter("id", padre.getId());
+		List<OdsOrariCalendario> listOrariCalendario = query.list();
+		for(OdsOrariCalendario src : listOrariCalendario) {
+			OdsOrariCalendario dst = new OdsOrariCalendario();
+			dst.setOrdineServizio(ordineServizio);
+			dst.setDataServizio(src.getDataServizio());
+			dst.setQuantita1(src.getQuantita1());
+			dst.setOrarioInizio1(src.getOrarioInizio1());
+			dst.setOrarioFine1(src.getOrarioFine1());
+			dst.setQuantita2(src.getQuantita2());
+			dst.setOrarioInizio2(src.getOrarioInizio2());
+			dst.setOrarioFine2(src.getOrarioFine2());
+			dst.setQuantita3(src.getQuantita3());
+			dst.setOrarioInizio3(src.getOrarioInizio3());
+			dst.setOrarioFine3(src.getOrarioFine3());
+			session.save(dst);
+		}
+
+		// Process apparecchiatura.
+		//
+		hql =
+				"from OdsApparecchiatura oap " +
+				"left join fetch oap.apparecchiaturaTecnologica ate " +
+				"where oap.ordineServizio.id = :id ";
+		query = session.createQuery(hql);
+		query.setParameter("id", padre.getId());
+		List<OdsApparecchiatura> listApparecchiatura = query.list();
+		for(OdsApparecchiatura src : listApparecchiatura) {
+			OdsApparecchiatura dst = new OdsApparecchiatura();
+			dst.setOrdineServizio(ordineServizio);
+			dst.setApparecchiaturaTecnologica(src.getApparecchiaturaTecnologica());
+			session.save(dst);
+		}
+
+
+		// Audit call for the create operation.
+		//
+		AuditUtil.log(Operation.Create, Snapshot.Destination, ordineServizio);
 
 		return ordineServizio;
 	}
@@ -321,14 +418,10 @@ public class OrdineServizioServiceImpl extends AbstractService implements Ordine
 	public OrdineServizio updateTestata(
 			Integer id,
 			String alias,
-			Integer codiceTipoOrdineServizio,
 			Date dataDecorrenza,
 			Date dataTermine,
 			Date dataFineValidita,
 			Date orarioFineValidita,
-			Integer codiceTipoServizio,
-			Integer codiceSpecificaServizio,
-			Integer codiceObiettivoServizio,
 			Boolean cessato) {
 
 		OrdineServizio ordineServizio = retrieve(id);
@@ -342,27 +435,16 @@ public class OrdineServizioServiceImpl extends AbstractService implements Ordine
 		//
 		AuditUtil.log(Operation.Update, Snapshot.Source, ordineServizio);
 
-		// Fetch referred entities.
-		//
-		TipoOrdineServizio tipoOrdineServizio = (TipoOrdineServizio)session.get(TipoOrdineServizio.class, codiceTipoOrdineServizio);
-		TipoServizio tipoServizio = (TipoServizio)session.get(TipoServizio.class, codiceTipoServizio);
-		SpecificaServizio specificaServizio = (SpecificaServizio)session.get(SpecificaServizio.class, codiceSpecificaServizio);
-		ObiettivoServizio obiettivoServizio = (ObiettivoServizio)session.get(ObiettivoServizio.class, codiceObiettivoServizio);
-
 
 		Date now = new Date();
 
 		// Set entity fields.
 		//
-		ordineServizio.setTipoOrdineServizio(tipoOrdineServizio);
 		ordineServizio.setAlias(alias);
 		ordineServizio.setDataDecorrenza(dataDecorrenza);
 		ordineServizio.setDataTermine(dataTermine);
 		ordineServizio.setDataFineValidita(dataFineValidita);
 		ordineServizio.setOrarioFineValidita(orarioFineValidita);
-		ordineServizio.setTipoServizio(tipoServizio);
-		ordineServizio.setSpecificaServizio(specificaServizio);
-		ordineServizio.setObiettivoServizio(obiettivoServizio);
 		ordineServizio.setCessato(cessato);
 
 		ordineServizio.setUltimaModifica(now);

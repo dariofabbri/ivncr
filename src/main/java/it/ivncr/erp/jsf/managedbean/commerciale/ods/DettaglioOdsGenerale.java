@@ -205,6 +205,54 @@ public class DettaglioOdsGenerale extends Observable implements Serializable {
 	}
 
 
+	private void refreshStatus(Integer id) {
+
+		OrdineServizioService oss = ServiceFactory.createService("OrdineServizio");
+
+		OrdineServizio ods = oss.retrieveDeep(id);
+
+		contratto = ods.getContratto();
+
+		codiceTipoOrdineServizio = ods.getTipoOrdineServizio() != null ? ods.getTipoOrdineServizio().getId() : null;
+		padre = ods.getPadre();
+		nuovaAttivazione = ods.getNuovaAttivazione();
+		codice = ods.getCodice();
+		alias = ods.getAlias();
+		dataDecorrenza = ods.getDataDecorrenza();
+		dataTermine = ods.getDataTermine();
+		dataFineValidita = ods.getDataFineValidita();
+		orarioFineValidita = ods.getOrarioFineValidita();
+		codiceTipoServizio = ods.getTipoServizio() != null ? ods.getTipoServizio().getId() : null;
+		codiceSpecificaServizio = ods.getSpecificaServizio() != null ? ods.getSpecificaServizio().getId() : null;
+		codiceObiettivoServizio = ods.getObiettivoServizio() != null ? ods.getObiettivoServizio().getId() : null;
+		cessato = ods.getCessato();
+
+		oneroso = ods.getOneroso();
+		codiceTariffa = ods.getTariffa() != null ? ods.getTariffa().getId() : null;
+		codiceCanone = ods.getCanone() != null ? ods.getCanone().getId() : null;
+		codiceRaggruppamentoFatturazione = ods.getRaggruppamentoFatturazione() != null ? ods.getRaggruppamentoFatturazione().getId() : null;
+		osservazioniFattura = ods.getOsservazioniFattura();
+
+
+		// After having loaded the entity, it is possible to populate the
+		// lists using the current value of tipo servizio and of contratto.
+		//
+		populateSpecificaServizio();
+		populateObiettivoServizio();
+
+
+		// Load available canone and tariffa items.
+		//
+		listTariffa = oss.listAvailableTariffa(id);
+		listCanone = oss.listAvailableCanone(id);
+
+		// Load frazionamento.
+		//
+		OdsFrazionamentoService ofs = ServiceFactory.createService("OdsFrazionamento");
+		listOdsFrazionamento = ofs.listByOrdineServizio(id);
+
+	}
+
 	public void init() {
 
 		// Skip processing for ajax calls.
@@ -228,55 +276,13 @@ public class DettaglioOdsGenerale extends Observable implements Serializable {
 		listRaggruppamentoFatturazione = lutService.listItems("RaggruppamentoFatturazione");
 
 
-		OrdineServizioService oss = ServiceFactory.createService("OrdineServizio");
 
 		// If we are editing an existing record, it is time to fetch
 		// it from the database and fill in the bean fields.
 		//
 		if(id != null) {
 
-			OrdineServizio ods = oss.retrieveDeep(id);
-
-			contratto = ods.getContratto();
-
-			codiceTipoOrdineServizio = ods.getTipoOrdineServizio() != null ? ods.getTipoOrdineServizio().getId() : null;
-			padre = ods.getPadre();
-			nuovaAttivazione = ods.getNuovaAttivazione();
-			codice = ods.getCodice();
-			alias = ods.getAlias();
-			dataDecorrenza = ods.getDataDecorrenza();
-			dataTermine = ods.getDataTermine();
-			dataFineValidita = ods.getDataFineValidita();
-			orarioFineValidita = ods.getOrarioFineValidita();
-			codiceTipoServizio = ods.getTipoServizio() != null ? ods.getTipoServizio().getId() : null;
-			codiceSpecificaServizio = ods.getSpecificaServizio() != null ? ods.getSpecificaServizio().getId() : null;
-			codiceObiettivoServizio = ods.getObiettivoServizio() != null ? ods.getObiettivoServizio().getId() : null;
-			cessato = ods.getCessato();
-
-			oneroso = ods.getOneroso();
-			codiceTariffa = ods.getTariffa() != null ? ods.getTariffa().getId() : null;
-			codiceCanone = ods.getCanone() != null ? ods.getCanone().getId() : null;
-			codiceRaggruppamentoFatturazione = ods.getRaggruppamentoFatturazione() != null ? ods.getRaggruppamentoFatturazione().getId() : null;
-			osservazioniFattura = ods.getOsservazioniFattura();
-
-
-			// After having loaded the entity, it is possible to populate the
-			// lists using the current value of tipo servizio and of contratto.
-			//
-			populateSpecificaServizio();
-			populateObiettivoServizio();
-
-
-			// Load available canone and tariffa items.
-			//
-			listTariffa = oss.listAvailableTariffa(id);
-			listCanone = oss.listAvailableCanone(id);
-
-			// Load frazionamento.
-			//
-			OdsFrazionamentoService ofs = ServiceFactory.createService("OdsFrazionamento");
-			listOdsFrazionamento = ofs.listByOrdineServizio(id);
-
+			refreshStatus(id);
 			logger.debug("Initialization loaded ordine servizio details.");
 		}
 
@@ -284,6 +290,8 @@ public class DettaglioOdsGenerale extends Observable implements Serializable {
 		// next value in contatore table.
 		//
 		else {
+
+			OrdineServizioService oss = ServiceFactory.createService("OrdineServizio");
 
 			GregorianCalendar now = new GregorianCalendar();
 			Integer anno = now.get(Calendar.YEAR);
@@ -328,6 +336,47 @@ public class DettaglioOdsGenerale extends Observable implements Serializable {
 				oneroso = parentOds.getOneroso();
 				padre = parentOds;
 				nuovaAttivazione = parentOds.getTipoOrdineServizio().getId().equals(TipoOrdineServizio.NUOVA_ATTIVAZIONE) ? parentOds : parentOds.getNuovaAttivazione();
+
+
+				// After having loaded the entity, it is possible to populate the
+				// lists using the current value of tipo servizio and of contratto.
+				//
+				populateSpecificaServizio();
+				populateObiettivoServizio();
+			}
+
+			// If a variazione occasionale has been requested, apply proper processing.
+			//
+			if(codiceTipoOrdineServizio.equals(TipoOrdineServizio.VAR_OCCASIONALE)) {
+
+				// Retrieve specified parent OdS.
+				//
+				OrdineServizio parentOds = oss.retrieveDeep(parentId);
+				if(parentOds == null) {
+					String msg = "Unable to find specified parent OdS.";
+					logger.error(msg);
+					throw new RuntimeException(msg);
+				}
+				if(
+						!parentOds.getTipoOrdineServizio().getId().equals(TipoOrdineServizio.NUOVA_ATTIVAZIONE) &&
+						!parentOds.getTipoOrdineServizio().getId().equals(TipoOrdineServizio.VAR_CONTRATTUALE) &&
+						!parentOds.getTipoOrdineServizio().getId().equals(TipoOrdineServizio.VAR_OCCASIONALE)) {
+					String msg = "A new variazione contrattuale can only be created starting from nuova attivazione or another variazione contrattuale or a variazione occasionale.";
+					logger.error(msg);
+					throw new RuntimeException(msg);
+				}
+
+				// Set up cloned fields.
+				//
+				contratto = parentOds.getContratto();
+				codiceTipoServizio = parentOds.getTipoServizio() != null ? parentOds.getTipoServizio().getId() : null;
+				codiceSpecificaServizio = parentOds.getSpecificaServizio() != null ? parentOds.getSpecificaServizio().getId() : null;
+				codiceObiettivoServizio = parentOds.getObiettivoServizio() != null ? parentOds.getObiettivoServizio().getId() : null;
+				oneroso = parentOds.getOneroso();
+				padre = parentOds;
+				nuovaAttivazione = parentOds.getTipoOrdineServizio().getId().equals(TipoOrdineServizio.NUOVA_ATTIVAZIONE) ?
+						parentOds :
+						parentOds.getNuovaAttivazione();
 
 
 				// After having loaded the entity, it is possible to populate the
@@ -396,14 +445,10 @@ public class DettaglioOdsGenerale extends Observable implements Serializable {
 				ods = oss.updateTestata(
 						id,
 						alias,
-						codiceTipoOrdineServizio,
 						dataDecorrenza,
 						dataTermine,
 						dataFineValidita,
 						orarioFineValidita,
-						codiceTipoServizio,
-						codiceSpecificaServizio,
-						codiceObiettivoServizio,
 						cessato);
 
 				logger.debug("Entity successfully updated.");
@@ -413,29 +458,37 @@ public class DettaglioOdsGenerale extends Observable implements Serializable {
 			//
 			else {
 
-				ods = oss.create(
-						contratto.getId(),
-						alias,
-						codiceTipoOrdineServizio,
-						dataDecorrenza,
-						dataTermine,
-						dataFineValidita,
-						orarioFineValidita,
-						codiceTipoServizio,
-						codiceSpecificaServizio,
-						codiceObiettivoServizio,
-						oneroso,
-						cessato);
+				if(codiceTipoOrdineServizio.equals(TipoOrdineServizio.NUOVA_ATTIVAZIONE)) {
+					ods = oss.createNuovaAttivazione(
+							contratto.getId(),
+							alias,
+							dataDecorrenza,
+							dataTermine,
+							dataFineValidita,
+							orarioFineValidita,
+							codiceTipoServizio,
+							codiceSpecificaServizio,
+							codiceObiettivoServizio,
+							oneroso,
+							cessato);
+				} else {
+					ods = oss.createVariazione(
+							parentId,
+							codiceTipoOrdineServizio,
+							alias,
+							dataDecorrenza,
+							dataTermine,
+							dataFineValidita,
+							orarioFineValidita,
+							cessato);
+				}
 
 				id = ods.getId();
 				codice = ods.getCodice();
 
 				logger.debug("Entity successfully created.");
 
-				// Load available canone and tariffa items.
-				//
-				listTariffa = oss.listAvailableTariffa(id);
-				listCanone = oss.listAvailableCanone(id);
+				refreshStatus(id);
 			}
 
 			// Everything went fine.
@@ -474,6 +527,33 @@ public class DettaglioOdsGenerale extends Observable implements Serializable {
 					"E' obbligatorio selezionare un contratto.");
 			FacesContext.getCurrentInstance().addMessage("contratto", message);
 			return false;
+		}
+
+		// If the type is variazione occasionale, the range of specified dates must be within
+		// the range of the parent OdS.
+		//
+		if(codiceTipoOrdineServizio.equals(TipoOrdineServizio.VAR_OCCASIONALE)) {
+
+			if(dataDecorrenza.before(padre.getDataDecorrenza())) {
+				FacesMessage message = new FacesMessage(
+						FacesMessage.SEVERITY_ERROR,
+						"Data decorrenza precedente quella dell'ordine di servizio padre.",
+						"In una variazione occasionale la data decorrenza non può precedere quella dell'ordine di servizio padre.");
+				FacesContext.getCurrentInstance().addMessage("dataDecorrenza", message);
+				return false;
+			}
+
+			if(
+					(dataTermine == null && padre.getDataTermine() != null) ||
+					(dataTermine != null && padre.getDataTermine() != null && dataTermine.after(padre.getDataTermine()))) {
+				FacesMessage message = new FacesMessage(
+						FacesMessage.SEVERITY_ERROR,
+						"Data termine successiva a quella dell'ordine di servizio padre.",
+						"In una variazione occasionale la data termine non può essere successiva a quella dell'ordine di servizio padre.");
+				FacesContext.getCurrentInstance().addMessage("dataTermine", message);
+				return false;
+			}
+
 		}
 
 		return true;

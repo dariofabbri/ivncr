@@ -35,10 +35,9 @@ public interface OrdineServizioService extends EntityService<OrdineServizio> {
 	OrdineServizio retrieve(Integer id);
 	OrdineServizio retrieveDeep(Integer id);
 
-	OrdineServizio create(
+	OrdineServizio createNuovaAttivazione(
 			Integer codiceContratto,
 			String alias,
-			Integer codiceTipoOrdineServizio,
 			Date dataDecorrenza,
 			Date dataTermine,
 			Date dataFineValidita,
@@ -49,34 +48,23 @@ public interface OrdineServizioService extends EntityService<OrdineServizio> {
 			Boolean oneroso,
 			Boolean cessato);
 
-	OrdineServizio update(
-			Integer id,
-			String alias,
+	OrdineServizio createVariazione(
+			Integer codicePadre,
 			Integer codiceTipoOrdineServizio,
+			String alias,
 			Date dataDecorrenza,
 			Date dataTermine,
 			Date dataFineValidita,
 			Date orarioFineValidita,
-			Integer codiceTipoServizio,
-			Integer codiceSpecificaServizio,
-			Integer codiceObiettivoServizio,
-			Integer codiceTariffa,
-			Integer codiceCanone,
-			Boolean oneroso,
-			Integer codiceRaggruppamentoFatturazione,
 			Boolean cessato);
 
 	OrdineServizio updateTestata(
 			Integer id,
 			String alias,
-			Integer codiceTipoOrdineServizio,
 			Date dataDecorrenza,
 			Date dataTermine,
 			Date dataFineValidita,
 			Date orarioFineValidita,
-			Integer codiceTipoServizio,
-			Integer codiceSpecificaServizio,
-			Integer codiceObiettivoServizio,
 			Boolean cessato);
 
 	OrdineServizio updateFatturazione(
