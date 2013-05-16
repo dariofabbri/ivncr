@@ -271,6 +271,25 @@ public class OrdineServizioServiceImpl extends AbstractService implements Ordine
 			throw new NotFoundException(message);
 		}
 
+		// Check dates (when applicable).
+		//
+		if(codiceTipoOrdineServizio.equals(TipoOrdineServizio.VAR_OCCASIONALE)) {
+
+			if(dataDecorrenza.before(padre.getDataDecorrenza())) {
+				String message = "The specified dataDecorrenza cannot precede the same field of parent.";
+				logger.info(message);
+				throw new RuntimeException(message);
+			}
+
+			if(
+					(dataTermine == null && padre.getDataTermine() != null) ||
+					(dataTermine != null && padre.getDataTermine() != null && dataTermine.after(padre.getDataTermine()))) {
+				String message = "The specified dataTermine cannot be after the same field of parent.";
+				logger.info(message);
+				throw new RuntimeException(message);
+			}
+		}
+
 		// Fetch referred entities.
 		//
 		Contratto contratto = padre.getContratto();

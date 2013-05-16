@@ -335,7 +335,8 @@ public class DettaglioOdsGenerale extends Observable implements Serializable {
 				codiceObiettivoServizio = parentOds.getObiettivoServizio() != null ? parentOds.getObiettivoServizio().getId() : null;
 				oneroso = parentOds.getOneroso();
 				padre = parentOds;
-				nuovaAttivazione = parentOds.getTipoOrdineServizio().getId().equals(TipoOrdineServizio.NUOVA_ATTIVAZIONE) ? parentOds : parentOds.getNuovaAttivazione();
+				nuovaAttivazione = parentOds.getTipoOrdineServizio().getId().equals(TipoOrdineServizio.NUOVA_ATTIVAZIONE) ?
+						parentOds : parentOds.getNuovaAttivazione();
 
 
 				// After having loaded the entity, it is possible to populate the
@@ -375,8 +376,39 @@ public class DettaglioOdsGenerale extends Observable implements Serializable {
 				oneroso = parentOds.getOneroso();
 				padre = parentOds;
 				nuovaAttivazione = parentOds.getTipoOrdineServizio().getId().equals(TipoOrdineServizio.NUOVA_ATTIVAZIONE) ?
-						parentOds :
-						parentOds.getNuovaAttivazione();
+						parentOds : parentOds.getNuovaAttivazione();
+
+
+				// After having loaded the entity, it is possible to populate the
+				// lists using the current value of tipo servizio and of contratto.
+				//
+				populateSpecificaServizio();
+				populateObiettivoServizio();
+			}
+
+			// If a variazione extra has been requested, apply proper processing.
+			//
+			if(codiceTipoOrdineServizio.equals(TipoOrdineServizio.VAR_EXTRA)) {
+
+				// Retrieve specified parent OdS.
+				//
+				OrdineServizio parentOds = oss.retrieveDeep(parentId);
+				if(parentOds == null) {
+					String msg = "Unable to find specified parent OdS.";
+					logger.error(msg);
+					throw new RuntimeException(msg);
+				}
+
+				// Set up cloned fields.
+				//
+				contratto = parentOds.getContratto();
+				codiceTipoServizio = parentOds.getTipoServizio() != null ? parentOds.getTipoServizio().getId() : null;
+				codiceSpecificaServizio = parentOds.getSpecificaServizio() != null ? parentOds.getSpecificaServizio().getId() : null;
+				codiceObiettivoServizio = parentOds.getObiettivoServizio() != null ? parentOds.getObiettivoServizio().getId() : null;
+				oneroso = parentOds.getOneroso();
+				padre = parentOds;
+				nuovaAttivazione = parentOds.getTipoOrdineServizio().getId().equals(TipoOrdineServizio.NUOVA_ATTIVAZIONE) ?
+						parentOds : parentOds.getNuovaAttivazione();
 
 
 				// After having loaded the entity, it is possible to populate the

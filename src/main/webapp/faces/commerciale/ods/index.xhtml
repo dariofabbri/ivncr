@@ -53,13 +53,19 @@
 					value="Var. contrattuale"
 					disabled="#{gestioneOds.variazioneContrattualeDisabled()}"
 					action="#{gestioneOds.startVariazioneContrattuale}"
-					icon="ui-icon-pencil" />
+					icon="ui-icon-shuffle" />
 
 				<p:commandButton 
 					value="Var. occasionale"
 					disabled="#{gestioneOds.variazioneOccasionaleDisabled()}"
 					action="#{gestioneOds.startVariazioneOccasionale}"
-					icon="ui-icon-pencil" />
+					icon="ui-icon-shuffle" />
+
+				<p:commandButton 
+					value="Var. extra"
+					disabled="#{gestioneOds.variazioneExtraDisabled()}"
+					action="#{gestioneOds.startVariazioneExtra}"
+					icon="ui-icon-shuffle" />
 
 			</p:outputPanel>
 

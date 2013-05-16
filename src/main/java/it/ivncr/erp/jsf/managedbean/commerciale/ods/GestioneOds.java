@@ -104,6 +104,12 @@ public class GestioneOds implements Serializable {
 		return "detail?faces-redirect=true&codiceTipoOrdineServizio=" + TipoOrdineServizio.VAR_OCCASIONALE + "&parentId=" + selected.getId();
 	}
 
+	public String startVariazioneExtra() {
+
+		logger.debug("Moving to detail page for new record creation (variazione extra).");
+		return "detail?faces-redirect=true&codiceTipoOrdineServizio=" + TipoOrdineServizio.VAR_EXTRA + "&parentId=" + selected.getId();
+	}
+
 	public String startUpdate() {
 
 		if(selected == null) {
@@ -136,6 +142,19 @@ public class GestioneOds implements Serializable {
 				!selected.getTipoOrdineServizio().getId().equals(TipoOrdineServizio.NUOVA_ATTIVAZIONE) &&
 				!selected.getTipoOrdineServizio().getId().equals(TipoOrdineServizio.VAR_CONTRATTUALE) &&
 				!selected.getTipoOrdineServizio().getId().equals(TipoOrdineServizio.VAR_OCCASIONALE);
+	}
+
+	public boolean variazioneExtraDisabled() {
+
+		if(selected == null) {
+			return true;
+		}
+
+		return
+				!selected.getTipoOrdineServizio().getId().equals(TipoOrdineServizio.NUOVA_ATTIVAZIONE) &&
+				!selected.getTipoOrdineServizio().getId().equals(TipoOrdineServizio.VAR_CONTRATTUALE) &&
+				!selected.getTipoOrdineServizio().getId().equals(TipoOrdineServizio.VAR_OCCASIONALE) &&
+				!selected.getTipoOrdineServizio().getId().equals(TipoOrdineServizio.VAR_EXTRA);
 	}
 
 	public LoginInfo getLoginInfo() {
