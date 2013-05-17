@@ -228,10 +228,11 @@ INSERT INTO app.con_tipo_apparecchiatura_tecnologica (id, gruppo_apparecchiatura
 INSERT INTO app.con_tipo_apparecchiatura_tecnologica (id, gruppo_apparecchiatura_id, descrizione) VALUES (15, 3, 'GSM');
 INSERT INTO app.con_tipo_apparecchiatura_tecnologica (id, gruppo_apparecchiatura_id, descrizione) VALUES (16, 3, 'GPRS');
 INSERT INTO app.con_tipo_apparecchiatura_tecnologica (id, gruppo_apparecchiatura_id, descrizione) VALUES (17, 3, 'Arcvision');
+INSERT INTO app.con_tipo_apparecchiatura_tecnologica (id, gruppo_apparecchiatura_id, descrizione) VALUES (18, 3, 'Periferica');
 
-INSERT INTO app.con_tipo_apparecchiatura_tecnologica (id, gruppo_apparecchiatura_id, descrizione) VALUES (18, 4, 'Orologio');
-INSERT INTO app.con_tipo_apparecchiatura_tecnologica (id, gruppo_apparecchiatura_id, descrizione) VALUES (19, 4, 'Datix');
-INSERT INTO app.con_tipo_apparecchiatura_tecnologica (id, gruppo_apparecchiatura_id, descrizione) VALUES (20, 4, 'Metal detector');
+INSERT INTO app.con_tipo_apparecchiatura_tecnologica (id, gruppo_apparecchiatura_id, descrizione) VALUES (19, 4, 'Orologio');
+INSERT INTO app.con_tipo_apparecchiatura_tecnologica (id, gruppo_apparecchiatura_id, descrizione) VALUES (20, 4, 'Datix');
+INSERT INTO app.con_tipo_apparecchiatura_tecnologica (id, gruppo_apparecchiatura_id, descrizione) VALUES (21, 4, 'Metal detector');
 SELECT setval('app.con_tipo_apparecchiatura_tecnologica_id_seq', (SELECT MAX(id) FROM app.con_tipo_apparecchiatura_tecnologica));
 
 
@@ -520,7 +521,7 @@ CREATE TABLE app.con_ordine_servizio
 	obiettivo_servizio_id INTEGER NOT NULL REFERENCES app.com_obiettivo_servizio(id),
 	tariffa_id INTEGER REFERENCES app.con_tariffa(id),
 	canone_id INTEGER REFERENCES app.con_canone(id),
-	oneroso BOOLEAN,
+	oneroso BOOLEAN NOT NULL,
 	raggruppamento_fatturazione_id INTEGER REFERENCES app.con_raggruppamento_fatturazione(id),
 	cessato BOOLEAN,
 	note VARCHAR(4000),
