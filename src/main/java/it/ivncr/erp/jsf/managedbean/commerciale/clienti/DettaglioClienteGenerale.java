@@ -423,7 +423,7 @@ public class DettaglioClienteGenerale implements Serializable {
 						FacesMessage.SEVERITY_ERROR,
 						"Errore",
 						"Per una società la partita IVA è un campo obbligatorio.");
-				FacesContext.getCurrentInstance().addMessage("partitaIva", message);
+				FacesContext.getCurrentInstance().addMessage("detailForm:partitaIva", message);
 				return false;
 			}
 
@@ -436,7 +436,7 @@ public class DettaglioClienteGenerale implements Serializable {
 						FacesMessage.SEVERITY_ERROR,
 						"Errore",
 						"Per un privato il campo codice fiscale è un campo obbligatorio.");
-				FacesContext.getCurrentInstance().addMessage("codiceFiscale", message);
+				FacesContext.getCurrentInstance().addMessage("detailForm:codiceFiscale", message);
 				return false;
 			}
 
@@ -447,7 +447,7 @@ public class DettaglioClienteGenerale implements Serializable {
 						FacesMessage.SEVERITY_ERROR,
 						"Errore",
 						"Per un privato è necessario introdurre il codice fiscale personale (alfanumerico).");
-				FacesContext.getCurrentInstance().addMessage("codiceFiscale", message);
+				FacesContext.getCurrentInstance().addMessage("detailForm:codiceFiscale", message);
 				return false;
 			}
 
@@ -460,7 +460,7 @@ public class DettaglioClienteGenerale implements Serializable {
 						FacesMessage.SEVERITY_ERROR,
 						"Errore",
 						"Per un ente il campo codice fiscale è un campo obbligatorio.");
-				FacesContext.getCurrentInstance().addMessage("codiceFiscale", message);
+				FacesContext.getCurrentInstance().addMessage("detailForm:codiceFiscale", message);
 				return false;
 			}
 
@@ -471,7 +471,7 @@ public class DettaglioClienteGenerale implements Serializable {
 						FacesMessage.SEVERITY_ERROR,
 						"Errore",
 						"Per un ente non è possibile specificare il codice fiscale personale (alfanumerico).");
-				FacesContext.getCurrentInstance().addMessage("codiceFiscale", message);
+				FacesContext.getCurrentInstance().addMessage("detailForm:codiceFiscale", message);
 				return false;
 			}
 
@@ -482,7 +482,7 @@ public class DettaglioClienteGenerale implements Serializable {
 						FacesMessage.SEVERITY_ERROR,
 						"Errore",
 						"Per un ente il codice fiscale deve iniziare per 8 o per 9.");
-				FacesContext.getCurrentInstance().addMessage("codiceFiscale", message);
+				FacesContext.getCurrentInstance().addMessage("detailForm:codiceFiscale", message);
 				return false;
 			}
 

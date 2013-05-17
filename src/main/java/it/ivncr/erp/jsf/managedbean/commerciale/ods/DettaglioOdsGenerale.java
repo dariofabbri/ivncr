@@ -557,21 +557,37 @@ public class DettaglioOdsGenerale extends Observable implements Serializable {
 					FacesMessage.SEVERITY_ERROR,
 					"Il campo contratto è obbligatorio",
 					"E' obbligatorio selezionare un contratto.");
-			FacesContext.getCurrentInstance().addMessage("contratto", message);
+			FacesContext.getCurrentInstance().addMessage("detailForm:contratto", message);
 			return false;
 		}
 
-		// If the type is variazione occasionale, the range of specified dates must be within
+		// If the type is variazione extra, the field dataTermine is mandatory.
+		//
+		if(codiceTipoOrdineServizio.equals(TipoOrdineServizio.VAR_EXTRA)) {
+
+			if(dataTermine == null) {
+				FacesMessage message = new FacesMessage(
+						FacesMessage.SEVERITY_ERROR,
+						"Il campo data termine è obbligatorio.",
+						"Per le variazioni extra, il campo data termine è obbligatorio.");
+				FacesContext.getCurrentInstance().addMessage("detailForm:dataTermine", message);
+				return false;
+			}
+
+		}
+
+		// If the type is variazione occasionale or variazione extra, the range of specified dates must be within
 		// the range of the parent OdS.
 		//
-		if(codiceTipoOrdineServizio.equals(TipoOrdineServizio.VAR_OCCASIONALE)) {
+		if(codiceTipoOrdineServizio.equals(TipoOrdineServizio.VAR_OCCASIONALE) ||
+				codiceTipoOrdineServizio.equals(TipoOrdineServizio.VAR_EXTRA)) {
 
 			if(dataDecorrenza.before(padre.getDataDecorrenza())) {
 				FacesMessage message = new FacesMessage(
 						FacesMessage.SEVERITY_ERROR,
 						"Data decorrenza precedente quella dell'ordine di servizio padre.",
 						"In una variazione occasionale la data decorrenza non può precedere quella dell'ordine di servizio padre.");
-				FacesContext.getCurrentInstance().addMessage("dataDecorrenza", message);
+				FacesContext.getCurrentInstance().addMessage("detailForm:dataDecorrenza", message);
 				return false;
 			}
 
@@ -582,7 +598,7 @@ public class DettaglioOdsGenerale extends Observable implements Serializable {
 						FacesMessage.SEVERITY_ERROR,
 						"Data termine successiva a quella dell'ordine di servizio padre.",
 						"In una variazione occasionale la data termine non può essere successiva a quella dell'ordine di servizio padre.");
-				FacesContext.getCurrentInstance().addMessage("dataTermine", message);
+				FacesContext.getCurrentInstance().addMessage("detailForm:dataTermine", message);
 				return false;
 			}
 

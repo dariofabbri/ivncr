@@ -394,6 +394,19 @@ public class OrdineServizioServiceImpl extends AbstractService implements Ordine
 		query.setParameter("id", padre.getId());
 		List<OdsOrariCalendario> listOrariCalendario = query.list();
 		for(OdsOrariCalendario src : listOrariCalendario) {
+
+			// Skip days before data decorrenza.
+			//
+			if(src.getDataServizio().before(dataDecorrenza)) {
+				continue;
+			}
+
+			// Skip days after data termine (if present).
+			//
+			if(dataTermine != null && src.getDataServizio().after(dataTermine)) {
+				continue;
+			}
+
 			OdsOrariCalendario dst = new OdsOrariCalendario();
 			dst.setOrdineServizio(ordineServizio);
 			dst.setDataServizio(src.getDataServizio());

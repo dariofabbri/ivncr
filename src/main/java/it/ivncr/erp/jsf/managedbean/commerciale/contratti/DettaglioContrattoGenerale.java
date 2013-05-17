@@ -287,7 +287,7 @@ public class DettaglioContrattoGenerale implements Serializable {
 					FacesMessage.SEVERITY_ERROR,
 					"Il campo cliente è obbligatorio",
 					"E' obbligatorio selezionare un cliente.");
-			FacesContext.getCurrentInstance().addMessage("cliente", message);
+			FacesContext.getCurrentInstance().addMessage("detailForm:cliente", message);
 			return false;
 		}
 

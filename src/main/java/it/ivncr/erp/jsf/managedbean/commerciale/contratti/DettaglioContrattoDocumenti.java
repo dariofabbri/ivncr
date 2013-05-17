@@ -196,7 +196,7 @@ public class DettaglioContrattoDocumenti implements Serializable {
 							FacesMessage.SEVERITY_ERROR,
 							"Errore",
 							"Nessun file selezionato.");
-					FacesContext.getCurrentInstance().addMessage("file", message);
+					FacesContext.getCurrentInstance().addMessage("detailForm:tabView:detailDocumentoView:file", message);
 					return;
 				}
 
