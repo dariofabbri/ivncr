@@ -6,9 +6,9 @@ import org.slf4j.LoggerFactory;
 public class ServiceFactory {
 
 	public static final Logger logger = LoggerFactory.getLogger(ServiceFactory.class);
-	
-	public static <T extends Service> T createService(Class<T> implementation, Class<T> iface) {
-		
+
+	public static <T extends Service> T createService(Class<T> implementation, Class<T> iface, boolean decorate) {
+
 		T proxied = null;
 		try {
 			proxied = implementation.newInstance();
@@ -17,29 +17,44 @@ public class ServiceFactory {
 			logger.error(message, e);
 			throw new RuntimeException(message, e);
 		}
-		
-		T service = SessionDecorator.<T>createProxy(proxied, iface);
-		return service;
+
+		if(decorate) {
+			T service = SessionDecorator.<T>createProxy(proxied, iface);
+			return service;
+		}
+		else {
+			return proxied;
+		}
 	}
-	
-	@SuppressWarnings("unchecked")
+
 	public static <T extends Service> T createService(String name) {
-		
+
+		return createService(name, true);
+	}
+
+	public static <T extends Service> T createServiceNoSession(String name) {
+
+		return createService(name, false);
+	}
+
+	@SuppressWarnings("unchecked")
+	private static <T extends Service> T createService(String name, boolean injectSession) {
+
 		// It is assumed that the ServiceFactory is located at the root of the service
 		// portion of the packages hierarchy. It is therefore used to retrieve
 		// the base package name.
 		//
 		Package baseServicePackage = ServiceFactory.class.getPackage();
-		
+
 		// The service interface name is created using the convention that it is contained in
-		// a package directly below the base service package named as the service itself and that 
+		// a package directly below the base service package named as the service itself and that
 		// its name is the name of the service plus Service suffix.
 		//
 		String serviceInterfaceName = String.format("%s.%s.%sService",
 				baseServicePackage.getName(),
 				name.toLowerCase(),
 				name);
-		
+
 		// Check if the service interface can be found by the classloader.
 		//
 		Class<T> serviceInterface = null;
@@ -50,7 +65,7 @@ public class ServiceFactory {
 			logger.error(message, e);
 			throw new RuntimeException(message, e);
 		}
-		
+
 		// Check that the found service interface is really an interface.
 		//
 		if(!serviceInterface.isInterface()) {
@@ -58,7 +73,7 @@ public class ServiceFactory {
 			logger.error(message);
 			throw new RuntimeException(message);
 		}
-		
+
 		// Check that the found interface extends the Service interface.
 		//
 		if(!Service.class.isAssignableFrom(serviceInterface)) {
@@ -67,7 +82,7 @@ public class ServiceFactory {
 			throw new RuntimeException(message);
 		}
 
-		
+
 		// The implementation class name is built with a convention similar to that of the service
 		// interface, but using the ServiceImpl suffix.
 		//
@@ -75,7 +90,7 @@ public class ServiceFactory {
 				baseServicePackage.getName(),
 				name.toLowerCase(),
 				name);
-		
+
 		// Retrieve the class using the classloader.
 		//
 		Class<T> serviceImplementation = null;
@@ -86,7 +101,7 @@ public class ServiceFactory {
 			logger.error(message, e);
 			throw new RuntimeException(message, e);
 		}
-		
+
 		// Check that the implementation class implements the corresponding service interface.
 		//
 		if(!serviceInterface.isAssignableFrom(serviceImplementation)) {
@@ -94,10 +109,10 @@ public class ServiceFactory {
 			logger.error(message);
 			throw new RuntimeException(message);
 		}
-		
+
 		// Create the service by injecting the Hibernate session using the decorator.
 		//
-		return createService(serviceImplementation, serviceInterface);
+		return createService(serviceImplementation, serviceInterface, injectSession);
 	}
 
 	/*

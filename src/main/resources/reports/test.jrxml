@@ -1,36 +1,167 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="test" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="306b45b0-7a17-440b-8e06-e27d66e6afaf">
-	<property name="ireport.zoom" value="1.0"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="test" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="306b45b0-7a17-440b-8e06-e27d66e6afaf">
+	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
+	<parameter name="azienda_id" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT *
+FROM app.per_addetto a LEFT JOIN app.gen_azienda b ON a.azienda_id = b.id
+WHERE azienda_id = $P{azienda_id}
+ORDER BY cognome, nome]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer"/>
+	<field name="azienda_id" class="java.lang.Integer"/>
+	<field name="matricola" class="java.lang.String"/>
+	<field name="nome" class="java.lang.String"/>
+	<field name="cognome" class="java.lang.String"/>
+	<field name="data_nascita" class="java.sql.Date"/>
+	<field name="luogo_nascita" class="java.lang.String"/>
+	<field name="codice_fiscale" class="java.lang.String"/>
+	<field name="sesso" class="java.lang.String"/>
+	<field name="foto" class="java.lang.Long"/>
+	<field name="note" class="java.lang.String"/>
+	<field name="fittizio" class="java.lang.Boolean"/>
+	<field name="attivo" class="java.lang.Boolean"/>
+	<field name="data_giuramento" class="java.sql.Date"/>
+	<field name="stato_civile_id" class="java.lang.Integer"/>
+	<field name="creazione_ts" class="java.sql.Timestamp"/>
+	<field name="ultima_modifica_ts" class="java.sql.Timestamp"/>
+	<field name="codice" class="java.lang.String"/>
+	<field name="descrizione" class="java.lang.String"/>
+	<field name="stile" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="79" splitType="Stretch">
+		<band height="48" splitType="Stretch">
 			<staticText>
 				<reportElement uuid="f94a5c59-e50a-4c70-ac37-346b8ea3fb8e" x="0" y="0" width="555" height="46"/>
 				<textElement textAlignment="Center">
-					<font fontName="Arial" size="22"/>
+					<font fontName="Arial" size="22" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Report di test]]></text>
 			</staticText>
 		</band>
 	</title>
 	<pageHeader>
-		<band height="35" splitType="Stretch"/>
+		<band height="35" splitType="Stretch">
+			<textField>
+				<reportElement uuid="b8260e2b-4890-464c-9c52-d81e0ad40462" x="0" y="0" width="555" height="35"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Elenco degli addetti dell'azienda " + $F{descrizione}]]></textFieldExpression>
+			</textField>
+		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="61" splitType="Stretch"/>
+		<band height="23" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="d4e9428b-21f8-408e-a670-db4e67eecabb" x="0" y="0" width="56" height="20"/>
+				<textElement>
+					<font fontName="Arial" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Matricola]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="141318e9-36bd-4d6b-a90e-b55e75a7179f" x="56" y="0" width="90" height="20"/>
+				<textElement>
+					<font fontName="Arial" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Cognome]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="8ad109ab-2467-4474-a76f-dac4c6a500ad" x="146" y="0" width="90" height="20"/>
+				<textElement>
+					<font fontName="Arial" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Nome]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5f19509d-e0c6-47c0-b80c-ce7af03aec28" x="236" y="0" width="115" height="20"/>
+				<textElement>
+					<font fontName="Arial" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Codice fiscale]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c92b07f8-4033-4650-8cfa-b85c08e25d7c" x="351" y="0" width="144" height="20"/>
+				<textElement>
+					<font fontName="Arial" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Luogo nascita]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c8a1e2fc-feab-40ed-b5e5-85d75236c75c" x="495" y="0" width="60" height="20"/>
+				<textElement>
+					<font fontName="Arial" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Data nascita]]></text>
+			</staticText>
+		</band>
 	</columnHeader>
 	<detail>
-		<band height="125" splitType="Stretch"/>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement uuid="9265f289-d8d9-4e0f-913d-3df9ece64681" x="0" y="0" width="56" height="20"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{matricola}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="bbcf2961-f0fb-410b-94c6-b79d2b00f99f" x="56" y="0" width="90" height="20"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cognome}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="f402f1fe-c176-4257-94da-49e370c568f5" x="146" y="0" width="90" height="20"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="ef072a4d-76f4-4704-9009-38dafb2a879c" x="236" y="0" width="115" height="20"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codice_fiscale}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="48f7ca58-a328-419f-9469-beb21a443f4f" x="351" y="0" width="144" height="20"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{luogo_nascita}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="627fa0c4-ec9d-420c-bd11-1517008b44f1" x="495" y="0" width="60" height="20"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{data_nascita}]]></textFieldExpression>
+			</textField>
+		</band>
 	</detail>
 	<columnFooter>
-		<band height="45" splitType="Stretch"/>
+		<band height="7" splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="54" splitType="Stretch"/>
+		<band height="28" splitType="Stretch">
+			<textField>
+				<reportElement uuid="19d83c9f-b33f-49bc-b03b-dfbb69519fb7" x="415" y="0" width="140" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pagina " + $V{PAGE_NUMBER} + " di " + $V{PAGE_COUNT}]]></textFieldExpression>
+			</textField>
+		</band>
 	</pageFooter>
 	<summary>
 		<band height="42" splitType="Stretch"/>
