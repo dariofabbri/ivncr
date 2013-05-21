@@ -1,0 +1,25 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<h:head>
+
+		<f:facet name="first">
+			<meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
+			<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+			<title>Test</title>
+		</f:facet>
+
+	</h:head>
+	
+	<h:body>
+	
+		<p:media value="#{pdfReportTest.pdf}" width="100%" height="500px" player="pdf">  
+		    Your browser can't display pdf, <h:outputLink value="#{pdfReportTest.pdf}">click</h:outputLink> to download pdf instead.  
+		</p:media>
+		 	
+	</h:body>
+		
+</html>
