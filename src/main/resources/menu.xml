@@ -2,7 +2,13 @@
 
 	<submenu label="Personale" icon="ui-icon-wrench">
 	
-			<menuitem value="Gestione addetti" url="/faces/personale/addetti/index.xhtml" />
+		<menuitem value="Gestione addetti" url="/faces/personale/addetti/index.xhtml" />
+        
+        <separator/>
+        
+       	<submenu label="Report">
+       		<menuitem value="Lista addetti" url="/faces/personale/report/lista-addetti.xhtml"/>
+       	</submenu>
 			
 	</submenu>
 

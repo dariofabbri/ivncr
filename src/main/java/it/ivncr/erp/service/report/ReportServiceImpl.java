@@ -41,6 +41,8 @@ public class ReportServiceImpl implements ReportService {
 	@Override
 	public byte[] generateReport(String report, Map<String, Object> parameters) {
 
+		logger.debug("Entering generateReport method.");
+
 		byte[] result = null;
 
 		URL url = this.getClass().getClassLoader().getResource(report);
@@ -52,10 +54,12 @@ public class ReportServiceImpl implements ReportService {
 			Context envContext  = (Context)initContext.lookup("java:/comp/env");
 			DataSource ds = (DataSource)envContext.lookup("jdbc/ivncr");
 			Connection connection = ds.getConnection();
+			logger.debug("Retrieved database connection from pool.");
 
 			// Load report.
 			//
 			JasperReport jr = (JasperReport) JRLoader.loadObject(url);
+			logger.debug("Jasper report object loaded.");
 
 			// Inject desired locale parameter.
 			//
@@ -69,14 +73,17 @@ public class ReportServiceImpl implements ReportService {
 					jr,
 					parameters,
 					connection);
+			logger.debug("Report successfully filled.");
 
 			// Generate PDF.
 			//
 			result = JasperExportManager.exportReportToPdf(jp);
+			logger.debug("Report successfully exported to PDF.");
 
 			// Release JDBC connection.
 			//
 			connection.close();
+			logger.debug("Database connection released.");
 
 		} catch (Exception e) {
 			logger.error("Exception caught while generating report.", e);

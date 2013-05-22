@@ -16,9 +16,7 @@
 	
 	<h:body>
 	
-		<p:media value="#{pdfReportTest.pdf}" width="100%" height="500px" player="pdf">  
-		    Your browser can't display pdf, <h:outputLink value="#{pdfReportTest.pdf}">click</h:outputLink> to download pdf instead.  
-		</p:media>
+		<p:media value="#{pdfReportTest.getPdf(1)}" width="100%" height="500px" player="pdf"/>  
 		 	
 	</h:body>
 		

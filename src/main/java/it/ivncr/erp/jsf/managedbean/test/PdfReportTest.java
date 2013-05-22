@@ -9,41 +9,37 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
 
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 @ManagedBean
-@ViewScoped
+@SessionScoped
 public class PdfReportTest implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private StreamedContent pdf;
+	private static final Logger logger = LoggerFactory.getLogger(PdfReportTest.class);
 
-	@PostConstruct
-	public void init() {
+	public StreamedContent getPdf(int aziendaId) {
+
+		logger.debug("Entering getPdf method.");
 
 		ReportService rs = ServiceFactory.createServiceNoSession("Report");
 
 		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("azienda_id", 1);
+		parameters.put("azienda_id", aziendaId);
 
 		byte[] report = rs.generateReport("reports/test.jasper", parameters);
-
 		ByteArrayInputStream bais = new ByteArrayInputStream(report);
-		pdf = new DefaultStreamedContent(bais, "application/pdf");
-	}
 
-	public StreamedContent getPdf() {
-		return pdf;
-	}
+		logger.debug("Report successfully generated.");
 
-	public void setPdf(StreamedContent pdf) {
-		this.pdf = pdf;
+		return new DefaultStreamedContent(bais, "application/pdf");
 	}
 }
