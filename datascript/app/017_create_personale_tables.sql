@@ -44,23 +44,59 @@ SELECT setval('app.per_ruolo_id_seq', (SELECT MAX(id) FROM app.per_ruolo));
 
 
 
+CREATE TABLE app.per_tipo_soglia
+(
+	id SERIAL NOT NULL PRIMARY KEY,
+	descrizione VARCHAR(255) NOT NULL
+);
+
+INSERT INTO app.per_tipo_soglia (id, descrizione) VALUES (1, 'Giornaliera');
+INSERT INTO app.per_tipo_soglia (id, descrizione) VALUES (1, 'Settimanale');
+SELECT setval('app.per_tipo_soglia_id_seq', (SELECT MAX(id) FROM app.per_tipo_soglia));
+
+
+
 CREATE TABLE app.per_tipo_sistema_lavoro
 (
   id SERIAL NOT NULL PRIMARY KEY,
-  descrizione VARCHAR(255) NOT NULL
+  descrizione VARCHAR(255) NOT NULL,
+  giorni_lavorativi INTEGER NOT NULL,
+  giorni_riposo INTEGER NOT NULL,
+  giorni_permesso INTEGER NOT NULL,
+  riposo_sabato BOOLEAN NOT NULL,
+  riposo_domenica BOOLEAN NOT NULL,
+  ferie INTEGER,
+  permessi_annuali NUMERIC(5, 2),
+  permessi_a_conguaglio NUMERIC(5, 2),
+  sistema BOOLEAN,
+  ore_ordinarie_giornaliere NUMERIC(5, 2),
+  domeniche_festive BOOLEAN,
+  giorni_semirip INTEGER,
+  percentuale_part_time NUMERIC(5, 2),
+  apprendistato BOOLEAN,
+  max_straordinari NUMERIC(5, 2),
+  tipo_soglia_id INTEGER NOT NULL REFERENCES app.per_tipo_soglia(id),
+  ordinario_settimanale NUMERIC(5, 2),
+  mesi_recupero_flessibilita INTEGER,
+  ore_flessibilita_carico NUMERIC(5, 2),
+  ore_flessibilita_scarico NUMERIC(5, 2),
+  settimana_statica BOOLEAN,
+  giorni_standard_annuali INTEGER,
+  buono_pasto BOOLEAN,
+  ore_minime_lavoro_buono_pasto NUMERIC (5, 2)
 );
 
-INSERT INTO app.per_tipo_sistema_lavoro (id, descrizione) VALUES (1, '5+1');
-INSERT INTO app.per_tipo_sistema_lavoro (id, descrizione) VALUES (2, '5+2');
-INSERT INTO app.per_tipo_sistema_lavoro (id, descrizione) VALUES (3, '5+2 Amministrativo');
-INSERT INTO app.per_tipo_sistema_lavoro (id, descrizione) VALUES (4, '5+2 Dirigenza');
-INSERT INTO app.per_tipo_sistema_lavoro (id, descrizione) VALUES (5, '6+1');
-INSERT INTO app.per_tipo_sistema_lavoro (id, descrizione) VALUES (6, '6+1+1');
-INSERT INTO app.per_tipo_sistema_lavoro (id, descrizione) VALUES (7, 'Commercio 5+2');
-INSERT INTO app.per_tipo_sistema_lavoro (id, descrizione) VALUES (8, 'Commercio 6+1');
-INSERT INTO app.per_tipo_sistema_lavoro (id, descrizione) VALUES (9, 'Commercio 6+2');
-INSERT INTO app.per_tipo_sistema_lavoro (id, descrizione) VALUES (10, 'Part-time 5+2 4 ore amm.');
-SELECT setval('app.per_tipo_sistema_lavoro_id_seq', (SELECT MAX(id) FROM app.per_tipo_sistema_lavoro));
+--INSERT INTO app.per_tipo_sistema_lavoro (id, descrizione) VALUES (1, '5+1');
+--INSERT INTO app.per_tipo_sistema_lavoro (id, descrizione) VALUES (2, '5+2');
+--INSERT INTO app.per_tipo_sistema_lavoro (id, descrizione) VALUES (3, '5+2 Amministrativo');
+--INSERT INTO app.per_tipo_sistema_lavoro (id, descrizione) VALUES (4, '5+2 Dirigenza');
+--INSERT INTO app.per_tipo_sistema_lavoro (id, descrizione) VALUES (5, '6+1');
+--INSERT INTO app.per_tipo_sistema_lavoro (id, descrizione) VALUES (6, '6+1+1');
+--INSERT INTO app.per_tipo_sistema_lavoro (id, descrizione) VALUES (7, 'Commercio 5+2');
+--INSERT INTO app.per_tipo_sistema_lavoro (id, descrizione) VALUES (8, 'Commercio 6+1');
+--INSERT INTO app.per_tipo_sistema_lavoro (id, descrizione) VALUES (9, 'Commercio 6+2');
+--INSERT INTO app.per_tipo_sistema_lavoro (id, descrizione) VALUES (10, 'Part-time 5+2 4 ore amm.');
+--SELECT setval('app.per_tipo_sistema_lavoro_id_seq', (SELECT MAX(id) FROM app.per_tipo_sistema_lavoro));
 
 
 CREATE TABLE app.per_tipo_contratto
