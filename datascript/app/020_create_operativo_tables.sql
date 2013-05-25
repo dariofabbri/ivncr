@@ -80,11 +80,46 @@ CREATE TABLE app.ope_servizio
 	indennita_poligono BOOLEAN NOT NULL,
 	affiancato BOOLEAN NOT NULL,
 	note VARCHAR(4000),
-	stato BOOLEAN,
-	inibisci_trigger_paghe BOOLEAN,
+	stato BOOLEAN, -- ?
+	inibisci_trigger_paghe BOOLEAN, -- ?
 	creazione_ts TIMESTAMP WITH TIME ZONE,
 	ultima_modifica_ts TIMESTAMP WITH TIME ZONE
 );
 
---STATO
---INIBISCI_TRIGGER_PAGHE
+
+CREATE TABLE app.ope_tipo_indennita
+(
+	id SERIAL NOT NULL PRIMARY KEY,
+	codice VARCHAR(255) NOT NULL,
+	descrizione VARCHAR(255) NOT NULL,
+	notturno NUMERIC(10,2) NOT NULL,
+	diurno NUMERIC(10,2) NOT NULL,
+	oraria BOOLEAN NOT NULL,
+	visibile BOOLEAN NOT NULL,
+	riferimento_id INTEGER REFERENCES app.ope_tipo_indennita(id),
+	aggiuntivo_id INTEGER REFERENCES app.ope_tipo_indennita(id)
+);
+
+
+CREATE TABLE app.ope_indennita
+(
+	id SERIAL NOT NULL PRIMARY KEY,
+	ods_id INTEGER NOT NULL REFERENCES app.con_ordine_servizio(id),
+	tipo_indennita_id INTEGER NOT NULL REFERENCES app.ope_tipo_indennita(id),
+	livello_id INTEGER NULL REFERENCES app.per_livello_ccnl(id),
+	creazione_ts TIMESTAMP WITH TIME ZONE,
+	ultima_modifica_ts TIMESTAMP WITH TIME ZONE
+);
+
+
+CREATE TABLE app.ope_recupero_riposo
+(
+	id SERIAL NOT NULL PRIMARY KEY,
+	addetto_id INTEGER NOT NULL REFERENCES app.per_addetto(id),
+	data_riposo_spostato DATE NOT NULL,
+	data_recupero_riposo DATE NOT NULL,
+	tipo_riposo_id INTEGER NULL REFERENCES app.ope_tipo_riposo(id),
+	attuale BOOLEAN NOT NULL,
+	creazione_ts TIMESTAMP WITH TIME ZONE,
+	ultima_modifica_ts TIMESTAMP WITH TIME ZONE
+);
