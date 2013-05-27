@@ -9,23 +9,10 @@
 	<parameter name="matricola" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
-	<parameter name="where_clause" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA[" WHERE azienda_id = " + $P{azienda_id} +
-($P{matricola}.isEmpty() ? "" : " AND a.matricola LIKE '%" + $P{matricola} + "%'") +
-($P{nome}.isEmpty() ? "" : " AND a.nome LIKE '%" + $P{nome} + "%'") +
-($P{cognome}.isEmpty() ? "" : " AND a.cognome LIKE '%" + $P{cognome} + "%'") +
-($P{dataNascita} == null ? "" : " AND a.data_nascita = " + $P{dataNascita} + "") +
-($P{luogoNascita}.isEmpty() ? "" : " AND a.luogo_nascita LIKE '%" + $P{luogoNascita} + "%'") +
-($P{sesso}.isEmpty() ? "" : " AND a.sesso LIKE '%" + $P{sesso} + "%'") +
-($P{codiceStatoCivile} == null ? "" : " AND a.stato_civile_id = " + $P{codiceStatoCivile})]]></defaultValueExpression>
-	</parameter>
 	<parameter name="nome" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="cognome" class="java.lang.String">
-		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
-	</parameter>
-	<parameter name="dataNascita" class="java.util.Date">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="luogoNascita" class="java.lang.String">
@@ -36,6 +23,15 @@
 	</parameter>
 	<parameter name="codiceStatoCivile" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="where_clause" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[" WHERE azienda_id = " + $P{azienda_id} +
+($P{matricola} == null || $P{matricola}.isEmpty() ? "" : " AND UPPER(a.matricola) LIKE '%" + $P{matricola}.toUpperCase() + "%'") +
+($P{nome} == null || $P{nome}.isEmpty() ? "" : " AND UPPER(a.nome) LIKE '%" + $P{nome}.toUpperCase() + "%'") +
+($P{cognome} == null || $P{cognome}.isEmpty() ? "" : " AND UPPER(a.cognome) LIKE '%" + $P{cognome}.toUpperCase() + "%'") +
+($P{luogoNascita} == null || $P{luogoNascita}.isEmpty() ? "" : " AND UPPER(a.luogo_nascita) LIKE '%" + $P{luogoNascita}.toUpperCase() + "%'") +
+($P{sesso} == null || $P{sesso}.isEmpty() ? "" : " AND a.sesso = '" + $P{sesso} + "'") +
+($P{codiceStatoCivile} == null ? "" : " AND a.stato_civile_id = " + $P{codiceStatoCivile})]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT *
