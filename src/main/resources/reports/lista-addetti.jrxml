@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="test" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="306b45b0-7a17-440b-8e06-e27d66e6afaf">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="lista-addetti" pageWidth="595" pageHeight="842" whenNoDataType="BlankPage" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="306b45b0-7a17-440b-8e06-e27d66e6afaf">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -24,12 +24,16 @@
 	<parameter name="codiceStatoCivile" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="dataNascitaDa" class="java.util.Date"/>
+	<parameter name="dataNascitaA" class="java.util.Date"/>
 	<parameter name="where_clause" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA[" WHERE azienda_id = " + $P{azienda_id} +
 ($P{matricola} == null || $P{matricola}.isEmpty() ? "" : " AND UPPER(a.matricola) LIKE '%" + $P{matricola}.toUpperCase() + "%'") +
 ($P{nome} == null || $P{nome}.isEmpty() ? "" : " AND UPPER(a.nome) LIKE '%" + $P{nome}.toUpperCase() + "%'") +
 ($P{cognome} == null || $P{cognome}.isEmpty() ? "" : " AND UPPER(a.cognome) LIKE '%" + $P{cognome}.toUpperCase() + "%'") +
 ($P{luogoNascita} == null || $P{luogoNascita}.isEmpty() ? "" : " AND UPPER(a.luogo_nascita) LIKE '%" + $P{luogoNascita}.toUpperCase() + "%'") +
+($P{dataNascitaDa} == null ? "" : " AND a.data_nascita >= '" + new SimpleDateFormat("yyyy-MM-dd").format($P{dataNascitaDa}) + "'") +
+($P{dataNascitaA} == null ? "" : " AND a.data_nascita <= '" + new SimpleDateFormat("yyyy-MM-dd").format($P{dataNascitaA}) + "'") +
 ($P{sesso} == null || $P{sesso}.isEmpty() ? "" : " AND a.sesso = '" + $P{sesso} + "'") +
 ($P{codiceStatoCivile} == null ? "" : " AND a.stato_civile_id = " + $P{codiceStatoCivile})]]></defaultValueExpression>
 	</parameter>
@@ -69,7 +73,7 @@ ORDER BY cognome, nome]]>
 				<textElement textAlignment="Center">
 					<font fontName="Arial" size="22" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Report di test]]></text>
+				<text><![CDATA[Lista degli addetti]]></text>
 			</staticText>
 		</band>
 	</title>
@@ -139,19 +143,19 @@ ORDER BY cognome, nome]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{matricola}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField pattern="">
 				<reportElement uuid="bbcf2961-f0fb-410b-94c6-b79d2b00f99f" x="56" y="0" width="90" height="20"/>
 				<textElement>
 					<font fontName="Arial"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{cognome}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{cognome}.toUpperCase()]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement uuid="f402f1fe-c176-4257-94da-49e370c568f5" x="146" y="0" width="90" height="20"/>
 				<textElement>
 					<font fontName="Arial"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nome}.toUpperCase()]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement uuid="ef072a4d-76f4-4704-9009-38dafb2a879c" x="236" y="0" width="115" height="20"/>
@@ -165,7 +169,7 @@ ORDER BY cognome, nome]]>
 				<textElement>
 					<font fontName="Arial"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{luogo_nascita}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{luogo_nascita}.toUpperCase()]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy">
 				<reportElement uuid="627fa0c4-ec9d-420c-bd11-1517008b44f1" x="495" y="0" width="60" height="20"/>

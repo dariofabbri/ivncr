@@ -17,11 +17,139 @@
 			<h1 class="title ui-widget-header ui-corner-all">Report lista addetti</h1>
 
 			<p:panel 
-				id="criteraPanel" 
+				id="criteriaPanel" 
 				header="Criteri di ricerca"
 				toggleable="true"
 				collapsed="false"
 				toggleSpeed="500">
+
+				<p:focus for="matricola"/>
+	
+				<p:panelGrid styleClass="form-panel">
+					
+					<p:row>
+						<p:column>							
+							<p:outputLabel for="matricola" value="Matricola:" />
+						</p:column>
+						<p:column>
+							<p:inputText value="#{reportAddettiLista.matricola}" id="matricola"/>
+							<p:watermark for="matricola" value="Matricola dell\'addetto" />  
+							<p:tooltip for="matricola" showEffect="fade" value="Ricerca sul campo matricola dell'addetto" />
+						</p:column>
+					</p:row>
+					
+					<p:row>
+						<p:column>							
+							<p:outputLabel for="nome" value="Nome:" />
+						</p:column>
+						<p:column>
+							<p:inputText value="#{reportAddettiLista.nome}" id="nome"/>
+							<p:watermark for="nome" value="Nome dell\'addetto" />  
+							<p:tooltip for="nome" showEffect="fade" value="Ricerca sul campo nome dell'addetto" />
+						</p:column>
+					</p:row>
+					
+					<p:row>
+						<p:column>							
+							<p:outputLabel for="cognome" value="Cognome:" />
+						</p:column>
+						<p:column>
+							<p:inputText value="#{reportAddettiLista.cognome}" id="cognome"/>
+							<p:watermark for="cognome" value="Cognome dell\'addetto" />  
+							<p:tooltip for="cognome" showEffect="fade" value="Ricerca sul campo cognome dell'addetto" />
+						</p:column>
+					</p:row>
+					
+					<p:row>
+						<p:column>							
+							<p:outputLabel for="dataNascitaDa" value="Data di nascita (da):" />
+						</p:column>
+						<p:column>
+							<p:calendar value="#{reportAddettiLista.dataNascitaDa}" id="dataNascitaDa"
+								locale="it" pattern="dd/MM/yyyy"/>
+							<p:watermark for="dataNascitaDa" value="Data di nascita dell\'addetto" />  
+							<p:tooltip for="dataNascitaDa" showEffect="fade" value="Ricerca sul campo data di nascita dell'addetto (a partire da)" />
+						</p:column>
+					</p:row>
+					
+					<p:row>
+						<p:column>							
+							<p:outputLabel for="dataNascitaA" value="Data di nascita (a):" />
+						</p:column>
+						<p:column>
+							<p:calendar value="#{reportAddettiLista.dataNascitaA}" id="dataNascitaA"
+								locale="it" pattern="dd/MM/yyyy"/>
+							<p:watermark for="dataNascitaA" value="Data di nascita dell\'addetto" />  
+							<p:tooltip for="dataNascitaA" showEffect="fade" value="Ricerca sul campo data di nascita dell'addetto (fino a)" />
+						</p:column>
+					</p:row>
+					
+					<p:row>
+						<p:column>							
+							<p:outputLabel for="luogoNascita" value="Luogo di nascita:" />
+						</p:column>
+						<p:column>
+							<p:inputText value="#{reportAddettiLista.luogoNascita}" id="luogoNascita"/>
+							<p:watermark for="luogoNascita" value="Luogo di nascita dell\'addetto" />  
+							<p:tooltip for="luogoNascita" showEffect="fade" value="Ricerca sul campo luogo di nascita dell'addetto" />
+						</p:column>
+					</p:row>
+
+					<p:row>
+						<p:column>
+							<p:outputLabel for="sesso" value="Sesso:" />
+						</p:column>
+						<p:column>
+							<p:selectOneMenu
+								id="sesso" 
+								value="#{reportAddettiLista.sesso}"
+								effect="fade">
+								<f:selectItem itemLabel="Selezionare un sesso" itemValue="" />
+								<f:selectItem itemLabel="Maschile" itemValue="M" />
+								<f:selectItem itemLabel="Femminile" itemValue="F" />
+							</p:selectOneMenu>	
+							<p:tooltip for="sesso" showEffect="fade" value="Ricerca sul campo sesso dell'addetto" />
+						</p:column>
+					</p:row>
+					
+					<p:row>
+						<p:column>
+							<p:outputLabel for="codiceStatoCivile" value="Stato civile:" />
+						</p:column>
+						<p:column>
+							<p:selectOneMenu
+								id="codiceStatoCivile" 
+								value="#{reportAddettiLista.codiceStatoCivile}"
+								effect="fade">
+								<f:selectItem itemLabel="Selezionare uno stato civile" itemValue="" />
+								<f:selectItems 
+									value="#{reportAddettiLista.listStatoCivile}" var="item"
+									itemLabel="#{item.descrizione}" itemValue="#{item.id}" />
+							</p:selectOneMenu>			 		 
+							<p:tooltip for="codiceStatoCivile" showEffect="fade" value="Ricerca sul campo stato civile dell'addetto" />
+						</p:column>
+					</p:row>	
+		
+					<p:row>
+					
+						<p:column colspan="2" styleClass="form-footer">
+							<p:commandButton
+								id="generateButton"
+								value="Genera report"
+								actionListener="#{reportAddettiLista.doGenerate}"
+								update="@form"
+								process="criteriaPanel"
+								icon="ui-icon-star"/>
+							<p:tooltip 
+								for="generateButton" 
+								value="Genera il report applicando i parametri impostati" 
+								showEffect="fade" 
+								hideEffect="fade"/>
+						</p:column>
+						
+					</p:row>
+
+				</p:panelGrid>
 				
 			</p:panel>
 
@@ -31,6 +159,8 @@
 				toggleable="true"
 				collapsed="false"
 				toggleSpeed="500">
+					
+				<p:media rendered="#{reportAddettiLista.report != null}" value="#{reportAddettiLista.pdf}" width="100%" height="500px" player="pdf"/>  
 				
 			</p:panel>
 			

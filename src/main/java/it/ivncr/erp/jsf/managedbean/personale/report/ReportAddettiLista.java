@@ -37,7 +37,8 @@ public class ReportAddettiLista implements Serializable {
 	private String matricola;
 	private String nome;
 	private String cognome;
-	private Date dataNascita;
+	private Date dataNascitaDa;
+	private Date dataNascitaA;
 	private String luogoNascita;
 	private String codiceFiscale;
 	private String sesso;
@@ -69,7 +70,8 @@ public class ReportAddettiLista implements Serializable {
 		parameters.put("matricola", matricola);
 		parameters.put("nome", nome);
 		parameters.put("cognome",cognome);
-		parameters.put("dataNascita", dataNascita);
+		parameters.put("dataNascitaDa", dataNascitaDa);
+		parameters.put("dataNascitaA", dataNascitaA);
 		parameters.put("luogoNascita", luogoNascita);
 		parameters.put("sesso", sesso);
 		parameters.put("codiceStatoCivile", codiceStatoCivile);
@@ -122,13 +124,23 @@ public class ReportAddettiLista implements Serializable {
 		this.cognome = cognome;
 	}
 
-	public Date getDataNascita() {
-		return dataNascita;
+	public Date getDataNascitaDa() {
+		return dataNascitaDa;
 	}
 
-	public void setDataNascita(Date dataNascita) {
-		this.dataNascita = dataNascita;
+	public void setDataNascitaDa(Date dataNascitaDa) {
+		this.dataNascitaDa = dataNascitaDa;
 	}
+
+	public Date getDataNascitaA() {
+		return dataNascitaA;
+	}
+
+
+	public void setDataNascitaA(Date dataNascitaA) {
+		this.dataNascitaA = dataNascitaA;
+	}
+
 
 	public String getLuogoNascita() {
 		return luogoNascita;
