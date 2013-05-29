@@ -76,6 +76,14 @@
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.TipoProvenienza" />
 		<mapping class="it.ivncr.erp.model.commerciale.contratto.TipoServizio" />
 
+		<mapping class="it.ivncr.erp.model.operativo.CausaleOds" />
+		<mapping class="it.ivncr.erp.model.operativo.GruppoCausaleOds" />
+		<mapping class="it.ivncr.erp.model.operativo.Indennita" />
+		<mapping class="it.ivncr.erp.model.operativo.RecuperoRiposo" />
+		<mapping class="it.ivncr.erp.model.operativo.Servizio" />
+		<mapping class="it.ivncr.erp.model.operativo.TipoIndennita" />
+		<mapping class="it.ivncr.erp.model.operativo.TipoRiposo" />
+
 		<mapping class="it.ivncr.erp.model.generale.Azienda" />
 		<mapping class="it.ivncr.erp.model.generale.Contatore" />
 		<mapping class="it.ivncr.erp.model.generale.GiornoSettimana" />
@@ -135,6 +143,7 @@
 		<mapping class="it.ivncr.erp.model.personale.TipoRecapitoTelefonico" />
 		<mapping class="it.ivncr.erp.model.personale.TipoRinnovoDecretoGpg" />
 		<mapping class="it.ivncr.erp.model.personale.TipoSistemaLavoro" />
+		<mapping class="it.ivncr.erp.model.personale.TipoSoglia" />
 		<mapping class="it.ivncr.erp.model.personale.TitoloStudio" />
 		<mapping class="it.ivncr.erp.model.personale.VisitaCollegiale" />
 		<mapping class="it.ivncr.erp.model.personale.VisitaMedicoCompetente" />
