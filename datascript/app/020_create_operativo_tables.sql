@@ -44,14 +44,14 @@ INSERT INTO app.ope_gruppo_causale_ods (id, descrizione) VALUES (16, 'Ricoveri')
 INSERT INTO app.ope_gruppo_causale_ods (id, descrizione) VALUES (17, 'Riposi');
 INSERT INTO app.ope_gruppo_causale_ods (id, descrizione) VALUES (18, 'Sospensioni');
 INSERT INTO app.ope_gruppo_causale_ods (id, descrizione) VALUES (19, 'Varie');
-SELECT setval('app.ope_gruppo_causale_ods', (SELECT MAX(id) FROM app.ope_gruppo_causale_ods));
+SELECT setval('app.ope_gruppo_causale_ods_id_seq', (SELECT MAX(id) FROM app.ope_gruppo_causale_ods));
 
 
 CREATE TABLE app.ope_causale_ods
 (
 	id SERIAL NOT NULL PRIMARY KEY,
 	codice VARCHAR(255) NOT NULL,
-	descrizione VARCHAR(255) NOT NULL
+	descrizione VARCHAR(255) NOT NULL,
 	retribuito BOOLEAN NOT NULL,
 	orario BOOLEAN NOT NULL,
 	gruppo_causale_ods_id INTEGER NULL REFERENCES app.ope_gruppo_causale_ods(id),

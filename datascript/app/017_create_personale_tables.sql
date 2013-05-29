@@ -51,7 +51,7 @@ CREATE TABLE app.per_tipo_soglia
 );
 
 INSERT INTO app.per_tipo_soglia (id, descrizione) VALUES (1, 'Giornaliera');
-INSERT INTO app.per_tipo_soglia (id, descrizione) VALUES (1, 'Settimanale');
+INSERT INTO app.per_tipo_soglia (id, descrizione) VALUES (2, 'Settimanale');
 SELECT setval('app.per_tipo_soglia_id_seq', (SELECT MAX(id) FROM app.per_tipo_soglia));
 
 
