@@ -16,7 +16,7 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
 
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
@@ -24,7 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @ManagedBean
-@ViewScoped
+@SessionScoped
 public class ReportAddettiLista implements Serializable {
 
 	private static final Logger logger = LoggerFactory.getLogger(ReportAddettiLista.class);
@@ -47,6 +47,8 @@ public class ReportAddettiLista implements Serializable {
 	private List<StatoCivile> listStatoCivile;
 
 	private byte[] report;
+	private boolean collapseSearch;
+	private boolean collapseReport;
 
 	@PostConstruct
 	public void init() {
@@ -56,6 +58,11 @@ public class ReportAddettiLista implements Serializable {
 		// Load stato civile LUT.
 		//
 		listStatoCivile = lutService.listItems("StatoCivile");
+
+		// Initialize collapsed status.
+		//
+		collapseSearch = false;
+		collapseReport = true;
 	}
 
 
@@ -78,6 +85,9 @@ public class ReportAddettiLista implements Serializable {
 
 		report = rs.generateReport("reports/lista-addetti.jasper", parameters);
 		logger.debug("Report succesfully generated.");
+
+		collapseSearch = true;
+		collapseReport = false;
 	}
 
 	public StreamedContent getPdf() {
@@ -188,5 +198,21 @@ public class ReportAddettiLista implements Serializable {
 
 	public void setReport(byte[] report) {
 		this.report = report;
+	}
+
+	public boolean isCollapseSearch() {
+		return collapseSearch;
+	}
+
+	public void setCollapseSearch(boolean collapseSearch) {
+		this.collapseSearch = collapseSearch;
+	}
+
+	public boolean isCollapseReport() {
+		return collapseReport;
+	}
+
+	public void setCollapseReport(boolean collapseReport) {
+		this.collapseReport = collapseReport;
 	}
 }
