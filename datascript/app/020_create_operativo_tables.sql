@@ -117,7 +117,7 @@ CREATE TABLE app.ope_recupero_riposo
 	id SERIAL NOT NULL PRIMARY KEY,
 	addetto_id INTEGER NOT NULL REFERENCES app.per_addetto(id),
 	data_riposo_spostato DATE NOT NULL,
-	data_recupero_riposo DATE NOT NULL,
+	data_recupero_riposo DATE,
 	tipo_riposo_id INTEGER NULL REFERENCES app.ope_tipo_riposo(id),
 	attuale BOOLEAN NOT NULL,
 	creazione_ts TIMESTAMP WITH TIME ZONE,
