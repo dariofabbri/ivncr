@@ -2,9 +2,6 @@
 SET client_min_messages TO WARNING;
 
 
-
-
-
 CREATE TABLE app.ope_tipo_riposo
 (
 	id SERIAL NOT NULL PRIMARY KEY,
@@ -78,7 +75,7 @@ CREATE TABLE app.ope_servizio
 	indennita_trasferta BOOLEAN NOT NULL,
 	indennita_gra BOOLEAN NOT NULL,
 	indennita_poligono BOOLEAN NOT NULL,
-	affiancato BOOLEAN NOT NULL,
+	affiancamento BOOLEAN NOT NULL,
 	note VARCHAR(4000),
 	stato BOOLEAN, -- ?
 	inibisci_trigger_paghe BOOLEAN, -- ?

@@ -1,0 +1,41 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<h:head>
+
+		<f:facet name="first">
+			<meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
+			<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+			<title>Test</title>
+		</f:facet>
+
+	</h:head>
+	
+	<h:body>
+	
+		<p:dataTable var="row" value="#{largeGridTest.model}" scrollable="true" scrollWidth="400" scrollHeight="150">  
+	  
+	        <p:column headerText="Servizio">  
+	            <h:outputText value="#{car.model}" />  
+	        </p:column>  
+	  
+	        <p:column headerText="Orario">  
+	            <h:outputText value="#{car.year}" />  
+	        </p:column>  
+	  
+	        <p:column headerText="Addetto 1">  
+	            <h:outputText value="#{car.manufacturer}" />  
+	        </p:column>  
+	  
+	        <p:column headerText="Addetto 2">  
+	            <h:outputText value="#{car.color}" />  
+	        </p:column>  
+	  
+	    </p:dataTable>  
+    		 	
+	</h:body>
+		
+</html>
