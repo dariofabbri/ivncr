@@ -12,12 +12,20 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Random;
+import java.util.TimeZone;
 
 import javax.annotation.PostConstruct;
+import javax.el.ValueExpression;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.component.html.HtmlOutputText;
+import javax.faces.component.html.HtmlPanelGroup;
+import javax.faces.context.FacesContext;
+import javax.faces.convert.DateTimeConverter;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.primefaces.component.column.Column;
+import org.primefaces.component.datatable.DataTable;
 
 
 @ManagedBean
@@ -27,11 +35,93 @@ public class LargeGridTest implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private List<LargeGridRow> rows;
+	private DataTable datatable;
 
 	private final Random rnd = new Random();
 
 	@PostConstruct
 	public void init() {
+
+		buildSampleData();
+
+		datatable = new DataTable();
+
+		Column column = new Column();
+		column.setHeaderText("Servizio");
+		column.setStyle("width: 200px;");
+
+		HtmlPanelGroup panelGroup = new HtmlPanelGroup();
+		panelGroup.setStyle("height: 6em; vertical-align: top; font-size: 0.8em;");
+		panelGroup.setLayout("block");
+		column.getChildren().add(panelGroup);
+
+		HtmlOutputText outputText = new HtmlOutputText();
+		outputText.setValueExpression("value", createValueExpression("#{row.ods.alias}", String.class));
+		panelGroup.getChildren().add(outputText);
+
+		datatable.getColumns().add(column);
+
+
+
+		DateTimeConverter dtc = (DateTimeConverter)FacesContext.getCurrentInstance().getApplication().createConverter("javax.faces.DateTime");
+		dtc.setPattern("HH:mm");
+		dtc.setTimeZone(
+				TimeZone.getTimeZone(
+						(String)createValueExpression("#{appConfig.timeZone}", String.class)
+							.getValue(FacesContext.getCurrentInstance().getELContext())));
+
+		column = new Column();
+		column.setHeaderText("Orario");
+		column.setStyle("width: 150px;");
+
+		panelGroup = new HtmlPanelGroup();
+		panelGroup.setStyle("height: 6em; vertical-align: top; font-size: 0.8em;");
+		panelGroup.setLayout("block");
+		column.getChildren().add(panelGroup);
+
+		HtmlPanelGroup block = new HtmlPanelGroup();
+		block.setValueExpression("rendered", createValueExpression("#{not empty row.orario.quantita1}", Boolean.class));
+		panelGroup.getChildren().add(block);
+
+		outputText = new HtmlOutputText();
+		outputText.setValue("n.&nbsp;");
+		outputText.setEscape(false);
+		block.getChildren().add(outputText);
+
+		outputText = new HtmlOutputText();
+		outputText.setValueExpression("value", createValueExpression("#{row.orario.quantita1}", String.class));
+		block.getChildren().add(outputText);
+
+		outputText = new HtmlOutputText();
+		outputText.setValue("&nbsp;&nbsp;&nbsp;");
+		outputText.setEscape(false);
+		block.getChildren().add(outputText);
+
+		outputText = new HtmlOutputText();
+		outputText.setValueExpression("value", createValueExpression("#{row.orario.orarioInizio1}", Date.class));
+		outputText.setConverter(dtc);
+		block.getChildren().add(outputText);
+
+		outputText = new HtmlOutputText();
+		outputText.setValue("&nbsp;-&nbsp;");
+		outputText.setEscape(false);
+		block.getChildren().add(outputText);
+
+		outputText = new HtmlOutputText();
+		outputText.setValueExpression("value", createValueExpression("#{row.orario.orarioFine1}", Date.class));
+		outputText.setConverter(dtc);
+		block.getChildren().add(outputText);
+
+		datatable.getColumns().add(column);
+	}
+
+	private ValueExpression createValueExpression(String expression, Class<?> expectedType) {
+	    FacesContext context = FacesContext.getCurrentInstance();
+	    return context.getApplication().getExpressionFactory()
+	            .createValueExpression(context.getELContext(), expression, expectedType);
+	}
+
+	private void buildSampleData() {
 
 		rows = new ArrayList<LargeGridRow>();
 
@@ -56,9 +146,9 @@ public class LargeGridTest implements Serializable {
 
 		AddettoCell addettoCell = new AddettoCell();
 		Addetto addetto = new Addetto();
-		addetto.setMatricola(RandomStringUtils.random(5, false, true));
-		addetto.setCognome(RandomStringUtils.random(30));
-		addetto.setNome(RandomStringUtils.random(20));
+		addetto.setMatricola(RandomStringUtils.randomNumeric(5));
+		addetto.setCognome(RandomStringUtils.randomAlphabetic(rnd.nextInt(30)));
+		addetto.setNome(RandomStringUtils.randomAlphabetic(rnd.nextInt(20)));
 		addettoCell.setAddetto(addetto);
 
 		int noOfServizi = rnd.nextInt(3) + 1;
@@ -120,5 +210,13 @@ public class LargeGridTest implements Serializable {
 
 	public void setRows(List<LargeGridRow> rows) {
 		this.rows = rows;
+	}
+
+	public DataTable getDatatable() {
+		return datatable;
+	}
+
+	public void setDatatable(DataTable datatable) {
+		this.datatable = datatable;
 	}
 }
