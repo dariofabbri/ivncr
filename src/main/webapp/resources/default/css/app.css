@@ -103,3 +103,7 @@
 .small-datatable .ui-inputtext {
 	width: 150px;
 }
+
+.mattinale-datatable tbody td {
+	padding: 0px;
+}
