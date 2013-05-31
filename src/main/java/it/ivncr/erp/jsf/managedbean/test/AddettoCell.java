@@ -3,12 +3,18 @@ package it.ivncr.erp.jsf.managedbean.test;
 import it.ivncr.erp.model.operativo.Servizio;
 import it.ivncr.erp.model.personale.Addetto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AddettoCell {
 
 	private Addetto addetto;
 	private List<Servizio> servizi;
+
+	public AddettoCell() {
+
+		servizi = new ArrayList<Servizio>();
+	}
 
 	public Addetto getAddetto() {
 		return addetto;

@@ -2,6 +2,8 @@ package it.ivncr.erp.jsf.managedbean.test;
 
 
 import it.ivncr.erp.model.commerciale.ods.OrdineServizio;
+import it.ivncr.erp.model.operativo.Servizio;
+import it.ivncr.erp.model.personale.Addetto;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -14,6 +16,8 @@ import java.util.Random;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+
+import org.apache.commons.lang3.RandomStringUtils;
 
 
 @ManagedBean
@@ -39,14 +43,40 @@ public class LargeGridTest implements Serializable {
 			ods.setAlias("Servizio #" + (i + 1));
 			row.setOds(ods);
 
-			int noOfOrari = rnd.nextInt(3) + 1;
-			for(int j = 0; j < noOfOrari; ++j) {
-				Orario orario = buildRandomOrario();
-				row.getOrari().add(orario);
-			}
+			row.setOrario(buildRandomOrario());
 
-			// addetto1 & addetto2
+			row.setAddetto1(buildRandomAddettoCell());
+			row.setAddetto2(buildRandomAddettoCell());
+
+			rows.add(row);
 		}
+	}
+
+	private AddettoCell buildRandomAddettoCell() {
+
+		AddettoCell addettoCell = new AddettoCell();
+		Addetto addetto = new Addetto();
+		addetto.setMatricola(RandomStringUtils.random(5, false, true));
+		addetto.setCognome(RandomStringUtils.random(30));
+		addetto.setNome(RandomStringUtils.random(20));
+		addettoCell.setAddetto(addetto);
+
+		int noOfServizi = rnd.nextInt(3) + 1;
+		for(int j = 0; j < noOfServizi; ++j) {
+			addettoCell.getServizi().add(buildRandomServizio());
+		}
+
+		return addettoCell;
+	}
+
+	private Servizio buildRandomServizio() {
+
+		Servizio servizio = new Servizio();
+
+		servizio.setOrarioDa(buildRandomTime());
+		servizio.setOrarioA(buildRandomTime());
+
+		return servizio;
 	}
 
 	private Orario buildRandomOrario() {
@@ -82,5 +112,13 @@ public class LargeGridTest implements Serializable {
 		gc.set(Calendar.MINUTE, rnd.nextInt(60));
 
 		return gc.getTime();
+	}
+
+	public List<LargeGridRow> getRows() {
+		return rows;
+	}
+
+	public void setRows(List<LargeGridRow> rows) {
+		this.rows = rows;
 	}
 }

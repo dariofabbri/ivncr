@@ -5,33 +5,71 @@
 	xmlns:p="http://primefaces.org/ui">
 	
 	<h:head>
-
 		<f:facet name="first">
 			<meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
 			<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
 			<title>Test</title>
 		</f:facet>
-
 	</h:head>
+	
 	
 	<h:body>
 	
-		<p:dataTable var="row" value="#{largeGridTest.model}" scrollable="true" scrollWidth="400" scrollHeight="150">  
+		<p:dataTable var="row" value="#{largeGridTest.rows}" scrollable="true" scrollWidth="800" scrollHeight="200">  
 	  
 	        <p:column headerText="Servizio">  
-	            <h:outputText value="#{car.model}" />  
+	            <h:outputText value="#{row.ods.alias}" />  
 	        </p:column>  
 	  
-	        <p:column headerText="Orario">  
-	            <h:outputText value="#{car.year}" />  
+	        <p:column headerText="Orario">
+	        
+	        	<h:panelGroup rendered="#{not empty row.orario.quantita1}">
+	        		<h:outputText value="n.&amp;nbsp;" escape="false"/>
+        			<h:outputText value="#{row.orario.quantita1}" />
+	        		<h:outputText value="&amp;nbsp;&amp;nbsp;&amp;nbsp;" escape="false"/>
+        			<h:outputText value="#{row.orario.orarioInizio1}">
+						<f:convertDateTime pattern="HH:mm" timeZone="#{appConfig.timeZone}" />
+					</h:outputText>
+	        		<h:outputText value="&amp;nbsp;-&amp;nbsp;" escape="false"/>
+        			<h:outputText value="#{row.orario.orarioFine1}">
+						<f:convertDateTime pattern="HH:mm" timeZone="#{appConfig.timeZone}" />
+        			</h:outputText>
+        		</h:panelGroup>
+	        
+	        	<h:panelGroup rendered="#{not empty row.orario.quantita2}">
+	        		<h:outputText value="&lt;br&gt;" escape="false"/>
+	        		<h:outputText value="n.&amp;nbsp;" escape="false"/>
+        			<h:outputText value="#{row.orario.quantita2}" />
+	        		<h:outputText value="&amp;nbsp;&amp;nbsp;&amp;nbsp;" escape="false"/>
+        			<h:outputText value="#{row.orario.orarioInizio2}">
+						<f:convertDateTime pattern="HH:mm" timeZone="#{appConfig.timeZone}" />
+					</h:outputText>
+	        		<h:outputText value="&amp;nbsp;-&amp;nbsp;" escape="false"/>
+        			<h:outputText value="#{row.orario.orarioFine2}">
+						<f:convertDateTime pattern="HH:mm" timeZone="#{appConfig.timeZone}" />
+        			</h:outputText>
+        		</h:panelGroup>
+	        
+	        	<h:panelGroup rendered="#{not empty row.orario.quantita3}">
+	        		<h:outputText value="&lt;br&gt;" escape="false"/>
+	        		<h:outputText value="n.&amp;nbsp;" escape="false"/>
+        			<h:outputText value="#{row.orario.quantita3}" />
+	        		<h:outputText value="&amp;nbsp;&amp;nbsp;&amp;nbsp;" escape="false"/>
+        			<h:outputText value="#{row.orario.orarioInizio3}">
+						<f:convertDateTime pattern="HH:mm" timeZone="#{appConfig.timeZone}" />
+					</h:outputText>
+	        		<h:outputText value="&amp;nbsp;-&amp;nbsp;" escape="false"/>
+        			<h:outputText value="#{row.orario.orarioFine3}">
+						<f:convertDateTime pattern="HH:mm" timeZone="#{appConfig.timeZone}" />
+        			</h:outputText>
+        		</h:panelGroup>
+        		
 	        </p:column>  
 	  
 	        <p:column headerText="Addetto 1">  
-	            <h:outputText value="#{car.manufacturer}" />  
 	        </p:column>  
 	  
 	        <p:column headerText="Addetto 2">  
-	            <h:outputText value="#{car.color}" />  
 	        </p:column>  
 	  
 	    </p:dataTable>  

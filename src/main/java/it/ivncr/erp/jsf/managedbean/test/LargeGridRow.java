@@ -1,21 +1,13 @@
 package it.ivncr.erp.jsf.managedbean.test;
 
 import it.ivncr.erp.model.commerciale.ods.OrdineServizio;
-import it.ivncr.erp.model.personale.Addetto;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class LargeGridRow {
 
 	private OrdineServizio ods;
-	private List<Orario> orari;
-	private Addetto addetto1;
-	private Addetto addetto2;
-
-	public LargeGridRow() {
-		orari = new ArrayList<Orario>();
-	}
+	private Orario orario;
+	private AddettoCell addetto1;
+	private AddettoCell addetto2;
 
 	public OrdineServizio getOds() {
 		return ods;
@@ -25,27 +17,27 @@ public class LargeGridRow {
 		this.ods = ods;
 	}
 
-	public List<Orario> getOrari() {
-		return orari;
+	public Orario getOrario() {
+		return orario;
 	}
 
-	public void setOrari(List<Orario> orari) {
-		this.orari = orari;
+	public void setOrario(Orario orario) {
+		this.orario = orario;
 	}
 
-	public Addetto getAddetto1() {
+	public AddettoCell getAddetto1() {
 		return addetto1;
 	}
 
-	public void setAddetto1(Addetto addetto1) {
+	public void setAddetto1(AddettoCell addetto1) {
 		this.addetto1 = addetto1;
 	}
 
-	public Addetto getAddetto2() {
+	public AddettoCell getAddetto2() {
 		return addetto2;
 	}
 
-	public void setAddetto2(Addetto addetto2) {
+	public void setAddetto2(AddettoCell addetto2) {
 		this.addetto2 = addetto2;
 	}
 }
