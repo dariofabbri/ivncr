@@ -27,6 +27,8 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 
+import com.sun.faces.facelets.component.UIRepeat;
+
 
 @ManagedBean
 @ViewScoped
@@ -35,6 +37,7 @@ public class LargeGridTest implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private List<LargeGridRow> rows;
+	private int noOfAddetti;
 	private DataTable datatable;
 
 	private final Random rnd = new Random();
@@ -45,6 +48,26 @@ public class LargeGridTest implements Serializable {
 		buildSampleData();
 
 		datatable = new DataTable();
+
+		Column column = buildServizioColumn();
+		datatable.getColumns().add(column);
+
+		column = buildOrarioColumn();
+		datatable.getColumns().add(column);
+
+		for(int i = 0; i < noOfAddetti; ++i) {
+			column = buildAddettoColumn(i);
+			datatable.getColumns().add(column);
+		}
+	}
+
+	private ValueExpression createValueExpression(String expression, Class<?> expectedType) {
+	    FacesContext context = FacesContext.getCurrentInstance();
+	    return context.getApplication().getExpressionFactory()
+	            .createValueExpression(context.getELContext(), expression, expectedType);
+	}
+
+	private Column buildServizioColumn() {
 
 		Column column = new Column();
 		column.setHeaderText("Servizio");
@@ -59,9 +82,11 @@ public class LargeGridTest implements Serializable {
 		outputText.setValueExpression("value", createValueExpression("#{row.ods.alias}", String.class));
 		panelGroup.getChildren().add(outputText);
 
-		datatable.getColumns().add(column);
+		return column;
+	}
 
 
+	private Column buildOrarioColumn() {
 
 		DateTimeConverter dtc = (DateTimeConverter)FacesContext.getCurrentInstance().getApplication().createConverter("javax.faces.DateTime");
 		dtc.setPattern("HH:mm");
@@ -70,11 +95,11 @@ public class LargeGridTest implements Serializable {
 						(String)createValueExpression("#{appConfig.timeZone}", String.class)
 							.getValue(FacesContext.getCurrentInstance().getELContext())));
 
-		column = new Column();
+		Column column = new Column();
 		column.setHeaderText("Orario");
 		column.setStyle("width: 150px;");
 
-		panelGroup = new HtmlPanelGroup();
+		HtmlPanelGroup panelGroup = new HtmlPanelGroup();
 		panelGroup.setStyle("height: 6em; vertical-align: top; font-size: 0.8em;");
 		panelGroup.setLayout("block");
 		column.getChildren().add(panelGroup);
@@ -83,7 +108,7 @@ public class LargeGridTest implements Serializable {
 		block.setValueExpression("rendered", createValueExpression("#{not empty row.orario.quantita1}", Boolean.class));
 		panelGroup.getChildren().add(block);
 
-		outputText = new HtmlOutputText();
+		HtmlOutputText outputText = new HtmlOutputText();
 		outputText.setValue("n.&nbsp;");
 		outputText.setEscape(false);
 		block.getChildren().add(outputText);
@@ -112,18 +137,152 @@ public class LargeGridTest implements Serializable {
 		outputText.setConverter(dtc);
 		block.getChildren().add(outputText);
 
-		datatable.getColumns().add(column);
+
+		block = new HtmlPanelGroup();
+		block.setValueExpression("rendered", createValueExpression("#{not empty row.orario.quantita2}", Boolean.class));
+		panelGroup.getChildren().add(block);
+
+		outputText = new HtmlOutputText();
+		outputText.setValue("<br>n.&nbsp;");
+		outputText.setEscape(false);
+		block.getChildren().add(outputText);
+
+		outputText = new HtmlOutputText();
+		outputText.setValueExpression("value", createValueExpression("#{row.orario.quantita2}", String.class));
+		block.getChildren().add(outputText);
+
+		outputText = new HtmlOutputText();
+		outputText.setValue("&nbsp;&nbsp;&nbsp;");
+		outputText.setEscape(false);
+		block.getChildren().add(outputText);
+
+		outputText = new HtmlOutputText();
+		outputText.setValueExpression("value", createValueExpression("#{row.orario.orarioInizio2}", Date.class));
+		outputText.setConverter(dtc);
+		block.getChildren().add(outputText);
+
+		outputText = new HtmlOutputText();
+		outputText.setValue("&nbsp;-&nbsp;");
+		outputText.setEscape(false);
+		block.getChildren().add(outputText);
+
+		outputText = new HtmlOutputText();
+		outputText.setValueExpression("value", createValueExpression("#{row.orario.orarioFine2}", Date.class));
+		outputText.setConverter(dtc);
+		block.getChildren().add(outputText);
+
+
+		block = new HtmlPanelGroup();
+		block.setValueExpression("rendered", createValueExpression("#{not empty row.orario.quantita3}", Boolean.class));
+		panelGroup.getChildren().add(block);
+
+		outputText = new HtmlOutputText();
+		outputText.setValue("<br>n.&nbsp;");
+		outputText.setEscape(false);
+		block.getChildren().add(outputText);
+
+		outputText = new HtmlOutputText();
+		outputText.setValueExpression("value", createValueExpression("#{row.orario.quantita3}", String.class));
+		block.getChildren().add(outputText);
+
+		outputText = new HtmlOutputText();
+		outputText.setValue("&nbsp;&nbsp;&nbsp;");
+		outputText.setEscape(false);
+		block.getChildren().add(outputText);
+
+		outputText = new HtmlOutputText();
+		outputText.setValueExpression("value", createValueExpression("#{row.orario.orarioInizio3}", Date.class));
+		outputText.setConverter(dtc);
+		block.getChildren().add(outputText);
+
+		outputText = new HtmlOutputText();
+		outputText.setValue("&nbsp;-&nbsp;");
+		outputText.setEscape(false);
+		block.getChildren().add(outputText);
+
+		outputText = new HtmlOutputText();
+		outputText.setValueExpression("value", createValueExpression("#{row.orario.orarioFine3}", Date.class));
+		outputText.setConverter(dtc);
+		block.getChildren().add(outputText);
+
+		return column;
 	}
 
-	private ValueExpression createValueExpression(String expression, Class<?> expectedType) {
-	    FacesContext context = FacesContext.getCurrentInstance();
-	    return context.getApplication().getExpressionFactory()
-	            .createValueExpression(context.getELContext(), expression, expectedType);
+
+	private Column buildAddettoColumn(int addetto) {
+
+		DateTimeConverter dtc = (DateTimeConverter)FacesContext.getCurrentInstance().getApplication().createConverter("javax.faces.DateTime");
+		dtc.setPattern("HH:mm");
+		dtc.setTimeZone(
+				TimeZone.getTimeZone(
+						(String)createValueExpression("#{appConfig.timeZone}", String.class)
+							.getValue(FacesContext.getCurrentInstance().getELContext())));
+
+		Column column = new Column();
+		column.setHeaderText("Addetto #" + (addetto + 1));
+		column.setStyle("width: 200px;");
+
+		HtmlPanelGroup panelGroup = new HtmlPanelGroup();
+		panelGroup.setStyle("height: 6em; vertical-align: top; font-size: 0.8em;");
+		panelGroup.setLayout("block");
+		column.getChildren().add(panelGroup);
+
+		HtmlOutputText outputText = new HtmlOutputText();
+		outputText.setValueExpression("value", createValueExpression("#{row.addetti[" + addetto + "].addetto.matricola}", String.class));
+		panelGroup.getChildren().add(outputText);
+
+		outputText = new HtmlOutputText();
+		outputText.setValue("&nbsp;");
+		outputText.setEscape(false);
+		panelGroup.getChildren().add(outputText);
+
+		outputText = new HtmlOutputText();
+		outputText.setValueExpression("value", createValueExpression("#{row.addetti[" + addetto + "].addetto.cognome}", String.class));
+		panelGroup.getChildren().add(outputText);
+
+		outputText = new HtmlOutputText();
+		outputText.setValue("&nbsp;");
+		outputText.setEscape(false);
+		panelGroup.getChildren().add(outputText);
+
+		outputText = new HtmlOutputText();
+		outputText.setValueExpression("value", createValueExpression("#{row.addetti[" + addetto + "].addetto.nome}", String.class));
+		panelGroup.getChildren().add(outputText);
+
+		UIRepeat repeat = new UIRepeat();
+		repeat.setVar("servizio");
+		repeat.setValueExpression("value", createValueExpression("#{row.addetti[" + addetto + "].servizi}", List.class));
+		panelGroup.getChildren().add(repeat);
+
+		outputText = new HtmlOutputText();
+		outputText.setValue("<br>");
+		outputText.setEscape(false);
+		repeat.getChildren().add(outputText);
+
+		outputText = new HtmlOutputText();
+		outputText.setValueExpression("value", createValueExpression("#{servizio.orarioDa}", Date.class));
+		outputText.setConverter(dtc);
+		repeat.getChildren().add(outputText);
+
+		outputText = new HtmlOutputText();
+		outputText.setValue("&nbsp;-&nbsp;");
+		outputText.setEscape(false);
+		repeat.getChildren().add(outputText);
+
+		outputText = new HtmlOutputText();
+		outputText.setValueExpression("value", createValueExpression("#{servizio.orarioA}", Date.class));
+		outputText.setConverter(dtc);
+		repeat.getChildren().add(outputText);
+
+		return column;
 	}
+
 
 	private void buildSampleData() {
 
 		rows = new ArrayList<LargeGridRow>();
+
+		noOfAddetti = rnd.nextInt(20);
 
 		for(int i = 0; i < 20; ++i) {
 
@@ -135,8 +294,9 @@ public class LargeGridTest implements Serializable {
 
 			row.setOrario(buildRandomOrario());
 
-			row.setAddetto1(buildRandomAddettoCell());
-			row.setAddetto2(buildRandomAddettoCell());
+			for(int j = 0; j < noOfAddetti; ++j) {
+				row.getAddetti().add(buildRandomAddettoCell());
+			}
 
 			rows.add(row);
 		}
