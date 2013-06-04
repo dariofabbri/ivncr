@@ -17,6 +17,12 @@
 			
 		<h:outputStylesheet library="default" name="css/app.css" />
 		<h:outputScript library="default" name="js/localization.js" />
+
+		
+		<h:graphicImage name="img/image-not-present.jpg" library="default">
+       		<p:ajax event="click" update="testDataTable"/>
+		</h:graphicImage>
+
 	
 		<p:dataTable 
 			id="testDataTable"
@@ -28,6 +34,7 @@
 			scrollHeight="200"
 			styleClass="mattinale-datatable">
 	  
+	  		<!--
 	        <p:column headerText="Servizio" style="width: 200px;">
 	        	<h:panelGroup style="height: 6em; vertical-align: top; font-size: 0.8em;" layout="block">
 		            <h:outputText value="#{row.ods.alias}" />
@@ -115,7 +122,9 @@
 	        </p:column>  
 	  
 	        <p:column headerText="Addetto 2" style="width: 200px;">  
-	        </p:column>  
+	        </p:column>
+	        
+	        -->  
 	  
 	    </p:dataTable>  
     		 	
