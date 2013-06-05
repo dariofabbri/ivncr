@@ -278,7 +278,7 @@ public class LargeGridTest implements Serializable {
 	}
 
 
-	private void buildSampleData() {
+	public void buildSampleData() {
 
 		rows = new ArrayList<LargeGridRow>();
 

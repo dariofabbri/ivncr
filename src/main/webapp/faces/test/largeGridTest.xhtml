@@ -19,125 +19,125 @@
 		<h:outputStylesheet library="default" name="css/app.css" />
 		<h:outputScript library="default" name="js/localization.js" />
 
-		
-		<h:graphicImage name="img/image-not-present.jpg" library="default">
-       		<p:ajax event="click" update="testDataTable"/>
-		</h:graphicImage>
-
-		<custom:ajaxPanelGroup>
-		
-			<p:ajax event="click" update="testDataTable"/>
-		
-			<h:outputText value="The quick brown fox jumped over the lazy dog"/>
-			<h:outputText value="The quick brown fox jumped over the lazy dog"/>
-			<h:outputText value="The quick brown fox jumped over the lazy dog"/>
-			<h:outputText value="The quick brown fox jumped over the lazy dog"/>
-			<h:outputText value="The quick brown fox jumped over the lazy dog"/>
-		</custom:ajaxPanelGroup>
-
-		<p:dataTable 
-			id="testDataTable"
-			binding="#{largeGridTest.datatable}"
-			var="row" 
-			value="#{largeGridTest.rows}" 
-			scrollable="true" 
-			scrollWidth="100%" 
-			scrollHeight="200"
-			styleClass="mattinale-datatable">
-	  
-	  		<!--
-	        <p:column headerText="Servizio" style="width: 200px;">
-	        	<h:panelGroup style="height: 6em; vertical-align: top; font-size: 0.8em;" layout="block">
-		            <h:outputText value="#{row.ods.alias}" />
-				</h:panelGroup>
-	        </p:column>  
-	  
-	        <p:column headerText="Orario" style="width: 150px;">
-
-	        	<h:panelGroup style="height: 6em; vertical-align: top; font-size: 0.8em;" layout="block">
-		        
-		        	<h:panelGroup rendered="#{not empty row.orario.quantita1}">
-		        		<h:outputText value="n.&amp;nbsp;" escape="false"/>
-	        			<h:outputText value="#{row.orario.quantita1}" />
-		        		<h:outputText value="&amp;nbsp;&amp;nbsp;&amp;nbsp;" escape="false"/>
-	        			<h:outputText value="#{row.orario.orarioInizio1}">
-							<f:convertDateTime pattern="HH:mm" timeZone="#{appConfig.timeZone}" />
-						</h:outputText>
-		        		<h:outputText value="&amp;nbsp;-&amp;nbsp;" escape="false"/>
-	        			<h:outputText value="#{row.orario.orarioFine1}">
-							<f:convertDateTime pattern="HH:mm" timeZone="#{appConfig.timeZone}" />
-	        			</h:outputText>
-	        		</h:panelGroup>
-		        
-		        	<h:panelGroup rendered="#{not empty row.orario.quantita2}">
-		        		<h:outputText value="&lt;br&gt;" escape="false"/>
-		        		<h:outputText value="n.&amp;nbsp;" escape="false"/>
-	        			<h:outputText value="#{row.orario.quantita2}" />
-		        		<h:outputText value="&amp;nbsp;&amp;nbsp;&amp;nbsp;" escape="false"/>
-	        			<h:outputText value="#{row.orario.orarioInizio2}">
-							<f:convertDateTime pattern="HH:mm" timeZone="#{appConfig.timeZone}" />
-						</h:outputText>
-		        		<h:outputText value="&amp;nbsp;-&amp;nbsp;" escape="false"/>
-	        			<h:outputText value="#{row.orario.orarioFine2}">
-							<f:convertDateTime pattern="HH:mm" timeZone="#{appConfig.timeZone}" />
-	        			</h:outputText>
-	        		</h:panelGroup>
-		        
-		        	<h:panelGroup rendered="#{not empty row.orario.quantita3}">
-		        		<h:outputText value="&lt;br&gt;" escape="false"/>
-		        		<h:outputText value="n.&amp;nbsp;" escape="false"/>
-	        			<h:outputText value="#{row.orario.quantita3}" />
-		        		<h:outputText value="&amp;nbsp;&amp;nbsp;&amp;nbsp;" escape="false"/>
-	        			<h:outputText value="#{row.orario.orarioInizio3}">
-							<f:convertDateTime pattern="HH:mm" timeZone="#{appConfig.timeZone}" />
-						</h:outputText>
-		        		<h:outputText value="&amp;nbsp;-&amp;nbsp;" escape="false"/>
-	        			<h:outputText value="#{row.orario.orarioFine3}">
-							<f:convertDateTime pattern="HH:mm" timeZone="#{appConfig.timeZone}" />
-	        			</h:outputText>
-	        		</h:panelGroup>
+		<h:form id="testForm">
+			
+			<h:graphicImage name="img/image-not-present.jpg" library="default">
+	       		<p:ajax event="click" update="testDataTable"/>
+			</h:graphicImage>
+	
+			<custom:ajaxPanelGroup process="@this" update=":testForm:testDataTable" actionListener="#{largeGridTest.buildSampleData()}">
+				<h:outputText value="The quick brown fox jumped over the lazy dog"/>
+				<h:outputText value="The quick brown fox jumped over the lazy dog"/>
+				<h:outputText value="The quick brown fox jumped over the lazy dog"/>
+				<h:outputText value="The quick brown fox jumped over the lazy dog"/>
+				<h:outputText value="The quick brown fox jumped over the lazy dog"/>
+			</custom:ajaxPanelGroup>
+	
+			<p:dataTable 
+				id="testDataTable"
+				binding="#{largeGridTest.datatable}"
+				var="row" 
+				value="#{largeGridTest.rows}" 
+				scrollable="true" 
+				scrollWidth="100%" 
+				scrollHeight="200"
+				styleClass="mattinale-datatable">
+		  
+		  		<!--
+		        <p:column headerText="Servizio" style="width: 200px;">
+		        	<h:panelGroup style="height: 6em; vertical-align: top; font-size: 0.8em;" layout="block">
+			            <h:outputText value="#{row.ods.alias}" />
+					</h:panelGroup>
+		        </p:column>  
+		  
+		        <p:column headerText="Orario" style="width: 150px;">
+	
+		        	<h:panelGroup style="height: 6em; vertical-align: top; font-size: 0.8em;" layout="block">
+			        
+			        	<h:panelGroup rendered="#{not empty row.orario.quantita1}">
+			        		<h:outputText value="n.&amp;nbsp;" escape="false"/>
+		        			<h:outputText value="#{row.orario.quantita1}" />
+			        		<h:outputText value="&amp;nbsp;&amp;nbsp;&amp;nbsp;" escape="false"/>
+		        			<h:outputText value="#{row.orario.orarioInizio1}">
+								<f:convertDateTime pattern="HH:mm" timeZone="#{appConfig.timeZone}" />
+							</h:outputText>
+			        		<h:outputText value="&amp;nbsp;-&amp;nbsp;" escape="false"/>
+		        			<h:outputText value="#{row.orario.orarioFine1}">
+								<f:convertDateTime pattern="HH:mm" timeZone="#{appConfig.timeZone}" />
+		        			</h:outputText>
+		        		</h:panelGroup>
+			        
+			        	<h:panelGroup rendered="#{not empty row.orario.quantita2}">
+			        		<h:outputText value="&lt;br&gt;" escape="false"/>
+			        		<h:outputText value="n.&amp;nbsp;" escape="false"/>
+		        			<h:outputText value="#{row.orario.quantita2}" />
+			        		<h:outputText value="&amp;nbsp;&amp;nbsp;&amp;nbsp;" escape="false"/>
+		        			<h:outputText value="#{row.orario.orarioInizio2}">
+								<f:convertDateTime pattern="HH:mm" timeZone="#{appConfig.timeZone}" />
+							</h:outputText>
+			        		<h:outputText value="&amp;nbsp;-&amp;nbsp;" escape="false"/>
+		        			<h:outputText value="#{row.orario.orarioFine2}">
+								<f:convertDateTime pattern="HH:mm" timeZone="#{appConfig.timeZone}" />
+		        			</h:outputText>
+		        		</h:panelGroup>
+			        
+			        	<h:panelGroup rendered="#{not empty row.orario.quantita3}">
+			        		<h:outputText value="&lt;br&gt;" escape="false"/>
+			        		<h:outputText value="n.&amp;nbsp;" escape="false"/>
+		        			<h:outputText value="#{row.orario.quantita3}" />
+			        		<h:outputText value="&amp;nbsp;&amp;nbsp;&amp;nbsp;" escape="false"/>
+		        			<h:outputText value="#{row.orario.orarioInizio3}">
+								<f:convertDateTime pattern="HH:mm" timeZone="#{appConfig.timeZone}" />
+							</h:outputText>
+			        		<h:outputText value="&amp;nbsp;-&amp;nbsp;" escape="false"/>
+		        			<h:outputText value="#{row.orario.orarioFine3}">
+								<f:convertDateTime pattern="HH:mm" timeZone="#{appConfig.timeZone}" />
+		        			</h:outputText>
+		        		</h:panelGroup>
+		        		
+		        	</h:panelGroup>
 	        		
-	        	</h:panelGroup>
-        		
-	        </p:column>  
-	  
-	        <p:column headerText="Addetto 1" style="width: 200px;">
-
-	        	<h:panelGroup style="height: 6em; vertical-align: top; font-size: 0.8em;" layout="block">
+		        </p:column>  
+		  
+		        <p:column headerText="Addetto 1" style="width: 200px;">
+	
+		        	<h:panelGroup style="height: 6em; vertical-align: top; font-size: 0.8em;" layout="block">
+			        	
+			        	<h:outputText value="#{row.addetto1.addetto.matricola}" />
+				        <h:outputText value="&amp;nbsp;" escape="false"/>
+			        	<h:outputText value="#{row.addetto1.addetto.cognome}" />
+				        <h:outputText value="&amp;nbsp;" escape="false"/>
+			        	<h:outputText value="#{row.addetto1.addetto.nome}" />
+				        
+				        <ui:repeat var="servizio" value="#{row.addetto1.servizi}">
+				        	<h:outputText value="&lt;br&gt;" escape="false"/>
+		        			<h:outputText value="#{servizio.orarioDa}">
+								<f:convertDateTime pattern="HH:mm" timeZone="#{appConfig.timeZone}" />
+							</h:outputText>
+			        		<h:outputText value="&amp;nbsp;-&amp;nbsp;" escape="false"/>
+		        			<h:outputText value="#{servizio.orarioA}">
+								<f:convertDateTime pattern="HH:mm" timeZone="#{appConfig.timeZone}" />
+							</h:outputText>
+				        </ui:repeat>
+				        
+					</h:panelGroup>
 		        	
-		        	<h:outputText value="#{row.addetto1.addetto.matricola}" />
-			        <h:outputText value="&amp;nbsp;" escape="false"/>
-		        	<h:outputText value="#{row.addetto1.addetto.cognome}" />
-			        <h:outputText value="&amp;nbsp;" escape="false"/>
-		        	<h:outputText value="#{row.addetto1.addetto.nome}" />
-			        
-			        <ui:repeat var="servizio" value="#{row.addetto1.servizi}">
-			        	<h:outputText value="&lt;br&gt;" escape="false"/>
-	        			<h:outputText value="#{servizio.orarioDa}">
-							<f:convertDateTime pattern="HH:mm" timeZone="#{appConfig.timeZone}" />
-						</h:outputText>
-		        		<h:outputText value="&amp;nbsp;-&amp;nbsp;" escape="false"/>
-	        			<h:outputText value="#{servizio.orarioA}">
-							<f:convertDateTime pattern="HH:mm" timeZone="#{appConfig.timeZone}" />
-						</h:outputText>
-			        </ui:repeat>
-			        
-				</h:panelGroup>
-	        	
-	        </p:column>  
-	  
-	        <p:column headerText="Addetto 2" style="width: 200px;">  
-	        </p:column>  
-	  
-	        <p:column headerText="Addetto 2" style="width: 200px;">  
-	        </p:column>  
-	  
-	        <p:column headerText="Addetto 2" style="width: 200px;">  
-	        </p:column>
-	        
-	        -->  
-	  
-	    </p:dataTable>  
+		        </p:column>  
+		  
+		        <p:column headerText="Addetto 2" style="width: 200px;">  
+		        </p:column>  
+		  
+		        <p:column headerText="Addetto 2" style="width: 200px;">  
+		        </p:column>  
+		  
+		        <p:column headerText="Addetto 2" style="width: 200px;">  
+		        </p:column>
+		        
+		        -->  
+		  
+		    </p:dataTable>  
+		    
+		</h:form>
     		 	
 	</h:body>
 		

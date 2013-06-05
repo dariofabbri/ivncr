@@ -11,27 +11,42 @@
 	<composite:interface>
 		<composite:attribute name="style" required="false" />
 		<composite:attribute name="styleClass" required="false" />
-		<composite:clientBehavior name="click" event="action" targets="#{cc.clientId}:link"/>
+		<composite:attribute name="process" required="false" />
+		<composite:attribute name="update" required="false" />
+		<composite:attribute name="actionListener" method-signature="void f(javax.faces.event.ActionEvent)" required="false"/>		
 	</composite:interface>
 	
 	<composite:implementation>
 	
-		<div onclick=""/>
-	
-		<h:panelGroup id="#{cc.clientId}" layout="block">
+		<div onclick="__customAjaxPanelGroupRemoteCommand#{cc.clientId}();">
 		
 			<c:if test="#{not empty cc.attrs.style}">
 				<f:attribute name="style" value="#{cc.attrs.style}"/>
 			</c:if>
+			
 			<c:if test="#{not empty cc.attrs.styleClass}">
-				<f:attribute name="styleClass" value="#{cc.attrs.styleClass}"/>
+				<f:attribute name="class" value="#{cc.attrs.styleClass}"/>
 			</c:if>
 		
 			<composite:insertChildren />
+	
+		</div>
+
+		<p:remoteCommand name="__customAjaxPanelGroupRemoteCommand#{cc.clientId}">
+
+			<c:if test="#{not empty cc.attrs.process}">
+				<f:attribute name="process" value="#{cc.attrs.process}"/>
+			</c:if>
+
+			<c:if test="#{not empty cc.attrs.update}">
+				<f:attribute name="update" value="#{cc.attrs.update}"/>
+			</c:if>
+
+			<c:if test="#{not empty cc.attrs.actionListener}">
+				<f:attribute name="actionListener" value="#{cc.attrs.actionListener}"/>
+			</c:if>
 			
-			<p:commandLink id="link"/>
-		
-		</h:panelGroup>
+		</p:remoteCommand>
 			
 	</composite:implementation>
 	
