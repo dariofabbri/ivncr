@@ -15,6 +15,7 @@ import java.util.Random;
 import java.util.TimeZone;
 
 import javax.annotation.PostConstruct;
+import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -24,6 +25,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.DateTimeConverter;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.primefaces.component.behavior.ajax.AjaxBehavior;
+import org.primefaces.component.behavior.ajax.AjaxBehaviorListenerImpl;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 
@@ -51,13 +54,16 @@ public class LargeGridTest implements Serializable {
 
 		Column column = buildServizioColumn();
 		datatable.getColumns().add(column);
+		column.setParent(datatable);
 
 		column = buildOrarioColumn();
 		datatable.getColumns().add(column);
+		column.setParent(datatable);
 
 		for(int i = 0; i < noOfAddetti; ++i) {
 			column = buildAddettoColumn(i);
 			datatable.getColumns().add(column);
+			column.setParent(datatable);
 		}
 	}
 
@@ -67,15 +73,29 @@ public class LargeGridTest implements Serializable {
 	            .createValueExpression(context.getELContext(), expression, expectedType);
 	}
 
+	private MethodExpression createMethodExpression(String expression, Class<?> expectedType, Class<?>[] expectedParamTypes) {
+
+	    FacesContext context = FacesContext.getCurrentInstance();
+	    return context.getApplication().getExpressionFactory()
+	    		.createMethodExpression(context.getELContext(), expression, expectedType, expectedParamTypes);
+	}
+
 	private Column buildServizioColumn() {
 
 		Column column = new Column();
 		column.setHeaderText("Servizio");
 		column.setStyle("width: 200px;");
 
-		HtmlPanelGroup panelGroup = new HtmlPanelGroup();
+		AjaxBehavior ajaxBehavior = new AjaxBehavior();
+		ajaxBehavior.setProcess("@this");
+		ajaxBehavior.setUpdate("testDataTable");
+		ajaxBehavior.addAjaxBehaviorListener(new AjaxBehaviorListenerImpl(createMethodExpression("#{largeGridTest.buildSampledData}", null, new Class[0]), null));
+		//ajaxBehavior.setListener(createMethodExpression("#{largeGridTest.buildSampledData}", null, new Class[0]));
+
+		MyHtmlPanelGroup panelGroup = new MyHtmlPanelGroup();
 		panelGroup.setStyle("height: 6em; vertical-align: top; font-size: 0.8em;");
 		panelGroup.setLayout("block");
+		panelGroup.addClientBehavior("click", ajaxBehavior);
 		column.getChildren().add(panelGroup);
 
 		HtmlOutputText outputText = new HtmlOutputText();
@@ -363,6 +383,43 @@ public class LargeGridTest implements Serializable {
 
 		return gc.getTime();
 	}
+
+
+	/*
+	private UIComponent includeCompositeComponent(UIComponent parent, String libraryName, String resourceName, String id) {
+
+	    // Prepare.
+	    FacesContext context = FacesContext.getCurrentInstance();
+	    Application application = context.getApplication();
+	    FaceletContext faceletContext = (FaceletContext) context.getAttributes().get(FaceletContext.FACELET_CONTEXT_KEY);
+
+	    // This basically creates <ui:component> based on <composite:interface>.
+	    Resource resource = application.getResourceHandler().createResource(resourceName, libraryName);
+	    UIComponent composite = application.createComponent(context, resource);
+	    if(id != null) {
+	    	composite.setId(id); // Mandatory for the case composite is part of UIForm! Otherwise JSF can't find inputs.
+	    }
+
+	    // This basically creates <composite:implementation>.
+	    UIComponent implementation = application.createComponent(UIPanel.COMPONENT_TYPE);
+	    implementation.setRendererType("javax.faces.Group");
+	    composite.getFacets().put(UIComponent.COMPOSITE_FACET_NAME, implementation);
+
+	    // Now include the composite component file in the given parent.
+	    parent.getChildren().add(composite);
+	    parent.pushComponentToEL(context, composite); // This makes #{cc} available.
+	    try {
+	        faceletContext.includeFacelet(implementation, resource.getURL());
+	    } catch (IOException e) {
+	        throw new FacesException(e);
+	    } finally {
+	        parent.popComponentFromEL(context);
+	    }
+
+	    return composite;
+	}
+	*/
+
 
 	public List<LargeGridRow> getRows() {
 		return rows;

@@ -25,14 +25,6 @@
 	       		<p:ajax event="click" update="testDataTable"/>
 			</h:graphicImage>
 	
-			<custom:ajaxPanelGroup process="@this" update=":testForm:testDataTable" actionListener="#{largeGridTest.buildSampleData()}">
-				<h:outputText value="The quick brown fox jumped over the lazy dog"/>
-				<h:outputText value="The quick brown fox jumped over the lazy dog"/>
-				<h:outputText value="The quick brown fox jumped over the lazy dog"/>
-				<h:outputText value="The quick brown fox jumped over the lazy dog"/>
-				<h:outputText value="The quick brown fox jumped over the lazy dog"/>
-			</custom:ajaxPanelGroup>
-	
 			<p:dataTable 
 				id="testDataTable"
 				binding="#{largeGridTest.datatable}"
