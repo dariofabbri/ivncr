@@ -23,6 +23,8 @@ import javax.faces.component.html.HtmlOutputText;
 import javax.faces.component.html.HtmlPanelGroup;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.DateTimeConverter;
+import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.BehaviorEvent;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.primefaces.component.behavior.ajax.AjaxBehavior;
@@ -89,8 +91,16 @@ public class LargeGridTest implements Serializable {
 		AjaxBehavior ajaxBehavior = new AjaxBehavior();
 		ajaxBehavior.setProcess("@this");
 		ajaxBehavior.setUpdate("testDataTable");
-		ajaxBehavior.addAjaxBehaviorListener(new AjaxBehaviorListenerImpl(createMethodExpression("#{largeGridTest.buildSampledData}", null, new Class[0]), null));
-		//ajaxBehavior.setListener(createMethodExpression("#{largeGridTest.buildSampledData}", null, new Class[0]));
+		ajaxBehavior.setOnsuccess("alert('Success!')");
+
+		//ajaxBehavior.addAjaxBehaviorListener(new AjaxBehaviorListenerImpl(createMethodExpression("#{largeGridTest.test}", void.class, new Class[] {BehaviorEvent.class}), null));
+		//ajaxBehavior.setListener(createMethodExpression("#{largeGridTest.test}", void.class, new Class[] {BehaviorEvent.class}));
+
+		ajaxBehavior.addAjaxBehaviorListener(
+			new AjaxBehaviorListenerImpl(
+					createMethodExpression("#{largeGridTest.test}", Object.class, new Class[] {}),
+					createMethodExpression("#{largeGridTest.test}", Object.class, new Class[] {AjaxBehaviorEvent.class})));
+
 
 		MyHtmlPanelGroup panelGroup = new MyHtmlPanelGroup();
 		panelGroup.setStyle("height: 6em; vertical-align: top; font-size: 0.8em;");
@@ -105,6 +115,15 @@ public class LargeGridTest implements Serializable {
 		return column;
 	}
 
+
+	public void test(BehaviorEvent event) {
+		System.out.println(">>>>>>>>>>>>>>>");
+	}
+
+
+	public void test() {
+		System.out.println(">>>>>>>>>>>>>>>");
+	}
 
 	private Column buildOrarioColumn() {
 

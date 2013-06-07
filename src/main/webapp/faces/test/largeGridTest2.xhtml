@@ -20,14 +20,9 @@
 		<h:outputScript library="default" name="js/localization.js" />
 
 		<h:form id="testForm">
-			
-			<h:graphicImage name="img/image-not-present.jpg" library="default">
-	       		<p:ajax event="click" update="testDataTable" listener="#{largeGridTest.test}"/>
-			</h:graphicImage>
 	
 			<p:dataTable 
 				id="testDataTable"
-				binding="#{largeGridTest.datatable}"
 				var="row" 
 				value="#{largeGridTest.rows}" 
 				scrollable="true" 
@@ -35,7 +30,6 @@
 				scrollHeight="200"
 				styleClass="mattinale-datatable">
 		  
-		  		<!--
 		        <p:column headerText="Servizio" style="width: 200px;">
 		        	<h:panelGroup style="height: 6em; vertical-align: top; font-size: 0.8em;" layout="block">
 			            <h:outputText value="#{row.ods.alias}" />
@@ -95,13 +89,15 @@
 	
 		        	<h:panelGroup style="height: 6em; vertical-align: top; font-size: 0.8em;" layout="block">
 			        	
-			        	<h:outputText value="#{row.addetto1.addetto.matricola}" />
+			        	<h:outputText value="#{row.addetti[0].addetto.matricola}" />
 				        <h:outputText value="&amp;nbsp;" escape="false"/>
-			        	<h:outputText value="#{row.addetto1.addetto.cognome}" />
+			        	<h:outputText value="#{row.addetti[0].addetto.cognome}" />
 				        <h:outputText value="&amp;nbsp;" escape="false"/>
-			        	<h:outputText value="#{row.addetto1.addetto.nome}" />
+			        	<h:outputText value="#{row.addetti[0].addetto.nome}" />
+				        <h:outputText value="&amp;nbsp;" escape="false"/>
+				        <p:commandLink value="Click me!" ajax="true" process="@this" update="testDataTable" actionListener="#{largeGridTest.test}"/>
 				        
-				        <ui:repeat var="servizio" value="#{row.addetto1.servizi}">
+				        <ui:repeat var="servizio" value="#{row.addetti[0].servizi}">
 				        	<h:outputText value="&lt;br&gt;" escape="false"/>
 		        			<h:outputText value="#{servizio.orarioDa}">
 								<f:convertDateTime pattern="HH:mm" timeZone="#{appConfig.timeZone}" />
@@ -124,10 +120,8 @@
 		  
 		        <p:column headerText="Addetto 2" style="width: 200px;">  
 		        </p:column>
-		        
-		        -->  
 		  
-		    </p:dataTable>  
+		    </p:dataTable>
 		    
 		</h:form>
     		 	

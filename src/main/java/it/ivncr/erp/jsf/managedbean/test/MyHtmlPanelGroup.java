@@ -53,10 +53,4 @@ public class MyHtmlPanelGroup extends HtmlPanelGroup implements
 
 		responseWriter.writeAttribute("id", getClientId(context), "id");
 	}
-
-	@Override
-	public void encodeEnd(FacesContext context) throws IOException {
-		// TODO Auto-generated method stub
-		super.encodeEnd(context);
-	}
 }
