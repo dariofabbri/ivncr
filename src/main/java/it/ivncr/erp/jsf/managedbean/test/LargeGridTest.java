@@ -24,7 +24,6 @@ import javax.faces.component.html.HtmlPanelGroup;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.DateTimeConverter;
 import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.BehaviorEvent;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.primefaces.component.behavior.ajax.AjaxBehavior;
@@ -42,6 +41,7 @@ public class LargeGridTest implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private List<LargeGridRow> rows;
+	private List<String> columns;
 	private int noOfAddetti;
 	private DataTable datatable;
 
@@ -116,13 +116,10 @@ public class LargeGridTest implements Serializable {
 	}
 
 
-	public void test(BehaviorEvent event) {
-		System.out.println(">>>>>>>>>>>>>>>");
-	}
-
-
 	public void test() {
-		System.out.println(">>>>>>>>>>>>>>>");
+
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>");
+//		buildSampleData();
 	}
 
 	private Column buildOrarioColumn() {
@@ -322,6 +319,10 @@ public class LargeGridTest implements Serializable {
 		rows = new ArrayList<LargeGridRow>();
 
 		noOfAddetti = rnd.nextInt(20);
+		columns = new ArrayList<String>();
+		for(int i = 0; i < noOfAddetti; ++i) {
+			columns.add(String.format("Addetto #%d", i));
+		}
 
 		for(int i = 0; i < 20; ++i) {
 
@@ -446,6 +447,14 @@ public class LargeGridTest implements Serializable {
 
 	public void setRows(List<LargeGridRow> rows) {
 		this.rows = rows;
+	}
+
+	public List<String> getColumns() {
+		return columns;
+	}
+
+	public void setColumns(List<String> columns) {
+		this.columns = columns;
 	}
 
 	public DataTable getDatatable() {
