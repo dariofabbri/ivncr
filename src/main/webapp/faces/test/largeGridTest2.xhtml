@@ -30,7 +30,7 @@
 				scrollHeight="200"
 				styleClass="mattinale-datatable"
 				rowIndexVar="rowIdx">
-		  
+
 		        <p:column headerText="Servizio" style="width: 200px;">
 		        	<h:panelGroup style="height: 6em; vertical-align: top; font-size: 0.8em;" layout="block">
 			            <h:outputText value="#{row.ods.alias}" />
@@ -84,15 +84,17 @@
 		        		
 		        	</h:panelGroup>
 	        		
-		        </p:column>  
+		        </p:column>
 		  
 		  		<p:columns value="#{largeGridTest.columns}" var="column" columnIndexVar="idx" style="width: 200px;">
 		  		
 		  			<f:facet name="header">
 		  				Addetto #{idx} - #{column}
 		  			</f:facet>
-	
-		        	<h:panelGroup style="height: 6em; vertical-align: top; font-size: 0.8em;" layout="block">
+		  			
+		  			<div 
+		  				style="height: 6em; vertical-align: top; font-size: 0.8em;"
+		  				onclick="testRemoteCommand([{name: 'row', value: #{rowIdx}}, {name: 'col', value: #{idx}}])"> 
 			        	
 			        	<h:outputText value="#{row.addetti[idx].addetto.matricola}" />
 				        <h:outputText value="&amp;nbsp;" escape="false"/>
@@ -100,12 +102,6 @@
 				        <h:outputText value="&amp;nbsp;" escape="false"/>
 			        	<h:outputText value="#{row.addetti[idx].addetto.nome}" />
 				        <h:outputText value="&amp;nbsp;" escape="false"/>
-				        <h:commandLink
-				        	id="cmdButton"
-				        	value="Click me!" 
-				        	action="#{largeGridTest.test}">
-				        	<f:ajax render=":testForm:testDataTable"/>
-				        </h:commandLink>
 				        
 				        <ui:repeat var="servizio" value="#{row.addetti[idx].servizi}">
 				        	<h:outputText value="&lt;br&gt;" escape="false"/>
@@ -118,12 +114,17 @@
 							</h:outputText>
 				        </ui:repeat>
 				        
-					</h:panelGroup>
+					</div>
 		  		
 		  		</p:columns>
 		  
 		    </p:dataTable>
 		    
+		    <p:remoteCommand 
+		    	name="testRemoteCommand" 
+		    	process="@this" 
+		    	update=":testForm:testDataTable"
+		    	actionListener="#{largeGridTest.test}"/>
 		</h:form>
     		 	
 	</h:body>

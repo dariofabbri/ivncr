@@ -23,6 +23,7 @@ import javax.faces.component.html.HtmlOutputText;
 import javax.faces.component.html.HtmlPanelGroup;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.DateTimeConverter;
+import javax.faces.event.ActionEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 
 import org.apache.commons.lang3.RandomStringUtils;
@@ -116,10 +117,12 @@ public class LargeGridTest implements Serializable {
 	}
 
 
-	public void test() {
+	public void test(ActionEvent e) {
 
-		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>");
-//		buildSampleData();
+		buildSampleData();
+
+		System.out.println(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("row"));
+		System.out.println(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("col"));
 	}
 
 	private Column buildOrarioColumn() {
