@@ -1,0 +1,44 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/main.xhtml">
+
+	<ui:define name="container">
+
+		<h:form id="form">
+			
+			<p:defaultCommand id="defaultCommand" target="growl"/>
+			
+			<p:growl id="growl" showSummary="true" showDetail="true" life="2000"/>
+
+			<h1 class="title ui-widget-header ui-corner-all">Mattinale</h1>
+
+				
+			<p:panelGrid id="panel" styleClass="form-panel">
+							
+				<p:row>
+				
+					<p:column>
+						<p:tree value="#{dettaglioOperativoMattinale.reparti}" var="node" id="repartiTree">  
+							<p:treeNode id="treeNode">  
+								<h:outputText value="#{node}"/>  
+							</p:treeNode>  
+						</p:tree>
+					</p:column>
+					
+					<p:column>
+					</p:column>
+				</p:row>
+				
+			</p:panelGrid>
+
+		</h:form>
+		
+	</ui:define>
+
+</ui:composition>
+
+</html>
