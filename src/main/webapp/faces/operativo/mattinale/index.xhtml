@@ -17,43 +17,126 @@
 			<h1 class="title ui-widget-header ui-corner-all">Mattinale</h1>
 
 				
-			<p:panelGrid id="panel" styleClass="multi-col-layout">
+			<p:panelGrid id="panel" styleClass="multi-col-layout mattinale-panel-grid-2">
 							
 				<p:row>
 				
 					<p:column>
-					
-						<p:fieldset legend="Reparto">
 						
-							<p:tree 
-								value="#{dettaglioOperativoMattinale.reparti}" 
-								var="node" 
-								id="repartiTree"
-								selection="#{dettaglioOperativoMattinale.selectedReparto}"
-								selectionMode="single"
-								style="border: none;">
-								
-								<p:ajax event="select" process="@this" update=":form:growl" listener="#{dettaglioOperativoMattinale.onRepartoSelect}" />
-								 
-								<p:treeNode type="azienda" expandedIcon="ui-icon-folder-open" collapsedIcon="ui-icon-folder-collapsed">  
-									<h:outputText value="#{node.descrizione}"/>  
-								</p:treeNode>
-								  
-								<p:treeNode type="reparto" icon="ui-icon-document">  
-									<h:outputText value="#{node.descrizione}"/>  
-								</p:treeNode>
-								  
-							</p:tree>
-						
-						</p:fieldset>
+						<p:tree 
+							value="#{dettaglioOperativoMattinale.reparti}" 
+							var="node" 
+							id="repartiTree"
+							selection="#{dettaglioOperativoMattinale.selectedReparto}"
+							selectionMode="single">
+							
+							<p:ajax event="select" process="@this" update=":form:growl" listener="#{dettaglioOperativoMattinale.onRepartoSelect}" />
+							 
+							<p:treeNode type="azienda" expandedIcon="ui-icon-folder-open" collapsedIcon="ui-icon-folder-collapsed">  
+								<h:outputText value="#{node.descrizione}"/>  
+							</p:treeNode>
+							  
+							<p:treeNode type="reparto" icon="ui-icon-document">  
+								<h:outputText value="#{node.descrizione}"/>  
+							</p:treeNode>
+							  
+						</p:tree>
 						
 					</p:column>
 					
-					<p:column>
-					
-						<p:fieldset legend="Mattinale">
+					<p:column style="width: 100%;">
 						
-						</p:fieldset>
+						<p:panelGrid styleClass="form-panel mattinale-panel-grid-1" style="width: 100%;">
+						
+							<p:row>
+							
+								<p:column colspan="2">
+													
+									<p:panel style="width: 100%;" styleClass="mattinale-panel-1">
+									
+										<p:outputLabel for="dataMattinale" value="Mattinale del: " />
+										<p:calendar value="#{dettaglioOperativoMattinale.dataMattinale}" id="dataMattinale"
+											locale="it" pattern="dd/MM/yyyy"/>
+										<p:watermark for="dataMattinale" value="Data del mattinale" />  
+										<p:tooltip for="dataMattinale" showEffect="fade" value="Data del mattinale" />
+									
+										<p:spacer width="10"/>
+										<p:commandButton value="Riempi mattinale"/>
+									</p:panel>
+											
+								</p:column>
+							
+							</p:row>
+						
+							<p:row>
+							
+								<p:column style="width: 50%;">
+								
+									<p:panel>
+									
+										<p:dataTable 
+											id="addettiTable"
+											var="row" 
+											value="#{dettaglioOperativoMattinale.addetti}" 
+											scrollable="true" 
+											scrollWidth="100%" 
+											scrollHeight="100%"
+											emptyMessage="Nessun record trovato" 
+											styleClass="small-datatable">
+											
+											<p:column headerText="Matricola"/>
+											
+											<p:column headerText="Cognome"/>
+											
+											<p:column headerText="Nome"/>
+											
+											<p:column headerText="Sist. lav."/>
+											
+											<p:column headerText="Ore lavorate"/>
+											
+											<p:column headerText="Ore disponibili"/>
+											
+										</p:dataTable>
+										
+									</p:panel>
+								
+								</p:column>
+
+								<p:column style="width: 50%;">
+								
+									<p:panel>
+									
+										<p:dataTable 
+											id="serviziTable"
+											var="row" 
+											value="#{dettaglioOperativoMattinale.addetti}" 
+											scrollable="true" 
+											scrollWidth="100%" 
+											scrollHeight="100%"
+											emptyMessage="Nessun record trovato" 
+											styleClass="small-datatable">
+											
+											<p:column headerText="Matricola"/>
+											
+											<p:column headerText="Cognome"/>
+											
+											<p:column headerText="Nome"/>
+											
+											<p:column headerText="Sist. lav."/>
+											
+											<p:column headerText="Ore lavorate"/>
+											
+											<p:column headerText="Ore disponibili"/>
+											
+										</p:dataTable>
+										
+									</p:panel>
+								
+								</p:column>
+								
+							</p:row>
+						
+						</p:panelGrid>
 						
 					</p:column>
 					

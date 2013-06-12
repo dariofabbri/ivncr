@@ -6,6 +6,7 @@ import it.ivncr.erp.service.ServiceFactory;
 import it.ivncr.erp.service.lut.LUTService;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -31,6 +32,11 @@ public class DettaglioOperativoMattinale implements Serializable {
 
 	private TreeNode reparti;
 	private TreeNode selectedReparto;
+
+	private Date dataMattinale;
+
+	private List<Object> addetti;
+
 
 	@PostConstruct
 	public void init() {
@@ -80,5 +86,21 @@ public class DettaglioOperativoMattinale implements Serializable {
 
 	public void setSelectedReparto(TreeNode selectedReparto) {
 		this.selectedReparto = selectedReparto;
+	}
+
+	public Date getDataMattinale() {
+		return dataMattinale;
+	}
+
+	public void setDataMattinale(Date dataMattinale) {
+		this.dataMattinale = dataMattinale;
+	}
+
+	public List<Object> getAddetti() {
+		return addetti;
+	}
+
+	public void setAddetti(List<Object> addetti) {
+		this.addetti = addetti;
 	}
 }

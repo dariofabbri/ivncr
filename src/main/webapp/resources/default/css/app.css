@@ -107,3 +107,22 @@
 .mattinale-datatable tbody td {
 	padding: 0px;
 }
+
+.mattinale-panel-grid-1 td {
+	padding: 0px 2px 2px 0px;
+}
+
+.mattinale-panel-grid-1 .ui-panel .ui-panel-content {
+	padding: 0.5em 0em;
+}
+
+.mattinale-panel-grid-2 td {
+	padding: 1px;
+}
+
+.mattinale-panel-1 {
+	padding: 0px;
+}
+.mattinale-panel-1 .ui-panel-content {
+	margin-left: 0.5em;
+}
