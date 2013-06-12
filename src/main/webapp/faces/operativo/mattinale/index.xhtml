@@ -17,20 +17,46 @@
 			<h1 class="title ui-widget-header ui-corner-all">Mattinale</h1>
 
 				
-			<p:panelGrid id="panel" styleClass="form-panel">
+			<p:panelGrid id="panel" styleClass="multi-col-layout">
 							
 				<p:row>
 				
 					<p:column>
-						<p:tree value="#{dettaglioOperativoMattinale.reparti}" var="node" id="repartiTree">  
-							<p:treeNode id="treeNode">  
-								<h:outputText value="#{node}"/>  
-							</p:treeNode>  
-						</p:tree>
+					
+						<p:fieldset legend="Reparto">
+						
+							<p:tree 
+								value="#{dettaglioOperativoMattinale.reparti}" 
+								var="node" 
+								id="repartiTree"
+								selection="#{dettaglioOperativoMattinale.selectedReparto}"
+								selectionMode="single"
+								style="border: none;">
+								
+								<p:ajax event="select" process="@this" update=":form:growl" listener="#{dettaglioOperativoMattinale.onRepartoSelect}" />
+								 
+								<p:treeNode type="azienda" expandedIcon="ui-icon-folder-open" collapsedIcon="ui-icon-folder-collapsed">  
+									<h:outputText value="#{node.descrizione}"/>  
+								</p:treeNode>
+								  
+								<p:treeNode type="reparto" icon="ui-icon-document">  
+									<h:outputText value="#{node.descrizione}"/>  
+								</p:treeNode>
+								  
+							</p:tree>
+						
+						</p:fieldset>
+						
 					</p:column>
 					
 					<p:column>
+					
+						<p:fieldset legend="Mattinale">
+						
+						</p:fieldset>
+						
 					</p:column>
+					
 				</p:row>
 				
 			</p:panelGrid>
