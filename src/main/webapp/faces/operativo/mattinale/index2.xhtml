@@ -1,0 +1,283 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/main.xhtml">
+
+	<ui:define name="container">
+
+		<h:form id="form">
+			
+			<p:defaultCommand id="defaultCommand" target="growl"/>
+			
+			<p:growl id="growl" showSummary="true" showDetail="true" life="2000"/>
+
+			<h1 class="title ui-widget-header ui-corner-all">Mattinale</h1>
+						
+					<p:tree 
+						value="#{dettaglioOperativoMattinale.reparti}" 
+						var="node" 
+						id="repartiTree"
+						selection="#{dettaglioOperativoMattinale.selectedReparto}"
+						selectionMode="single"
+						style="height: 100%;">
+						 
+						<p:treeNode type="azienda" expandedIcon="ui-icon-folder-open" collapsedIcon="ui-icon-folder-collapsed">  
+							<h:outputText value="#{node.descrizione}"/>  
+						</p:treeNode>
+						  
+						<p:treeNode type="reparto" icon="ui-icon-document">  
+							<h:outputText value="#{node.descrizione}"/>  
+						</p:treeNode>
+						  
+					</p:tree>
+			
+			<!--
+			<p:panelGrid id="panel" styleClass="multi-col-layout mattinale-panel-grid-2" style="height: 100%;">
+							
+				<p:row>
+				
+					<p:column>
+						
+						<p:tree 
+							value="#{dettaglioOperativoMattinale.reparti}" 
+							var="node" 
+							id="repartiTree"
+							selection="#{dettaglioOperativoMattinale.selectedReparto}"
+							selectionMode="single"
+							style="height: 100%;">
+							
+							<p:ajax event="select" process="@this" update=":form:growl" listener="#{dettaglioOperativoMattinale.onRepartoSelect}" />
+							 
+							<p:treeNode type="azienda" expandedIcon="ui-icon-folder-open" collapsedIcon="ui-icon-folder-collapsed">  
+								<h:outputText value="#{node.descrizione}"/>  
+							</p:treeNode>
+							  
+							<p:treeNode type="reparto" icon="ui-icon-document">  
+								<h:outputText value="#{node.descrizione}"/>  
+							</p:treeNode>
+							  
+						</p:tree>
+						
+					</p:column>
+					
+					<p:column style="width: 100%;">
+						
+						<p:panelGrid styleClass="form-panel mattinale-panel-grid-1" style="width: 100%;">
+						
+							<p:row>
+							
+								<p:column colspan="2">
+													
+									<p:panel style="width: 100%;" styleClass="mattinale-panel-1">
+									
+										<p:outputLabel for="dataMattinale" value="Mattinale del: " />
+										<p:calendar value="#{dettaglioOperativoMattinale.dataMattinale}" id="dataMattinale"
+											locale="it" pattern="dd/MM/yyyy"/>
+										<p:watermark for="dataMattinale" value="Data del mattinale" />  
+										<p:tooltip for="dataMattinale" showEffect="fade" value="Data del mattinale" />
+									
+										<p:spacer width="10"/>
+										<p:commandButton value="Riempi mattinale"/>
+									</p:panel>
+											
+								</p:column>
+							
+							</p:row>
+						
+							<p:row>
+							
+								<p:column style="width: 50%;">
+								
+									<p:panel>
+									
+										<p:dataTable 
+											id="addettiTable"
+											var="row" 
+											value="#{dettaglioOperativoMattinale.addetti}" 
+											scrollable="true" 
+											scrollWidth="100%" 
+											scrollHeight="250"
+											emptyMessage="Nessun record trovato" 
+											styleClass="small-datatable">
+											
+											<p:column headerText="Matricola"/>
+											
+											<p:column headerText="Cognome"/>
+											
+											<p:column headerText="Nome"/>
+											
+											<p:column headerText="Sist. lav."/>
+											
+											<p:column headerText="Ore lavorate"/>
+											
+											<p:column headerText="Ore disponibili"/>
+											
+										</p:dataTable>
+										
+									</p:panel>
+								
+								</p:column>
+
+								<p:column style="width: 50%;">
+								
+									<p:panel>
+									
+										<p:dataTable 
+											id="serviziTable"
+											var="row" 
+											value="#{dettaglioOperativoMattinale.addetti}" 
+											scrollable="true" 
+											scrollWidth="100%" 
+											scrollHeight="250"
+											emptyMessage="Nessun record trovato" 
+											styleClass="small-datatable">
+											
+											<p:column headerText="Data"/>
+											
+											<p:column headerText="Dalle"/>
+											
+											<p:column headerText="Alle"/>
+											
+											<p:column headerText="Servizio"/>
+											
+										</p:dataTable>
+										
+									</p:panel>
+								
+								</p:column>
+								
+							</p:row>
+							
+							<p:row>
+							
+								<p:column colspan="2" style="height: 100%;">
+								
+									<p:dataTable 
+										id="testDataTable"
+										var="row" 
+										value="#{largeGridTest.rows}" 
+										scrollable="true" 
+										scrollWidth="400" 
+										scrollHeight="400"
+										styleClass="small-datatable"
+										rowIndexVar="rowIdx">
+						
+								        <p:column headerText="Servizio" style="width: 200px;">
+								        	<h:panelGroup style="height: 6em; vertical-align: top; font-size: 0.8em;" layout="block">
+									            <h:outputText value="#{row.ods.alias}" />
+											</h:panelGroup>
+								        </p:column>  
+								  
+								        <p:column headerText="Orario" style="width: 150px;">
+							
+								        	<h:panelGroup style="height: 6em; vertical-align: top; font-size: 0.8em;" layout="block">
+									        
+									        	<h:panelGroup rendered="#{not empty row.orario.quantita1}">
+									        		<h:outputText value="n.&amp;nbsp;" escape="false"/>
+								        			<h:outputText value="#{row.orario.quantita1}" />
+									        		<h:outputText value="&amp;nbsp;&amp;nbsp;&amp;nbsp;" escape="false"/>
+								        			<h:outputText value="#{row.orario.orarioInizio1}">
+														<f:convertDateTime pattern="HH:mm" timeZone="#{appConfig.timeZone}" />
+													</h:outputText>
+									        		<h:outputText value="&amp;nbsp;-&amp;nbsp;" escape="false"/>
+								        			<h:outputText value="#{row.orario.orarioFine1}">
+														<f:convertDateTime pattern="HH:mm" timeZone="#{appConfig.timeZone}" />
+								        			</h:outputText>
+								        		</h:panelGroup>
+									        
+									        	<h:panelGroup rendered="#{not empty row.orario.quantita2}">
+									        		<h:outputText value="&lt;br&gt;" escape="false"/>
+									        		<h:outputText value="n.&amp;nbsp;" escape="false"/>
+								        			<h:outputText value="#{row.orario.quantita2}" />
+									        		<h:outputText value="&amp;nbsp;&amp;nbsp;&amp;nbsp;" escape="false"/>
+								        			<h:outputText value="#{row.orario.orarioInizio2}">
+														<f:convertDateTime pattern="HH:mm" timeZone="#{appConfig.timeZone}" />
+													</h:outputText>
+									        		<h:outputText value="&amp;nbsp;-&amp;nbsp;" escape="false"/>
+								        			<h:outputText value="#{row.orario.orarioFine2}">
+														<f:convertDateTime pattern="HH:mm" timeZone="#{appConfig.timeZone}" />
+								        			</h:outputText>
+								        		</h:panelGroup>
+									        
+									        	<h:panelGroup rendered="#{not empty row.orario.quantita3}">
+									        		<h:outputText value="&lt;br&gt;" escape="false"/>
+									        		<h:outputText value="n.&amp;nbsp;" escape="false"/>
+								        			<h:outputText value="#{row.orario.quantita3}" />
+									        		<h:outputText value="&amp;nbsp;&amp;nbsp;&amp;nbsp;" escape="false"/>
+								        			<h:outputText value="#{row.orario.orarioInizio3}">
+														<f:convertDateTime pattern="HH:mm" timeZone="#{appConfig.timeZone}" />
+													</h:outputText>
+									        		<h:outputText value="&amp;nbsp;-&amp;nbsp;" escape="false"/>
+								        			<h:outputText value="#{row.orario.orarioFine3}">
+														<f:convertDateTime pattern="HH:mm" timeZone="#{appConfig.timeZone}" />
+								        			</h:outputText>
+								        		</h:panelGroup>
+								        		
+								        	</h:panelGroup>
+							        		
+								        </p:column>
+								  
+								  		<p:columns value="#{largeGridTest.columns}" var="column" columnIndexVar="idx" style="width: 200px;">
+								  		
+								  			<f:facet name="header">
+								  				Addetto #{idx} - #{column}
+								  			</f:facet>
+								  			
+								  			<div 
+								  				style="height: 6em; vertical-align: top; font-size: 0.8em;"
+								  				onclick="testRemoteCommand([{name: 'row', value: #{rowIdx}}, {name: 'col', value: #{idx}}])"> 
+									        	
+									        	<h:outputText value="#{row.addetti[idx].addetto.matricola}" />
+										        <h:outputText value="&amp;nbsp;" escape="false"/>
+									        	<h:outputText value="#{row.addetti[idx].addetto.cognome}" />
+										        <h:outputText value="&amp;nbsp;" escape="false"/>
+									        	<h:outputText value="#{row.addetti[idx].addetto.nome}" />
+										        <h:outputText value="&amp;nbsp;" escape="false"/>
+										        
+										        <ui:repeat var="servizio" value="#{row.addetti[idx].servizi}">
+										        	<h:outputText value="&lt;br&gt;" escape="false"/>
+								        			<h:outputText value="#{servizio.orarioDa}">
+														<f:convertDateTime pattern="HH:mm" timeZone="#{appConfig.timeZone}" />
+													</h:outputText>
+									        		<h:outputText value="&amp;nbsp;-&amp;nbsp;" escape="false"/>
+								        			<h:outputText value="#{servizio.orarioA}">
+														<f:convertDateTime pattern="HH:mm" timeZone="#{appConfig.timeZone}" />
+													</h:outputText>
+										        </ui:repeat>
+										        
+											</div>
+								  		
+								  		</p:columns>
+								  
+								    </p:dataTable>
+								    
+								    <p:remoteCommand 
+								    	name="testRemoteCommand" 
+								    	process="@this" 
+								    	update=":form:testDataTable"
+								    	actionListener="#{largeGridTest.test}"/>
+		    									
+								</p:column>
+							
+							</p:row>
+						
+						</p:panelGrid>
+						
+					</p:column>
+					
+				</p:row>
+				
+			</p:panelGrid>
+			
+			-->
+
+		</h:form>
+		
+	</ui:define>
+
+</ui:composition>
+
+</html>
