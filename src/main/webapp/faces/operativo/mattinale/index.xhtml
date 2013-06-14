@@ -16,7 +16,7 @@
 
 			<h1 class="title ui-widget-header ui-corner-all">Mattinale</h1>
 			
-			<p:layout>
+			<p:layout style="height:800px;">
 			
 				<p:layoutUnit 
 					position="west"
@@ -53,7 +53,7 @@
 				
 					<p:layout>
 					
-						<p:layoutUnit position="north">
+						<p:layoutUnit position="north" size="50">
 				
 							<p:outputLabel for="dataMattinale" value="Mattinale del: " />
 							<p:calendar value="#{dettaglioOperativoMattinale.dataMattinale}" id="dataMattinale"
@@ -118,13 +118,13 @@
 						
 						</p:layoutUnit>
 						
-						<p:layoutUnit position="south">
+						<p:layoutUnit position="south" size="440">
 												
 							<p:dataTable 
 								id="testDataTable"
 								var="row" 
 								value="#{largeGridTest.rows}" 
-								scrollable="true" 
+								scrollable="true"
 								scrollWidth="100%" 
 								scrollHeight="400"
 								styleClass="small-datatable"
