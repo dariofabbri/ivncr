@@ -16,7 +16,7 @@
 
 			<h1 class="title ui-widget-header ui-corner-all">Mattinale</h1>
 			
-			<p:layout style="height:800px;">
+			<p:layout style="height: 800px;">
 			
 				<p:layoutUnit 
 					position="west"
@@ -35,7 +35,7 @@
 						selectionMode="single"
 						style="border: none; height: 80%;">
 						
-						<p:ajax event="select" process="@this" update=":form:growl" listener="#{dettaglioOperativoMattinale.onRepartoSelect}" />
+						<p:ajax event="select" process="@this" update=":form:riempiMattinaleButton" />
 						 
 						<p:treeNode type="azienda" expandedIcon="ui-icon-folder-open" collapsedIcon="ui-icon-folder-collapsed">  
 							<h:outputText value="#{node.descrizione}"/>  
@@ -56,13 +56,21 @@
 						<p:layoutUnit position="north" size="50" style="padding-left: 10px;">
 				
 							<p:outputLabel for="dataMattinale" value="Mattinale del: " />
-							<p:calendar value="#{dettaglioOperativoMattinale.dataMattinale}" id="dataMattinale"
-								locale="it" pattern="dd/MM/yyyy"/>
+							<p:calendar 
+								value="#{dettaglioOperativoMattinale.dataMattinale}" 
+								id="dataMattinale"
+								locale="it" 
+								pattern="dd/MM/yyyy">
+								<p:ajax event="dateSelect" process="@this" update="riempiMattinaleButton"/>
+							</p:calendar>
 							<p:watermark for="dataMattinale" value="Data del mattinale" />  
 							<p:tooltip for="dataMattinale" showEffect="fade" value="Data del mattinale" />
 						
 							<p:spacer width="10"/>
-							<p:commandButton value="Riempi mattinale"/>
+							<p:commandButton 
+								id="riempiMattinaleButton"
+								disabled="#{dettaglioOperativoMattinale.dataMattinale == null || dettaglioOperativoMattinale.selectedReparto == null}"
+								value="Riempi mattinale"/>
 						
 						</p:layoutUnit>
 						

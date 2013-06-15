@@ -59,9 +59,8 @@ public class DettaglioOperativoMattinale implements Serializable {
 		logger.debug("Initialization performed.");
 	}
 
-	public void onRepartoSelect() {
+	public void riempiMattinale() {
 
-		System.out.println(">>>>>>>>>>>>>>>>");
 	}
 
 	public LoginInfo getLoginInfo() {
