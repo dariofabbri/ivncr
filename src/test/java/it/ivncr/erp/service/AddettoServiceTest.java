@@ -25,12 +25,13 @@ public class AddettoServiceTest extends BaseServiceTest {
 
 		AddettoService as = ServiceFactory.createService("Addetto");
 		long start = System.currentTimeMillis();
-		List<Addetto> list = as.listAddettiAndServizi(reparto.getId(), dataMattinale);
+		List<Object[]> list = as.listAddettiAndServizi(reparto.getId(), dataMattinale);
 		long end = System.currentTimeMillis();
 
 		Assert.assertNotNull(list);
 
-		for(Addetto addetto : list) {
+		for(Object[] o : list) {
+			Addetto addetto = (Addetto)o[0];
 			System.out.println(String.format("%s %s: %d", addetto.getCognome(), addetto.getNome(), addetto.getServizi().size()));
 		}
 
