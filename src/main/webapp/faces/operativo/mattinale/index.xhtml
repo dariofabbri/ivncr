@@ -70,7 +70,10 @@
 							<p:commandButton 
 								id="riempiMattinaleButton"
 								disabled="#{dettaglioOperativoMattinale.dataMattinale == null || dettaglioOperativoMattinale.selectedReparto == null}"
-								value="Riempi mattinale"/>
+								value="Riempi mattinale"
+								process="@this"
+								update="@form"
+								actionListener="#{dettaglioOperativoMattinale.riempiMattinale}"/>
 						
 						</p:layoutUnit>
 						
@@ -78,25 +81,38 @@
 									
 							<p:dataTable 
 								id="addettiTable"
-								var="row" 
+								rendered="#{not empty dettaglioOperativoMattinale.addetti}"
+								var="addetto" 
 								value="#{dettaglioOperativoMattinale.addetti}" 
 								scrollable="true" 
 								scrollWidth="100%" 
-								scrollHeight="400"
+								scrollHeight="400" 
 								emptyMessage="Nessun record trovato" 
 								styleClass="small-datatable">
 								
-								<p:column headerText="Matricola"/>
+								<p:column headerText="Matricola">
+									<h:outputText value="#{addetto.matricola}" />
+								</p:column>
 								
-								<p:column headerText="Cognome"/>
+								<p:column headerText="Cognome">
+									<h:outputText value="#{addetto.cognome}" />
+								</p:column>
 								
-								<p:column headerText="Nome"/>
+								<p:column headerText="Nome">
+									<h:outputText value="#{addetto.nome}" />
+								</p:column>
 								
-								<p:column headerText="Sist. lav."/>
+								<p:column headerText="Sist. lav.">
+									<h:outputText value="#{addetto.sistemaLavoro}" />
+								</p:column>
 								
-								<p:column headerText="Ore lavorate"/>
+								<p:column headerText="Ore lavorate">
+									<h:outputText value="#{addetto.oreLavorate}" />
+								</p:column>
 								
-								<p:column headerText="Ore disponibili"/>
+								<p:column headerText="Ore disponibili">
+									<h:outputText value="#{addetto.oreDisponibili}" />
+								</p:column>
 								
 							</p:dataTable>
 						
@@ -105,9 +121,10 @@
 						<p:layoutUnit position="center">
 									
 							<p:dataTable 
-								id="serviziTable"
-								var="row" 
-								value="#{dettaglioOperativoMattinale.addetti}" 
+								id="serviziAddettoTable"
+								rendered="#{not empty dettaglioOperativoMattinale.serviziAddetto}"
+								var="servizioAddetto" 
+								value="#{dettaglioOperativoMattinale.serviziAddetto}" 
 								scrollable="true" 
 								scrollWidth="100%" 
 								scrollHeight="400"
@@ -129,9 +146,10 @@
 						<p:layoutUnit position="south" size="440">
 												
 							<p:dataTable 
-								id="testDataTable"
-								var="row" 
-								value="#{largeGridTest.rows}" 
+								id="serviziTable"
+								var="servizio" 
+								value="#{dettaglioOperativoMattinale.servizi}" 
+								rendered="#{not empty dettaglioOperativoMattinale.servizi}"
 								scrollable="true"
 								scrollWidth="100%" 
 								scrollHeight="400"
@@ -193,7 +211,7 @@
 					        		
 						        </p:column>
 						  
-						  		<p:columns value="#{largeGridTest.columns}" var="column" columnIndexVar="idx" style="width: 200px;">
+						  		<p:columns value="#{dettaglioOperativoMattinale.serviziColumns}" var="column" columnIndexVar="idx" style="width: 200px;">
 						  		
 						  			<f:facet name="header">
 						  				Addetto #{idx} - #{column}
@@ -230,8 +248,8 @@
 						    <p:remoteCommand 
 						    	name="testRemoteCommand" 
 						    	process="@this" 
-						    	update=":form:testDataTable"
-						    	actionListener="#{largeGridTest.test}"/>
+						    	update=":form:serviziTable"
+						    	actionListener="#{dettaglioOperativoMattinale.onServizioClick}"/>
 						
 						</p:layoutUnit>
 						

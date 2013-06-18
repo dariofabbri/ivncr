@@ -1,7 +1,9 @@
 package it.ivncr.erp.service.addetto;
 
 import it.ivncr.erp.model.generale.Azienda;
+import it.ivncr.erp.model.operativo.Servizio;
 import it.ivncr.erp.model.personale.Addetto;
+import it.ivncr.erp.model.personale.SistemaLavoro;
 import it.ivncr.erp.model.personale.StatoCivile;
 import it.ivncr.erp.service.AbstractService;
 import it.ivncr.erp.service.NotFoundException;
@@ -11,9 +13,12 @@ import it.ivncr.erp.util.AuditUtil;
 import it.ivncr.erp.util.AuditUtil.Operation;
 import it.ivncr.erp.util.AuditUtil.Snapshot;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.hibernate.Query;
 
 public class AddettoServiceImpl extends AbstractService implements AddettoService {
@@ -311,5 +316,89 @@ public class AddettoServiceImpl extends AbstractService implements AddettoServic
 		AuditUtil.log(Operation.Update, Snapshot.Destination, addetto);
 
 		return addetto;
+	}
+
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Object[]> listAddettiAndServizi(Integer codiceReparto, Date dataMattinale) {
+
+		String hql =
+				"select distinct(add) " +
+				"from Addetto add " +
+				"inner join add.reparti are " +
+				"inner join are.reparto rep " +
+				"where rep.id = :codiceReparto " +
+				"and add.attivo = true ";
+		Query query = session.createQuery(hql);
+		query.setParameter("codiceReparto", codiceReparto);
+
+		List<Addetto> list = query.list();
+
+		List<Object[]> result = new ArrayList<Object[]>();
+
+		hql =
+				"from Servizio ser " +
+				"left join fetch ser.causaleOds cod " +
+				"where ser.addetto.id = :codiceAddetto " +
+				"and ser.dataMattinale = :dataMattinale ";
+		Query queryServizio = session.createQuery(hql);
+
+		hql =
+				"from SistemaLavoro sla " +
+				"inner join fetch sla.tipoSistemaLavoro tsl " +
+				"where sla.addetto.id = :codiceAddetto " +
+				"and sla.validoA is null " +
+				"order by sla.validoDa desc ";
+		Query querySistemaLavoro = session.createQuery(hql);
+		querySistemaLavoro.setMaxResults(1);
+
+		for(Addetto addetto : list) {
+
+			session.evict(addetto);
+
+			// Retrieve servizi.
+			//
+			queryServizio.setParameter("codiceAddetto", addetto.getId());
+			queryServizio.setParameter("dataMattinale", dataMattinale);
+			List<Servizio> servizi = queryServizio.list();
+
+			// Calculated worked period and keep it in milliseconds.
+			//
+			Long workedMillis = 0L;
+			for(Servizio servizio : servizi) {
+
+				Date orarioDa = servizio.getOrarioDa();
+				Date orarioA = servizio.getOrarioA();
+
+				if(orarioDa == null && orarioA == null) {
+					continue;
+				}
+
+				if(
+					(orarioDa == null && orarioA != null) ||
+					(orarioA == null && orarioDa != null)) {
+					logger.error("Both or none between orarioDa and orarioA must be present.");
+					throw new RuntimeException("Both or none between orarioDa and orarioA must be present.");
+				}
+
+				if(orarioA.before(orarioDa)) {
+					orarioA = DateUtils.addDays(orarioA, 1);
+				}
+
+				workedMillis += (orarioA.getTime() - orarioDa.getTime());
+			}
+
+			// Retrieve sistema lavoro.
+			//
+			querySistemaLavoro.setParameter("codiceAddetto", addetto.getId());
+			SistemaLavoro sistemaLavoro = (SistemaLavoro)querySistemaLavoro.uniqueResult();
+
+			Object[] row = new Object[] { addetto, servizi, workedMillis, sistemaLavoro };
+			result.add(row);
+		}
+
+		logger.debug("listAddettiAndServizi returned: " + result);
+		return result;
 	}
 }

@@ -5,6 +5,7 @@ import it.ivncr.erp.service.EntityService;
 import it.ivncr.erp.service.QueryResult;
 
 import java.util.Date;
+import java.util.List;
 
 public interface AddettoService extends EntityService<Addetto> {
 
@@ -53,4 +54,6 @@ public interface AddettoService extends EntityService<Addetto> {
 	void setFoto(Integer id, byte[] foto);
 
 	Addetto setNote(Integer id, String note);
+
+	List<Object[]> listAddettiAndServizi(Integer codiceReparto, Date dataMattinale);
 }

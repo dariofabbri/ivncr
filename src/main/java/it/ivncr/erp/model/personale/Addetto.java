@@ -1,9 +1,11 @@
 package it.ivncr.erp.model.personale;
 
 import it.ivncr.erp.model.generale.Azienda;
+import it.ivncr.erp.model.operativo.Servizio;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +16,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -82,6 +86,14 @@ public class Addetto implements Serializable {
 
 	@Column(name="ultima_modifica_ts")
 	private Date ultimaModifica;
+
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="addetto")
+	@OrderBy
+	private Set<Servizio> servizi;
+
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="addetto")
+	@OrderBy
+	private Set<AddettoReparto> reparti;
 
 
 	@Override
@@ -242,5 +254,21 @@ public class Addetto implements Serializable {
 
 	public void setUltimaModifica(Date ultimaModifica) {
 		this.ultimaModifica = ultimaModifica;
+	}
+
+	public Set<Servizio> getServizi() {
+		return servizi;
+	}
+
+	public void setServizi(Set<Servizio> servizi) {
+		this.servizi = servizi;
+	}
+
+	public Set<AddettoReparto> getReparti() {
+		return reparti;
+	}
+
+	public void setReparti(Set<AddettoReparto> reparti) {
+		this.reparti = reparti;
 	}
 }

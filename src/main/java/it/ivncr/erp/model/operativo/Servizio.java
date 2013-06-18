@@ -51,7 +51,7 @@ public class Servizio implements Serializable {
 	@JoinColumn(name="ods_id")
 	private OrdineServizio ods;
 
-	@Column(name="data_mattina")
+	@Column(name="data_mattinale")
 	private Date dataMattinale;
 
 	@Column(name="data_retribuzione")
