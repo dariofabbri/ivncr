@@ -87,8 +87,15 @@
 								scrollable="true" 
 								scrollWidth="100%" 
 								scrollHeight="400" 
+								selectionMode="single"
+								selection="#{dettaglioOperativoMattinale.selectedAddetto}"
+								rowKey="#{addetto.id}"
 								emptyMessage="Nessun record trovato" 
 								styleClass="small-datatable">
+				
+								<p:ajax event="rowSelect" update=":form:serviziAddettoTable"/>
+				
+								<p:ajax event="rowUnselect" update=":form:serviziAddettoTable"/>
 								
 								<p:column headerText="Matricola">
 									<h:outputText value="#{addetto.matricola}" />

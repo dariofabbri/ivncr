@@ -45,6 +45,7 @@ public class DettaglioOperativoMattinale implements Serializable {
 	private Date dataMattinale;
 
 	private List<AddettoRow> addetti;
+	private AddettoRow selectedAddetto;
 
 	private List<Object> serviziAddetto;
 
@@ -121,6 +122,7 @@ public class DettaglioOperativoMattinale implements Serializable {
 			SistemaLavoro sistemaLavoro = (SistemaLavoro)o[3];
 
 			AddettoRow row = new AddettoRow();
+			row.setId(addetto.getId());
 			row.setMatricola(addetto.getMatricola());
 			row.setCognome(addetto.getCognome());
 			row.setNome(addetto.getNome());
@@ -184,6 +186,14 @@ public class DettaglioOperativoMattinale implements Serializable {
 		this.addetti = addetti;
 	}
 
+	public AddettoRow getSelectedAddetto() {
+		return selectedAddetto;
+	}
+
+	public void setSelectedAddetto(AddettoRow selectedAddetto) {
+		this.selectedAddetto = selectedAddetto;
+	}
+
 	public List<Object> getServiziAddetto() {
 		return serviziAddetto;
 	}
@@ -211,6 +221,7 @@ public class DettaglioOperativoMattinale implements Serializable {
 
 	public class AddettoRow {
 
+		private Integer id;
 		private String matricola;
 		private String cognome;
 		private String nome;
@@ -218,6 +229,14 @@ public class DettaglioOperativoMattinale implements Serializable {
 		private String oreLavorate;
 		private String oreDisponibili;
 
+
+		public Integer getId() {
+			return id;
+		}
+
+		public void setId(Integer id) {
+			this.id = id;
+		}
 
 		public String getMatricola() {
 			return matricola;
