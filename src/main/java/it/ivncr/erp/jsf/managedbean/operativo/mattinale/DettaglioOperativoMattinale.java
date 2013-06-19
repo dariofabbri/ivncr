@@ -128,7 +128,9 @@ public class DettaglioOperativoMattinale implements Serializable {
 			if(workedMillis > 0) {
 				row.setOreLavorate(DurationFormatUtils.formatDuration(workedMillis, "HH:mm"));
 			} else {
-				row.setOreLavorate(servizi.get(0).getCausaleOds().getDescrizione());
+				if(servizi != null && servizi.size() > 0) {
+					row.setOreLavorate(servizi.get(0).getCausaleOds().getDescrizione());
+				}
 			}
 			row.setOreDisponibili("00:00");
 			row.setSistemaLavoro(sistemaLavoro.getTipoSistemaLavoro().getDescrizione());
