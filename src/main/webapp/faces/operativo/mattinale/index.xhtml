@@ -93,9 +93,9 @@
 								emptyMessage="Nessun record trovato" 
 								styleClass="small-datatable">
 				
-								<p:ajax event="rowSelect" update=":form:serviziAddettoTable"/>
+								<p:ajax event="rowSelect" listener="#{dettaglioOperativoMattinale.onSelectAddetto}" update=":form:serviziAddettoTable"/>
 				
-								<p:ajax event="rowUnselect" update=":form:serviziAddettoTable"/>
+								<p:ajax event="rowUnselect" listener="#{dettaglioOperativoMattinale.onSelectAddetto}" update=":form:serviziAddettoTable"/>
 								
 								<p:column headerText="Matricola">
 									<h:outputText value="#{addetto.matricola}" />

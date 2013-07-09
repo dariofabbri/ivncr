@@ -145,6 +145,11 @@ public class DettaglioOperativoMattinale implements Serializable {
 
 		System.out.println("onServizioClick");
 	}
+	
+	public void onSelectAddetto() {
+		
+		System.out.println("onSelectAddetto");
+	}
 
 	public LoginInfo getLoginInfo() {
 		return loginInfo;
