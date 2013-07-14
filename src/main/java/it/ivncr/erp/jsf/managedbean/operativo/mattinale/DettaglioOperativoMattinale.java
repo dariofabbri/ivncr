@@ -134,7 +134,10 @@ public class DettaglioOperativoMattinale implements Serializable {
 					row.setOreLavorate(servizi.get(0).getCausaleOds().getDescrizione());
 				}
 			}
-			row.setOreDisponibili("00:00");
+			
+			// TODO: complete with available hours.
+			//
+			row.setOreDisponibili("00:00"); 
 			row.setSistemaLavoro(sistemaLavoro.getTipoSistemaLavoro().getDescrizione());
 
 			addetti.add(row);
@@ -149,6 +152,7 @@ public class DettaglioOperativoMattinale implements Serializable {
 	public void onSelectAddetto() {
 		
 		System.out.println("onSelectAddetto");
+		System.out.println(selectedAddetto.getId());
 	}
 
 	public LoginInfo getLoginInfo() {
