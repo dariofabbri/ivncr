@@ -47,7 +47,7 @@ public class DettaglioOperativoMattinale implements Serializable {
 	private List<AddettoRow> addetti;
 	private AddettoRow selectedAddetto;
 
-	private List<Object> serviziAddetto;
+	private List<ServizioAddettoRow> serviziAddetto;
 
 	private List<LargeGridRow> servizi;
 	private List<String> serviziColumns;
@@ -203,11 +203,11 @@ public class DettaglioOperativoMattinale implements Serializable {
 		this.selectedAddetto = selectedAddetto;
 	}
 
-	public List<Object> getServiziAddetto() {
+	public List<ServizioAddettoRow> getServiziAddetto() {
 		return serviziAddetto;
 	}
 
-	public void setServiziAddetto(List<Object> serviziAddetto) {
+	public void setServiziAddetto(List<ServizioAddettoRow> serviziAddetto) {
 		this.serviziAddetto = serviziAddetto;
 	}
 
@@ -294,6 +294,11 @@ public class DettaglioOperativoMattinale implements Serializable {
 		public void setOreDisponibili(String oreDisponibili) {
 			this.oreDisponibili = oreDisponibili;
 		}
+	}
+	
+	
+	public class ServizioAddettoRow {
+		
 	}
 
 
