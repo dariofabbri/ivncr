@@ -299,6 +299,42 @@ public class DettaglioOperativoMattinale implements Serializable {
 	
 	public class ServizioAddettoRow {
 		
+		private Date data;
+		private Date dalle;
+		private Date alle;
+		private String servizio;
+
+		public Date getData() {
+			return data;
+		}
+
+		public void setData(Date data) {
+			this.data = data;
+		}
+
+		public Date getDalle() {
+			return dalle;
+		}
+
+		public void setDalle(Date dalle) {
+			this.dalle = dalle;
+		}
+
+		public Date getAlle() {
+			return alle;
+		}
+
+		public void setAlle(Date alle) {
+			this.alle = alle;
+		}
+
+		public String getServizio() {
+			return servizio;
+		}
+
+		public void setServizio(String servizio) {
+			this.servizio = servizio;
+		}
 	}
 
 

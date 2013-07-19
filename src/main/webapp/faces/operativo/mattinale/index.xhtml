@@ -138,13 +138,27 @@
 								emptyMessage="Nessun record trovato" 
 								styleClass="small-datatable">
 								
-								<p:column headerText="Data"/>
+								<p:column headerText="Data">
+									<h:outputText value="#{servizioAddetto.data}">
+										<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+									</h:outputText>
+								</p:column>
 								
-								<p:column headerText="Dalle"/>
+								<p:column headerText="Dalle">
+									<h:outputText value="#{servizioAddetto.dalle}">
+										<f:convertDateTime pattern="hh:mm" timeZone="#{appConfig.timeZone}" />
+									</h:outputText>
+								</p:column>
 								
-								<p:column headerText="Alle"/>
+								<p:column headerText="Alle">
+									<h:outputText value="#{servizioAddetto.alle}">
+										<f:convertDateTime pattern="hh:mm" timeZone="#{appConfig.timeZone}" />
+									</h:outputText>
+								</p:column>
 								
-								<p:column headerText="Servizio"/>
+								<p:column headerText="Servizio">
+									<h:outputText value="#{servizioAddetto.servizio}"/>
+								</p:column>
 								
 							</p:dataTable>
 						
