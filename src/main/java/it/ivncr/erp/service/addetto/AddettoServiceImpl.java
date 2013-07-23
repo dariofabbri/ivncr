@@ -14,7 +14,9 @@ import it.ivncr.erp.util.AuditUtil.Operation;
 import it.ivncr.erp.util.AuditUtil.Snapshot;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 
@@ -316,6 +318,57 @@ public class AddettoServiceImpl extends AbstractService implements AddettoServic
 		AuditUtil.log(Operation.Update, Snapshot.Destination, addetto);
 
 		return addetto;
+	}
+
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Object[]> listServiziSettimanaAddetto(Integer codiceAddetto, Date dataMattinale) {
+
+		Calendar c = new GregorianCalendar();
+		c.setTime(dataMattinale);
+		c = DateUtils.truncate(c, Calendar.DATE);
+		Date dataInizio = DateUtils.addDays(c.getTime(), 2 - c.get(Calendar.DAY_OF_WEEK));
+		Date dataFine = DateUtils.addWeeks(dataInizio, 1);
+		
+		String hql =
+				"select distinct(ser) " +
+				"from Servizio ser " +
+				"inner join fetch ser.addetto add " +
+				"left join fetch ser.ods ods " +
+				"left join fetch ser.causaleOds cau " +
+				"where add.id = :codiceAddetto " +
+				"and ser.dataMattinale >= :dataInizio " +
+				"and ser.dataMattinale < :dataFine ";
+		Query query = session.createQuery(hql);
+		query.setParameter("codiceAddetto", codiceAddetto);
+		query.setParameter("dataInizio", dataInizio);
+		query.setParameter("dataFine", dataFine);
+
+		List<Servizio> list = query.list();
+
+		List<Object[]> result = new ArrayList<Object[]>();
+
+		for(Servizio servizio : list) {
+
+			String descrizione = null;
+			
+			if(servizio.getOds() != null) {
+				descrizione = servizio.getOds().getAlias();
+			} else if(servizio.getCausaleOds() != null) {
+				descrizione = servizio.getCausaleOds().getDescrizione();
+			}
+			
+			Object[] row = new Object[] { 
+					servizio.getDataMattinale(), 
+					servizio.getOrarioDa(), 
+					servizio.getOrarioA(),
+					descrizione };
+			result.add(row);
+		}
+
+		logger.debug("listServiziSettimanaAddetto returned: " + result);
+		return result;
 	}
 
 

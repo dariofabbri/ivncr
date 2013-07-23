@@ -56,4 +56,6 @@ public interface AddettoService extends EntityService<Addetto> {
 	Addetto setNote(Integer id, String note);
 
 	List<Object[]> listAddettiAndServizi(Integer codiceReparto, Date dataMattinale);
+
+	List<Object[]> listServiziSettimanaAddetto(Integer codiceAddetto, Date dataMattinale);
 }

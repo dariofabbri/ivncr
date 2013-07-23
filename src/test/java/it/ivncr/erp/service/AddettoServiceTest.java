@@ -37,4 +37,16 @@ public class AddettoServiceTest extends BaseServiceTest {
 
 		System.out.println("Elapsed time: " + (end -start));
 	}
+	
+	@Test
+	public void testListServiziSettimanaAddetto() {
+		
+		GregorianCalendar gc = new GregorianCalendar(2013, 1, 21); // 21-2-2013
+		Date dataMattinale = gc.getTime();
+
+		AddettoService as = ServiceFactory.createService("Addetto");
+		Addetto addetto = as.retrieveByMatricola(1, "2635");
+		
+		as.listServiziSettimanaAddetto(addetto.getId(), dataMattinale);
+	}
 }

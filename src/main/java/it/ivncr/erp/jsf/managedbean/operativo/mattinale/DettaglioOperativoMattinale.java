@@ -151,8 +151,20 @@ public class DettaglioOperativoMattinale implements Serializable {
 	
 	public void onSelectAddetto() {
 		
-		System.out.println("onSelectAddetto");
-		System.out.println(selectedAddetto.getId());
+		AddettoService as = ServiceFactory.createService("Addetto");
+		List<Object[]> listServizi = as.listServiziSettimanaAddetto(selectedAddetto.getId(), dataMattinale);
+		
+		serviziAddetto = new ArrayList<ServizioAddettoRow>();
+		for(Object[] o : listServizi) {
+
+			ServizioAddettoRow sar = new ServizioAddettoRow();
+			sar.setData((Date)o[0]);
+			sar.setDalle((Date)o[1]);
+			sar.setDalle((Date)o[2]);
+			sar.setServizio((String)o[3]);
+			
+			serviziAddetto.add(sar);
+		}
 	}
 
 	public LoginInfo getLoginInfo() {
