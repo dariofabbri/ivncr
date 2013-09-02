@@ -15,20 +15,44 @@
 		<h:form id="searchForm">
 		
 			<p:messages globalOnly="true" showDetail="true" closable="true"/>
-		
-			<h:panelGrid columns="4" cellpadding="5">
 
-				<f:facet name="footer">
-					<p:commandButton value="Cerca"
-						actionListener="#{gestioneAddetti.doSearch}" 
-						update="@form,:form" 
-						oncomplete="if(args.ok) {searchDialog.hide(); }"/>
-
-					<p:commandButton value="Annulla"
-						oncomplete="searchDialog.hide();" />
-				</f:facet>
+			<p:panelGrid styleClass="form-panel">
 				
-			</h:panelGrid>
+				<p:row>
+					<p:column>
+						<p:outputLabel for="matricolaFilter" value="Matricola:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{gestioneAddetti.matricolaFilter}" id="matricolaFilter"/>
+						<p:watermark for="matricolaFilter" value="Matricola dell\'addetto" />  
+						<p:tooltip for="matricolaFilter" showEffect="fade" value="Matricola, anche parziale, da ricercare" />
+					</p:column>
+				</p:row>
+				
+				<p:row>
+					<p:column>							
+						<p:outputLabel for="nomeFilter" value="Nome:" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{gestioneAddetti.nomeFilter}" id="nomeFilter"/>
+						<p:watermark for="nomeFilter" value="Nome dell\'addetto" />  
+						<p:tooltip for="nomeFilter" showEffect="fade" value="Nome, anche parziale, dell'addetto da ricercare" />
+					</p:column>
+				</p:row>
+	
+				<p:row>
+					<p:column colspan="2" styleClass="form-footer">
+						<p:commandButton value="Cerca"
+							id="searchButton"
+							actionListener="#{gestioneAddetti.doSearch}" 
+							update="@form,:form" 
+							oncomplete="if(args.ok) {searchDialog.hide(); }"/>
+						<p:commandButton value="Annulla"
+							oncomplete="searchDialog.hide();" />
+					</p:column>
+				</p:row>
+				
+			</p:panelGrid>
 			
 		</h:form>
 

@@ -16,6 +16,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 
+import org.primefaces.context.RequestContext;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 import org.slf4j.Logger;
@@ -36,6 +37,8 @@ public class GestioneAddetti implements Serializable {
 	private Addetto selected;
 	private Addetto edited;
 
+	private String matricolaFilter;
+	private String nomeFilter;
 
 	public GestioneAddetti() {
 
@@ -107,6 +110,13 @@ public class GestioneAddetti implements Serializable {
 		return "detail?faces-redirect=true";
 	}
 
+	public void doSearch() {
+
+		// Signal to modal dialog that everything went fine.
+		//
+		RequestContext.getCurrentInstance().addCallbackParam("ok", true);
+	}
+
 	public LoginInfo getLoginInfo() {
 		return loginInfo;
 	}
@@ -137,5 +147,21 @@ public class GestioneAddetti implements Serializable {
 
 	public void setEdited(Addetto edited) {
 		this.edited = edited;
+	}
+
+	public String getMatricolaFilter() {
+		return matricolaFilter;
+	}
+
+	public void setMatricolaFilter(String matricolaFilter) {
+		this.matricolaFilter = matricolaFilter;
+	}
+
+	public String getNomeFilter() {
+		return nomeFilter;
+	}
+
+	public void setNomeFilter(String nomeFilter) {
+		this.nomeFilter = nomeFilter;
 	}
 }
