@@ -316,7 +316,7 @@ INSERT INTO app.per_grado_parentela (id, descrizione) VALUES (2, 'Convivente');
 INSERT INTO app.per_grado_parentela (id, descrizione) VALUES (3, 'Ex Coniuge');
 INSERT INTO app.per_grado_parentela (id, descrizione) VALUES (4, 'Familiare');
 INSERT INTO app.per_grado_parentela (id, descrizione) VALUES (5, 'Figlio/a');
-INSERT INTO app.per_grado_parentela (id, descrizione) VALUES (6, 'Figlio/a Convivente');
+INSERT INTO app.per_grado_parentela (id, descrizione) VALUES (6, 'Figlio/a della convivente');
 SELECT setval('app.per_grado_parentela_id_seq', (SELECT MAX(id) FROM app.per_grado_parentela));
 
 
@@ -764,6 +764,7 @@ INSERT INTO app.per_reparto (id, azienda_id, descrizione) VALUES(18, 1, 'Pattugl
 INSERT INTO app.per_reparto (id, azienda_id, descrizione) VALUES(19, 1, 'Pattuglie Pomezia');
 INSERT INTO app.per_reparto (id, azienda_id, descrizione) VALUES(20, 1, 'Pattuglie Guidonia');
 INSERT INTO app.per_reparto (id, azienda_id, descrizione) VALUES(21, 1, 'Ospedali');
+INSERT INTO app.per_reparto (id, azienda_id, descrizione) VALUES(21, 1, 'Consolato Firenze');
 SELECT setval('app.per_reparto_id_seq', (SELECT MAX(id) FROM app.per_reparto));
 
 

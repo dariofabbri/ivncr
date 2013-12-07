@@ -20,3 +20,4 @@ psql -U ivncr -f 016_create_paese_tables.sql ivncr
 psql -U ivncr -f 017_create_personale_tables.sql ivncr
 psql -U ivncr -f 018_add_azienda_stile_column.sql ivncr
 psql -U ivncr -f 019_create_contratti_tables.sql ivncr
+psql -U ivncr -f 020_create_operativo_tables.sql ivncr
