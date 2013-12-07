@@ -17,3 +17,5 @@ in conf/context.xml:
 
 
 Before moving to production set javax.faces.PROJECT_STAGE parameter to production in web.xml file.
+
+TEST!
