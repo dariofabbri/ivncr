@@ -10,10 +10,13 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
-import org.primefaces.component.menuitem.MenuItem;
-import org.primefaces.component.separator.Separator;
-import org.primefaces.component.submenu.Submenu;
-import org.primefaces.model.MenuModel;
+import org.primefaces.model.menu.DefaultMenuItem;
+import org.primefaces.model.menu.DefaultSeparator;
+import org.primefaces.model.menu.DefaultSubMenu;
+import org.primefaces.model.menu.MenuItem;
+import org.primefaces.model.menu.MenuModel;
+import org.primefaces.model.menu.Separator;
+import org.primefaces.model.menu.Submenu;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -76,17 +79,17 @@ public class MenuBar implements Serializable {
 			if(element.getNodeName().equals("menuitem")) {
 
 				MenuItem item = buildMenuItem(element);
-				model.addMenuItem(item);
+				model.addElement(item);
 
 			} else if(element.getNodeName().equals("separator")) {
 
 				Separator separator = buildSeparator(element);
-				model.addSeparator(separator);
+				model.addElement(separator);
 
 			} else if(element.getNodeName().equals("submenu")) {
 
 				Submenu submenu = buildSubmenu(element);
-				model.addSubmenu(submenu);
+				model.addElement(submenu);
 
 			}
 		}
@@ -95,18 +98,12 @@ public class MenuBar implements Serializable {
 	}
 
 
+	@SuppressWarnings("unchecked")
 	private Submenu buildSubmenu(Element element) {
 
-		Submenu result = new Submenu();
-
 		String label = element.getAttribute("label");
-		if(!StringUtils.isEmpty(label))
-			result.setLabel(label);
-
 		String icon = element.getAttribute("icon");
-		if(!StringUtils.isEmpty(icon))
-			result.setIcon(icon);
-
+		Submenu result = new DefaultSubMenu(label, icon);
 
 		NodeList nl = element.getChildNodes();
 		for(int i = 0; i < nl.getLength(); ++i) {
@@ -121,17 +118,17 @@ public class MenuBar implements Serializable {
 			if(child.getNodeName().equals("menuitem")) {
 
 				MenuItem item = buildMenuItem(child);
-				result.getChildren().add(item);
+				result.getElements().add(item);
 
 			} else if(child.getNodeName().equals("separator")) {
 
 				Separator separator = buildSeparator(child);
-				result.getChildren().add(separator);
+				result.getElements().add(separator);
 
 			} else if(child.getNodeName().equals("submenu")) {
 
 				Submenu submenu = buildSubmenu(child);
-				result.getChildren().add(submenu);
+				result.getElements().add(submenu);
 
 			}
 		}
@@ -142,31 +139,34 @@ public class MenuBar implements Serializable {
 
 	private Separator buildSeparator(Element element) {
 
-		Separator separator = new Separator();
+		Separator separator = new DefaultSeparator();
 		return separator;
 	}
 
 
 	private MenuItem buildMenuItem(Element element) {
 
-		MenuItem item = new MenuItem();
-
 		// Only a subset of possible attributes is supported.
 		//
+		DefaultMenuItem item = new DefaultMenuItem();
+		item.setAjax(false);
 
 		String value = element.getAttribute("value");
-		if(!StringUtils.isEmpty(value))
+		if(!StringUtils.isEmpty(value)) {
 			item.setValue(value);
+		}
 
 		String url = element.getAttribute("url");
-		if(!StringUtils.isEmpty(url))
-			item.setUrl(url);
+		if(!StringUtils.isEmpty(url)) {
+			item.setCommand(url);
+		}
 
 		String icon = element.getAttribute("icon");
-		if(!StringUtils.isEmpty(icon))
+		if(!StringUtils.isEmpty(icon)) {
 			item.setIcon(icon);
+		}
 
-		String permission = element.getAttribute("icon");
+		String permission = element.getAttribute("permission");
 		if(!StringUtils.isEmpty(permission)) {
 			boolean permitted = SecurityUtils.getSubject().isPermitted(permission);
 			item.setDisabled(!permitted);

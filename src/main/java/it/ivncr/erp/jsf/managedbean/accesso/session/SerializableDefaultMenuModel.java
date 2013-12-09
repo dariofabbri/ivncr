@@ -2,7 +2,7 @@ package it.ivncr.erp.jsf.managedbean.accesso.session;
 
 import java.io.Serializable;
 
-import org.primefaces.model.DefaultMenuModel;
+import org.primefaces.model.menu.DefaultMenuModel;
 
 public class SerializableDefaultMenuModel extends DefaultMenuModel implements Serializable {
 
