@@ -330,7 +330,7 @@ public class AddettoServiceImpl extends AbstractService implements AddettoServic
 		c = DateUtils.truncate(c, Calendar.DATE);
 		Date dataInizio = DateUtils.addDays(c.getTime(), 2 - c.get(Calendar.DAY_OF_WEEK));
 		Date dataFine = DateUtils.addWeeks(dataInizio, 1);
-		
+
 		String hql =
 				"select distinct(ser) " +
 				"from Servizio ser " +
@@ -352,16 +352,16 @@ public class AddettoServiceImpl extends AbstractService implements AddettoServic
 		for(Servizio servizio : list) {
 
 			String descrizione = null;
-			
+
 			if(servizio.getOds() != null) {
 				descrizione = servizio.getOds().getAlias();
 			} else if(servizio.getCausaleOds() != null) {
 				descrizione = servizio.getCausaleOds().getDescrizione();
 			}
-			
-			Object[] row = new Object[] { 
-					servizio.getDataMattinale(), 
-					servizio.getOrarioDa(), 
+
+			Object[] row = new Object[] {
+					servizio.getDataMattinale(),
+					servizio.getOrarioDa(),
 					servizio.getOrarioA(),
 					descrizione };
 			result.add(row);
@@ -401,7 +401,7 @@ public class AddettoServiceImpl extends AbstractService implements AddettoServic
 				"from SistemaLavoro sla " +
 				"inner join fetch sla.tipoSistemaLavoro tsl " +
 				"where sla.addetto.id = :codiceAddetto " +
-				"and sla.validoA is null " +
+				//"and sla.validoA is null " +
 				"order by sla.validoDa desc ";
 		Query querySistemaLavoro = session.createQuery(hql);
 		querySistemaLavoro.setMaxResults(1);
