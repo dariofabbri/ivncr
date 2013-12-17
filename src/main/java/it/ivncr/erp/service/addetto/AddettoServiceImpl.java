@@ -12,11 +12,13 @@ import it.ivncr.erp.service.SortDirection;
 import it.ivncr.erp.util.AuditUtil;
 import it.ivncr.erp.util.AuditUtil.Operation;
 import it.ivncr.erp.util.AuditUtil.Snapshot;
+import it.ivncr.erp.util.HibernateUtil;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -385,67 +387,88 @@ public class AddettoServiceImpl extends AbstractService implements AddettoServic
 				"and add.attivo = true ";
 		Query query = session.createQuery(hql);
 		query.setParameter("codiceReparto", codiceReparto);
+		List<Addetto> addetti = query.list();
 
-		List<Addetto> list = query.list();
-
-		List<Object[]> result = new ArrayList<Object[]>();
+		String addettiIds = HibernateUtil.makeCommaSeparatedList(addetti, "id");
 
 		hql =
 				"from Servizio ser " +
 				"left join fetch ser.causaleOds cod " +
-				"where ser.addetto.id = :codiceAddetto " +
-				"and ser.dataMattinale = :dataMattinale ";
-		Query queryServizio = session.createQuery(hql);
+				"where ser.addetto.id in (" + addettiIds +	") " +
+				"and ser.dataMattinale = :dataMattinale " +
+				"order by ser.addetto.id";
+		Query queryServizi = session.createQuery(hql);
+		queryServizi.setParameter("dataMattinale", dataMattinale);
+		List<Servizio> list1 = queryServizi.list();
+
+		Map<Integer, List<Servizio>> mapServizi = new HashMap<Integer, List<Servizio>>();
+		for(Servizio servizio : list1) {
+
+			Integer key = servizio.getAddetto().getId();
+
+			if(!mapServizi.containsKey(key)) {
+				mapServizi.put(key, new ArrayList<Servizio>());
+			}
+
+			mapServizi.get(key).add(servizio);
+		}
+
 
 		hql =
 				"from SistemaLavoro sla " +
 				"inner join fetch sla.tipoSistemaLavoro tsl " +
-				"where sla.addetto.id = :codiceAddetto " +
-				//"and sla.validoA is null " +
-				"order by sla.validoDa desc ";
+				"where sla.addetto.id in (" + addettiIds + ") " +
+				"order by sla.addetto.id, sla.validoDa desc ";
 		Query querySistemaLavoro = session.createQuery(hql);
-		querySistemaLavoro.setMaxResults(1);
+		List<SistemaLavoro> list2 = querySistemaLavoro.list();
 
-		for(Addetto addetto : list) {
+		Map<Integer, SistemaLavoro> mapSistemaLavoro = new HashMap<Integer, SistemaLavoro>();
+		for(SistemaLavoro sistemaLavoro : list2) {
+			mapSistemaLavoro.put(sistemaLavoro.getAddetto().getId(), sistemaLavoro);
+		}
+
+
+		List<Object[]> result = new ArrayList<Object[]>();
+
+		for(Addetto addetto : addetti) {
 
 			session.evict(addetto);
 
 			// Retrieve servizi.
 			//
-			queryServizio.setParameter("codiceAddetto", addetto.getId());
-			queryServizio.setParameter("dataMattinale", dataMattinale);
-			List<Servizio> servizi = queryServizio.list();
+			List<Servizio> servizi = mapServizi.get(addetto.getId());
 
 			// Calculated worked period and keep it in milliseconds.
 			//
 			Long workedMillis = 0L;
-			for(Servizio servizio : servizi) {
+			if(servizi != null) {
+				for(Servizio servizio : servizi) {
 
-				Date orarioDa = servizio.getOrarioDa();
-				Date orarioA = servizio.getOrarioA();
+					Date orarioDa = servizio.getOrarioDa();
+					Date orarioA = servizio.getOrarioA();
 
-				if(orarioDa == null && orarioA == null) {
-					continue;
+					if(orarioDa == null && orarioA == null) {
+						continue;
+					}
+
+					if(
+						(orarioDa == null && orarioA != null) ||
+						(orarioA == null && orarioDa != null)) {
+						logger.error("Both or none between orarioDa and orarioA must be present.");
+						throw new RuntimeException("Both or none between orarioDa and orarioA must be present.");
+					}
+
+					if(orarioA.before(orarioDa)) {
+						orarioA = DateUtils.addDays(orarioA, 1);
+					}
+
+					workedMillis += (orarioA.getTime() - orarioDa.getTime());
 				}
-
-				if(
-					(orarioDa == null && orarioA != null) ||
-					(orarioA == null && orarioDa != null)) {
-					logger.error("Both or none between orarioDa and orarioA must be present.");
-					throw new RuntimeException("Both or none between orarioDa and orarioA must be present.");
-				}
-
-				if(orarioA.before(orarioDa)) {
-					orarioA = DateUtils.addDays(orarioA, 1);
-				}
-
-				workedMillis += (orarioA.getTime() - orarioDa.getTime());
 			}
 
 			// Retrieve sistema lavoro.
 			//
-			querySistemaLavoro.setParameter("codiceAddetto", addetto.getId());
-			SistemaLavoro sistemaLavoro = (SistemaLavoro)querySistemaLavoro.uniqueResult();
+			SistemaLavoro sistemaLavoro = mapSistemaLavoro.get(addetto.getId());
 
 			Object[] row = new Object[] { addetto, servizi, workedMillis, sistemaLavoro };
 			result.add(row);
