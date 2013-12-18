@@ -84,18 +84,15 @@
 								rendered="#{not empty dettaglioOperativoMattinale.addetti}"
 								var="addetto" 
 								value="#{dettaglioOperativoMattinale.addetti}" 
-								scrollable="true" 
-								scrollWidth="100%" 
-								scrollHeight="400" 
 								selectionMode="single"
 								selection="#{dettaglioOperativoMattinale.selectedAddetto}"
 								rowKey="#{addetto.id}"
 								emptyMessage="Nessun record trovato" 
 								styleClass="small-datatable">
 				
-								<p:ajax event="rowSelect" listener="#{dettaglioOperativoMattinale.onSelectAddetto}" update=":form:serviziAddettoTable"/>
-				
-								<p:ajax event="rowUnselect" listener="#{dettaglioOperativoMattinale.onSelectAddetto}" update=":form:serviziAddettoTable"/>
+								<p:ajax event="rowSelect" listener="#{dettaglioOperativoMattinale.onSelectAddetto}" update=":form:serviziAddettoPanel"/>
+
+								<p:ajax event="rowUnselect" listener="#{dettaglioOperativoMattinale.onSelectAddetto}" update=":form:serviziAddettoPanel"/>
 								
 								<p:column headerText="Matricola">
 									<h:outputText value="#{addetto.matricola}" />
@@ -126,41 +123,42 @@
 						</p:layoutUnit>
 					
 						<p:layoutUnit position="center">
+
+							<p:outputPanel id="serviziAddettoPanel">
+
+								<p:dataTable 
+									id="serviziAddettoTable"
+									rendered="#{not empty dettaglioOperativoMattinale.serviziAddetto}"
+									var="servizioAddetto" 
+									value="#{dettaglioOperativoMattinale.serviziAddetto}" 
+									emptyMessage="Nessun record trovato" 
+									styleClass="small-datatable">
 									
-							<p:dataTable 
-								id="serviziAddettoTable"
-								rendered="#{not empty dettaglioOperativoMattinale.serviziAddetto}"
-								var="servizioAddetto" 
-								value="#{dettaglioOperativoMattinale.serviziAddetto}" 
-								scrollable="true" 
-								scrollWidth="100%" 
-								scrollHeight="400"
-								emptyMessage="Nessun record trovato" 
-								styleClass="small-datatable">
-								
-								<p:column headerText="Data">
-									<h:outputText value="#{servizioAddetto.data}">
-										<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
-									</h:outputText>
-								</p:column>
-								
-								<p:column headerText="Dalle">
-									<h:outputText value="#{servizioAddetto.dalle}">
-										<f:convertDateTime pattern="hh:mm" timeZone="#{appConfig.timeZone}" />
-									</h:outputText>
-								</p:column>
-								
-								<p:column headerText="Alle">
-									<h:outputText value="#{servizioAddetto.alle}">
-										<f:convertDateTime pattern="hh:mm" timeZone="#{appConfig.timeZone}" />
-									</h:outputText>
-								</p:column>
-								
-								<p:column headerText="Servizio">
-									<h:outputText value="#{servizioAddetto.servizio}"/>
-								</p:column>
-								
-							</p:dataTable>
+									<p:column headerText="Data">
+										<h:outputText value="#{servizioAddetto.data}">
+											<f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{appConfig.timeZone}" />
+										</h:outputText>
+									</p:column>
+									
+									<p:column headerText="Dalle">
+										<h:outputText value="#{servizioAddetto.dalle}">
+											<f:convertDateTime pattern="hh:mm" timeZone="#{appConfig.timeZone}" />
+										</h:outputText>
+									</p:column>
+									
+									<p:column headerText="Alle">
+										<h:outputText value="#{servizioAddetto.alle}">
+											<f:convertDateTime pattern="hh:mm" timeZone="#{appConfig.timeZone}" />
+										</h:outputText>
+									</p:column>
+									
+									<p:column headerText="Servizio">
+										<h:outputText value="#{servizioAddetto.servizio}"/>
+									</p:column>
+									
+								</p:dataTable>
+
+							</p:outputPanel>
 						
 						</p:layoutUnit>
 						

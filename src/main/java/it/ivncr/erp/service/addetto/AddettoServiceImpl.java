@@ -341,7 +341,8 @@ public class AddettoServiceImpl extends AbstractService implements AddettoServic
 				"left join fetch ser.causaleOds cau " +
 				"where add.id = :codiceAddetto " +
 				"and ser.dataMattinale >= :dataInizio " +
-				"and ser.dataMattinale < :dataFine ";
+				"and ser.dataMattinale < :dataFine " +
+				"order by ser.dataMattinale, ser.orarioDa";
 		Query query = session.createQuery(hql);
 		query.setParameter("codiceAddetto", codiceAddetto);
 		query.setParameter("dataInizio", dataInizio);

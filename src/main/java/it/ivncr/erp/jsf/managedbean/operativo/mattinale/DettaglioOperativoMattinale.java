@@ -134,10 +134,10 @@ public class DettaglioOperativoMattinale implements Serializable {
 					row.setOreLavorate(servizi.get(0).getCausaleOds().getDescrizione());
 				}
 			}
-			
+
 			// TODO: complete with available hours.
 			//
-			row.setOreDisponibili("00:00"); 
+			row.setOreDisponibili("00:00");
 			row.setSistemaLavoro(sistemaLavoro.getTipoSistemaLavoro().getDescrizione());
 
 			addetti.add(row);
@@ -148,21 +148,21 @@ public class DettaglioOperativoMattinale implements Serializable {
 
 		System.out.println("onServizioClick");
 	}
-	
+
 	public void onSelectAddetto() {
-		
+
 		AddettoService as = ServiceFactory.createService("Addetto");
 		List<Object[]> listServizi = as.listServiziSettimanaAddetto(selectedAddetto.getId(), dataMattinale);
-		
+
 		serviziAddetto = new ArrayList<ServizioAddettoRow>();
 		for(Object[] o : listServizi) {
 
 			ServizioAddettoRow sar = new ServizioAddettoRow();
 			sar.setData((Date)o[0]);
 			sar.setDalle((Date)o[1]);
-			sar.setDalle((Date)o[2]);
+			sar.setAlle((Date)o[2]);
 			sar.setServizio((String)o[3]);
-			
+
 			serviziAddetto.add(sar);
 		}
 	}
@@ -307,10 +307,10 @@ public class DettaglioOperativoMattinale implements Serializable {
 			this.oreDisponibili = oreDisponibili;
 		}
 	}
-	
-	
+
+
 	public class ServizioAddettoRow {
-		
+
 		private Date data;
 		private Date dalle;
 		private Date alle;
